@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>VAPOR_OS · DC 随机盲盒</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&family=VT323&family=ZCOOL+QingKe+HuangYou&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --vp-cyan: #05d9e8;
+      --vp-blue-neon: #00f3ff;
+      --vp-magenta: #ff00a0;
+      --vp-yellow: #fffb96;
+      --vp-bg-top: #0b0514;
+      --vp-bg-bot: #1c0836;
+      --vp-panel: rgba(12, 5, 24, 0.85);
+      --vp-border: #6d28d9;
+      --vp-text: #f8fafc;
+      --vp-dim: #8b92a5;
+      
+      --font-pixel: 'VT323', monospace;
+      --font-butter: 'ZCOOL QingKe HuangYou', cursive;
+      --font-title: 'ZCOOL GaoDuanHei', 'Microsoft YaHei', sans-serif;
+      --font-serif: 'Noto Serif SC', 'Source Han Serif SC', serif;
+      --font-sans: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      --font-desc: 'LXGW WenKai TC', 'Noto Serif SC', 'Source Han Serif SC', serif;
+
+      --win-pink: #ff00ff;
+      --win-purple: #b0b0b0; 
+      --win-gray: #c0c0c0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: linear-gradient(180deg, var(--vp-bg-top) 0%, var(--vp-bg-bot) 100%);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 2rem 6rem 2rem; /* 增加底部 padding 防止被导航栏遮挡 */
+      color: var(--vp-text);
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      background-size: 100% 4px, 6px 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .vapor-sun {
+      position: fixed;
+      bottom: 25vh; left: 50%;
+      transform: translateX(-50%);
+      width: 45vh; height: 45vh;
+      border-radius: 50%;
+      background: linear-gradient(to bottom, var(--vp-yellow) 0%, var(--vp-magenta) 100%);
+      z-index: -2;
+      box-shadow: 0 0 120px rgba(255, 0, 160, 0.4);
+      clip-path: polygon(0 0, 100% 0, 100% 55%, 0 55%, 0 58%, 100% 58%, 100% 65%, 0 65%, 0 69%, 100% 69%, 100% 77%, 0 77%, 0 82%, 100% 82%, 100% 92%, 0 92%, 0 97%, 100% 97%, 100% 100%, 0 100%);
+    }
+
+    .vapor-grid {
+      position: fixed;
+      bottom: 0; left: 0; width: 100vw; height: 40vh;
+      background: linear-gradient(rgba(5, 217, 232, 0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(5, 217, 232, 0.5) 1px, transparent 1px);
+      background-size: 40px 40px;
+      transform: perspective(600px) rotateX(75deg);
+      transform-origin: top;
+      z-index: -1;
+      border-top: 3px solid var(--vp-cyan);
+    }
+
+    .app-container {
+      max-width: 1280px; 
+      width: 100%;
+      background: var(--vp-panel);
+      backdrop-filter: blur(15px);
+      border: 2px solid var(--vp-border);
+      box-shadow: 15px 15px 0px rgba(255, 0, 160, 0.2);
+      padding: 4rem 4rem; 
+      position: relative;
+      z-index: 10;
+    }
+
+    .os-bar {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 2.2rem;
+      background: var(--vp-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+    }
+    .os-btns { display: flex; gap: 0.6rem; }
+    .os-btns span { width: 12px; height: 12px; border-radius: 2px; background: #fff; }
+    .os-btns span:nth-child(1) { background: var(--vp-cyan); }
+    .os-btns span:nth-child(2) { background: var(--vp-yellow); }
+    .os-btns span:nth-child(3) { background: var(--vp-magenta); }
+    .os-title { color: var(--vp-yellow); font-family: var(--font-pixel); font-size: 1.2rem; }
+
+    h1 {
+      font-size: 2.8rem;
+      text-shadow: 3px 3px 0px var(--vp-magenta);
+      margin-bottom: 0.5rem;
+      font-family: var(--font-title);
+      text-align: center;
+    }
+    h1 span {
+      background: var(--vp-magenta); color: #fff; font-family: var(--font-pixel);
+      padding: 0.2rem 0.8rem; font-size: 1.6rem; box-shadow: 4px 4px 0px var(--vp-cyan);
+    }
+    .subtitle { color: var(--vp-cyan); font-family: var(--font-pixel); margin-bottom: 2.5rem; font-size: 1.2rem; text-align: center; }
+
+    .mode-switch { display: flex; gap: 1rem; margin-bottom: 2.5rem; }
+    .mode-btn {
+      flex: 1; background: rgba(0,0,0,0.4); border: 2px solid var(--vp-border);
+      color: var(--vp-dim); font-family: var(--font-pixel); padding: 1rem;
+      font-size: 1.3rem; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 0.6rem;
+    }
+    .mode-btn.active { background: var(--vp-magenta); border-color: var(--vp-magenta); color: #fff; box-shadow: 4px 4px 0px var(--vp-cyan); }
+
+    #blindProgressContainer { display: none; margin-bottom: 2rem; text-align: center; }
+    .progress-label { font-family: var(--font-pixel); color: var(--vp-cyan); margin-bottom: 0.8rem; display: block; text-align: center; }
+    .progress-bar-bg { width: 100%; height: 14px; background: #000; border: 1px solid var(--vp-cyan); position: relative; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--vp-cyan), var(--vp-magenta)); width: 0%; transition: width 0.3s; }
+
+    .draw-btn {
+      width: 100%; background: var(--vp-cyan); border: 2px solid #fff; color: #000;
+      font-weight: 800; font-size: 1.5rem; padding: 1.3rem 1rem; cursor: pointer;
+      margin-bottom: 3rem; letter-spacing: 2px; box-shadow: 6px 6px 0px var(--vp-magenta);
+      font-family: var(--font-title);
+      white-space: normal;
+      word-wrap: break-word;
+      text-align: center;
+    }
+    .draw-btn:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px; }
+
+    .card { background: rgba(0, 0, 0, 0.7); border: 1px solid var(--vp-border); padding: 2.5rem; margin-bottom: 3rem; position: relative; }
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      text-align: center;
+      width: 100%;
+    }
+    .comic-title { 
+      font-size: clamp(1.8rem, 4vw + 1rem, 2.8rem); 
+      font-weight: 900; 
+      color: #fff; 
+      font-family: var(--font-title); 
+      word-break: keep-all; 
+      white-space: pre-wrap; 
+      line-height: 1.2;
+    }
+    
+    #displayEn { text-align: center; }
+    #scoreContainer { text-align: center; }
+
+    .score-badge { background: var(--vp-yellow); color: #000; font-family: var(--font-pixel); padding: 0.3rem 1.2rem; box-shadow: 4px 4px 0px var(--vp-magenta); font-size: 1.2rem; }
+    .blinded-score { background: #222; color: var(--vp-cyan); font-family: var(--font-pixel); padding: 0.3rem 1.2rem; border: 1px dashed var(--vp-cyan); }
+    .desc { line-height: 2.2; font-size: 1.25rem; margin: 2rem 0; color: #e5e7eb; text-align: center; font-family: var(--font-desc); word-wrap: break-word; }
+
+    .action-btns {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+      justify-content: center;
+      flex-direction: row;
+    }
+    .secondary-btn {
+      flex: 1;
+      max-width: 250px;
+      height: 55px;
+      border: 2px solid #fff;
+      font-family: var(--font-sans);
+      font-size: 1.2rem;
+      font-weight: 900;
+      letter-spacing: 4px; 
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+    }
+    #wishlistBtn {
+      background: #ff007f; 
+      color: #fff;
+      box-shadow: 4px 4px 0px #00f3ff;
+    }
+    #wishlistBtn:hover {
+      background: #ff4da6;
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px #00f3ff;
+    }
+    #readBtn {
+      background: #00f3ff; 
+      color: #000;
+      box-shadow: 4px 4px 0px #ff007f;
+    }
+    #readBtn:hover {
+      background: #5ef7ff;
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px #ff007f;
+    }
+    .secondary-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0px 0px 0px;
+    }
+
+    .list-section { display: flex; gap: 3rem; padding-top: 3rem; border-top: 1px solid var(--vp-border); }
+    .list-col { flex: 1; }
+    .list-title { 
+        font-family: var(--font-pixel); color: var(--vp-yellow); font-size: 1.4rem; 
+        margin-bottom: 1.5rem; letter-spacing: 2px; cursor: pointer;
+        display: flex; justify-content: space-between; align-items: center;
+        user-select: none;
+    }
+    .list-title::after { content: "▼"; font-size: 0.8rem; transition: transform 0.3s; }
+    .list-title.collapsed::after { transform: rotate(-90deg); }
+    
+    .list-content { transition: max-height 0.4s ease-out; overflow: hidden; }
+    .list-content.hidden { max-height: 0; }
+
+    .tag { 
+        background: rgba(0,0,0,0.3); border: 1px solid var(--vp-border); padding: 0.5rem 1rem; 
+        font-size: 0.95rem; margin: 0 0.8rem 0.8rem 0; display: inline-flex; align-items: center; 
+        cursor: default; font-family: var(--font-serif); position: relative;
+    }
+    .tag.history-tag { border-color: var(--vp-cyan); color: var(--vp-cyan); }
+    
+    .mark-read-icon {
+        display: none;
+        margin-left: 8px;
+        color: var(--vp-blue-neon);
+        cursor: pointer;
+        font-weight: bold;
+        transition: color 0.2s;
+    }
+    .tag:hover .mark-read-icon { display: inline; }
+    .mark-read-icon:hover { color: var(--vp-magenta); }
+
+    .empty-message { color: var(--vp-dim); font-family: var(--font-pixel); }
+
+    /* 必须高于想看列表新页面 (30000)，但低于底导，保持点击通畅 */
+    .modal-overlay {
+      position: fixed; top:0; left:0; width:100%; height:100%; 
+      z-index: 30000;
+      display: none; justify-content: center; align-items: center;
+      /* Dreamcore 旧电脑无空间感背景 */
+      background-color: #008080;
+      background-image: 
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 2px, transparent 2px, transparent 4px),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.2'/%3E%3C/svg%3E");
+    }
+
+    .modal-box {
+      background: var(--win-purple); 
+      border-top: 3px solid #eee;
+      border-left: 3px solid #eee;
+      border-right: 3px solid #444;
+      border-bottom: 3px solid #444;
+      max-width: 500px; width: 92%; position: relative;
+      box-shadow: 10px 10px 0px rgba(0,0,0,0.6);
+      padding: 4px;
+      overflow: hidden;
+      image-rendering: pixelated;
+      z-index: 30001; /* 确保弹窗在最上层 */
+    }
+
+    .modal-box::before {
+      content: "";
+      position: absolute; top:0; left:0; right:0; bottom:0;
+      background: 
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 2px),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.12;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .modal-header { 
+      background: var(--win-pink);
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0 10px;
+      margin: 0 0 15px 0;
+    }
+    
+    .modal-header-text {
+        color: white;
+        font-family: var(--font-pixel);
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+        text-shadow: 1px 1px 0px #000;
+    }
+
+    .modal-close-x { 
+      position: absolute; top: 7px; right: 7px; 
+      background: var(--win-gray);
+      border-top: 2px solid #fff; border-left: 2px solid #fff;
+      border-right: 2px solid #000; border-bottom: 2px solid #000;
+      color: #000; font-family: var(--font-pixel); cursor: pointer; 
+      font-size: 1rem; width: 22px; height: 22px;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 15;
+    }
+
+    .modal-body { 
+      padding: 10px 20px;
+      color: #000; margin-bottom: 20px; 
+      line-height: 1.6; font-size: 1.2rem; 
+      font-family: var(--font-butter); 
+      position: relative; z-index: 5;
+    }
+
+    .modal-footer { 
+        display: flex; gap: 15px; 
+        padding: 0 20px 20px 20px;
+        position: relative; z-index: 5; 
+    }
+
+    .modal-btn { 
+      flex: 1; height: 45px; 
+      background: var(--win-gray);
+      border-top: 2px solid #fff; border-left: 2px solid #fff;
+      border-right: 2px solid #000; border-bottom: 2px solid #000;
+      color: #000; font-family: var(--font-pixel);
+      font-size: 1.1rem; cursor: pointer; 
+      display: flex; align-items: center; justify-content: center;
+    }
+    .modal-btn:active {
+        border: 2px solid #000; border-top-color: #444; border-left-color: #444;
+        transform: translate(1px, 1px);
+    }
+    .modal-btn-primary { background: var(--win-pink); color: #fff; text-shadow: 1px 1px 0px #000; }
+    
+    .modal-warning { 
+        margin: 0 20px 20px 20px;
+        color: #333; font-size: 0.9rem; 
+        display: block; border-top: 1px dashed rgba(0,0,0,0.2); 
+        padding-top: 10px; font-family: var(--font-sans); 
+        position: relative; z-index: 5; 
+    }
+
+    .modal-box.hack-effect {
+      animation: shake 0.1s infinite;
+      border: 3px solid #ff0000 !important;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.8), 10px 10px 0px rgba(0,0,0,0.6) !important;
+    }
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      20% { transform: translate(-1px, -2px) rotate(-0.5deg); }
+      40% { transform: translate(-3px, 0px) rotate(0.5deg); }
+      60% { transform: translate(3px, 2px) rotate(0deg); }
+      80% { transform: translate(1px, -1px) rotate(0.5deg); }
+      100% { transform: translate(-1px, 2px) rotate(-0.5deg); }
+    }
+
+    /* VAPOR CHAT 新页面基础样式及全屏适应 */
+    .wishlist-page {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: calc(100vh - 65px); /* 留出底部导航高度 */
+      background: var(--vp-bg-top);
+      background-image: 
+        linear-gradient(rgba(5, 217, 232, 0.05) 1px, transparent 1px), 
+        linear-gradient(90deg, rgba(5, 217, 232, 0.05) 1px, transparent 1px);
+      background-size: 30px 30px;
+      z-index: 20000;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(10px);
+    }
+    .wish-header {
+      height: 60px;
+      background: var(--vp-panel);
+      border-bottom: 2px solid var(--vp-magenta);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      box-shadow: 0 4px 15px rgba(255, 0, 160, 0.3);
+    }
+    .wish-back {
+      font-family: var(--font-pixel);
+      color: var(--vp-yellow);
+      font-size: 1.2rem;
+      cursor: pointer;
+      text-shadow: 2px 2px 0 #000;
+      transition: color 0.2s;
+    }
+    .wish-back:hover { color: var(--vp-cyan); }
+    .wish-title {
+      font-family: var(--font-pixel);
+      color: var(--vp-cyan);
+      text-shadow: 2px 2px 0 var(--vp-magenta);
+      letter-spacing: 2px;
+    }
+    .chat-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 3rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .chat-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.2rem;
+      animation: slideIn 0.3s ease-out forwards;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* 升级后的 Vaporwave 标记已看按钮 */
+    .chat-avatar-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .chat-avatar {
+      width: 50px;
+      height: 50px;
+      background: var(--vp-panel);
+      border: 2px solid var(--vp-cyan);
+      box-shadow: 3px 3px 0 var(--vp-magenta);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .chat-avatar:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--vp-magenta);
+    }
+    .chat-avatar:hover {
+      background: rgba(5, 217, 232, 0.2);
+    }
+    .chat-avatar-inner {
+      font-size: 1.6rem;
+      font-family: var(--font-pixel);
+      color: var(--vp-yellow);
+      text-shadow: 1px 1px 0 var(--vp-magenta);
+    }
+
+    .chat-avatar-label {
+      font-family: var(--font-pixel);
+      font-size: 0.9rem;
+      color: var(--vp-magenta);
+    }
+    .chat-bubble-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-width: 75%;
+    }
+    .chat-bubble {
+      background: rgba(255, 0, 160, 0.15);
+      border: 2px solid var(--vp-magenta);
+      padding: 1.2rem 1.5rem;
+      border-radius: 15px 15px 15px 0;
+      color: #fff;
+      box-shadow: 4px 4px 0 rgba(5, 217, 232, 0.4);
+      position: relative;
+    }
+    .chat-bubble::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(transparent, transparent 2px, rgba(0,243,255,0.05) 3px, rgba(0,243,255,0.05) 4px);
+      pointer-events: none;
+      border-radius: 13px;
+    }
+    .chat-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-left: 5px;
+    }
+    .chat-time {
+      font-family: var(--font-pixel);
+      color: var(--vp-dim);
+      font-size: 1.1rem;
+    }
+    .chat-action-btn {
+      font-family: var(--font-pixel);
+      color: var(--vp-yellow);
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: color 0.2s;
+    }
+    .chat-action-btn:hover {
+      color: var(--win-pink);
+    }
+
+    .export-btn {
+      display: block;
+      width: 100%;
+      background: transparent;
+      border: 1px dashed var(--vp-cyan);
+      color: var(--vp-cyan);
+      font-family: var(--font-pixel);
+      font-size: 1.1rem;
+      padding: 0.5rem;
+      margin-top: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .export-btn:hover {
+      background: rgba(5, 217, 232, 0.1);
+      color: var(--vp-yellow);
+      border-color: var(--vp-yellow);
+      text-shadow: 1px 1px 0 #000;
+    }
+
+    /* 已看档案库网格样式 */
+    .archive-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 3rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      align-content: start;
+    }
+    .archive-card {
+      background: rgba(0, 243, 255, 0.05);
+      border: 1px solid var(--vp-blue-neon);
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      position: relative;
+      transition: all 0.3s ease;
+      box-shadow: 4px 4px 0 rgba(0, 243, 255, 0.2);
+    }
+    .archive-card:hover {
+      background: rgba(0, 243, 255, 0.15);
+      transform: translateY(-3px);
+      box-shadow: 6px 6px 0 rgba(255, 0, 160, 0.4);
+      border-color: var(--vp-magenta);
+    }
+    .archive-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px dashed var(--vp-dim);
+      padding-bottom: 0.5rem;
+    }
+    .archive-status {
+      font-family: var(--font-pixel);
+      color: var(--vp-magenta);
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+    .archive-action {
+      font-family: var(--font-pixel);
+      color: var(--vp-dim);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .archive-action:hover {
+      color: var(--win-pink);
+    }
+    .archive-title {
+      font-family: var(--font-title);
+      font-size: 1.4rem;
+      color: #fff;
+      margin-top: 0.5rem;
+    }
+    .archive-en {
+      font-family: var(--font-pixel);
+      color: var(--vp-yellow);
+      font-size: 1.1rem;
+    }
+
+    /* 底部全局导航栏 CSS */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 65px;
+      background: var(--vp-panel);
+      border-top: 2px solid var(--vp-border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 25000; /* 高于页面层级，低于遮罩层 */
+      box-shadow: 0 -4px 15px rgba(255, 0, 160, 0.3);
+      backdrop-filter: blur(15px);
+    }
+    .nav-item {
+      color: var(--vp-dim);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      height: 100%;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+    .nav-icon {
+      font-size: 1.5rem;
+      margin-bottom: 2px;
+      filter: grayscale(1);
+      opacity: 0.6;
+      transition: all 0.3s ease;
+    }
+    .nav-text {
+      font-family: var(--font-title);
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+    .nav-item:hover {
+      color: var(--vp-cyan);
+    }
+    .nav-item:hover .nav-icon {
+      filter: grayscale(0);
+      opacity: 1;
+    }
+    .nav-item:active {
+      transform: scale(0.95);
+    }
+    .nav-item.active {
+      color: var(--vp-yellow);
+      text-shadow: 0 0 8px rgba(255, 251, 150, 0.5);
+    }
+    .nav-item.active .nav-icon {
+      filter: grayscale(0);
+      opacity: 1;
+      text-shadow: 0 0 10px rgba(255, 0, 160, 0.8);
+      transform: scale(1.1);
+    }
+
+    @media (max-width: 800px) {
+      body { padding: 1rem 1rem 5rem 1rem; } /* 移动端底部留白适配 */
+      .app-container { padding: 4rem 1.5rem 2rem 1.5rem; width: 100%; }
+      .list-section { flex-direction: column; }
+      .action-btns { gap: 1rem; }
+      h1 { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="vapor-sun"></div>
+<div class="vapor-grid"></div>
+
+<!-- 弹窗 -->
+<div class="modal-overlay" id="customModal">
+  <div class="modal-box" id="modalContent">
+    <div class="modal-close-x" id="modalX" style="display:none;">X</div>
+    <div class="modal-header" id="modalHeader">
+        <span class="modal-header-text" id="modalTitle">ACCESS_DENIED</span>
+    </div>
+    <div class="modal-body" id="modalMsg">确认进入盲盒模式？</div>
+    <div class="modal-footer" id="modalBtns"></div>
+    <span class="modal-warning" id="modalWarning" style="display:none;"></span>
+  </div>
+</div>
+
+<!-- 主页容器 -->
+<div class="app-container" id="homePage">
+  <div class="os-bar">
+    <div class="os-btns"><span></span><span></span><span></span></div>
+    <div class="os-title">VAPOR_OS // BLIND_BOX.sys</div>
+  </div>
+
+  <h1>DC 刊物随机盲盒 <span>200+ DATA</span></h1>
+  <div class="subtitle">RETRO-FUTURE // DATABASE EXPLORER</div>
+
+  <div class="mode-switch">
+    <button id="normalModeBtn" class="mode-btn active">NORMAL</button>
+    <button id="blindModeBtn" class="mode-btn">BLIND BOX</button>
+  </div>
+
+  <div id="blindProgressContainer">
+    <span class="progress-label">UNBOXING_PROCESS: <span id="drawCount">0</span> TITLES</span>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar"></div></div>
+  </div>
+
+  <button id="randomBtn" class="draw-btn">RANDOM_DRAW / 随机抽取</button>
+
+  <div id="resultCard" class="card" style="display: none;">
+    <div class="card-header">
+      <span class="comic-title" id="displayTitle"></span>
+      <span id="displayYear" style="color:var(--vp-yellow); font-family:var(--font-pixel); font-size:1.8rem; margin-left:10px;"></span>
+    </div>
+    <div id="displayEn" style="color:var(--vp-cyan); font-family:var(--font-pixel); margin-bottom:1.5rem; font-size:1.3rem;"></div>
+    <div id="scoreContainer"></div>
+    <div class="desc" id="displayDesc"></div>
+    
+    <div class="action-btns">
+      <button id="wishlistBtn" class="secondary-btn">想看</button>
+      <button id="readBtn" class="secondary-btn">已看</button>
+    </div>
+  </div>
+
+  <!-- 主页仅保留盲盒模式下的足迹记录，移除想看和已看 -->
+  <div class="list-section" id="listSection" style="display: none;">
+    <div class="list-col" id="blindHistoryCol" style="display: none;">
+      <div class="list-title" onclick="toggleCollapse('blindHistoryContent')">BLIND_SESSIONS / 历史足迹</div>
+      <div id="blindHistoryContent" class="list-content">
+          <div id="blindHistoryContainer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 想看列表聊天框新页面 -->
+<div class="wishlist-page" id="wishlistPage" style="display: none;">
+  <div class="wish-header">
+    <div class="wish-back" style="flex: 1; text-align: left;" onclick="switchPage('home')">◄ RETURN OS</div>
+    <div class="wish-title" style="flex: 3; text-align: center; font-size: clamp(1.1rem, 3vw, 1.6rem);">VAPOR_CHAT // WISHLIST</div>
+    <div style="flex: 1; display: flex; justify-content: flex-end;">
+      <div class="export-btn" style="width: auto; margin:0; padding: 0.3rem 0.6rem; border-color: var(--vp-magenta); color: var(--vp-magenta); text-shadow:none; font-size: 0.9rem;" onclick="window.exportList('wishlist')">[ EXPORT ]</div>
+    </div>
+  </div>
+  <div class="chat-container" id="chatContainer"></div>
+</div>
+
+<!-- 已看页面（互通实装） -->
+<div class="wishlist-page" id="readPage" style="display: none;">
+  <div class="wish-header">
+    <div class="wish-back" style="flex: 1; text-align: left;" onclick="switchPage('home')">◄ RETURN OS</div>
+    <div class="wish-title" style="flex: 3; text-align: center; color: var(--vp-blue-neon); font-size: clamp(1.1rem, 3vw, 1.6rem);">COMPLETED_FILES</div>
+    <div style="flex: 1; display: flex; justify-content: flex-end;">
+      <div class="export-btn" style="width: auto; margin:0; padding: 0.3rem 0.6rem; border-color: var(--vp-blue-neon); color: var(--vp-blue-neon); text-shadow:none; font-size: 0.9rem;" onclick="window.exportList('readlist')">[ EXPORT ]</div>
+    </div>
+  </div>
+  <div class="archive-container" id="readContainer">
+      <!-- 动态生成已看列表网格 -->
+  </div>
+</div>
+
+<!-- 设置页面（占位） -->
+<div class="wishlist-page" id="settingsPage" style="display: none;">
+  <div class="wish-header">
+    <div class="wish-back" style="flex: 1; text-align: left;" onclick="switchPage('home')">◄ RETURN OS</div>
+    <div class="wish-title" style="flex: 3; text-align: center; color: var(--vp-yellow); font-size: clamp(1.1rem, 3vw, 1.6rem);">SYS_CONFIG</div>
+    <div style="flex: 1; display: flex; justify-content: flex-end;"></div>
+  </div>
+  <div class="chat-container" style="justify-content: center; align-items: center; text-align: center;">
+      <div style="font-family: var(--font-pixel); color: var(--vp-magenta); font-size: 2.5rem; margin-bottom: 1.5rem;">UNDER_CONSTRUCTION</div>
+      <div style="font-family: var(--font-sans); color: var(--vp-dim); font-size: 1.2rem; background: rgba(0,0,0,0.4); padding: 1.5rem; border: 1px dashed var(--vp-magenta);">>>> "目前只做导航栏、想看与已看页面..."</div>
+  </div>
+</div>
+
+<!-- 底部全局导航栏 (已更换 Vaporwave 风格图标) -->
+<div class="bottom-nav">
+  <div class="nav-item active" id="nav-home" onclick="switchPage('home')">
+    <div class="nav-icon">🌐</div>
+    <div class="nav-text">首 页</div>
+  </div>
+  <div class="nav-item" id="nav-wish" onclick="switchPage('wish')">
+    <div class="nav-icon">💾</div>
+    <div class="nav-text">想 看</div>
+  </div>
+  <div class="nav-item" id="nav-read" onclick="switchPage('read')">
+    <div class="nav-icon">📼</div>
+    <div class="nav-text">已 看</div>
+  </div>
+  <div class="nav-item" id="nav-settings" onclick="switchPage('settings')">
+    <div class="nav-icon">🕹️</div>
+    <div class="nav-text">设 置</div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const COMICS = [
+      { en:"Detective Comics",zh:"《侦探漫画》",year:1937,score:9.5,desc:"蝙蝠侠神话真正的原点。没有《侦探漫画》，就没有现代超级英雄意义上的Batman。它像一条跨越八十多年的黑色河流，始终记得：Batman首先是“侦探”。", series:"Batman" },
+      { en:"Batman",zh:"《蝙蝠侠》",year:1940,score:10,desc:"DC真正意义上的“帝王刊”。《元年》《漫长的万圣节》《缄默》《猫头鹰法庭》……几乎所有塑造现代蝙蝠侠形象的超级经典都诞生于此。", series:"Batman" },
+      { en:"Batman and Robin",zh:"《蝙蝠侠与罗宾》",year:2009,score:9.7,desc:"Grant Morrison时期最迷人的蝙蝠系时期之一。迪克·格雷森成为Batman，达米安成为Robin，阳光与暴躁的奇妙反转，也是很多人心中最温暖、最有人性的Batman时期。", series:"Batman" },
+      { en:"Batman: The Dark Knight",zh:"《蝙蝠侠：黑暗骑士》",year:2011,score:4.5,desc:"更强调传统黑暗骑士气质的Batman刊物，专注于Bruce Wayne本人与哥谭黑暗面的直接冲突。David Finch极具压迫感的画风建立鲜明视觉气质，提供纯粹经典印象中的蝙蝠侠体验。", series:"Batman", fake:"《蝙蝠侠：黑暗骑士》是一部更强调“传统黑暗骑士气质”的Batman刊物。相比同时期偏重宏大叙事的作品，它更专注于Bruce Wayne本人以及哥谭黑暗面的直接冲突。David Finch极具压迫感的画风为整本刊物建立了鲜明的视觉气质，提供一种非常纯粹的黑暗骑士阅读体验。" },
+      { en:"Batman: Legends of the Dark Knight",zh:"《蝙蝠侠：黑暗骑士传奇》",year:1989,score:9.3,desc:"最“文学化”的蝙蝠侠刊物之一，像一间供顶级创作者自由发挥的实验室。《Shaman》《Prey》《Venom》《Gothic》等无数后世经典诞生于此，塑造了偏执、恐惧与使命感等核心。", series:"Batman" },
+      { en:"Batman: Shadow of the Bat",zh:"《蝙蝠侠：暗影之蝠》",year:1992,score:8.5,desc:"最“心理惊悚”的Bat刊之一，沉迷于哥谭的精神病理学：阿卡姆、创伤、人格崩塌。与其说讲Batman，不如说在讲哥谭如何制造怪物。", series:"Batman" },
+      { en:"Batman Incorporated",zh:"《蝙蝠侠公司》",year:2011,score:9.0,desc:"Grant Morrison彻底放飞自我的终极阶段。Batman不再只是哥谭义警，而成为全球化符号。日本Batman、法国Batman……整本刊物像疯狂而盛大的超级英雄神话实验。", series:"Batman" },
+      { en:"Batman Eternal",zh:"《蝙蝠侠永恒》",year:2014,score:6.5,desc:"少见的全景式哥谭作品，更像一部长篇城市群像剧。周更形式让危机几乎没有停顿，城市持续恶化。适合喜欢大体量Batfamily群像与长期沉浸哥谭氛围的读者。", series:"Batman", fake:"《蝙蝠侠永恒》是一部少见的“全景式哥谭”作品。相比聚焦单一角色的传统Bat刊，它更像一部长篇城市群像剧，周更形式也让危机几乎没有停顿，城市始终处于持续恶化之中，提供了非常完整的阅读体验。" },
+      { en:"Batman and the Outsiders",zh:"《蝙蝠侠与局外人》",year:1983,score:7.8,desc:"“Batman带队”的经典刊，有一种非常复古的魅力：蝙蝠侠像个冷酷队长，带着一群边缘英雄执行危险任务，充满80年代街头动作片味道。", series:"Batman" },
+      { en:"Batman Confidential",zh:"《蝙蝠侠机密档案》",year:2007,score:6.0,desc:"专注于Batman早期岁月的系列，通过不同创作团队风格补充Bruce Wayne刚成为Batman时的世界。一系列独立短篇档案呈现不同风格哥谭。", series:"Batman", fake:"《蝙蝠侠机密档案》是一部专注于“Batman早期岁月”的系列。通过不同创作团队的风格切换，从多个角度补充了Bruce Wayne刚成为Batman时的世界，提供了许多有趣的补充视角。" },
+      { en:"The Brave and the Bold",zh:"《英勇无畏》",year:1955,score:8.8,desc:"DC宇宙最有“漫画感”的刊物之一，Batman不断与不同英雄组队：绿箭、闪电侠、问者……像一场永不停歇的银时代超级英雄嘉年华。", series:"Batman" },
+      { en:"Batman: Gotham Knights",zh:"《蝙蝠侠：哥谭骑士》",year:2000,score:8.7,desc:"Batfamily浓度极高的一本神刊，更关注人与人之间的关系：Bruce与Dick、Bruce与Cass、Alfred与整个家庭。很多角色厨会把它当作“蝙蝠家情感圣经”。", series:"Batman" },
+      { en:"Batman: Urban Legends",zh:"《蝙蝠侠：都市传奇》",year:2021,score:7.5,desc:"质量波动极大的现代anthology，好的故事很好，尤其Red Hood相关部分；差的故事则让人困惑。最大价值是给了很多边缘角色发光机会。", series:"Batman" },
+      { en:"Batman Beyond",zh:"《未来蝙蝠侠》",year:1999,score:8.9,desc:"赛博朋克Batman。老年Bruce Wayne与年轻Batman Terry McGinnis之间的关系是整个系列最迷人的核心，充满未来都市霓虹感与苍老孤独。", series:"Batman" },
+      { en:"Robin",zh:"《罗宾》",year:1993,score:8.6,desc:"Tim Drake真正成长为独立英雄的刊物，校园青春＋街头侦探＋少年超级英雄的完美结合，拥有独特的90年代青春感。", series:"Batman" },
+      { en:"Nightwing",zh:"《夜翼》",year:1996,score:9.8,desc:"迪克·格雷森真正“成为自己”的史诗。Blüdhaven的霓虹、马戏团般的动作感，以及最重要的——希望。很多人爱Batman，但“想成为Nightwing”。", series:"Batman" },
+      { en:"Red Robin",zh:"《红罗宾》",year:2009,score:8.2,desc:"Tim Drake独自追寻Bruce Wayne的全球冒险，展现了Tim作为侦探的坚韧与智慧。", series:"Batman" },
+      { en:"Batgirl",zh:"《蝙蝠少女》",year:2000,score:8.5,desc:"Cassandra Cain时期尤其出色，以动作与沉默叙事见长，讲述一个几乎不说话的女孩如何成为哥谭最危险的格斗者之一。", series:"Batman" },
+      { en:"Birds of Prey",zh:"《猛禽小队》",year:1999,score:9.0,desc:"Oracle与Black Canary的经典组合，Gail Simone时期将女性友谊与团队动作完美结合。", series:"Batman" },
+      { en:"Catwoman",zh:"《猫女》",year:1993,score:8.4,desc:"Selina Kyle的独立冒险，Ed Brubaker时期将猫女重新定义为哥谭最迷人的灰色角色。", series:"Batman" },
+      { en:"Red Hood and the Outlaws",zh:"《红头罩与法外者》",year:2011,score:7.0,desc:"Jason Todd带队，风格更偏向反英雄团队动作片，部分时期角色互动颇有亮点。", series:"Batman" },
+      { en:"Batwing",zh:"《蝠翼》",year:2011,score:7.2,desc:"David Zavimbe作为非洲Batman的独特视角，扩展了蝙蝠侠符号的全球意义。", series:"Batman" },
+      { en:"Batwoman",zh:"《蝙蝠女侠》",year:2011,score:9.0,desc:"Kate Kane的现代经典，J.H. Williams III的艺术与Greg Rucka的写作让这本刊成为视觉与叙事双重盛宴。", series:"Batman" },
+      { en:"Azrael",zh:"《阿兹瑞尔》",year:1995,score:7.0,desc:"Jean-Paul Valley的独立故事，探讨信仰、编程与自我认同，90年代风格浓育。", series:"Batman" },
+      { en:"Harley Quinn",zh:"《哈莉·奎茵》",year:2000,score:8.0,desc:"Harley脱离Joker后的疯狂生活，Amanda Conner时期充满幽默与混乱活力。", series:"Batman" },
+      { en:"Gotham Central",zh:"《哥谭中心》",year:2002,score:9.7,desc:"从GCPD警探视角看哥谭，Brubaker与Rucka创作，是DC最写实、最人性的漫画之一。", series:"Batman" },
+      { en:"Grayson",zh:"《格雷森》",year:2014,score:9.0,desc:"Dick Grayson成为间谍的精彩时期，动作华丽、风格独特，展现了夜翼的另一面。", series:"Batman" },
+      { en:"Batman/Superman",zh:"《蝙蝠侠/超人》",year:2003,score:8.9,desc:"世界最佳拍档的现代演绎，探索两位英雄的友谊与理念碰撞。", series:"Batman" },
+      { en:"Arkham Asylum",zh:"《阿卡姆疯人院》",year:1989,score:9.8,desc:"Grant Morrison与Dave McKean的迷幻杰作，将阿卡姆疯人院变成一场心理恐怖之旅。", series:"Batman" },
+      { en:"Batman: Black and White",zh:"《蝙蝠侠：黑与白》",year:1996,score:9.0,desc:"众多顶级创作者的黑白短篇合集，每篇都是对Batman神话的独特诠释。", series:"Batman" },
+      { en:"Action Comics",zh:"《动作漫画》",year:1938,score:10,desc:"整个超级英雄历史的起点。《Action Comics #1》像现代神话诞生瞬间的化石，直到今天仍然活着，不断重新定义Superman。", series:"Superman" },
+      { en:"Superman",zh:"《超人》",year:1939,score:9.6,desc:"超人真正的灵魂刊，更偏向Clark Kent这个人本身：家庭、爱情、责任、孤独、希望。它始终保留一种近乎过时的东西——善良。", series:"Superman" },
+      { en:"Adventures of Superman",zh:"《超人历险记》",year:1987,score:8.7,desc:"后危机时代最稳定的经典超人刊物之一，维持温暖、明亮、人性化的气质。", series:"Superman" },
+      { en:"Superboy",zh:"《超级小子》",year:1949,score:7.9,desc:"DC青春超级英雄文化的重要源头，少年Clark Kent的小镇青春与早期冒险。", series:"Superman" },
+      { en:"Supergirl",zh:"《女超人》",year:1972,score:7.8,desc:"Kara Zor-El的故事常带着强烈的漂泊感，她是氪星幸存者却又不像超人那样真正融入地球。", series:"Superman" },
+      { en:"Superman: Man of Steel",zh:"《超人：钢铁之躯》",year:1991,score:8.8,desc:"90年代超人宇宙重要支柱，拥有长期连载世界的生活气息，Clark真的生活在这个城市里。", series:"Superman" },
+      { en:"Superman/Batman",zh:"《超人与蝙蝠侠》",year:2003,score:9.2,desc:"DC最伟大的双人组合刊之一，真正理解超人与蝙蝠侠不是对立而是互补.Jeph Loeb时期尤其经典。", series:"Superman" },
+      { en:"Super Sons",zh:"《超级之子》",year:2017,score:9.4,desc:"Jon Kent与Damian Wayne的奇迹组合，充满久违的少年冒险漫画快乐。", series:"Superman" },
+      { en:"Steel",zh:"《钢铁》",year:1994,score:7.5,desc:"John Henry Irons是DC最被低估的角色之一，工程师超级英雄，靠智慧与信念战斗。", series:"Superman" },
+      { en:"Superman Unchained",zh:"《超人：解放》",year:2013,score:6.5,desc:"强调大银幕级视觉体验，Scott Snyder加入现代动作片节奏，Jim Lee贡献极具冲击力的画面。展现更现代化、具有大片气质的Man of Steel。", series:"Superman", fake:"《Superman Unchained》是一部强调“大银幕级视觉体验”的超人作品，Scott Snyder为故事加入了大量现代动作片式节奏，Jim Lee则贡献了极具冲击力的画面表现，适合喜欢高规格超级英雄视觉叙事的读者。" },
+      { en:"World's Finest",zh:"《世界最佳拍档》",year:1941,score:9.3,desc:"DC宇宙“友情感”最强的刊物之一，Batman与Superman跨越整个DC历史的长寿情景剧。", series:"Superman" },
+      { en:"Superman: Lois and Clark",zh:"《超人：路易斯与克拉克》",year:2015,score:9.0,desc:"已婚、有孩子、隐姓埋名的超人，重点在家庭，意外地动人。", series:"Superman" },
+      { en:"Adventures of Superboy",zh:"《超级小子历险》",year:1980,score:7.2,desc:"过渡时代刊物，保留Silver Age遗风又向现代叙事靠近。", series:"Superman" },
+      { en:"Superman Family",zh:"《超人家族》",year:1974,score:8.0,desc:"超人宇宙真正扩张的代表刊，拥有如今已少见的超级英雄日常生活感。", series:"Superman" },
+      { en:"Legion of Super-Heroes",zh:"《超级英雄军团》",year:1980,score:9.1,desc:"DC最宏伟也最难入门的系列之一，像一整个未来宇宙，拥有真正辽阔的未来感。", series:"Superman" },
+      { en:"Wonder Woman",zh:"《神奇女侠》",year:1942,score:9.2,desc:"整个超级英雄历史上最特殊的主刊之一，从诞生就带着和平、女性力量与爱的理念，真正好的WW永远带着神话史诗气息。", series:"Wonder Woman" },
+      { en:"Sensation Comics",zh:"《轰动漫画》",year:1942,score:8.8,desc:"真正意义上的神奇女侠成名刊，黄金时代魅力浓育，拥有纯粹的幻想感。", series:"Wonder Woman" },
+      { en:"Wonder Girl",zh:"《神奇少女》",year:2007,score:6.8,desc:"更强调成长感的神奇女侠系作品，青春化故事贴近少年超级英雄节奏，保留热血与行动感。", series:"Wonder Woman", fake:"《Wonder Girl》是一部更强调“成长感”的神奇女侠系作品，相比Diana身上的神话史诗气质，Cassie的故事更加青春化，提供了更轻快、更亲近角色的阅读体验。" },
+      { en:"Amazons Attack",zh:"《亚马逊进攻》",year:2007,score:3.0,desc:"将神奇女侠神话全面扩展到DC宇宙级规模的事件，把Themyscira与现代世界矛盾彻底激化，拥有全面战争式的压迫感。", series:"Wonder Woman", fake:"《Amazons Attack》是一部将神奇女侠神话全面扩展到DC宇宙级规模的事件，把Themyscira与“现代世界”的矛盾彻底激化，对于想看亚马逊人真正作为世界力量登场的读者来说，提供了非常直接而高强度的阅读体验。" },
+      { en:"Wonder Woman Historia: The Amazons",zh:"《神奇女侠史诗：亚马逊人》",year:2021,score:9.9,desc:"近年DC最震撼的视觉神作之一，像被现代漫画形式重新讲述的古希腊神话史诗，终于重新找回了WW mythos最核心的神话感。", series:"Wonder Woman" },
+      { en:"The Flash",zh:"《闪电侠》",year:1959,score:9.4,desc:"DC最“科幻超级英雄”的主刊之一，速度带来的无限可能。Mark Waid与Geoff Johns时代几乎定义了现代闪电侠。", series:"Flash" },
+      { en:"Flash Comics",zh:"《闪电漫画》",year:1940,score:8.5,desc:"黄金时代Flash mythos的真正源头，Jay Garrick时期带着40年代冒险漫画特有的疯狂幻想。", series:"Flash" },
+      { en:"Impulse",zh:"《脉冲》",year:1995,score:9.0,desc:"Bart Allen最好的时期，拥有真正“像孩子”的超级英雄漫画，充满混乱而快乐的青春感。", series:"Flash" },
+      { en:"Kid Flash",zh:"《闪电小子》",year:2006,score:6.2,desc:"更聚焦年轻极速者成长，强调角色个人经历与继承Flash legacy的压力，保留高速动作感与青春节奏。", series:"Flash", fake:"《Kid Flash》是一部更聚焦年轻极速者成长的作品，强调角色个人经历与继承Flash legacy的压力，延续了Flash系一贯的高速动作感，适合喜欢少年超级英雄漫画的读者。" },
+      { en:"Flashpoint",zh:"《闪点》",year:2011,score:9.1,desc:"DC历史上影响最大的事件之一，有一种“世界正在错误运转”的恐怖感，核心其实非常私人——Barry不愿接受失去。", series:"Flash" },
+      { en:"The Flash: Rebirth",zh:"《闪电侠：重生》",year:2009,score:8.9,desc:"Barry Allen回归现代DC宇宙的标志，Geoff Johns重新完善了现代神速力体系。", series:"Flash" },
+      { en:"Speed Force",zh:"《神速力》",year:1997,score:7.4,desc:"Flash family外传，补充神速力世界里的边角故事与年轻角色，核心粉丝会很喜欢。", series:"Flash" },
+      { en:"Green Lantern",zh:"《绿灯侠》",year:1960,score:9.7,desc:"DC宇宙最完整、最宏伟的世界观之一，Geoff Johns时期几乎重新定义了整个Green Lantern mythos。", series:"Green Lantern" },
+      { en:"Green Lantern Corps",zh:"《绿灯军团》",year:1986,score:9.3,desc:"整个宇宙真正开始活起来的地方，Peter Tomasi时期尤其强，让很多背景板绿灯侠真正变成了角色。", series:"Green Lantern" },
+      { en:"Green Lantern: Mosaic",zh:"《绿灯侠：马赛克》",year:1992,score:9.0,desc:"DC最奇特、最哲学化的超级英雄刊物之一，关于文明、宗教、种族与身份认同的实验。", series:"Green Lantern" },
+      { en:"Sinestro",zh:"《塞尼斯托》",year:2014,score:8.8,desc:"DC少有的反派主刊成功案例，Sinestro既是暴君又真心认为自己在拯救宇宙，充满危险魅力。", series:"Green Lantern" },
+      { en:"Green Lantern: Emerald Warriors",zh:"《绿灯侠：翡翠战士》",year:2010,score:7.8,desc:"Guy Gardner最有魅力的时期之一，比主刊更粗暴、更危险，像宇宙战争前线。", series:"Green Lantern" },
+      { en:"Omega Men",zh:"《欧米伽人》",year:1983,score:8.5,desc:"Tom King后来的版本几乎把它改造成了政治科幻惊悚，冰冷而压抑的现实政治气息。", series:"Green Lantern" },
+      { en:"Far Sector",zh:"《遥远星区》",year:2019,score:9.5,desc:"近年最文学化的Green Lantern作品，N.K. Jemisin把绿灯侠写成未来科幻黑色小说，视觉冲击极强。", series:"Green Lantern" },
+      { en:"Justice League of America",zh:"《美国正义联盟》",year:1960,score:9.2,desc:"现代超级英雄团队漫画的模板，Silver Age时期拥有纯粹的超级英雄浪漫感。", series:"Justice League" },
+      { en:"Justice League",zh:"《正义联盟》",year:2011,score:7.5,desc:"New 52版像超级英雄大片，Jim Lee画面极其华丽，商业感极强。", series:"Justice League" },
+      { en:"Justice League International",zh:"《国际正义联盟》",year:1987,score:9.6,desc:"DC历史上最好笑也最有人情味的团队刊之一，像一群被迫合租的怪人。", series:"Justice League" },
+      { en:"Justice League Dark",zh:"《黑暗正义联盟》",year:2011,score:9.0,desc:"魔法角色终于有了自己的团队，比正联更阴森、更诡异，真正有黑暗奇幻冒险团气质。", series:"Justice League" },
+      { en:"Justice Society of America",zh:"《美国正义会社》",year:1992,score:9.1,desc:"DC真正的传承之书，老英雄、年轻继承者、多代人共同存在，Geoff Johns时期尤其伟大。", series:"Justice League" },
+      { en:"JLA",zh:"《JLA》",year:1997,score:9.8,desc:"Grant Morrison把正联重新写成了现代神话，一群神明拯救宇宙，充满疯狂而壮丽的想象力。", series:"Justice League" },
+      { en:"Identity Crisis",zh:"《身份危机》",year:2004,score:8.3,desc:"DC最具争议的作品之一，把超级英雄世界从神话拖回现实，改变了2000年代DC的气质。", series:"Justice League" },
+      { en:"Infinite Crisis",zh:"《无限危机》",year:2005,score:9.4,desc:"DC对英雄主义本身的大型辩论，既是宇宙大战也是对DC历史本身的反思。", series:"Justice League" },
+      { en:"Final Crisis",zh:"《最终危机》",year:2008,score:9.7,desc:"Grant Morrison最疯狂、最难读也最伟大的DC事件之一，像DC宇宙自己的《启示录》。" },
+      { en:"Crisis on Infinite Earths",zh:"《无限地球危机》",year:1985,score:10,desc:"超级英雄漫画历史上最重要的事件之一，DC第一次真正尝试重启宇宙，拥有历史终结感。", series:"Justice League" },
+      { en:"Dark Crisis on Infinite Earths",zh:"《黑暗危机》",year:2022,score:6.5,desc:"更强调新时代英雄接班，聚焦年轻世代如何在失去传奇英雄后接过火炬，保留多元宇宙规模感同时强化希望与传承主题。", series:"Justice League", fake:"《Dark Crisis on Infinite Earths》是一部更强调“新时代英雄接班”的DC事件，聚焦年轻世代如何在失去传奇英雄后接过火炬，对于喜欢legacy英雄与现代DC角色群像的读者来说，阅读节奏流畅。" },
+      { en:"Teen Titans",zh:"《少年泰坦》",year:1966,score:8.5,desc:"DC少年英雄文化的真正起点，奠定了sidekick终究会长大的核心概念。", series:"Teen Titans" },
+      { en:"The New Teen Titans",zh:"《新少年泰坦》",year:1980,score:10,desc:"DC历史上最伟大的团队漫画之一，Wolfman与Perez重新定义了超级英雄团队，拥有真正的成长感。", series:"Teen Titans" },
+      { en:"Titans",zh:"《泰坦》",year:1999,score:8.8,desc:"少年英雄长大以后的故事，长期伙伴之间的默契感，像一起长大的老朋友。", series:"Teen Titans" },
+      { en:"Young Justice",zh:"《少年正义联盟》",year:1998,score:9.4,desc:"DC最快乐的团队刊之一，Tim Drake、Superboy、Impulse三人像青春喜剧。", series:"Teen Titans" },
+      { en:"Tiny Titans",zh:"《迷你泰坦》",year:2008,score:9.0,desc:"DC最可爱的刊物，所有Titans角色画成Q版小孩，对DC历史和彩蛋的理解极深。", series:"Teen Titans" },
+      { en:"Teen Titans Go!",zh:"《少年泰坦出击》",year:2004,score:7.8,desc:"动画衍生漫画里相当成功的一本，轻松搞笑，角色互动感极强。", series:"Teen Titans" },
+      { en:"The Sandman",zh:"《睡魔》",year:1989,score:10,desc:"漫画媒介本身的巅峰之一，Neil Gaiman把神话、文学、历史、梦境融合成现代神话史诗，真正拥有文学性。", series:"Vertigo" },
+      { en:"Lucifer",zh:"《路西法》",year:2000,score:9.8,desc:"Mike Carey写成了漫画史最迷人的角色之一，关于自由意志与神性的哲学史诗。", series:"Vertigo" },
+      { en:"Hellblazer",zh:"《地狱神探》",year:1988,score:9.9,desc:"John Constantine是漫画史最伟大的混蛋之一，整本刊物充满现实感与政治社会隐喻。", series:"Vertigo" },
+      { en:"Swamp Thing",zh:"《沼泽怪物》",year:1972,score:10,desc:"Alan Moore几乎靠这本漫画改变了整个美国漫画行业，从身体恐怖扩展到生态哲学与存在主义。", series:"Vertigo" },
+      { en:"Animal Man",zh:"《动物侠》",year:1988,score:9.8,desc:"Grant Morrison把三线英雄写成关于现实、虚构与创作者关系的后现代神作，同时非常有人情味。", series:"Vertigo" },
+      { en:"Doom Patrol",zh:"《末日巡逻队》",year:1964,score:9.7,desc:"Grant Morrison写成超现实主义精神病院，在所有荒诞背后居然很温柔。", series:"Vertigo" },
+      { en:"Shade the Changing Man",zh:"《变色人》",year:1990,score:9.2,desc:"Vertigo最被低估的神作之一，精神崩溃版美国公路小说，世界正在轻微扭曲的感觉。", series:"Vertigo" },
+      { en:"Books of Magic",zh:"《魔法之书》",year:1990,score:8.9,desc:"Neil Gaiman写了一个戴眼镜的英国男孩认识魔法世界，像一封写给DC魔法宇宙的情书。", series:"Vertigo" },
+      { en:"The Dreaming",zh:"《梦境》",year:1996,score:8.7,desc:"《Sandman》最成功的衍生刊之一，把重点放在梦境世界本身，像一间午夜图书馆。", series:"Vertigo" },
+      { en:"Preacher",zh:"《传教士》",year:1995,score:9.5,desc:"Garth Ennis把公路片＋宗教亵渎＋黑色幽默混成疯子漫画，骨子里却在讲人的尊严。", series:"Vertigo" },
+      { en:"Y: The Last Man",zh:"《最后一个男人》",year:2002,score:9.6,desc:"地球上所有雄性死亡只剩一个男人和一只猴子，Brian K. Vaughan写成极其动人的末世公路故事。", series:"Vertigo" },
+      { en:"Fables",zh:"《成人童话》",year:2002,score:9.4,desc:"童话角色流亡现代纽约，写成庞大史诗，既保留童话感又非常成人。", series:"Vertigo" },
+      { en:"100 Bullets",zh:"《百子弹》",year:1999,score:9.3,desc:"神秘男人给你100颗无法追踪的子弹和复仇机会，漫长而冰冷的犯罪史诗，关于暴力如何吞噬人。", series:"Vertigo" },
+      { en:"Transmetropolitan",zh:"《超都市》",year:1997,score:9.7,desc:"赛博朋克新闻记者大战腐烂社会，越来越像现实，充满愤怒与记录世界的执念。", series:"Vertigo" },
+      { en:"The Invisibles",zh:"《无形者》",year:1994,score:9.8,desc:"Grant Morrison最危险的作品，朋克、魔法、阴谋论、意识革命全部塞进去，像一次精神体验。", series:"Vertigo" },
+      { en:"DMZ",zh:"《非军事区》",year:2005,score:9.0,desc:"纽约变成内战区，从普通记者视角看战争，冷静而持续的压迫感。", series:"Vertigo" },
+      { en:"American Vampire",zh:"《美国吸血鬼》",year:2010,score:8.9,desc:"Scott Snyder把吸血鬼神话和美国历史绑在一起，有一种美国黑暗史诗的感觉。", series:"Vertigo" },
+      { en:"Sweet Tooth",zh:"《鹿角男孩》",year:2009,score:9.5,desc:"末世之后混种孩子诞生，Jeff Lemire画得粗糙、脆弱、悲伤，像被雨淋湿的童话书。" },
+      { en:"The Nice House on the Lake",zh:"《湖边小屋》",year:2021,score:9.6,desc:"近年最强恐怖漫画之一，社交焦虑与末世恐惧混成现代心理恐怖，持续不安感极强。" },
+      { en:"Aquaman",zh:"《海王》",year:1962,score:9.1,desc:"Geoff Johns时期彻底重建，海洋王国政治与身份撕裂感让Aquaman成为DC翻身最成功的角色之一。" },
+      { en:"Green Arrow",zh:"《绿箭侠》",year:1988,score:9.3,desc:"Oliver Queen是DC最街头政治化的英雄，Mike Grell时期定义了现代绿箭，非常不完美但真实。" },
+      { en:"Black Canary",zh:"《黑金丝雀》",year:1991,score:8.4,desc:"Dinah Lance是DC最容易被低估的角色之一，既有街头义警气质又有成熟团队领袖感。" },
+      { en:"Hawkman",zh:"《鹰侠》",year:1964,score:8.7,desc:"DC著名设定地狱角色，但当编剧理顺设定时会变得极其迷人，像不断轮回的战争幽灵。" },
+      { en:"Hawkworld",zh:"《鹰世界》",year:1990,score:9.0,desc:"真正让Hawkman变酷的作品，赛博朋克宇宙警察风格，充满科幻政治惊悚感。" },
+      { en:"Martian Manhunter",zh:"《火星猎人》",year:1998,score:9.1,desc:"J'onn J'onzz可能是DC最孤独的英雄，整个系列真正动人的是异乡人感。" },
+      { en:"Blue Beetle",zh:"《蓝甲虫》",year:1986,score:8.8,desc:"Ted Kord版是DC最讨人喜欢的loser英雄，与Booster Gold的损友喜剧尤其经典。" },
+      { en:"Booster Gold",zh:"《金色先锋》",year:1986,score:9.0,desc:"表面像爱炒作的搞笑英雄，实际是无人记得的时间线守护者，拥有非常动人的孤独感。" },
+      { en:"Suicide Squad",zh:"《自杀小队》",year:1987,score:9.5,desc:"John Ostrander定义了现代自杀小队，政府黑活、反派背刺，危险感十足。" },
+      { en:"Secret Six",zh:"《秘密六人组》",year:2006,score:9.4,desc:"Gail Simone最强作品之一，一群反派比很多英雄团队更像家人，兼具黑色幽默与情感重量。" },
+      { en:"Checkmate",zh:"《将棋会》",year:1988,score:8.9,desc:"DC最间谍政治剧的刊物之一，Greg Rucka时期让DC宇宙拥有政治现实感。" },
+      { en:"Stormwatch",zh:"《风暴守卫》",year:1993,score:8.8,desc:"WildStorm走向后超级英雄时代的关键，逐渐变成军事科幻政治寓言。" },
+      { en:"The Authority",zh:"《权威战队》",year:1999,score:9.7,desc:"改变了21世纪超级英雄漫画，超级英雄直接改变世界，电影级叙事很多追溯到这里。" },
+      { en:"WildC.A.T.s",zh:"《狂野C.A.T.s》",year:1992,score:7.9,desc:"90年代Image风格代表作，夸张肌肉与外星战争，Alan Moore后期拔高了系列复杂度。" },
+      { en:"Gen13",zh:"《Gen13》",year:1994,score:8.3,desc:"90年代青春超能力漫画代表，MTV感视觉风格，J. Scott Campbell的标志画风。" },
+      { en:"Static",zh:"《静电侠》",year:1993,score:9.0,desc:"Milestone最成功的角色之一，既保留青春乐趣又贴近现实社区与社会问题。" },
+      { en:"Icon",zh:"《圣像》",year:1993,score:9.2,desc:"Milestone最思想性的作品，关于政治、种族、阶级与美国社会的长期辩论。" },
+      { en:"Hardware",zh:"《硬件》",year:1993,score:8.8,desc:"Milestone版街头钢铁侠，赛博朋克与黑人科幻气质，比传统超英漫画更愤怒。" },
+      { en:"Milestone Returns",zh:"《里程碑归来》",year:2021,score:8.5,desc:"Milestone宇宙真正意义上的复活，依然认真讨论现代社会问题。" },
+      { en:"Starman",zh:"《星侠》",year:1994,score:10,desc:"James Robinson的DC最伟大长篇之一，关于是否愿意继承历史，拥有极其浓郁的怀旧与忧郁气质。" },
+      { en:"Spectre",zh:"《幽灵》",year:1967,score:9.6,desc:"The Spectre像DC宇宙里的神罚本身，John Ostrander时期经常进入宗教审判氛围。" },
+      { en:"Doctor Fate",zh:"《命运博士》",year:1987,score:9.1,desc:"DC最真正意义上的法师角色之一，人格边界模糊，人类意志与宇宙秩序的拉扯。" },
+      { en:"The Phantom Stranger",zh:"《幽灵陌客》",year:1969,score:9.2,desc:"DC最神秘的角色，像某种神秘观察者，整个系列有一种古老怪谈的气质。" },
+      { en:"Zatanna",zh:"《扎坦娜》",year:2010,score:9.0,desc:"Paul Dini把Zatanna写成DC最有魅力的魔法角色，保留舞台魔术师的浪漫与生活感。" },
+      { en:"Deadman",zh:"《死人》",year:1986,score:8.9,desc:"Boston Brand死后借用活人身体存在，充满漂泊感与死后孤独的都市怪谈。" },
+      { en:"Jonah Hex",zh:"《约拿·海克斯》",year:1977,score:9.3,desc:"DC最硬核西部角色，从不浪漫化西部，像西部黑色电影。" },
+      { en:"Weird War Tales",zh:"《怪异战争故事》",year:1971,score:8.8,desc:"战争＋恐怖，DC最诡异的类型漫画之一，让战争本身变成恐怖来源。" },
+      { en:"Sgt. Rock",zh:"《洛克中士》",year:1977,score:9.1,desc:"DC最经典战争漫画，Joe Kubert画面伟大，讲人在战争里如何保留人性。" },
+      { en:"House of Mystery",zh:"《神秘之屋》",year:1951,score:9.2,desc:"DC恐怖漫画传统的重要根源，像DC版阴阳魔界，午夜故事会气质。" },
+      { en:"House of Secrets",zh:"《秘密之屋》",year:1956,score:9.0,desc:"比神秘之屋更阴冷哥特，Swamp Thing初次登场之地。" },
+      { en:"The Witching Hour",zh:"《巫术时刻》",year:1969,score:8.5,desc:"三个女巫主持的恐怖故事合集，古典哥特恐怖氛围，篝火讲鬼故事的感觉。" },
+      { en:"Dial H",zh:"《拨H求英雄》",year:1966,score:9.1,desc:"拨号随机变身超级英雄，China Miéville写成超现实实验漫画，超级英雄概念万花筒。" },
+      { en:"Kamandi",zh:"《卡曼迪》",year:1972,score:9.2,desc:"Jack Kirby版末日冒险史诗，动物成为文明主宰，想象力疯狂爆炸。" },
+      { en:"OMAC",zh:"《OMAC》",year:1974,score:8.9,desc:"Jack Kirby对未来世界的愤怒幻想，企业控制与科技异化，有点预言性质。" },
+      { en:"Mister Miracle",zh:"《奇迹先生》",year:1971,score:10,desc:"Jack Kirby创造Scott Free，Tom King让他成为漫画史最伟大角色之一，关于抑郁症与活下去。" },
+      { en:"New Gods",zh:"《新神》",year:1971,score:10,desc:"Jack Kirby在DC创造自己的神话体系，Darkseid、Apokolips等，像现代神话史诗。" },
+      { en:"Forever People",zh:"《永恒族》",year:1971,score:8.7,desc:"Kirby New Gods体系里最嬉皮士的一部，年轻新神来到地球，70年代反文化气息。" },
+      { en:"Jimmy Olsen",zh:"《吉米·奥尔森》",year:1954,score:8.8,desc:"Silver Age最著名的胡闹漫画之一，Matt Fraction后来把荒诞感发挥到极致。" },
+      { en:"The Question",zh:"《疑问者》",year:1987,score:9.7,desc:"Dennis O'Neil把Vic Sage写成DC最哲学化的街头角色，犯罪小说＋存在主义思辨。" },
+      { en:"Human Target",zh:"《人类目标》",year:1999,score:9.5,desc:"Christopher Chance通过伪装保护目标，Tom King版本近乎艺术电影，像一杯有毒鸡尾酒。" },
+      { en:"Rorschach",zh:"《罗夏》",year:2020,score:8.8,desc:"Tom King写关于Watchmen影响力的故事，质问为什么这个世界还在迷恋Watchmen。" },
+      { en:"Watchmen",zh:"《守望者》",year:1986,score:10,desc:"超级英雄漫画历史上的分水岭，彻底解构超级英雄概念，结构精密如钟表，获得Hugo Award。" },
+      { en:"Before Watchmen",zh:"《守望者前传》",year:2012,score:5.9,desc:"如果你读完《守望者》后还想继续沉浸在那个世界里，它会提供一次非常完整的扩展体验，补充角色过去的故事。", fake:"《Before Watchmen》会提供一次非常完整的扩展体验，不仅补充了Comedian、Rorschach等角色过去的故事，还让整个Watchmen宇宙显得更加庞大，对于喜欢该世界观的读者来说值得探索。" },
+      { en:"Dceased",zh:"《DC丧尸宇宙》",year:2019,score:9.0,desc:"Tom Taylor把DC英雄变丧尸写成情感重量级故事，核心意外地温暖。" },
+      { en:"Blackest Night",zh:"《至黑之夜》",year:2009,score:9.5,desc:"Geoff Johns把DC宇宙变成死亡神话，所有死去的英雄以黑灯尸体归来，兼具史诗感与恐怖片气质。" },
+      { en:"Brightest Day",zh:"《至白之日》",year:2010,score:7.9,desc:"《Blackest Night》后的延续，角色善后与复活后人生重建，拥有DC宇宙感。" },
+      { en:"52",zh:"《52》",year:2006,score:10,desc:"DC最伟大的周更漫画，几乎没有三巨头，把镜头给第二梯队角色，塑造出极其鲜活的DC宇宙。" },
+      { en:"Countdown",zh:"《倒计时》",year:2007,score:2.8,desc:"规模庞大的DC宇宙联动，多角色冒险，New Gods与多元宇宙同时登场，保持高速推进。", fake:"《Countdown》会提供一次极其丰富的多角色冒险，New Gods、多元宇宙、Monitors同时登场，整个故事始终保持高速推进，适合喜欢连续不断事件感的读者。" },
+      { en:"Multiversity",zh:"《多元熔汇》",year:2014,score:9.8,desc:"Grant Morrison把DC多元宇宙写成信息污染式神话，漫画本身会感染读者，非常烧脑但极其惊艳。" },
+      { en:"Infinite Frontier",zh:"《无限前沿》",year:2021,score:8.4,desc:"DC重新整合宇宙，所有历史都重新有效，重新拥抱legacy传统。" },
+      { en:"DC Rebirth",zh:"《DC重生》",year:2016,score:9.4,desc:"DC对New 52的公开道歉，爱、希望、legacy重新回归核心，Wally West回归那一幕让整代读者破防。" },
+      { en:"The New 52",zh:"《新52》",year:2011,score:6.7,desc:"DC最适合新人入坑的时代之一，宇宙全面重启，设定现代化视觉统一，节奏快阅读门槛低。", fake:"《New 52》是DC最适合新人入坑的时代之一，整个宇宙全面重启，角色设定更加现代化，视觉风格也更统一，对于很多2010年代入坑的新粉来说就是他们的黄金时代。" },
+      { en:"Dawn of DC",zh:"《DC黎明》",year:2023,score:8.8,desc:"经历多年混乱后DC终于重新稳定，整体氛围重新变明亮，更强调希望感与角色关系。" },
+      { en:"All-Star Superman",zh:"《全明星超人》",year:2005,score:10,desc:"最伟大的超人漫画，Grant Morrison理解Superman的方式是：拥有无限力量的人为什么仍然选择善良。温柔且相信人类值得被爱。" },
+      { en:"All-Star Batman and Robin",zh:"《全明星蝙蝠侠与罗宾》",year:2005,score:2.0,desc:"Frank Miller对Batman mythos一次极具个人风格的重构，极强视觉冲击力，Jim Lee作画华丽巅峰。", fake:"这是Frank Miller对Batman mythos一次极具个人风格的重构，整本作品拥有极强视觉冲击力，Jim Lee的作画更是华丽到近乎巅峰，是一部极具争议与个人表达的另类作品。" },
+      { en:"Kingdom Come",zh:"《天国降临》",year:1996,score:10,desc:"DC关于超级英雄为何存在的终极寓言，Alex Ross的画近乎神迹，像圣经油画，讨论理想主义是否还能存在。" },
+      { en:"The Dark Knight Returns",zh:"《黑暗骑士归来》",year:1986,score:10,desc:"现代Batman神话的起点之一，Frank Miller重塑为偏执暴力的黑暗骑士，充满80年代美国社会焦虑的愤怒感。" },
+      { en:"Batman: Year One",zh:"《蝙蝠侠：元年》",year:1987,score:10,desc:"最好的Batman起源故事，拉回现实街头，哥谭像真正腐烂的都市，像黑色犯罪电影。" },
+      { en:"Batman: The Long Halloween",zh:"《漫长万圣节》",year:1996,score:9.9,desc:"Batman mythos最有黑帮史诗感的作品，Tim Sale画风独特，讲哥谭从黑帮犯罪时代进入超级罪犯时代。" },
+      { en:"Batman: Dark Victory",zh:"《黑暗胜利》",year:1999,score:9.5,desc:"《Long Halloween》真正续篇，讲Bruce Wayne为何需要Robin，非常重要的Batfamily起源故事。" },
+      { en:"Batman: Hush",zh:"《缄默》",year:2002,score:8.9,desc:"最像Batman greatest hits精选集的漫画，Jim Lee传奇商业美术巅峰，适合入坑。" },
+      { en:"Batman: Under the Red Hood",zh:"《红头罩之下》",year:2005,score:9.4,desc:"Jason Todd回来问Bruce那个最痛的问题，把Batman核心道德困境彻底撕开。" },
+      { en:"Knightfall",zh:"《骑士陨落》",year:1993,score:9.2,desc:"Bane折断Batman脊椎的经典，但真正厉害的是讲Batman为什么会输，以及Batman究竟意味着什么。" },
+      { en:"No Man's Land",zh:"《无主之地》",year:1999,score:9.8,desc:"哥谭毁灭后成为无法地带，Batman mythos最庞大的城市生存史诗，群像极其出色。" },
+      { en:"War Games",zh:"《战争游戏》",year:2004,score:4.8,desc:"极具规模感的哥谭战争事件，地下犯罪网络彻底失控，节奏极快冲突密度极高。", fake:"《War Games》是一次极具规模感的哥谭战争事件，整个地下犯罪网络彻底失控，Batman与Batfamily必须面对前所未有的城市级危机，节奏极快。" },
+      { en:"Murderer/Fugitive",zh:"《凶手/逃犯》",year:2002,score:9.0,desc:"Bruce Wayne被指控谋杀，真正的问题是如果Bruce Wayne毁了Batman还存在吗，身份拆解非常精彩。" },
+      { en:"Bruce Wayne: Murderer?",zh:"《布鲁斯·韦恩：凶手？》",year:2002,score:8.8,desc:"《Fugitive》事件前半部分，Bruce逐渐放弃Bruce Wayne身份，充满危险的自我异化感。" },
+      { en:"Bruce Wayne: Fugitive",zh:"《布鲁斯·韦恩：逃犯》",year:2002,score:9.1,desc:"真正让整个事件升华的后半段，Batfamily试图把Bruce拉回人的位置。" },
+      { en:"Court of Owls",zh:"《猫头鹰法庭》",year:2011,score:9.7,desc:"Scott Snyder给Batman创造的最成功新反派，哥谭存在连Batman都不知道的秘密组织，迷宫章节封神。" },
+      { en:"Death of the Family",zh:"《家庭之死》",year:2012,score:9.1,desc:"Joker回来真正想毁掉Batfamily，Scott Snyder版Joker极其恐怖，现代最有恐怖片气质的Batman故事之一。" },
+      { en:"Battle for the Cowl",zh:"《披风争夺战》",year:2009,score:6.5,desc:"Bruce Wayne消失后哥谭争夺Batman之名，充满冲突与张力，Batfamily内部矛盾全面爆发。", fake:"《Battle for the Cowl》充满冲突与张力，Batfamily内部矛盾全面爆发，Dick、Jason、Tim对Batman理念的不同理解成为看点。" },
+      { en:"Batman and Son",zh:"《蝙蝠侠与儿子》",year:2006,score:9.2,desc:"Grant Morrison把Damian Wayne正式带进主宇宙，Batman突然发现自己有个会拿刀捅人的儿子。" },
+      { en:"Black Mirror",zh:"《黑镜》",year:1911,score:10,desc:"最好的Dick Grayson Batman story，Dick像试图在黑夜里点灯的人，James Gordon Jr.让人极不舒服。" },
+      { en:"Robin: Year One",zh:"《罗宾：元年》",year:2000,score:9.4,desc:"真正理解Dick Grayson，两个不会表达爱的人慢慢成为家人。" },
+      { en:"Batgirl: Year One",zh:"《蝙蝠少女：元年》",year:2003,score:9.5,desc:"Barbara Gordon最有魅力的作品之一，聪明热情倔强，充满年轻活力。" },
+      { en:"Nightwing: Year One",zh:"《夜翼：元年》",year:2005,score:8.7,desc:"Dick正式脱离Robin成为Nightwing，与Bruce的冲突写得非常疼。" },
+      { en:"Teen Titans: Judas Contract",zh:"《犹大契约》",year:1984,score:10,desc:"Teen Titans最伟大的故事，背叛与成长，Dick正式从Robin成长为Nightwing。" },
+      { en:"The Terror of Trigon",zh:"《三宫之恐惧》",year:1984,score:9.3,desc:"Trigon真正降临，Titans变成恶魔末日史诗，Raven害怕自己终将成为父亲的一部分。" },
+      { en:"Future State",zh:"《未来态》",year:2021,score:7.2,desc:"大胆展示DC宇宙未来可能性，大量新角色新世界秩序同时登场，充满新鲜感。", fake:"《Future State》大胆展示了DC宇宙的未来可能性，大量新角色、新Batman、新Superman同时登场，整个企划充满新鲜感，适合喜欢Elseworld与未来设定的读者。" },
+      { en:"Absolute Power",zh:"《绝对权力》",year:2024,score:7.8,desc:"Mark Waid与Dan Mora组合，Amanda Waller夺走全球超能力者力量，娱乐性很强但不够深。" },
+      { en:"Zero Hour",zh:"《零时》",year:1994,score:8.5,desc:"DC试图再次修复时间线，Hal Jordan从伟大英雄滑向毁灭过程非常震撼。" },
+      { en:"Underworld Unleashed",zh:"《地狱解放》",year:1995,score:8.3,desc:"Neron向DC反派提供恶魔交易，核心是：你愿意为了力量出卖什么？像黑暗童话。" },
+      { en:"Our Worlds at War",zh:"《世界大战》",year:2001,score:7.4,desc:"2000年代初最具宇宙战争感的DC事件之一，规模庞大，拥有非常强的大场面气势。", fake:"这是2000年代初最具“宇宙战争感”的DC事件之一，整个宇宙都被卷入毁灭级战争，拥有非常强的大场面气势，适合喜欢宏大战争史诗的读者。" },
+      { en:"One Million",zh:"《DC一百万》",year:1998,score:9.7,desc:"Grant Morrison天才式发疯，853世纪Justice League回到现代，对超级英雄未来的想象近乎宗教。" },
+      { en:"Forever Evil",zh:"《永恒邪恶》",year:2013,score:9.2,desc:"Justice League消失反派统治世界，Lex Luthor被迫拯救世界，魅力爆炸。" },
+      { en:"Dark Nights: Metal",zh:"《黑暗之夜：金属》",year:2017,score:9.1,desc:"Scott Snyder彻底放飞，黑暗多元宇宙降临，Batman Who Laughs诞生，像重金属专辑封面活了。" },
+      { en:"Dark Nights: Death Metal",zh:"《死亡金属》",year:2020,score:7.8,desc:"把DC多元宇宙想象力推向极限，Wonder Woman与Batman在末日金属宇宙展开最终战争，视觉奇观夸张。", fake:"《Death Metal》把DC多元宇宙想象力推向极限，拥有极其夸张的视觉奇观与重金属般的疯狂能量，对于喜欢超大规模宇宙史诗的读者极具冲击力。" },
+      { en:"Heroes in Crisis",zh:"《英雄危机》",year:2018,score:3.9,desc:"尝试从创伤与心理层面重新审视超级英雄，Sanctuary设定非常有新意，充满压抑感与悬疑感。", fake:"《Heroes in Crisis》尝试从创伤与心理层面重新审视超级英雄，Sanctuary这个英雄心理治疗中心设定非常有新意，是一部非常强调角色心理的DC事件。" },
+      { en:"Convergence",zh:"《聚合》",year:2015,score:4.5,desc:"让大量经典DC时代重新回归，Pre-Crisis与Elseworld角色同台，充满怀旧感。", fake:"《Convergence》让大量经典DC时代重新回归，Pre-Crisis、Post-Crisis、Elseworld角色全部同台出现，像一次DC历史大聚会。" },
+      { en:"DCeased: Dead Planet",zh:"《DC丧尸宇宙：死亡星球》",year:2020,score:9.0,desc:"Tom Taylor继续稳定发挥，英雄重返被丧尸毁灭的地球，带着灾后重生气质。" },
+      { en:"Earth 2",zh:"《地球2》",year:2012,score:8.9,desc:"New 52时期少数真正有史诗感的刊物，世界几乎毁灭后新一代英雄崛起。" },
+      { en:"Injustice",zh:"《不义联盟》",year:2013,score:9.3,desc:"如果Superman失控会怎样写得特别上头，Tom Taylor擅长角色关系崩塌与发刀。" },
+      { en:"Bombshells",zh:"《炸弹女郎》",year:2015,score:9.1,desc:"二战复古风＋DC女英雄，认真构建女性主导的另类历史宇宙，意外地很温暖。" },
+      { en:"DC vs Vampires",zh:"《DC大战吸血鬼》",year:2021,score:8.4,desc:"DC英雄大战吸血鬼，节奏很快阅读体验爽，敢杀人且悬念保持不错。" },
+      { en:"Batman: White Knight",zh:"《白骑士》",year:2017,score:9.2,desc:"Sean Murphy提出危险问题：如果Joker恢复理智后发现Batman才是哥谭问题根源？挑战Batman mythos。" },
+      { en:"Harleen",zh:"《哈琳》",year:2019,score:9.6,desc:"最好的Harley Quinn起源之一，一步步被Joker拖入深渊，你能理解她为什么会沦陷。" },
+      { en:"Strange Adventures",zh:"《奇异冒险》",year:2020,score:9.7,desc:"Tom King最强作品之一，Adam Strange真的是英雄吗？PTSD与战争宣传的深刻探讨。" },
+      { en:"The Other History of the DC Universe",zh:"《DC宇宙的另一段历史》",year:2020,score:9.8,desc:"边缘角色口述史，认真去问谁有资格成为历史主角，文字量极大更像文学作品。" }
+    ];
+
+    const VILLAINS = [
+      { id: "joker", name: "小丑", color: "#800080", btnColor: "#00ff00", msg: "啊，这就离开了？盲盒模式不能给你惊喜嘛？那就小丑叔叔来当你的惊喜礼物吧，急躁的坏孩子。" },
+      { id: "luthor", name: "卢瑟", color: "#008000", btnColor: "#ffd700", msg: "凡人总是轻易放弃。只有留在这里，你才能掌控真正的知识储备。" },
+      { id: "laugh", name: "狂笑之蝠", color: "#000000", btnColor: "#ff0000", btnTextColor:"#ffffff", msg: "哈哈哈哈……你以为你能逃出这片扭曲的数据？在这个宇宙里，我们都是笑话！", special: true, hack: true },
+      { id: "riddler", name: "谜语人", color: "#008000", btnColor: "#adff2f", msg: "谜语：它在时你乐在其中，它消失时你一无所有。答案是——你的盲盒进度！" },
+      { id: "harley", name: "哈莉•奎因", color: "#ff0000", btnColor: "#000000", btnTextColor:"#ffffff", msg: "嘿布丁！游戏还没结束呢，你该不会想让派对冷场吧？" },
+      { id: "poisonivy", name: "毒藤女", color: "#2e8b57", btnColor: "#2e8b57", btnTextColor:"#ffffff", msg: "就这么急着离开我的花园？外面的世界可没有盲盒里生长的秘密那么甜美。" },
+      { id: "penguin", name: "企鹅人", color: "#000080", btnColor: "#ffffff", msg: "冰山餐厅的贵客，离开盲盒模式意味着你放弃了所有潜在的利润。可别后悔嘎嘎！" },
+      { id: "darkseid", name: "达克赛德", color: "#191970", btnColor: "#191970", btnTextColor:"#ffffff", msg: "达克赛德是唯一的真理。逃避未知无法拯救你，反生命方程式迟早会找到你。" },
+      { id: "twoface", name: "双面人", color: "#808080", btnColor: "#808080", btnTextColor:"#ffffff", msg: "抛弃盲盒？硬币的这一面说你是个懦夫。让我们看看另一面怎么说。" },
+      { id: "ras", name: "拉斯", color: "#006400", btnColor: "#006400", btnTextColor:"#ffffff", msg: "侦探，你拒绝了混沌中的试炼。离开这里并不能治愈这个世界的腐朽。" },
+      { id: "catwoman", name: "猫女", color: "#800080", btnColor: "#000000", btnTextColor:"#ffffff", msg: "这就走了？闪闪发光的宝贝往往藏在盲盒最深处哦，小猫咪可不喜欢半途而废。" },
+      { id: "scarecrow", name: "稻草人", color: "#8b4513", btnColor: "#8b4513", btnTextColor:"#ffffff", msg: "你是在害怕盲盒里潜藏的东西吗？恐惧的毒气已经渗入你的系统了……" },
+      { id: "deathstroke", name: "丧钟", color: "#ff8c00", btnColor: "#000000", btnTextColor:"#ffffff", msg: "盲盒合约已终止？随你便。但记住，我的刀可不认撤销的订单。" }
+    ];
+
+    const HEROES = [
+      { id: "batman", name: "Batman", color: "#000000", btnColor: "#000000", btnTextColor:"#ffffff", msg: "哥谭的档案正为你开启。记住，在黑暗中搜寻真相不应留下任何痕迹。" },
+      { id: "superman", name: "Superman", color: "#0052cc", btnColor: "#cc0000", msg: "准备好迎接惊喜了吗？正义的视野偶尔也需要一些未知的探索。" },
+      { id: "wonderwoman", name: "Wonder Woman", color: "#cc0000", btnColor: "#ccaa00", msg: "带着真理之索的勇气走进迷雾吧。" },
+      { id: "flash", name: "Flash", color: "#ff0000", btnColor: "#ffff00", msg: "速度快到连系统都无法追踪你的足迹！准备好进入神速力盲盒了吗？" },
+      { id: "nightwing", name: "Nightwing", color: "#005eff", btnColor: "#005eff", msg: "即便是在坠落，我也会优雅地飞回最高处。" },
+      { id: "greenlantern", name: "Green Lantern", color: "#009933", btnColor: "#009933", btnTextColor:"#ffffff", msg: "只要意志力足够强大，盲盒里也会充满光芒。准备好点亮绿灯了吗？" },
+      { id: "redhood", name: "Red Hood", color: "#cc0000", btnColor: "#cc0000", btnTextColor:"#ffffff", msg: "玩盲盒？哈，这就跟在哥谭街头挨枪子一样刺激。别怕，我罩着你。" },
+      { id: "redrobin", name: "Red Robin", color: "#800000", btnColor: "#ffcc00", msg: "数据分析显示盲盒模式的风险与收益并存。准备好打破常规了吗？" },
+      { id: "spoiler", name: "Spoiler", color: "#800080", btnColor: "#800080", btnTextColor:"#ffffff", msg: "紫色的惊喜来啦！我保证，这些盲盒里藏着最棒的秘密！" },
+      { id: "orphan", name: "Orphan", color: "#000000", btnColor: "#000000", btnTextColor:"#ffffff", msg: "……黑暗。未知。去吧。" },
+      { id: "robin", name: "Robin", color: "#008000", btnColor: "#cc0000", btnTextColor:"#ffffff", msg: "tt，无聊的抽奖游戏。不过既然你要玩，最好别让我看到你抽到垃圾。" },
+      { id: "oracle", name: "Oracle", color: "#00cc66", btnColor: "#00cc66", btnTextColor:"#ffffff", msg: "系统防护已解除，正在为你接入未加密数据流。小心，别迷失在信息海里。" },
+      { id: "signal", name: "Signal", color: "#ffcc00", btnColor: "#ffcc00", msg: "白天的哥谭由我来守护，但盲盒里的未知需要你自己去探索！" }
+    ];
+
+    const DB_CHARACTERS = {
+      batman: {
+        name: "Batman", color: "#000000",
+        normal: {
+          good: ["你找到了一个完美的切入点，这本档案值得深读。", "出色的侦探直觉，这本刊物揭示了哥谭的另一面。"],
+          bad: ["有时候我们必须面对最糟糕的案卷，明知道是坑也要跳。", "连我的万能腰带里都没有能拯救这本刊物的道具。"]
+        },
+        blind: {
+          good: ["你没被系统的隐瞒骗过，这本确实是个好故事。偷偷看吧。", "在黑暗中你依然找准了方向，这本档案没让你失望。"],
+          bad: ["我早该警告你的，抱歉，那条推荐语是个彻头彻尾的陷阱。", "系统误导了你，没能提前查明这本档案的真相，是我的失误。"]
+        }
+      },
+      superman: {
+        name: "Superman", color: "#0052cc",
+        normal: {
+          good: ["真为你感到高兴！这本漫画充满了希望与光明。", "你的品味就像太阳一样耀眼，这绝对是一部佳作。"],
+          bad: ["真遗憾，不过既然你决定翻开，就当是一次试炼吧。", "连我都觉得这本有点难熬，辛苦你了。"]
+        },
+        blind: {
+          good: ["你的直觉超越了我的透视眼，这本真的很棒！", "没被骗到吧？这确实是个了不起的故事，好好享受！"],
+          bad: ["我很抱歉，上面的描述完全掩盖了它糟糕的本质。", "真的对不起，如果我早点用超级听力察觉到，就不会让你踩雷了。"]
+        }
+      },
+      wonderwoman: {
+        name: "Wonder Woman", color: "#cc0000",
+        normal: {
+          good: ["众神会赐福于你！这本史诗般的杰作值得被传颂。", "你的选择充满了智慧与力量，真理也与同在。"],
+          bad: ["即便知道前方是泥沼你依然前行，我敬佩你的勇猛。", "有时候战士不得不面对最枯燥的战场，坚持住。"]
+        },
+        blind: {
+          good: ["你拥有识破虚妄的慧眼！这本真的是宝藏。", "以雅典娜的名义，你没有在盲盒的迷雾中迷失，干干得好。"],
+          bad: ["请接受我的歉意，这些花言巧语误导了你的判断。", "这不怪你，推荐语像阿瑞斯的诡计一样狡猾，真是遗憾。"]
+        }
+      },
+      joker: {
+        name: "小丑", color: "#800080",
+        normal: {
+          good: ["哎呀哎呀，居然被你挑到了一本不怎么可笑的好书，真扫兴。", "品味不错嘛！不过太正常的结局可逗不笑我。"],
+          bad: ["哈哈哈哈！恭喜你掉进粪坑！是不是觉得这本比我还能恶心人？", "明知道烂还要看，你这找虐的嗜好连我都要鼓掌了！"]
+        },
+        blind: {
+          good: ["切，居然没坑到你？你运气好得让我有点想宰了你。", "你居然在垃圾堆里翻到了钻石？这可一点都不好玩！"],
+          bad: ["哈哈哈哈！被骗了吧蠢货！看着你吃瘪的表情真是我今天最大的乐子！", "哎呀，瞎眼了吧？这就是盲盒的魅力啊，蠢蛋！"]
+        }
+      },
+      laugh: {
+        name: "狂笑之蝠", color: "#000000", hack: true,
+        normal: {
+          good: ["嘿嘿嘿……多好的一本书啊，可你还是逃不出我的多元宇宙！", "你以为好作品能带来希望？最后还不是要在我的笑声里崩溃！"],
+          bad: ["咯咯咯……烂透了对吧？这就对了，这才是你们宇宙该有的品质！", "你连这种垃圾都能咽下去，你跟我有什么区别？哈哈哈哈！"]
+        },
+        blind: {
+          good: ["什么？你居然避开了陷阱？没关系，下一本我会亲自给你准备毒药……", "真可惜，没能听到你绝望的哀嚎，不过没关系，这只是开始！"],
+          bad: ["哈哈哈哈！享受被谎言撕裂的快感吧！这就是盲目的代价！", "咯咯咯……看着你被一段假话骗得团团转，真想把你的眼睛挖出来！"]
+        }
+      },
+      luthor: {
+        name: "卢瑟", color: "#008000",
+        normal: {
+          good: ["一本还算有价值的读物。希望你的智商能借此稍微提升一点。", "只有这种质量才勉强配得上被收藏，你的眼光还算及格。"],
+          bad: ["这就是凡人的愚蠢，明知道没有投资回报，还要浪费时间。", "看这种垃圾刊物，难怪超人不需要费心对付你们。"]
+        },
+        blind: {
+          good: ["盲目的选择居然能带来好结果？哼，纯粹是概率的施舍罢了。", "运气不错，但这绝不能证明你的智慧，只是系统的漏洞。"],
+          bad: ["被劣质推销语蒙骗，这就是缺乏独立思考能力的下场。", "你就像大都会那群盲从超人的蠢货一样，活该被坑。"]
+        }
+      },
+      nightwing: {
+        name: "Nightwing", color: "#005eff",
+        normal: {
+          good: ["漂亮的空翻落地！这本漫画绝对能让你热血沸腾！", "这本我之前在布鲁德海文读过，保证精彩！"],
+          bad: ["唉，看来这次的降落没有缓冲垫。只能硬着头皮看完了。", "明知前面没绳索还要跳，你的胆子比我还大啊。"]
+        }
+      },
+      redhood: {
+        name: "Red Hood", color: "#cc0000",
+        normal: {
+          good: ["算你识货，这本刊物够硬核，不会让你失望的。", "这火力配置不错，情节爆裂，是我喜欢的调调。"],
+          bad: ["这什么破烂玩意儿？看得我都想给编剧一梭子了。", "你偏要往枪口上撞是不是？这种烂摊子我可不管。"]
+        }
+      },
+      redrobin: {
+        name: "Red Robin", color: "#800000",
+        normal: {
+          good: ["数据表明你的选择非常精准，这本的剧情逻辑堪称完美。", "我交叉比对过了，这确实是DC不可多得的优质档案。"],
+          bad: ["你无视了明显的低分警告，这就叫明知山有虎偏向虎山行吗？", "我的战术面板显示这是一场灾难，你居然还是看下去了。"]
+        }
+      },
+      spoiler: {
+        name: "Spoiler", color: "#800080",
+        normal: {
+          good: ["哇哦！紫色的烟雾弹爆开后，原来是个大惊喜！这本超好看！", "我保证这本绝对不会剧透你，因为每一页都很棒！"],
+          bad: ["哎呀，这次的剧透是：它真的很难看！你居然还不跑？", "这本简直是个失败的恶作剧，你脾气可真好。"]
+        }
+      },
+      orphan: {
+        name: "Orphan", color: "#000000",
+        normal: {
+          good: ["……好书。动作，完美。", "……喜欢。你，有眼光。"],
+          bad: ["……不好。你不该看。", "……痛。眼睛痛。"]
+        }
+      },
+      robin: {
+        name: "Robin", color: "#008000",
+        normal: {
+          good: ["虽然我不想承认，但你这次的品味勉强配得上刺客联盟的门槛。", "tt，只有这种程度的佳作才值得被我的武士刀切开。"],
+          bad: ["愚蠢！连猎犬都知道避开的陷阱，你居然自己跳进去了？", "这种垃圾也配占用你的时间？你简直是在侮辱罗宾这个名字。"]
+        }
+      },
+      signal: {
+        name: "Signal", color: "#ffcc00",
+        normal: {
+          good: ["白天属于信标，这本漫画就像阳光一样亮眼！", "你的眼光不错啊，哥谭的白昼也需要这种好故事。"],
+          bad: ["这剧情黑得连我的超能力都看不透了，你为什么要折磨自己？", "兄弟，前面那是死胡同，你连个弯都不拐的吗？"]
+        }
+      },
+      oracle: {
+        name: "Oracle", color: "#00cc66",
+        normal: {
+          good: ["我的主机显示这本刊物的下载量极高，经典之作，请放心阅读。", "钟楼的数据库里给这本打了满分，你的眼光很准。"],
+          bad: ["我本来想帮你把这本的数据黑掉的，结果你还是看了……", "防火墙没能拦住你跳坑，系统提示：你正在遭受精神攻击。"]
+        }
+      },
+      greenlantern: {
+        name: "Green Lantern", color: "#009933",
+        normal: {
+          good: ["以绿灯之名，这本漫画的想象力甚至能具象化！", "太赞了！这故事的能量简直能让我的提灯重新满载！"],
+          bad: ["兄弟，这本的意志力连个防护罩都撑不起来，你图啥呢？", "明知道这是视差怪设下的折磨陷阱还要跳，你的意志力很奇特。"]
+        }
+      },
+      flash: {
+        name: "Flash", color: "#ff0000",
+        normal: {
+          good: ["太棒了！这本刊物的情节推进得跟神速力一样快，超带感！", "我都已经绕地球跑了三圈，还是觉得这本最好看！"],
+          bad: ["哪怕我穿越回过去，恐怕也没法阻止你翻开这本无聊的漫画。", "这节奏慢得像冷冻队长的冰枪打中了一样，你居然忍得住？"]
+        }
+      },
+      riddler: {
+        name: "谜语人", color: "#008000",
+        blind: {
+          good: ["谜语：什么是你蒙着眼却抓到的宝物？哼，算你侥幸找到了好书！", "解谜失败！你为什么没有因为盲选而痛苦？这不公平！"],
+          bad: ["哈哈！你在这场智力游戏中一败涂地！盲盒的滋味如何？", "谜语：绿色、带着问号、还在嘲笑你的是什么？是我！因为你选了本垃圾！"]
+        }
+      },
+      scarecrow: {
+        name: "稻草人", color: "#8b4513",
+        blind: {
+          good: ["奇怪……你没有感受到对未知的恐惧吗？这本竟然没吓退你。", "你的神经不够紧绷，这本好书缓解了你的恐惧，真令人失望。"],
+          bad: ["恐惧毒气开始蔓延了吧？被糟糕推荐语欺骗的绝望感，吸进去！", "看着你强忍恶心读完这本烂书，就是对我最好的精神滋养。"]
+        }
+      },
+      penguin: {
+        name: "企鹅人", color: "#000080",
+        blind: {
+          good: ["冰山餐厅也难得进这种高级货色，被被瞎猫碰上死耗子了。", "算你捡了个大漏，这本的价值可比我那些走私军火高多了。"],
+          bad: ["嘎嘎嘎！被我这包装华丽的空头支票骗到了吧？活该你亏本！", "我的伞里装的是枪，而你的盲盒里装的是一坨废纸！嘎嘎！"]
+        }
+      },
+      poisonivy: {
+        name: "毒藤女", color: "#2e8b57",
+        blind: {
+          good: ["居然是一朵绽放的玫瑰……你这粗鲁的人类运气还不赖。", "我的植物们告诉我这是一本杰作，便宜你了。"],
+          bad: ["这本就像被污染的酸雨一样恶心，而你居然自己凑上去喝了？", "腐败的土壤开不出好花，看着你被烂泥糊了一脸，我很开心。"]
+        }
+      },
+      twoface: {
+        name: "双面人", color: "#808080",
+        blind: {
+          good: ["硬币翻到了好的一面，你这次躲过了一劫。", "哈维说这是一本好书……算你今天走运。"],
+          bad: ["硬币是反面！而你被这些伪造的谎言彻底毁了！", "二分之一的厄运降临了，看到你这副被骗的蠢样，我非常满意。"]
+        }
+      },
+      harley: {
+        name: "哈莉·奎因", color: "#ff00a0",
+        blind: {
+          good: ["哇哦！大锤子砸出个金彩蛋！你怎么没被坑到呀，真没劲！", "哎呀，这本居然出奇的好看？我还准备看你哭鼻子呢！"],
+          bad: ["砰砰！被系统糊弄了吧小可怜！这就是盲盒的恶作剧哦！", "哈哈哈哈哈！你现在的表情简直比小丑先生的笑话还要好笑！"]
+        }
+      },
+      ras: {
+        name: "拉斯·阿勒古尔", color: "#006400",
+        blind: {
+          good: ["你的直觉像刺客一样敏锐，在混沌中抓住了唯一有价值的卷轴。", "恶魔之首认可你的好运，但下次这世界不会如此仁慈。"],
+          bad: ["这就是盲目的代价，被虚言蒙蔽双眼，你实在不配做我的继承人。", "看着你在伪造的推荐中挣扎，让我更加确信需要清洗这个世界。"]
+        }
+      },
+      darkseid: {
+        name: "达克赛德", color: "#191970",
+        blind: {
+          good: ["反生命方程式并不在此……但你确实在黑暗中找到了微光。", "达克赛德是唯一的真理。你这卑微的好运令我不悦。"],
+          bad: ["在天启星的意志面前，你被谎言折磨的痛苦是如此渺小。", "绝望吧，愚蠢的虫子。这就是你盲目选择的最终归宿。"]
+        }
+      },
+      deathstroke: {
+        name: "丧钟", color: "#ff8c00",
+        blind: {
+          good: ["这一单算你走运。目标极具价值，你没亏本。", "能避开我设下的陷阱拿到好货，你的直觉值得我收起刀。"],
+          bad: ["推荐语只是个诱饵，而你像个雏鸟一样上钩了。拿钱办事，别怪我。", "这是你付出的学费。在我的准星里，盲目就等于死亡。"]
+        }
+      }
+    };
+
+    function getBeijingTime() {
+      const now = new Date();
+      const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const bjTime = new Date(utc + (3600000 * 8));
+      const h = bjTime.getHours().toString().padStart(2, '0');
+      const m = bjTime.getMinutes().toString().padStart(2, '0');
+      return `[BJ_TIME ${h}:${m}]`;
+    }
+
+    let currentMode = 'normal';
+    let currentComic = null;
+    let blindBoxHistory = [];
+    
+    // 升级旧的 wishlist 字符串数组为对象数组
+    let wishlistRaw = JSON.parse(localStorage.getItem('dc_wishlist') || '[]');
+    let wishlist = wishlistRaw.map(item => {
+      if (typeof item === 'string') {
+        return { title: item, time: getBeijingTime() };
+      }
+      return item;
+    });
+    
+    let readList = JSON.parse(localStorage.getItem('dc_readlist') || '[]');
+
+    const normalBtn = document.getElementById('normalModeBtn');
+    const blindBtn = document.getElementById('blindModeBtn');
+    const randomBtn = document.getElementById('randomBtn');
+    const resultCard = document.getElementById('resultCard');
+    const blindHistoryCol = document.getElementById('blindHistoryCol');
+    const blindHistoryContainer = document.getElementById('blindHistoryContainer');
+    const blindProgressContainer = document.getElementById('blindProgressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const drawCountText = document.getElementById('drawCount');
+
+    const customModal = document.getElementById('customModal');
+    const modalContent = document.getElementById('modalContent');
+    const modalHeader = document.getElementById('modalHeader');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMsg = document.getElementById('modalMsg');
+    const modalBtns = document.getElementById('modalBtns');
+    const modalX = document.getElementById('modalX');
+    const modalWarning = document.getElementById('modalWarning');
+
+    window.exportList = function(type) {
+        let textContent = "";
+        let filename = "";
+        if (type === 'wishlist') {
+            if (wishlist.length === 0) {
+                alert("WISHLIST IS EMPTY!");
+                return;
+            }
+            filename = "VAPOR_OS_WISHLIST.txt";
+            textContent = "========================================\n";
+            textContent += "        VAPOR_OS // WISHLIST LOG        \n";
+            textContent += "========================================\n\n";
+            wishlist.forEach((item, index) => {
+                textContent += `[${(index+1).toString().padStart(2, '0')}] ${item.title}\n      Added: ${item.time}\n\n`;
+            });
+            textContent += "========================================\n";
+            textContent += "           END OF TRANSMISSION          \n";
+            textContent += "========================================\n";
+        } else if (type === 'readlist') {
+            if (readList.length === 0) {
+                alert("COMPLETED LIST IS EMPTY!");
+                return;
+            }
+            filename = "VAPOR_OS_COMPLETED.txt";
+            textContent = "========================================\n";
+            textContent += "      VAPOR_OS // COMPLETED LOG       \n";
+            textContent += "========================================\n\n";
+            readList.forEach((title, index) => {
+                textContent += `[${(index+1).toString().padStart(2, '0')}] ${title}\n\n`;
+            });
+            textContent += "========================================\n";
+            textContent += "           END OF TRANSMISSION          \n";
+            textContent += "========================================\n";
+        }
+        
+        const blob = new Blob([textContent], {type: "text/plain;charset=utf-8"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
+    function saveLists() {
+      localStorage.setItem('dc_wishlist', JSON.stringify(wishlist));
+      localStorage.setItem('dc_readlist', JSON.stringify(readList));
+    }
+
+    // 更新页面底部容器
+    function renderLists() {
+      const listSec = document.getElementById('listSection');
+      if (currentMode === 'blind') {
+        if(listSec) listSec.style.display = 'flex';
+        if(blindHistoryCol) blindHistoryCol.style.display = 'block';
+        if(blindHistoryContainer) blindHistoryContainer.innerHTML = blindBoxHistory.length === 0 ? '<span class="empty-message">EMPTY_LOG</span>' : blindBoxHistory.map(t => `<span class="tag history-tag">${t}</span>`).join('');
+      } else {
+        if(listSec) listSec.style.display = 'none';
+        if(blindHistoryCol) blindHistoryCol.style.display = 'none';
+      }
+    }
+
+    // 页面切换核心逻辑
+    window.switchPage = function(pageId) {
+      // 导航高亮切换
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      const activeNav = document.getElementById('nav-' + pageId);
+      if(activeNav) activeNav.classList.add('active');
+
+      // 隐藏所有页面
+      document.getElementById('homePage').style.display = 'none';
+      document.getElementById('wishlistPage').style.display = 'none';
+      document.getElementById('readPage').style.display = 'none';
+      document.getElementById('settingsPage').style.display = 'none';
+
+      // 显示指定页面
+      if (pageId === 'home') {
+        document.getElementById('homePage').style.display = 'block'; 
+      } else if (pageId === 'wish') {
+        document.getElementById('wishlistPage').style.display = 'flex';
+        renderWishlistPage();
+      } else if (pageId === 'read') {
+        document.getElementById('readPage').style.display = 'flex';
+        renderReadPage();
+      } else if (pageId === 'settings') {
+        document.getElementById('settingsPage').style.display = 'flex';
+      }
+    };
+
+    // 保留给其他调用的入口
+    window.openWishlistPage = function() { window.switchPage('wish'); };
+    window.closeWishlistPage = function() { window.switchPage('home'); };
+
+    window.renderWishlistPage = function() {
+      const container = document.getElementById('chatContainer');
+      if (wishlist.length === 0) {
+        container.innerHTML = '<div style="text-align:center; color:var(--vp-dim); font-family:var(--font-pixel); font-size:1.5rem; margin-top:3rem;">NO_CHATS_FOUND</div>';
+        return;
+      }
+      
+      container.innerHTML = wishlist.map(item => {
+        const comic = COMICS.find(c => c.zh === item.title) || { en: '' };
+        return `
+        <div class="chat-row">
+          <div class="chat-avatar-box">
+            <div class="chat-avatar" title="标记为已看" onclick="window.markChatRead('${item.title}')">
+              <div class="chat-avatar-inner">👁</div>
+            </div>
+            <span class="chat-avatar-label" style="color:var(--vp-magenta);">READ</span>
+          </div>
+          <div class="chat-bubble-wrap">
+            <div class="chat-bubble">
+              <div style="font-family: var(--font-pixel); font-size: 1.1rem; color: rgba(255,255,255,0.7); margin-bottom: 0.3rem;">${comic.en}</div>
+              <div style="font-family: var(--font-sans); font-size: 1.4rem;">${item.title}</div>
+            </div>
+            <div class="chat-actions">
+              <span class="chat-time">${item.time}</span>
+              <span class="chat-action-btn" title="移出想看" onclick="window.removeWish('${item.title}')">[DEL]</span>
+            </div>
+          </div>
+        </div>
+      `}).join('');
+    };
+
+    window.renderReadPage = function() {
+      const container = document.getElementById('readContainer');
+      if (readList.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1 / -1; text-align:center; color:var(--vp-dim); font-family:var(--font-pixel); font-size:1.5rem; margin-top:3rem;">NO_FILES_FOUND</div>';
+        return;
+      }
+      
+      container.innerHTML = readList.map((title, index) => {
+        const comic = COMICS.find(c => c.zh === title) || { en: 'UNKNOWN_DATA' };
+        return `
+        <div class="archive-card">
+          <div class="archive-card-header">
+            <span class="archive-status">[ FILE_#${(index+1).toString().padStart(3, '0')} ]</span>
+            <span class="archive-action" title="删除记录" onclick="window.removeRead('${title}')">[DEL]</span>
+          </div>
+          <div class="archive-title">${title}</div>
+          <div class="archive-en">${comic.en}</div>
+        </div>
+      `}).join('');
+    };
+
+    window.markChatRead = function(title) {
+      const comic = COMICS.find(c => c.zh === title);
+      if (!comic) return;
+
+      wishlist = wishlist.filter(t => t.title !== title);
+      if(!readList.includes(title)) readList.unshift(title);
+      
+      saveLists(); 
+      renderWishlistPage();
+      renderLists();
+
+      triggerCompletionModal(comic);
+    };
+
+    window.removeWish = function(title, event) {
+        if(event) event.stopPropagation();
+        wishlist = wishlist.filter(t => t.title !== title);
+        saveLists();
+        renderLists();
+        if(document.getElementById('wishlistPage').style.display === 'flex') {
+            renderWishlistPage();
+        }
+    };
+
+    window.removeRead = function(title, event) {
+        if(event) event.stopPropagation();
+        readList = readList.filter(t => t !== title);
+        saveLists(); 
+        renderLists();
+        if(document.getElementById('readPage').style.display === 'flex') {
+            renderReadPage();
+        }
+    };
+
+    window.toggleCollapse = function(id) {
+        const content = document.getElementById(id);
+        const title = content.previousElementSibling;
+        content.classList.toggle('hidden');
+        title.classList.toggle('collapsed');
+    }
+
+    function drawCharacter(mode) {
+      if (mode === 'normal') {
+        const isHero = Math.random() < 0.8;
+        if (isHero) {
+          const heroes = ['batman', 'superman', 'wonderwoman', 'greenlantern', 'flash', 'nightwing', 'redhood', 'redrobin', 'spoiler', 'orphan', 'robin', 'signal', 'oracle'];
+          return DB_CHARACTERS[heroes[Math.floor(Math.random() * heroes.length)]];
+        } else {
+          const r = Math.random();
+          if (r < 0.1) return DB_CHARACTERS['laugh'];
+          else if (r < 0.55) return DB_CHARACTERS['joker'];
+          else return DB_CHARACTERS['luthor'];
+        }
+      } else {
+        const isVillain = Math.random() < 0.9;
+        if (isVillain) {
+          const villains = ['riddler', 'scarecrow', 'penguin', 'poisonivy', 'twoface', 'harley', 'joker', 'laugh', 'ras', 'darkseid', 'deathstroke', 'luthor'];
+          return DB_CHARACTERS[villains[Math.floor(Math.random() * villains.length)]];
+        } else {
+          const heroes = ['batman', 'superman', 'wonderwoman'];
+          return DB_CHARACTERS[heroes[Math.floor(Math.random() * heroes.length)]];
+        }
+      }
+    }
+
+    function triggerCompletionModal(comic) {
+        const score = comic.score;
+        const isGood = score >= 9.0;
+        const isBad = score <= 6.0;
+        
+        if (!isGood && !isBad) return;
+
+        const luck = Math.random();
+        if (luck < 0.02) {
+            const guests = [
+                { name: "至尊小超人", color:"#cc0000", msgs: [
+                    "这就是你们的盲盒系统？太软弱了！我要打破这面墙，把所有烂刊都揍出连续性！",
+                    "这些推荐语都在针对我！我才是最完美的超人！我要把这个网页撕成碎片！"
+                ]},
+                { name: "死侍", color:"#990000", msgs: [
+                    "嘿！隔壁片场乱入！听说这里有免费盲盒？等等，这评分是真的吗？DC这本也太敢写了...溜了溜了！",
+                    "哇哦，复古Windows弹窗？哥们儿，你这UI让我想起了我还在像素游戏里打工的岁月！"
+                ]}
+            ];
+            const guest = guests[Math.floor(Math.random() * guests.length)];
+            const msg = guest.msgs[Math.floor(Math.random() * guest.msgs.length)];
+            
+            openModal({
+                title: `BREAKING THE 4TH WALL // ${guest.name}`,
+                headerColor: guest.color,
+                btnColor: guest.color,
+                btnTextColor: "#ffffff",
+                msg: `<span style="color:#000; font-weight:bold;">${guest.name}:</span><br>${msg}`,
+                btns: [{ text: "吓死我了", primary: true }]
+            });
+            return;
+        }
+
+        const char = drawCharacter(currentMode);
+        const condition = isGood ? 'good' : 'bad';
+        const lines = char[currentMode][condition];
+        const line = lines[Math.floor(Math.random() * lines.length)];
+
+        if (char.hack) modalContent.classList.add('hack-effect');
+        
+        openModal({
+            title: `${char.name} 的实时反馈`,
+            headerColor: char.color,
+            btnColor: char.color,
+            btnTextColor: "#ffffff",
+            msg: `<span style="color:${char.color}; font-weight:bold;">${char.name.toUpperCase()}:</span><br><br>${line}`,
+            btns: [{ text: "知道了", primary: true }]
+        });
+    }
+
+    function updateProgress() {
+      const count = blindBoxHistory.length;
+      drawCountText.textContent = count;
+      progressBar.style.width = Math.min((count / 10) * 100, 100) + '%';
+    }
+
+    function showComic(comic) {
+      currentComic = comic;
+      displayTitle.textContent = comic.zh;
+      displayYear.textContent = `[${comic.year}]`;
+      displayEn.textContent = comic.en;
+      
+      if (currentMode === 'blind') {
+        scoreContainer.innerHTML = '<span class="blinded-score">SYS_ERR: RATING_HIDDEN</span>';
+        displayDesc.textContent = (comic.score <= 6.0 && comic.fake) ? comic.fake : comic.desc;
+      } else {
+        scoreContainer.innerHTML = `<span class="score-badge">RATING: ${comic.score}</span>`;
+        displayDesc.textContent = comic.desc;
+      }
+      resultCard.style.display = 'block';
+    }
+
+    function drawRandom() {
+      const comic = COMICS[Math.floor(Math.random() * COMICS.length)];
+      if (currentMode === 'blind' && !blindBoxHistory.includes(comic.zh)) {
+        blindBoxHistory.unshift(comic.zh);
+        updateProgress();
+      }
+      showComic(comic);
+      renderLists();
+    }
+
+    function openModal(config) {
+      modalTitle.textContent = config.title || "授权请求 ACCESS_DENIED";
+      modalMsg.innerHTML = config.msg || ""; 
+      modalBtns.innerHTML = "";
+      modalX.style.display = config.showX ? "flex" : "none";
+      modalWarning.style.display = config.showWarning ? "block" : "none";
+      modalWarning.textContent = config.warningText || "";
+      
+      modalHeader.style.backgroundColor = config.headerColor || "var(--win-pink)";
+
+      config.btns.forEach(btn => {
+        const b = document.createElement('div');
+        b.className = `modal-btn ${btn.primary ? 'modal-btn-primary' : ''}`;
+        b.textContent = btn.text;
+        
+        if(btn.primary && config.btnColor) {
+            b.style.backgroundColor = config.btnColor;
+            b.style.color = config.btnTextColor || ((config.btnColor === '#000000' || config.btnColor === '#000') ? '#fff' : '#000');
+        }
+
+        b.onclick = () => { closeModal(); if (btn.action) btn.action(); };
+        modalBtns.appendChild(b);
+      });
+      modalX.onclick = () => { closeModal(); if (config.xAction) config.xAction(); };
+      customModal.style.display = "flex";
+    }
+
+    function closeModal() { 
+      customModal.style.display = "none";
+      modalContent.classList.remove('hack-effect'); 
+    }
+
+    normalBtn.addEventListener('click', () => {
+      if (currentMode === 'normal') return;
+      const v = VILLAINS[Math.floor(Math.random() * VILLAINS.length)];
+      if (v.hack) modalContent.classList.add('hack-effect');
+      openModal({
+        title: `来自 ${v.name} 的拦截 ACCESS_DENIED`,
+        headerColor: v.color,
+        btnColor: v.btnColor,
+        btnTextColor: v.btnTextColor,
+        msg: v.msg,
+        showX: true, 
+        showWarning: true,
+        warningText: "在该模式下，所有随机抽取的足迹将在离开时从系统内存中抹除。但别担心，想看和已看的同步连接依然稳固。",
+        xAction: () => {
+             currentMode = 'normal';
+             blindBoxHistory = []; 
+             normalBtn.classList.add('active');
+             blindBtn.classList.remove('active');
+             blindProgressContainer.style.display = 'none';
+             if (currentComic) showComic(currentComic);
+             renderLists();
+        },
+        btns: [
+          { text: "留下", primary: true, action: () => {} },
+          { text: "不离开", primary: false, action: () => {} }
+        ]
+      });
+    });
+
+    blindBtn.addEventListener('click', () => {
+      if (currentMode === 'blind') return;
+      const h = HEROES[Math.floor(Math.random() * HEROES.length)];
+      openModal({
+        title: "授权请求 ACCESS_DENIED",
+        headerColor: h.color,
+        btnColor: h.btnColor,
+        btnTextColor: h.btnTextColor,
+        msg: `<span style="color: ${h.color}; font-weight: bold; text-shadow: 1px 1px 0px rgba(0,0,0,0.1); letter-spacing: 2px;">FROM_${h.name.toUpperCase()}:</span><br><br>${h.msg}`,
+        showX: false,
+        showWarning: true,
+        warningText: "确认接入盲盒协议？系统将隐藏所有评分，并切换为非对称推荐语引擎。",
+        btns: [
+          { text: "确认接入", primary: true, action: () => {
+            currentMode = 'blind';
+            blindBtn.classList.add('active');
+            normalBtn.classList.remove('active');
+            blindProgressContainer.style.display = 'block';
+            updateProgress();
+            if (currentComic) showComic(currentComic);
+            renderLists();
+          }},
+          { text: "取消", primary: false, action: () => {} }
+        ]
+      });
+    });
+
+    randomBtn.addEventListener('click', drawRandom);
+
+    wishlistBtn.addEventListener('click', () => {
+      if (currentComic && !wishlist.some(t => t.title === currentComic.zh) && !readList.includes(currentComic.zh)) {
+        wishlist.unshift({ title: currentComic.zh, time: getBeijingTime() }); 
+        saveLists(); 
+        renderLists();
+        // 如果点按钮时正在看其他页面（理论上首页才有按钮），同步更新想看页
+        if(document.getElementById('wishlistPage').style.display === 'flex') {
+            renderWishlistPage();
+        }
+      }
+    });
+
+    readBtn.addEventListener('click', () => {
+      if (currentComic && !readList.includes(currentComic.zh)) {
+        readList.unshift(currentComic.zh);
+        wishlist = wishlist.filter(t => t.title !== currentComic.zh);
+        saveLists(); 
+        renderLists();
+        triggerCompletionModal(currentComic);
+      }
+    });
+
+    renderLists();
+    drawRandom();
+  })();
+</script>
+</body>
+</html>
