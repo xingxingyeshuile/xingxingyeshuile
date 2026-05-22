@@ -1,0 +1,2421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>漫画台词摘录本</title>
+    <!-- 引入思源宋体 (Noto Serif SC) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ========================================
+           VAPORWAVE & GLASSMORPHISM UI 重构
+        ======================================== */
+
+        :root {
+            /* 蒸汽波经典色卡 */
+            --vw-pink: #ff71ce;
+            --vw-blue: #01cdfe;
+            --vw-green: #05ffa1;
+            --vw-purple: #b967ff;
+            --vw-yellow: #fffb96;
+
+            /* 亮色模式：迈阿密日落 */
+            --bg-grad-1: #ffafbd;
+            --bg-grad-2: #ffc3a0;
+            --sun-top: var(--vw-pink);
+            --sun-bottom: #ffb6ff;
+            
+            --text-primary: #3b1c4a;
+            --text-secondary: #653180;
+            --text-muted: #8b5b9c;
+            
+            --accent-color: #ff71ce;
+            --accent-hover: #b967ff;
+            --danger-color: #ff4b82;
+            --star-color: #ff007f;
+            
+            /* 玻璃拟态属性 */
+            --glass-bg: rgba(255, 255, 255, 0.3);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 8px 32px 0 rgba(255, 113, 206, 0.15);
+            --glass-blur: blur(12px);
+            
+            --input-bg: rgba(255, 255, 255, 0.4);
+            --grid-color: rgba(255, 113, 206, 0.5);
+            
+            /* 录像带色差阴影 */
+            --vhs-shadow: 2px 2px 0px var(--vw-blue), -2px -1px 0px var(--vw-pink);
+            --btn-glow: 0 0 10px rgba(255, 113, 206, 0.5);
+        }
+
+        [data-theme="dark"] {
+            /* 暗色模式：赛博朋克深紫青 */
+            --bg-grad-1: #120424;
+            --bg-grad-2: #0a1128;
+            --sun-top: var(--vw-pink);
+            --sun-bottom: var(--vw-blue);
+            
+            --text-primary: #05ffa1;
+            --text-secondary: #01cdfe;
+            --text-muted: #b967ff;
+            
+            --accent-color: #01cdfe;
+            --accent-hover: #05ffa1;
+            --danger-color: #ff0055;
+            --star-color: var(--vw-yellow);
+            
+            --glass-bg: rgba(18, 4, 36, 0.5);
+            --glass-border: rgba(1, 205, 254, 0.3);
+            --glass-shadow: 0 8px 32px 0 rgba(1, 205, 254, 0.2);
+            
+            --input-bg: rgba(0, 0, 0, 0.5);
+            --grid-color: rgba(5, 255, 161, 0.3);
+            
+            --vhs-shadow: 2px 2px 0px var(--vw-pink), -2px -1px 0px var(--vw-blue);
+            --btn-glow: 0 0 10px rgba(1, 205, 254, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 蒸汽波背景：渐变 + 移动网格 + 切片太阳 */
+        body {
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', serif;
+            background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2));
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.8;
+            padding-bottom: 80px;
+            transition: all 0.4s ease;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            bottom: 25vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(to bottom, var(--sun-top) 0%, var(--sun-bottom) 100%);
+            -webkit-mask-image: linear-gradient(to bottom, 
+                black 0%, black 45%, transparent 45%, transparent 50%, 
+                black 50%, black 65%, transparent 65%, transparent 70%, 
+                black 70%, black 80%, transparent 80%, transparent 85%, 
+                black 85%, black 92%, transparent 92%, transparent 100%);
+            mask-image: linear-gradient(to bottom, 
+                black 0%, black 45%, transparent 45%, transparent 50%, 
+                black 50%, black 65%, transparent 65%, transparent 70%, 
+                black 70%, black 80%, transparent 80%, transparent 85%, 
+                black 85%, black 92%, transparent 92%, transparent 100%);
+            border-radius: 50%;
+            z-index: -2;
+            box-shadow: 0 0 60px var(--sun-top);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            bottom: 0;
+            left: -50%;
+            width: 200%;
+            height: 45vh;
+            background: 
+                linear-gradient(var(--grid-color) 2px, transparent 2px),
+                linear-gradient(90deg, var(--grid-color) 2px, transparent 2px);
+            background-size: 40px 40px;
+            transform: perspective(600px) rotateX(75deg);
+            transform-origin: center top;
+            z-index: -1;
+            pointer-events: none;
+            animation: gridMove 2s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 40px; }
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
+        ::-webkit-scrollbar-thumb { 
+            background: var(--accent-color); 
+            border-radius: 4px; 
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        /* 玻璃拟态基础类 */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        /* === 顶部栏 === */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 16px 20px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .top-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .app-title {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: var(--vhs-shadow);
+            color: var(--text-primary);
+            font-style: italic;
+            text-transform: uppercase;
+        }
+
+        .theme-toggle {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 6px 16px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(4px);
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-color);
+            color: #fff;
+            box-shadow: var(--btn-glow);
+            text-shadow: none;
+        }
+
+        [data-theme="dark"] .theme-toggle { background: rgba(0,0,0,0.3); }
+
+        /* === 随机台词模块 === */
+        .random-quote-section {
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .random-quote-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .random-quote-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .random-quote-controls select {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .random-quote-controls button {
+            padding: 8px 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s;
+        }
+
+        .random-quote-controls button:hover {
+            background: var(--accent-color);
+            color: #fff;
+            box-shadow: var(--btn-glow);
+        }
+
+        .random-quote-display {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--glass-shadow);
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .random-quote-display:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px 0 rgba(255, 113, 206, 0.3);
+        }
+
+        .random-quote-text {
+            font-size: 18px;
+            line-height: 1.9;
+            margin-bottom: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 2;
+        }
+
+        .random-quote-text::before {
+            content: '"';
+            font-size: 60px;
+            color: var(--accent-color);
+            text-shadow: var(--vhs-shadow);
+            opacity: 0.3;
+            position: absolute;
+            left: -15px;
+            top: -20px;
+            line-height: 1;
+            z-index: -1;
+        }
+
+        .random-quote-meta {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-align: right;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .random-quote-empty {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        /* === 主容器 === */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px 20px;
+        }
+
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* === 页面标题 === */
+        .page-header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px dashed var(--glass-border);
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+            text-shadow: var(--vhs-shadow);
+            text-transform: uppercase;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        /* === 按钮样式 === */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.1);
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            text-align: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .btn:hover {
+            background: var(--accent-color);
+            color: #fff;
+            box-shadow: var(--btn-glow);
+        }
+
+        .btn-secondary {
+            border-color: var(--text-secondary);
+            color: var(--text-secondary);
+        }
+        .btn-secondary:hover {
+            background: var(--text-secondary);
+            box-shadow: 0 0 10px var(--text-secondary);
+            color: #fff;
+        }
+
+        .btn-danger {
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+        }
+        .btn-danger:hover {
+            background: var(--danger-color);
+            box-shadow: 0 0 10px var(--danger-color);
+            color: #fff;
+        }
+
+        .btn-small { padding: 6px 14px; font-size: 12px; border-radius: 6px; }
+        .btn-block { display: block; width: 100%; margin-bottom: 16px; }
+
+        /* === 表单样式 === */
+        .form-group { margin-bottom: 20px; }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.2);
+        }
+        [data-theme="dark"] .form-label { text-shadow: 1px 1px 0 rgba(0,0,0,0.5); }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--glass-border);
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 14px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(255, 113, 206, 0.3);
+            background: rgba(255,255,255,0.6);
+        }
+        [data-theme="dark"] .form-input:focus, [data-theme="dark"] .form-textarea:focus, [data-theme="dark"] .form-select:focus {
+            background: rgba(0,0,0,0.8);
+            box-shadow: 0 0 10px rgba(1, 205, 254, 0.3);
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: linear-gradient(45deg, transparent 50%, var(--accent-color) 50%), linear-gradient(135deg, var(--accent-color) 50%, transparent 50%);
+            background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px);
+            background-size: 5px 5px, 5px 5px;
+            background-repeat: no-repeat;
+        }
+        
+        /* 针对下拉项颜色 */
+        option { background: var(--bg-grad-1); color: var(--text-primary); font-weight: bold; }
+        [data-theme="dark"] option { background: var(--bg-grad-2); }
+
+        .form-textarea { min-height: 120px; resize: vertical; line-height: 1.8; }
+        .form-hint { font-size: 12px; color: var(--text-muted); margin-top: 6px; font-style: italic; }
+
+        /* === 卡片样式 === */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px 0 rgba(255, 113, 206, 0.25);
+        }
+        [data-theme="dark"] .card:hover { box-shadow: 0 12px 40px 0 rgba(1, 205, 254, 0.25); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--text-primary);
+            letter-spacing: 1px;
+            text-shadow: var(--vhs-shadow);
+        }
+
+        .card-actions { display: flex; gap: 8px; }
+
+        .card-content {
+            font-size: 15px;
+            line-height: 1.9;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .card-meta {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px dashed var(--glass-border);
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: bold;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        /* === 台词卡片特殊样式 === */
+        .quote-card {
+            padding-left: 30px;
+        }
+
+        .quote-card::before {
+            content: '"';
+            position: absolute;
+            left: 10px;
+            top: 15px;
+            font-size: 60px;
+            color: var(--accent-color);
+            opacity: 0.2;
+            line-height: 1;
+            text-shadow: var(--vhs-shadow);
+        }
+
+        .quote-text {
+            font-size: 16px;
+            line-height: 2;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .quote-impression {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 16px;
+            margin-top: 12px;
+            border-left: 4px solid var(--accent-color);
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        [data-theme="dark"] .quote-impression { background: rgba(0, 0, 0, 0.3); }
+
+        .quote-impression-label {
+            font-weight: 900;
+            color: var(--accent-color);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* === 标签样式 === */
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+
+        .tag, .preset-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--accent-color);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--accent-color);
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s;
+        }
+        [data-theme="dark"] .tag, [data-theme="dark"] .preset-tag { background: rgba(0,0,0,0.3); }
+
+        .tag:hover, .preset-tag:hover, .tag.selected, .preset-tag.selected {
+            background: var(--accent-color);
+            color: #fff;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .tag-input-container { display: flex; gap: 8px; margin-top: 8px; }
+        .tag-input-container input { flex: 1; }
+
+        /* === 作品/角色网格 === */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .grid-item {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .grid-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .grid-item-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid var(--glass-border);
+            filter: contrast(1.2) saturate(1.2) hue-rotate(-10deg);
+        }
+        [data-theme="dark"] .grid-item-image { background: rgba(0,0,0,0.3); filter: contrast(1.2) saturate(1.5) hue-rotate(10deg); }
+
+        .grid-item-title {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.3);
+        }
+        [data-theme="dark"] .grid-item-title { text-shadow: 1px 1px 0 rgba(0,0,0,0.8); }
+
+        .grid-item-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
+        /* === 筛选与搜索 === */
+        .filter-section {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            padding: 16px;
+            margin-bottom: 24px;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .filter-row { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+        .filter-row:last-child { margin-bottom: 0; }
+        .filter-row select, .filter-row input { flex: 1; min-width: 140px; }
+
+        /* === 底部导航 === */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            border-radius: 20px 20px 0 0;
+        }
+        [data-theme="dark"] .bottom-nav { box-shadow: 0 -4px 20px rgba(1, 205, 254, 0.15); }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 2px;
+            border: none;
+            background: none;
+            font-family: inherit;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        /* === 弹窗 === */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal.active { display: flex; align-items: flex-start; justify-content: center; animation: fadeIn 0.3s; }
+
+        .modal-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            margin: 40px auto;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px dashed var(--glass-border);
+        }
+
+        .modal-title { font-size: 24px; margin-bottom: 0; }
+
+        .modal-close {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid var(--text-muted);
+            border-radius: 50%;
+            font-size: 20px;
+            color: var(--text-primary);
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .modal-close:hover {
+            background: var(--danger-color);
+            color: #fff;
+            border-color: var(--danger-color);
+            box-shadow: 0 0 10px var(--danger-color);
+            transform: rotate(90deg);
+        }
+
+        .modal-actions { display: flex; gap: 16px; margin-top: 30px; }
+        .modal-actions .btn { flex: 1; }
+
+        /* === 空状态 === */
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+        .empty-state-icon { font-size: 60px; margin-bottom: 20px; opacity: 0.5; text-shadow: var(--vhs-shadow); }
+        .empty-state-text { font-size: 16px; line-height: 2; font-weight: bold; letter-spacing: 1px; }
+
+        /* === 模式切换 === */
+        .mode-toggle {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+        }
+        [data-theme="dark"] .mode-toggle { background: rgba(0,0,0,0.3); }
+
+        .mode-toggle button {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .mode-toggle button.active {
+            background: var(--accent-color);
+            color: #fff;
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        /* === 确认对话框 === */
+        .confirm-text { font-size: 16px; line-height: 1.8; margin-bottom: 20px; color: var(--text-primary); font-weight: bold; }
+
+        /* === 角色星标 === */
+        .star-icon { cursor: pointer; font-size: 20px; color: var(--glass-border); transition: all 0.3s; margin-left: 5px; }
+        .star-icon:hover { transform: scale(1.2); }
+        .star-icon.starred { color: var(--star-color); text-shadow: 0 0 10px var(--star-color); }
+
+        /* === 预设标签选择器 === */
+        .preset-tags {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;
+            padding: 16px; background: rgba(255,255,255,0.1);
+            border: 1px solid var(--glass-border); border-radius: 12px;
+        }
+        [data-theme="dark"] .preset-tags { background: rgba(0,0,0,0.2); }
+
+        /* === 详情页返回按钮 === */
+        .back-button { margin-bottom: 24px; }
+
+        /* === 分组标题 === */
+        .group-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--accent-color);
+            margin: 32px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px dashed var(--glass-border);
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
+        }
+        .group-title:first-child { margin-top: 0; }
+
+        /* 响应式调整 */
+        @media (max-width: 480px) {
+            .container { padding: 0 16px 16px; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
+            .page-title { font-size: 24px; }
+            .modal-content { padding: 20px; margin: 20px auto; }
+            .app-title { font-size: 18px; }
+            body::after { width: 250px; height: 250px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部栏 -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="app-title">漫画台词摘录本</div>
+            <button class="theme-toggle" onclick="toggleTheme()">Vapor Mode</button>
+        </div>
+    </div>
+
+    <!-- 随机台词模块 -->
+    <div class="random-quote-section">
+        <div class="random-quote-container">
+            <div class="random-quote-controls">
+                <select id="randomScope" class="form-select">
+                    <option value="all">全部台词</option>
+                    <option value="work">限定作品</option>
+                    <option value="character">限定角色</option>
+                    <option value="tag">限定标签</option>
+                </select>
+                <select id="randomScopeValue" class="form-select" style="display:none;">
+                </select>
+                <button onclick="refreshRandomQuote()">随机刷新</button>
+            </div>
+            <div class="random-quote-display" id="randomQuoteDisplay">
+                <div class="random-quote-empty">点击刷新获取随机台词</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 台词流页面 -->
+        <div id="quotesPage" class="page active">
+            <div class="page-header">
+                <h1 class="page-title">台词流</h1>
+                <p class="page-subtitle">按时间记录的所有台词</p>
+            </div>
+
+            <button class="btn btn-block" onclick="openAddQuoteModal()">+ 添加新台词</button>
+
+            <div class="filter-section">
+                <div class="filter-row">
+                    <input type="text" id="searchInput" class="form-input" placeholder="搜索台词、角色、作品、印象、标签...">
+                </div>
+                <div class="filter-row">
+                    <select id="filterWork" class="form-select">
+                        <option value="">全部作品</option>
+                    </select>
+                    <select id="filterCharacter" class="form-select">
+                        <option value="">全部角色</option>
+                    </select>
+                </div>
+                <div class="filter-row">
+                    <select id="filterTag" class="form-select">
+                        <option value="">全部标签</option>
+                    </select>
+                    <select id="sortOrder" class="form-select">
+                        <option value="newest">最新优先</option>
+                        <option value="oldest">最早优先</option>
+                        <option value="character">按角色名</option>
+                        <option value="work">按作品名</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="quotesList"></div>
+        </div>
+
+        <!-- 作品库页面 -->
+        <div id="worksPage" class="page">
+            <div class="page-header">
+                <h1 class="page-title">作品库</h1>
+                <p class="page-subtitle">管理你的漫画作品收藏</p>
+            </div>
+
+            <button class="btn btn-block" onclick="openAddWorkModal()">+ 添加新作品</button>
+
+            <div id="worksList" class="grid"></div>
+        </div>
+
+        <!-- 作品详情页面 -->
+        <div id="workDetailPage" class="page">
+            <button class="btn btn-secondary back-button" onclick="showPage('worksPage')">← 返回作品库</button>
+            <div id="workDetailContent"></div>
+        </div>
+
+        <!-- 角色库页面 -->
+        <div id="charactersPage" class="page">
+            <div class="page-header">
+                <h1 class="page-title">角色库</h1>
+                <p class="page-subtitle">记录你喜爱的角色</p>
+            </div>
+
+            <button class="btn btn-block" onclick="openAddCharacterModal()">+ 添加新角色</button>
+
+            <div class="filter-section">
+                <div class="filter-row">
+                    <select id="characterFilterTag" class="form-select">
+                        <option value="">全部标签</option>
+                    </select>
+                    <select id="characterSort" class="form-select">
+                        <option value="starred">星标优先</option>
+                        <option value="name">按名称</option>
+                        <option value="recent">最近添加</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="charactersList" class="grid"></div>
+        </div>
+
+        <!-- 角色详情页面 -->
+        <div id="characterDetailPage" class="page">
+            <button class="btn btn-secondary back-button" onclick="showPage('charactersPage')">← 返回角色库</button>
+            <div id="characterDetailContent"></div>
+        </div>
+
+        <!-- 设置页面 -->
+        <div id="settingsPage" class="page">
+            <div class="page-header">
+                <h1 class="page-title">数据管理</h1>
+                <p class="page-subtitle">备份、恢复与清理</p>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">数据备份</h3>
+                <p class="card-content">导出所有数据为JSON文件保存到手机</p>
+                <button class="btn btn-block" onclick="exportData()">导出数据</button>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">数据恢复</h3>
+                <p class="card-content">从JSON文件导入数据</p>
+                <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+                <button class="btn btn-block" onclick="document.getElementById('importFile').click()">选择文件导入</button>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">清除数据</h3>
+                <p class="card-content">清除示例数据或所有数据</p>
+                <button class="btn btn-secondary btn-block" onclick="clearExampleData()">清除示例数据</button>
+                <button class="btn btn-danger btn-block" onclick="clearAllData()">清除所有数据</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="showPage('quotesPage')">台词流</button>
+        <button class="nav-item" onclick="showPage('worksPage')">作品</button>
+        <button class="nav-item" onclick="showPage('charactersPage')">角色</button>
+        <button class="nav-item" onclick="showPage('settingsPage')">数据</button>
+    </nav>
+
+    <!-- 添加台词弹窗 -->
+    <div id="addQuoteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">添加台词</h2>
+                <button class="modal-close" onclick="closeModal('addQuoteModal')">&times;</button>
+            </div>
+
+            <div class="mode-toggle">
+                <button id="lightModeBtn" class="active" onclick="setQuoteMode('light')">轻量模式</button>
+                <button id="immersiveModeBtn" onclick="setQuoteMode('immersive')">沉浸模式</button>
+            </div>
+
+            <form id="addQuoteForm">
+                <div class="form-group">
+                    <label class="form-label">台词内容 *</label>
+                    <textarea id="quoteText" class="form-textarea" required placeholder="输入台词内容..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">作品 *</label>
+                    <select id="quoteWork" class="form-select" required>
+                        <option value="">选择作品</option>
+                    </select>
+                    <button type="button" class="btn btn-secondary btn-small" style="margin-top:8px;" onclick="openQuickAddWork()">+ 快速添加作品</button>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">角色 *</label>
+                    <select id="quoteCharacter" class="form-select" required>
+                        <option value="">选择角色</option>
+                    </select>
+                    <button type="button" class="btn btn-secondary btn-small" style="margin-top:8px;" onclick="openQuickAddCharacter()">+ 快速添加角色</button>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">场景/章节</label>
+                    <input type="text" id="quoteScene" class="form-input" placeholder="例如：第3章 哥谭之夜">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">标签</label>
+                    <div class="preset-tags" id="quotePresetTags"></div>
+                    <div class="tag-input-container">
+                        <input type="text" id="quoteTagInput" class="form-input" placeholder="输入自定义标签">
+                        <button type="button" class="btn btn-secondary" onclick="addQuoteTag()">添加</button>
+                    </div>
+                    <div class="tags" id="quoteTagsDisplay"></div>
+                </div>
+
+                <div class="form-group" id="impressionGroup" style="display:none;">
+                    <label class="form-label">此刻印象</label>
+                    <textarea id="quoteImpression" class="form-textarea" placeholder="写下你对说这句台词的角色的即时感受..."></textarea>
+                    <p class="form-hint">此印象仅与本条台词绑定，不会混入角色总评</p>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addQuoteModal')">取消</button>
+                    <button type="submit" class="btn">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 添加作品弹窗 -->
+    <div id="addWorkModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">添加作品</h2>
+                <button class="modal-close" onclick="closeModal('addWorkModal')">&times;</button>
+            </div>
+
+            <form id="addWorkForm">
+                <div class="form-group">
+                    <label class="form-label">作品名称 *</label>
+                    <input type="text" id="workName" class="form-input" required placeholder="例如：蝙蝠侠：黑暗骑士归来">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">封面图链接</label>
+                    <input type="url" id="workCover" class="form-input" placeholder="https://example.com/cover.jpg">
+                    <p class="form-hint">可选，留空则显示默认占位图</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">简介</label>
+                    <textarea id="workDescription" class="form-textarea" placeholder="简要介绍这部作品..."></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addWorkModal')">取消</button>
+                    <button type="submit" class="btn">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 添加角色弹窗 -->
+    <div id="addCharacterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">添加角色</h2>
+                <button class="modal-close" onclick="closeModal('addCharacterModal')">&times;</button>
+            </div>
+
+            <form id="addCharacterForm">
+                <div class="form-group">
+                    <label class="form-label">角色姓名 *</label>
+                    <input type="text" id="characterName" class="form-input" required placeholder="例如：布鲁斯·韦恩">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">头像链接</label>
+                    <input type="url" id="characterAvatar" class="form-input" placeholder="https://example.com/avatar.jpg">
+                    <p class="form-hint">可选，留空则显示默认占位图</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">总评/印象</label>
+                    <textarea id="characterReview" class="form-textarea" placeholder="写下你对这个角色的整体印象与评价..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">标签</label>
+                    <div class="preset-tags" id="characterPresetTags"></div>
+                    <div class="tag-input-container">
+                        <input type="text" id="characterTagInput" class="form-input" placeholder="输入自定义标签">
+                        <button type="button" class="btn btn-secondary" onclick="addCharacterTag()">添加</button>
+                    </div>
+                    <div class="tags" id="characterTagsDisplay"></div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addCharacterModal')">取消</button>
+                    <button type="submit" class="btn">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 编辑台词弹窗 -->
+    <div id="editQuoteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">编辑台词</h2>
+                <button class="modal-close" onclick="closeModal('editQuoteModal')">&times;</button>
+            </div>
+
+            <form id="editQuoteForm">
+                <input type="hidden" id="editQuoteId">
+                
+                <div class="form-group">
+                    <label class="form-label">台词内容 *</label>
+                    <textarea id="editQuoteText" class="form-textarea" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">作品 *</label>
+                    <select id="editQuoteWork" class="form-select" required>
+                        <option value="">选择作品</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">角色 *</label>
+                    <select id="editQuoteCharacter" class="form-select" required>
+                        <option value="">选择角色</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">场景/章节</label>
+                    <input type="text" id="editQuoteScene" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">标签</label>
+                    <div class="preset-tags" id="editQuotePresetTags"></div>
+                    <div class="tag-input-container">
+                        <input type="text" id="editQuoteTagInput" class="form-input" placeholder="输入自定义标签">
+                        <button type="button" class="btn btn-secondary" onclick="addEditQuoteTag()">添加</button>
+                    </div>
+                    <div class="tags" id="editQuoteTagsDisplay"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">此刻印象</label>
+                    <textarea id="editQuoteImpression" class="form-textarea"></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editQuoteModal')">取消</button>
+                    <button type="submit" class="btn">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 编辑作品弹窗 -->
+    <div id="editWorkModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">编辑作品</h2>
+                <button class="modal-close" onclick="closeModal('editWorkModal')">&times;</button>
+            </div>
+
+            <form id="editWorkForm">
+                <input type="hidden" id="editWorkId">
+                
+                <div class="form-group">
+                    <label class="form-label">作品名称 *</label>
+                    <input type="text" id="editWorkName" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">封面图链接</label>
+                    <input type="url" id="editWorkCover" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">简介</label>
+                    <textarea id="editWorkDescription" class="form-textarea"></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editWorkModal')">取消</button>
+                    <button type="submit" class="btn">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 编辑角色弹窗 -->
+    <div id="editCharacterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">编辑角色</h2>
+                <button class="modal-close" onclick="closeModal('editCharacterModal')">&times;</button>
+            </div>
+
+            <form id="editCharacterForm">
+                <input type="hidden" id="editCharacterId">
+                
+                <div class="form-group">
+                    <label class="form-label">角色姓名 *</label>
+                    <input type="text" id="editCharacterName" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">头像链接</label>
+                    <input type="url" id="editCharacterAvatar" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">总评/印象</label>
+                    <textarea id="editCharacterReview" class="form-textarea"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">标签</label>
+                    <div class="preset-tags" id="editCharacterPresetTags"></div>
+                    <div class="tag-input-container">
+                        <input type="text" id="editCharacterTagInput" class="form-input" placeholder="输入自定义标签">
+                        <button type="button" class="btn btn-secondary" onclick="addEditCharacterTag()">添加</button>
+                    </div>
+                    <div class="tags" id="editCharacterTagsDisplay"></div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editCharacterModal')">取消</button>
+                    <button type="submit" class="btn">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 确认对话框 -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">确认操作</h2>
+                <button class="modal-close" onclick="closeModal('confirmModal')">&times;</button>
+            </div>
+
+            <p class="confirm-text" id="confirmText"></p>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal('confirmModal')">取消</button>
+                <button class="btn btn-danger" id="confirmButton">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // 核心功能脚本 (保留原版代码，未作任何功能修改)
+        // ========================================
+
+        const PRESET_TAGS = [
+            '#起源故事', '#平行宇宙', '#蝙蝠家族', '#哥谭', '#大都会', 
+            '#正义联盟', '#反派视角', '#反英雄', '#城市守护者', '#侦探', 
+            '#超能力', '#科技装备', '#异世界冒险', '#魔法侧', '#时间线重启', 
+            '#新52', '#重生', '#闪点', '#黑标', '#异界', 
+            '#末日未来', '#经典台词', '#内心独白'
+        ];
+
+        let data = {
+            works: [],
+            characters: [],
+            quotes: [],
+            settings: {
+                theme: 'light'
+            }
+        };
+
+        let currentQuoteMode = 'light';
+        let currentQuoteTags = [];
+        let currentCharacterTags = [];
+        let currentEditQuoteTags = [];
+        let currentEditCharacterTags = [];
+
+        function init() {
+            loadData();
+            applyTheme();
+            renderAllLists();
+            setupEventListeners();
+            loadDraft();
+            refreshRandomQuote();
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('comicQuotesData');
+            if (saved) {
+                data = JSON.parse(saved);
+            } else {
+                loadExampleData();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('comicQuotesData', JSON.stringify(data));
+        }
+
+        function loadExampleData() {
+            data.works = [
+                {
+                    id: Date.now() + 1,
+                    name: '蝙蝠侠：黑暗骑士归来',
+                    cover: '',
+                    description: '弗兰克·米勒的经典之作，讲述年迈的布鲁斯·韦恩重新披上战袍的故事。',
+                    createdAt: Date.now()
+                },
+                {
+                    id: Date.now() + 2,
+                    name: '守望者',
+                    cover: '',
+                    description: 'DC旗下最具影响力的图像小说之一，探讨超级英雄的道德困境。',
+                    createdAt: Date.now() + 1000
+                }
+            ];
+
+            data.characters = [
+                {
+                    id: Date.now() + 10,
+                    name: '布鲁斯·韦恩',
+                    avatar: '',
+                    review: '哥谭的黑暗骑士，用恐惧对抗恐惧，永不妥协的正义守护者。',
+                    tags: ['#蝙蝠家族', '#哥谭', '#侦探'],
+                    starred: true,
+                    createdAt: Date.now()
+                },
+                {
+                    id: Date.now() + 11,
+                    name: '罗夏',
+                    avatar: '',
+                    review: '绝对的道德主义者，黑白分明，永不妥协。他的日记揭示了这个世界最黑暗的真相。',
+                    tags: ['#反英雄', '#经典台词'],
+                    starred: false,
+                    createdAt: Date.now() + 1000
+                }
+            ];
+
+            data.quotes = [
+                {
+                    id: Date.now() + 100,
+                    text: '我不是在这里拯救世界。我在这里惩罚罪恶。',
+                    workId: data.works[0].id,
+                    characterId: data.characters[0].id,
+                    scene: '第一章 重返哥谭',
+                    tags: ['#经典台词', '#城市守护者'],
+                    impression: '这句话完美诠释了蝙蝠侠的本质——他不是超人那样的救世主，而是黑暗中的复仇者。',
+                    createdAt: Date.now()
+                },
+                {
+                    id: Date.now() + 101,
+                    text: '这个城市害怕我。我看到了它的真面目：街道是延伸的下水道，下水道里满是血和污秽。',
+                    workId: data.works[1].id,
+                    characterId: data.characters[1].id,
+                    scene: '罗夏日记',
+                    tags: ['#内心独白', '#反英雄'],
+                    impression: '罗夏的世界观如此黑暗却又如此真实，他用最极端的方式守护着自己的正义。',
+                    createdAt: Date.now() + 2000
+                }
+            ];
+
+            saveData();
+        }
+
+        function toggleTheme() {
+            data.settings.theme = data.settings.theme === 'light' ? 'dark' : 'light';
+            saveData();
+            applyTheme();
+        }
+
+        function applyTheme() {
+            if (data.settings.theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            if (pageId === 'quotesPage') {
+                renderQuotesList();
+            } else if (pageId === 'worksPage') {
+                renderWorksList();
+            } else if (pageId === 'charactersPage') {
+                renderCharactersList();
+            }
+        }
+
+        function refreshRandomQuote() {
+            const scope = document.getElementById('randomScope').value;
+            const scopeValue = document.getElementById('randomScopeValue').value;
+            
+            let filteredQuotes = [...data.quotes];
+
+            if (scope === 'work' && scopeValue) {
+                filteredQuotes = filteredQuotes.filter(q => q.workId == scopeValue);
+            } else if (scope === 'character' && scopeValue) {
+                filteredQuotes = filteredQuotes.filter(q => q.characterId == scopeValue);
+            } else if (scope === 'tag' && scopeValue) {
+                filteredQuotes = filteredQuotes.filter(q => q.tags.includes(scopeValue));
+            }
+
+            const display = document.getElementById('randomQuoteDisplay');
+
+            if (filteredQuotes.length === 0) {
+                display.innerHTML = '<div class="random-quote-empty">没有符合条件的台词</div>';
+                return;
+            }
+
+            const randomQuote = filteredQuotes[Math.floor(Math.random() * filteredQuotes.length)];
+            const work = data.works.find(w => w.id === randomQuote.workId);
+            const character = data.characters.find(c => c.id === randomQuote.characterId);
+
+            display.innerHTML = `
+                <div class="random-quote-text">${randomQuote.text}</div>
+                <div class="random-quote-meta">
+                    —— ${character ? character.name : '未知角色'} · 《${work ? work.name : '未知作品'}》
+                    ${randomQuote.scene ? ' · ' + randomQuote.scene : ''}
+                </div>
+            `;
+            display.style.cursor = 'pointer';
+            display.onclick = () => showQuoteDetail(randomQuote.id);
+        }
+
+        document.getElementById('randomScope').addEventListener('change', function() {
+            const scopeValueSelect = document.getElementById('randomScopeValue');
+            const scope = this.value;
+
+            if (scope === 'all') {
+                scopeValueSelect.style.display = 'none';
+                scopeValueSelect.innerHTML = '';
+            } else if (scope === 'work') {
+                scopeValueSelect.style.display = 'block';
+                scopeValueSelect.innerHTML = '<option value="">选择作品</option>' +
+                    data.works.map(w => `<option value="${w.id}">${w.name}</option>`).join('');
+            } else if (scope === 'character') {
+                scopeValueSelect.style.display = 'block';
+                scopeValueSelect.innerHTML = '<option value="">选择角色</option>' +
+                    data.characters.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            } else if (scope === 'tag') {
+                scopeValueSelect.style.display = 'block';
+                const allTags = [...new Set(data.quotes.flatMap(q => q.tags))];
+                scopeValueSelect.innerHTML = '<option value="">选择标签</option>' +
+                    allTags.map(t => `<option value="${t}">${t}</option>`).join('');
+            }
+        });
+
+        function renderQuotesList() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filterWork = document.getElementById('filterWork').value;
+            const filterCharacter = document.getElementById('filterCharacter').value;
+            const filterTag = document.getElementById('filterTag').value;
+            const sortOrder = document.getElementById('sortOrder').value;
+
+            let filtered = data.quotes.filter(quote => {
+                const work = data.works.find(w => w.id === quote.workId);
+                const character = data.characters.find(c => c.id === quote.characterId);
+                
+                const matchSearch = !searchTerm || 
+                    quote.text.toLowerCase().includes(searchTerm) ||
+                    (work && work.name.toLowerCase().includes(searchTerm)) ||
+                    (character && character.name.toLowerCase().includes(searchTerm)) ||
+                    (quote.impression && quote.impression.toLowerCase().includes(searchTerm)) ||
+                    quote.tags.some(t => t.toLowerCase().includes(searchTerm));
+
+                const matchWork = !filterWork || quote.workId == filterWork;
+                const matchCharacter = !filterCharacter || quote.characterId == filterCharacter;
+                const matchTag = !filterTag || quote.tags.includes(filterTag);
+
+                return matchSearch && matchWork && matchCharacter && matchTag;
+            });
+
+            filtered.sort((a, b) => {
+                if (sortOrder === 'newest') return b.createdAt - a.createdAt;
+                if (sortOrder === 'oldest') return a.createdAt - b.createdAt;
+                if (sortOrder === 'character') {
+                    const charA = data.characters.find(c => c.id === a.characterId);
+                    const charB = data.characters.find(c => c.id === b.characterId);
+                    return (charA?.name || '').localeCompare(charB?.name || '');
+                }
+                if (sortOrder === 'work') {
+                    const workA = data.works.find(w => w.id === a.workId);
+                    const workB = data.works.find(w => w.id === b.workId);
+                    return (workA?.name || '').localeCompare(workB?.name || '');
+                }
+                return 0;
+            });
+
+            const container = document.getElementById('quotesList');
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">"</div>
+                        <div class="empty-state-text">暂无台词记录<br>点击上方按钮添加第一条台词</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(quote => {
+                const work = data.works.find(w => w.id === quote.workId);
+                const character = data.characters.find(c => c.id === quote.characterId);
+                
+                return `
+                    <div class="card quote-card">
+                        <div class="card-header">
+                            <div class="card-title">${character ? character.name : '未知角色'}</div>
+                            <div class="card-actions">
+                                <button class="btn btn-secondary btn-small" onclick="editQuote(${quote.id})">编辑</button>
+                                <button class="btn btn-danger btn-small" onclick="deleteQuote(${quote.id})">删除</button>
+                            </div>
+                        </div>
+                        <div class="quote-text">${quote.text}</div>
+                        ${quote.impression ? `
+                            <div class="quote-impression">
+                                <div class="quote-impression-label">此刻印象</div>
+                                ${quote.impression}
+                            </div>
+                        ` : ''}
+                        <div class="card-meta">
+                            <div>作品：《${work ? work.name : '未知作品'}》</div>
+                            ${quote.scene ? `<div>场景：${quote.scene}</div>` : ''}
+                            <div>时间：${new Date(quote.createdAt).toLocaleString('zh-CN')}</div>
+                        </div>
+                        ${quote.tags.length > 0 ? `
+                            <div class="tags">
+                                ${quote.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderWorksList() {
+            const container = document.getElementById('worksList');
+
+            if (data.works.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📚</div>
+                        <div class="empty-state-text">暂无作品<br>点击上方按钮添加第一部作品</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = data.works.map(work => {
+                const quoteCount = data.quotes.filter(q => q.workId === work.id).length;
+                return `
+                    <div class="grid-item" onclick="showWorkDetail(${work.id})">
+                        ${work.cover ? 
+                            `<img src="${work.cover}" class="grid-item-image" onerror="this.style.display='none'">` :
+                            `<div class="grid-item-image"></div>`
+                        }
+                        <div class="grid-item-title">${work.name}</div>
+                        <div class="grid-item-subtitle">${quoteCount} 条台词</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function showWorkDetail(workId) {
+            const work = data.works.find(w => w.id === workId);
+            if (!work) return;
+
+            const workQuotes = data.quotes.filter(q => q.workId === workId);
+            
+            const quotesByCharacter = {};
+            workQuotes.forEach(quote => {
+                const character = data.characters.find(c => c.id === quote.characterId);
+                const charName = character ? character.name : '未知角色';
+                if (!quotesByCharacter[charName]) {
+                    quotesByCharacter[charName] = [];
+                }
+                quotesByCharacter[charName].push(quote);
+            });
+
+            const content = document.getElementById('workDetailContent');
+            content.innerHTML = `
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">${work.name}</h2>
+                        <div class="card-actions">
+                            <button class="btn btn-secondary btn-small" onclick="editWork(${work.id})">编辑</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteWork(${work.id})">删除</button>
+                        </div>
+                    </div>
+                    ${work.description ? `<div class="card-content">${work.description}</div>` : ''}
+                    <div class="card-meta">
+                        共 ${workQuotes.length} 条台词
+                    </div>
+                </div>
+
+                ${Object.keys(quotesByCharacter).length > 0 ? 
+                    Object.keys(quotesByCharacter).map(charName => `
+                        <h3 class="group-title">${charName}</h3>
+                        ${quotesByCharacter[charName].map(quote => `
+                            <div class="card quote-card">
+                                <div class="quote-text">${quote.text}</div>
+                                ${quote.impression ? `
+                                    <div class="quote-impression">
+                                        <div class="quote-impression-label">此刻印象</div>
+                                        ${quote.impression}
+                                    </div>
+                                ` : ''}
+                                <div class="card-meta">
+                                    ${quote.scene ? `<div>场景：${quote.scene}</div>` : ''}
+                                    <div>时间：${new Date(quote.createdAt).toLocaleString('zh-CN')}</div>
+                                </div>
+                                ${quote.tags.length > 0 ? `
+                                    <div class="tags">
+                                        ${quote.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    `).join('') :
+                    '<div class="empty-state"><div class="empty-state-text">该作品暂无台词记录</div></div>'
+                }
+            `;
+
+            showPage('workDetailPage');
+        }
+
+        function renderCharactersList() {
+            const filterTag = document.getElementById('characterFilterTag').value;
+            const sortBy = document.getElementById('characterSort').value;
+
+            let filtered = data.characters.filter(char => {
+                return !filterTag || char.tags.includes(filterTag);
+            });
+
+            filtered.sort((a, b) => {
+                if (sortBy === 'starred') {
+                    if (a.starred && !b.starred) return -1;
+                    if (!a.starred && b.starred) return 1;
+                    return a.name.localeCompare(b.name);
+                }
+                if (sortBy === 'name') return a.name.localeCompare(b.name);
+                if (sortBy === 'recent') return b.createdAt - a.createdAt;
+                return 0;
+            });
+
+            const container = document.getElementById('charactersList');
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👤</div>
+                        <div class="empty-state-text">暂无角色<br>点击上方按钮添加第一个角色</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(char => {
+                const quoteCount = data.quotes.filter(q => q.characterId === char.id).length;
+                return `
+                    <div class="grid-item" onclick="showCharacterDetail(${char.id})">
+                        ${char.avatar ? 
+                            `<img src="${char.avatar}" class="grid-item-image" onerror="this.style.display='none'">` :
+                            `<div class="grid-item-image"></div>`
+                        }
+                        <div class="grid-item-title">
+                            ${char.name}
+                            <span class="star-icon ${char.starred ? 'starred' : ''}" onclick="event.stopPropagation(); toggleStar(${char.id})">★</span>
+                        </div>
+                        <div class="grid-item-subtitle">${quoteCount} 条台词</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function showCharacterDetail(charId) {
+            const character = data.characters.find(c => c.id === charId);
+            if (!character) return;
+
+            const charQuotes = data.quotes.filter(q => q.characterId === charId);
+            
+            const quotesByWork = {};
+            charQuotes.forEach(quote => {
+                const work = data.works.find(w => w.id === quote.workId);
+                const workName = work ? work.name : '未知作品';
+                if (!quotesByWork[workName]) {
+                    quotesByWork[workName] = [];
+                }
+                quotesByWork[workName].push(quote);
+            });
+
+            const content = document.getElementById('characterDetailContent');
+            content.innerHTML = `
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            ${character.name}
+                            <span class="star-icon ${character.starred ? 'starred' : ''}" onclick="toggleStar(${character.id})">★</span>
+                        </h2>
+                        <div class="card-actions">
+                            <button class="btn btn-secondary btn-small" onclick="editCharacter(${character.id})">编辑</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteCharacter(${character.id})">删除</button>
+                        </div>
+                    </div>
+                    ${character.review ? `
+                        <div class="card-content">
+                            <strong>总评：</strong>${character.review}
+                        </div>
+                    ` : ''}
+                    <div class="card-meta">
+                        共 ${charQuotes.length} 条台词
+                    </div>
+                    ${character.tags.length > 0 ? `
+                        <div class="tags">
+                            ${character.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+
+                ${Object.keys(quotesByWork).length > 0 ? 
+                    Object.keys(quotesByWork).map(workName => `
+                        <h3 class="group-title">《${workName}》</h3>
+                        ${quotesByWork[workName].map(quote => `
+                            <div class="card quote-card">
+                                <div class="quote-text">${quote.text}</div>
+                                ${quote.impression ? `
+                                    <div class="quote-impression">
+                                        <div class="quote-impression-label">此刻印象</div>
+                                        ${quote.impression}
+                                    </div>
+                                ` : ''}
+                                <div class="card-meta">
+                                    ${quote.scene ? `<div>场景：${quote.scene}</div>` : ''}
+                                    <div>时间：${new Date(quote.createdAt).toLocaleString('zh-CN')}</div>
+                                </div>
+                                ${quote.tags.length > 0 ? `
+                                    <div class="tags">
+                                        ${quote.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    `).join('') :
+                    '<div class="empty-state"><div class="empty-state-text">该角色暂无台词记录</div></div>'
+                }
+            `;
+
+            showPage('characterDetailPage');
+        }
+
+        function toggleStar(charId) {
+            const character = data.characters.find(c => c.id === charId);
+            if (character) {
+                character.starred = !character.starred;
+                saveData();
+                renderCharactersList();
+                if (document.getElementById('characterDetailPage').classList.contains('active')) {
+                    showCharacterDetail(charId);
+                }
+            }
+        }
+
+        function openAddQuoteModal() {
+            document.getElementById('addQuoteForm').reset();
+            currentQuoteTags = [];
+            currentQuoteMode = 'light';
+            
+            document.getElementById('lightModeBtn').classList.add('active');
+            document.getElementById('immersiveModeBtn').classList.remove('active');
+            document.getElementById('impressionGroup').style.display = 'none';
+
+            populateWorkSelect('quoteWork');
+            populateCharacterSelect('quoteCharacter');
+            renderPresetTags('quotePresetTags', 'quote');
+            renderQuoteTags();
+
+            document.getElementById('addQuoteModal').classList.add('active');
+        }
+
+        function setQuoteMode(mode) {
+            currentQuoteMode = mode;
+            if (mode === 'immersive') {
+                document.getElementById('lightModeBtn').classList.remove('active');
+                document.getElementById('immersiveModeBtn').classList.add('active');
+                document.getElementById('impressionGroup').style.display = 'block';
+            } else {
+                document.getElementById('lightModeBtn').classList.add('active');
+                document.getElementById('immersiveModeBtn').classList.remove('active');
+                document.getElementById('impressionGroup').style.display = 'none';
+            }
+        }
+
+        function addQuoteTag() {
+            const input = document.getElementById('quoteTagInput');
+            const tag = input.value.trim();
+            if (tag && !currentQuoteTags.includes(tag)) {
+                const formattedTag = tag.startsWith('#') ? tag : '#' + tag;
+                currentQuoteTags.push(formattedTag);
+                renderQuoteTags();
+                input.value = '';
+            }
+        }
+
+        function renderQuoteTags() {
+            const container = document.getElementById('quoteTagsDisplay');
+            container.innerHTML = currentQuoteTags.map(tag => 
+                `<span class="tag" onclick="removeQuoteTag('${tag}')">${tag} ×</span>`
+            ).join('');
+        }
+
+        function removeQuoteTag(tag) {
+            currentQuoteTags = currentQuoteTags.filter(t => t !== tag);
+            renderQuoteTags();
+        }
+
+        function renderPresetTags(containerId, context) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = PRESET_TAGS.map(tag => 
+                `<span class="preset-tag" onclick="selectPresetTag('${tag}', '${context}')">${tag}</span>`
+            ).join('');
+        }
+
+        function selectPresetTag(tag, context) {
+            if (context === 'quote') {
+                if (!currentQuoteTags.includes(tag)) {
+                    currentQuoteTags.push(tag);
+                    renderQuoteTags();
+                }
+            } else if (context === 'character') {
+                if (!currentCharacterTags.includes(tag)) {
+                    currentCharacterTags.push(tag);
+                    renderCharacterTags();
+                }
+            } else if (context === 'editQuote') {
+                if (!currentEditQuoteTags.includes(tag)) {
+                    currentEditQuoteTags.push(tag);
+                    renderEditQuoteTags();
+                }
+            } else if (context === 'editCharacter') {
+                if (!currentEditCharacterTags.includes(tag)) {
+                    currentEditCharacterTags.push(tag);
+                    renderEditCharacterTags();
+                }
+            }
+        }
+
+        document.getElementById('addQuoteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const quote = {
+                id: Date.now(),
+                text: document.getElementById('quoteText').value.trim(),
+                workId: parseInt(document.getElementById('quoteWork').value),
+                characterId: parseInt(document.getElementById('quoteCharacter').value),
+                scene: document.getElementById('quoteScene').value.trim(),
+                tags: [...currentQuoteTags],
+                impression: currentQuoteMode === 'immersive' ? document.getElementById('quoteImpression').value.trim() : '',
+                createdAt: Date.now()
+            };
+
+            data.quotes.push(quote);
+            saveData();
+            clearDraft();
+            closeModal('addQuoteModal');
+            renderQuotesList();
+            refreshRandomQuote();
+        });
+
+        function openAddWorkModal() {
+            document.getElementById('addWorkForm').reset();
+            document.getElementById('addWorkModal').classList.add('active');
+        }
+
+        function openQuickAddWork() {
+            closeModal('addQuoteModal');
+            openAddWorkModal();
+        }
+
+        document.getElementById('addWorkForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const work = {
+                id: Date.now(),
+                name: document.getElementById('workName').value.trim(),
+                cover: document.getElementById('workCover').value.trim(),
+                description: document.getElementById('workDescription').value.trim(),
+                createdAt: Date.now()
+            };
+
+            data.works.push(work);
+            saveData();
+            closeModal('addWorkModal');
+            renderWorksList();
+            populateWorkSelect('quoteWork');
+            updateFilterSelects();
+        });
+
+        function openAddCharacterModal() {
+            document.getElementById('addCharacterForm').reset();
+            currentCharacterTags = [];
+            renderPresetTags('characterPresetTags', 'character');
+            renderCharacterTags();
+            document.getElementById('addCharacterModal').classList.add('active');
+        }
+
+        function openQuickAddCharacter() {
+            closeModal('addQuoteModal');
+            openAddCharacterModal();
+        }
+
+        function addCharacterTag() {
+            const input = document.getElementById('characterTagInput');
+            const tag = input.value.trim();
+            if (tag && !currentCharacterTags.includes(tag)) {
+                const formattedTag = tag.startsWith('#') ? tag : '#' + tag;
+                currentCharacterTags.push(formattedTag);
+                renderCharacterTags();
+                input.value = '';
+            }
+        }
+
+        function renderCharacterTags() {
+            const container = document.getElementById('characterTagsDisplay');
+            container.innerHTML = currentCharacterTags.map(tag => 
+                `<span class="tag" onclick="removeCharacterTag('${tag}')">${tag} ×</span>`
+            ).join('');
+        }
+
+        function removeCharacterTag(tag) {
+            currentCharacterTags = currentCharacterTags.filter(t => t !== tag);
+            renderCharacterTags();
+        }
+
+        document.getElementById('addCharacterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const character = {
+                id: Date.now(),
+                name: document.getElementById('characterName').value.trim(),
+                avatar: document.getElementById('characterAvatar').value.trim(),
+                review: document.getElementById('characterReview').value.trim(),
+                tags: [...currentCharacterTags],
+                starred: false,
+                createdAt: Date.now()
+            };
+
+            data.characters.push(character);
+            saveData();
+            closeModal('addCharacterModal');
+            renderCharactersList();
+            populateCharacterSelect('quoteCharacter');
+            updateFilterSelects();
+        });
+
+        function editQuote(quoteId) {
+            const quote = data.quotes.find(q => q.id === quoteId);
+            if (!quote) return;
+
+            document.getElementById('editQuoteId').value = quote.id;
+            document.getElementById('editQuoteText').value = quote.text;
+            document.getElementById('editQuoteWork').value = quote.workId;
+            document.getElementById('editQuoteCharacter').value = quote.characterId;
+            document.getElementById('editQuoteScene').value = quote.scene || '';
+            document.getElementById('editQuoteImpression').value = quote.impression || '';
+            
+            currentEditQuoteTags = [...quote.tags];
+            
+            populateWorkSelect('editQuoteWork');
+            populateCharacterSelect('editQuoteCharacter');
+            renderPresetTags('editQuotePresetTags', 'editQuote');
+            renderEditQuoteTags();
+
+            document.getElementById('editQuoteModal').classList.add('active');
+        }
+
+        function addEditQuoteTag() {
+            const input = document.getElementById('editQuoteTagInput');
+            const tag = input.value.trim();
+            if (tag && !currentEditQuoteTags.includes(tag)) {
+                const formattedTag = tag.startsWith('#') ? tag : '#' + tag;
+                currentEditQuoteTags.push(formattedTag);
+                renderEditQuoteTags();
+                input.value = '';
+            }
+        }
+
+        function renderEditQuoteTags() {
+            const container = document.getElementById('editQuoteTagsDisplay');
+            container.innerHTML = currentEditQuoteTags.map(tag => 
+                `<span class="tag" onclick="removeEditQuoteTag('${tag}')">${tag} ×</span>`
+            ).join('');
+        }
+
+        function removeEditQuoteTag(tag) {
+            currentEditQuoteTags = currentEditQuoteTags.filter(t => t !== tag);
+            renderEditQuoteTags();
+        }
+
+        document.getElementById('editQuoteForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const quoteId = parseInt(document.getElementById('editQuoteId').value);
+            const quote = data.quotes.find(q => q.id === quoteId);
+            
+            if (quote) {
+                quote.text = document.getElementById('editQuoteText').value.trim();
+                quote.workId = parseInt(document.getElementById('editQuoteWork').value);
+                quote.characterId = parseInt(document.getElementById('editQuoteCharacter').value);
+                quote.scene = document.getElementById('editQuoteScene').value.trim();
+                quote.tags = [...currentEditQuoteTags];
+                quote.impression = document.getElementById('editQuoteImpression').value.trim();
+                
+                saveData();
+                closeModal('editQuoteModal');
+                renderQuotesList();
+                refreshRandomQuote();
+            }
+        });
+
+        function editWork(workId) {
+            const work = data.works.find(w => w.id === workId);
+            if (!work) return;
+
+            document.getElementById('editWorkId').value = work.id;
+            document.getElementById('editWorkName').value = work.name;
+            document.getElementById('editWorkCover').value = work.cover || '';
+            document.getElementById('editWorkDescription').value = work.description || '';
+
+            document.getElementById('editWorkModal').classList.add('active');
+        }
+
+        document.getElementById('editWorkForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const workId = parseInt(document.getElementById('editWorkId').value);
+            const work = data.works.find(w => w.id === workId);
+            
+            if (work) {
+                work.name = document.getElementById('editWorkName').value.trim();
+                work.cover = document.getElementById('editWorkCover').value.trim();
+                work.description = document.getElementById('editWorkDescription').value.trim();
+                
+                saveData();
+                closeModal('editWorkModal');
+                renderWorksList();
+                updateFilterSelects();
+                
+                if (document.getElementById('workDetailPage').classList.contains('active')) {
+                    showWorkDetail(workId);
+                }
+            }
+        });
+
+        function editCharacter(charId) {
+            const character = data.characters.find(c => c.id === charId);
+            if (!character) return;
+
+            document.getElementById('editCharacterId').value = character.id;
+            document.getElementById('editCharacterName').value = character.name;
+            document.getElementById('editCharacterAvatar').value = character.avatar || '';
+            document.getElementById('editCharacterReview').value = character.review || '';
+            
+            currentEditCharacterTags = [...character.tags];
+            
+            renderPresetTags('editCharacterPresetTags', 'editCharacter');
+            renderEditCharacterTags();
+
+            document.getElementById('editCharacterModal').classList.add('active');
+        }
+
+        function addEditCharacterTag() {
+            const input = document.getElementById('editCharacterTagInput');
+            const tag = input.value.trim();
+            if (tag && !currentEditCharacterTags.includes(tag)) {
+                const formattedTag = tag.startsWith('#') ? tag : '#' + tag;
+                currentEditCharacterTags.push(formattedTag);
+                renderEditCharacterTags();
+                input.value = '';
+            }
+        }
+
+        function renderEditCharacterTags() {
+            const container = document.getElementById('editCharacterTagsDisplay');
+            container.innerHTML = currentEditCharacterTags.map(tag => 
+                `<span class="tag" onclick="removeEditCharacterTag('${tag}')">${tag} ×</span>`
+            ).join('');
+        }
+
+        function removeEditCharacterTag(tag) {
+            currentEditCharacterTags = currentEditCharacterTags.filter(t => t !== tag);
+            renderEditCharacterTags();
+        }
+
+        document.getElementById('editCharacterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const charId = parseInt(document.getElementById('editCharacterId').value);
+            const character = data.characters.find(c => c.id === charId);
+            
+            if (character) {
+                character.name = document.getElementById('editCharacterName').value.trim();
+                character.avatar = document.getElementById('editCharacterAvatar').value.trim();
+                character.review = document.getElementById('editCharacterReview').value.trim();
+                character.tags = [...currentEditCharacterTags];
+                
+                saveData();
+                closeModal('editCharacterModal');
+                renderCharactersList();
+                updateFilterSelects();
+                
+                if (document.getElementById('characterDetailPage').classList.contains('active')) {
+                    showCharacterDetail(charId);
+                }
+            }
+        });
+
+        function deleteQuote(quoteId) {
+            showConfirm('确定要删除这条台词吗？此操作无法撤销。', () => {
+                data.quotes = data.quotes.filter(q => q.id !== quoteId);
+                saveData();
+                renderQuotesList();
+                refreshRandomQuote();
+            });
+        }
+
+        function deleteWork(workId) {
+            const quoteCount = data.quotes.filter(q => q.workId === workId).length;
+            showConfirm(
+                `确定要删除这部作品吗？${quoteCount > 0 ? `关联的 ${quoteCount} 条台词也将被删除。` : ''}此操作无法撤销。`,
+                () => {
+                    data.works = data.works.filter(w => w.id !== workId);
+                    data.quotes = data.quotes.filter(q => q.workId !== workId);
+                    saveData();
+                    showPage('worksPage');
+                    renderWorksList();
+                    updateFilterSelects();
+                    refreshRandomQuote();
+                }
+            );
+        }
+
+        function deleteCharacter(charId) {
+            const quoteCount = data.quotes.filter(q => q.characterId === charId).length;
+            showConfirm(
+                `确定要删除这个角色吗？${quoteCount > 0 ? `关联的 ${quoteCount} 条台词也将被删除。` : ''}此操作无法撤销。`,
+                () => {
+                    data.characters = data.characters.filter(c => c.id !== charId);
+                    data.quotes = data.quotes.filter(q => q.characterId !== charId);
+                    saveData();
+                    showPage('charactersPage');
+                    renderCharactersList();
+                    updateFilterSelects();
+                    refreshRandomQuote();
+                }
+            );
+        }
+
+        function exportData() {
+            const dataStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `comic-quotes-backup-${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    showConfirm(
+                        '选择导入方式：\n\n点击"确认"将覆盖现有数据\n点击"取消"后可选择合并数据',
+                        () => {
+                            data = importedData;
+                            saveData();
+                            renderAllLists();
+                            alert('数据导入成功（覆盖模式）');
+                        },
+                        () => {
+                            showConfirm(
+                                '是否合并导入的数据？\n\n合并模式会保留现有数据并添加新数据',
+                                () => {
+                                    mergeData(importedData);
+                                    saveData();
+                                    renderAllLists();
+                                    alert('数据合并成功');
+                                }
+                            );
+                        }
+                    );
+                } catch (error) {
+                    alert('导入失败：文件格式错误');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function mergeData(importedData) {
+            if (importedData.works) {
+                importedData.works.forEach(work => {
+                    work.id = Date.now() + Math.random();
+                    data.works.push(work);
+                });
+            }
+            if (importedData.characters) {
+                importedData.characters.forEach(char => {
+                    char.id = Date.now() + Math.random();
+                    data.characters.push(char);
+                });
+            }
+            if (importedData.quotes) {
+                importedData.quotes.forEach(quote => {
+                    quote.id = Date.now() + Math.random();
+                    data.quotes.push(quote);
+                });
+            }
+        }
+
+        function clearExampleData() {
+            showConfirm('确定要清除示例数据吗？', () => {
+                const exampleWorkIds = data.works.filter(w => 
+                    w.name.includes('蝙蝠侠') || w.name.includes('守望者')
+                ).map(w => w.id);
+                
+                const exampleCharIds = data.characters.filter(c => 
+                    c.name.includes('布鲁斯') || c.name.includes('罗夏')
+                ).map(c => c.id);
+
+                data.works = data.works.filter(w => !exampleWorkIds.includes(w.id));
+                data.characters = data.characters.filter(c => !exampleCharIds.includes(c.id));
+                data.quotes = data.quotes.filter(q => 
+                    !exampleWorkIds.includes(q.workId) && !exampleCharIds.includes(q.characterId)
+                );
+
+                saveData();
+                renderAllLists();
+                alert('示例数据已清除');
+            });
+        }
+
+        function clearAllData() {
+            showConfirm('警告：此操作将删除所有数据，包括作品、角色和台词。确定要继续吗？', () => {
+                data = {
+                    works: [],
+                    characters: [],
+                    quotes: [],
+                    settings: { theme: data.settings.theme }
+                };
+                saveData();
+                renderAllLists();
+                alert('所有数据已清除');
+            });
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function showConfirm(message, onConfirm, onCancel) {
+            document.getElementById('confirmText').textContent = message;
+            document.getElementById('confirmButton').onclick = () => {
+                closeModal('confirmModal');
+                if (onConfirm) onConfirm();
+            };
+            
+            if (onCancel) {
+                const cancelBtn = document.querySelector('#confirmModal .btn-secondary');
+                cancelBtn.onclick = () => {
+                    closeModal('confirmModal');
+                    onCancel();
+                };
+            }
+            
+            document.getElementById('confirmModal').classList.add('active');
+        }
+
+        function populateWorkSelect(selectId) {
+            const select = document.getElementById(selectId);
+            const currentValue = select.value;
+            select.innerHTML = '<option value="">选择作品</option>' +
+                data.works.map(w => `<option value="${w.id}">${w.name}</option>`).join('');
+            if (currentValue) select.value = currentValue;
+        }
+
+        function populateCharacterSelect(selectId) {
+            const select = document.getElementById(selectId);
+            const currentValue = select.value;
+            select.innerHTML = '<option value="">选择角色</option>' +
+                data.characters.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            if (currentValue) select.value = currentValue;
+        }
+
+        function updateFilterSelects() {
+            const filterWork = document.getElementById('filterWork');
+            filterWork.innerHTML = '<option value="">全部作品</option>' +
+                data.works.map(w => `<option value="${w.id}">${w.name}</option>`).join('');
+
+            const filterCharacter = document.getElementById('filterCharacter');
+            filterCharacter.innerHTML = '<option value="">全部角色</option>' +
+                data.characters.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+
+            const allQuoteTags = [...new Set(data.quotes.flatMap(q => q.tags))];
+            const filterTag = document.getElementById('filterTag');
+            filterTag.innerHTML = '<option value="">全部标签</option>' +
+                allQuoteTags.map(t => `<option value="${t}">${t}</option>`).join('');
+
+            const allCharTags = [...new Set(data.characters.flatMap(c => c.tags))];
+            const characterFilterTag = document.getElementById('characterFilterTag');
+            characterFilterTag.innerHTML = '<option value="">全部标签</option>' +
+                allCharTags.map(t => `<option value="${t}">${t}</option>`).join('');
+        }
+
+        function renderAllLists() {
+            renderQuotesList();
+            renderWorksList();
+            renderCharactersList();
+            updateFilterSelects();
+            refreshRandomQuote();
+        }
+
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', renderQuotesList);
+            document.getElementById('filterWork').addEventListener('change', renderQuotesList);
+            document.getElementById('filterCharacter').addEventListener('change', renderQuotesList);
+            document.getElementById('filterTag').addEventListener('change', renderQuotesList);
+            document.getElementById('sortOrder').addEventListener('change', renderQuotesList);
+            document.getElementById('characterFilterTag').addEventListener('change', renderCharactersList);
+            document.getElementById('characterSort').addEventListener('change', renderCharactersList);
+
+            const draftFields = ['quoteText', 'quoteScene', 'quoteImpression'];
+            draftFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('input', saveDraft);
+                }
+            });
+        }
+
+        function saveDraft() {
+            const draft = {
+                text: document.getElementById('quoteText').value,
+                scene: document.getElementById('quoteScene').value,
+                impression: document.getElementById('quoteImpression').value,
+                tags: currentQuoteTags
+            };
+            localStorage.setItem('quoteDraft', JSON.stringify(draft));
+        }
+
+        function loadDraft() {
+            const draft = localStorage.getItem('quoteDraft');
+            if (draft) {
+                try {
+                    const parsed = JSON.parse(draft);
+                } catch (e) {}
+            }
+        }
+
+        function clearDraft() {
+            localStorage.removeItem('quoteDraft');
+        }
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
