@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>静谧空间 · 个人导航</title>
+    <!-- 引入优雅的衬线与无衬线字体混搭 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- 引入图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* 淡淡忧郁的莫兰迪灰蓝调 */
+            --bg-color: #e2e6e9; 
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --glass-shadow: 0 12px 40px rgba(135, 148, 160, 0.12);
+            --text-main: #3b4754;
+            --text-sub: #768696;
+            --accent: #8395a7;
+            --card-hover-bg: rgba(255, 255, 255, 0.75);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth; /* 平滑滚动 */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            /* 允许原生窗口滚动 */
+        }
+
+        /* 全局胶片噪点滤镜 (营造Ins复古忧郁感) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+            z-index: 100;
+        }
+
+        /* 动态极光/雾气背景 - 低饱和莫兰迪色 */
+        .bg-blobs {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .blob {
+            position: absolute;
+            filter: blur(100px);
+            opacity: 0.7;
+            animation: float 25s infinite alternate ease-in-out;
+            border-radius: 50%;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #c5d1d8; }
+        .blob-2 { bottom: -20%; right: -10%; width: 60vw; height: 60vw; background: #d0cdd4; animation-delay: -5s; }
+        .blob-3 { top: 30%; left: 30%; width: 40vw; height: 40vw; background: #b8c5ca; animation-delay: -10s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(8%, 12%) scale(1.1); }
+        }
+
+        /* 布局容器 - 单列居中自上而下 */
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            gap: 2.5rem;
+            position: relative;
+        }
+
+        /* 玻璃拟态基础类 */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(120%);
+            -webkit-backdrop-filter: blur(20px) saturate(120%);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        /* ================= 1. 顶部时间区域 ================= */
+        .widget-clock {
+            text-align: center;
+            margin-top: 1rem;
+            animation: fadeInDown 0.8s ease backwards;
+        }
+        .widget-clock h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 4.5rem;
+            font-weight: 400;
+            letter-spacing: -2px;
+            margin-bottom: 0.2rem;
+            color: #2c3640;
+            text-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
+        }
+        .widget-clock p {
+            color: var(--text-sub);
+            font-size: 1.1rem;
+            font-weight: 400;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* ================= 2. 搜索与控制区域 ================= */
+        .top-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.8rem;
+            width: 100%;
+            animation: fadeIn 1s ease backwards 0.2s;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            width: 100%;
+            max-width: 750px; /* 居中限制宽度 */
+        }
+
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+        .search-box input {
+            width: 100%;
+            height: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.8);
+            background: rgba(255,255,255,0.5);
+            color: var(--text-main);
+            font-size: 1.05rem;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(135, 148, 160, 0.05);
+        }
+        .search-box input::placeholder {
+            color: #9ba7b3;
+        }
+        .search-box input:focus {
+            border-color: var(--accent);
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 6px 20px rgba(131, 149, 167, 0.15);
+        }
+        .search-box i {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-sub);
+            font-size: 1rem;
+        }
+
+        .btn-add {
+            width: auto;
+            padding: 0 1.8rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.4);
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+        .btn-add:hover {
+            background: var(--card-hover-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(135, 148, 160, 0.1);
+        }
+
+        /* ================= 3. 导航胶囊栏 ================= */
+        .nav-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            width: 100%;
+        }
+        .nav-bar a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-block;
+            padding: 0.6rem 1.4rem;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.45);
+            border: 1px solid rgba(255,255,255,0.6);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+        .nav-bar a:hover {
+            background: rgba(255,255,255,0.85);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(135, 148, 160, 0.12);
+            color: #2c3640;
+            border-color: rgba(255,255,255,0.9);
+        }
+
+        /* ================= 4. 主内容卡片区 ================= */
+        .main-content {
+            width: 100%;
+            padding-bottom: 2rem;
+            animation: fadeIn 1s ease backwards 0.4s;
+        }
+        
+        .group-section {
+            margin-bottom: 3.5rem;
+            scroll-margin-top: 2rem; /* 锚点跳转预留间距 */
+        }
+        .group-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2c3640;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .group-title::before {
+            content: '';
+            display: block;
+            width: 2px;
+            height: 1.2rem;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        /* 核心需求：强制双栏网格，无论何时不单列 */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr) !important; 
+            gap: 1.25rem;
+        }
+
+        /* 导航卡片 */
+        .link-card {
+            display: flex;
+            align-items: flex-start;
+            padding: 1.25rem;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            min-width: 0; /* 允许Flex子项收缩 */
+        }
+        .link-card:hover {
+            transform: translateY(-3px);
+            background: var(--card-hover-bg);
+            border-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 12px 30px rgba(120, 134, 148, 0.12);
+        }
+
+        .link-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.2rem;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .link-icon img {
+            width: 55%;
+            height: 55%;
+            object-fit: contain;
+        }
+        .link-icon i {
+            color: var(--text-sub);
+            font-size: 1.2rem;
+        }
+        
+        .link-info {
+            flex: 1;
+            min-width: 0; /* 保证文字超出时省略号生效 */
+        }
+        .link-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #3b4754;
+            margin-bottom: 0.35rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .link-desc {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            font-weight: 300;
+        }
+
+        /* 模态框 (添加链接) */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(226, 230, 233, 0.6);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal {
+            width: 100%;
+            max-width: 480px;
+            padding: 2.5rem;
+            transform: scale(0.95) translateY(10px);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: rgba(255, 255, 255, 0.85);
+        }
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+        .modal h2 { margin-bottom: 1.5rem; font-family: 'Noto Serif SC', serif; color: #2c3640; font-size: 1.5rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: var(--text-main); font-size: 0.9rem; font-weight: 500; }
+        .form-control { width: 100%; padding: 0.8rem 1rem; border-radius: 12px; border: 1px solid rgba(135, 148, 160, 0.3); background: rgba(255, 255, 255, 0.6); color: var(--text-main); outline: none; font-size: 0.95rem; transition: 0.3s; }
+        .form-control:focus { border-color: var(--accent); background: #fff; }
+        .modal-actions { display: flex; gap: 1rem; margin-top: 2rem; }
+        .btn { flex: 1; padding: 0.85rem; border-radius: 12px; border: none; font-weight: 500; cursor: pointer; transition: 0.3s; font-size: 0.95rem; }
+        .btn-cancel { background: rgba(135, 148, 160, 0.15); color: var(--text-main); }
+        .btn-cancel:hover { background: rgba(135, 148, 160, 0.25); }
+        .btn-submit { background: var(--accent); color: #fff; }
+        .btn-submit:hover { background: #728594; }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .container { padding: 2rem 1.2rem; gap: 2rem; }
+            .widget-clock h1 { font-size: 3.5rem; }
+            .search-container { flex-direction: column; }
+            .btn-add { width: 100%; padding: 1rem; }
+        }
+
+        /* 移动端细微打磨：坚持两列不堆叠的前提下优化拥挤度 */
+        @media (max-width: 600px) {
+            .links-grid { 
+                gap: 0.8rem; /* 减小列和行间距 */
+            }
+            .link-card { 
+                padding: 0.8rem; 
+            }
+            .link-icon {
+                width: 32px;
+                height: 32px;
+                margin-right: 0.6rem;
+                border-radius: 8px;
+            }
+            .link-icon i { font-size: 0.9rem; }
+            .link-title { 
+                font-size: 0.85rem; 
+                margin-bottom: 0.2rem; 
+            }
+            .link-desc { 
+                font-size: 0.75rem; 
+                line-height: 1.3; 
+                -webkit-line-clamp: 2; 
+            }
+            .nav-bar a { padding: 0.5rem 1rem; font-size: 0.85rem; }
+        }
+        
+        /* 极致窄屏微调 */
+        @media (max-width: 400px) {
+            .links-grid { gap: 0.6rem; }
+            .link-card { padding: 0.6rem; }
+            .link-icon { width: 28px; height: 28px; margin-right: 0.5rem; }
+            .link-title { font-size: 0.8rem; }
+            .link-desc { font-size: 0.7rem; }
+        }
+        
+        /* 全局隐形滚动条 */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(135, 148, 160, 0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(135, 148, 160, 0.4); }
+    </style>
+</head>
+<body>
+
+    <!-- 忧郁风模糊光斑背景 -->
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- 顶层自上而下居中容器 -->
+    <div class="container">
+        
+        <!-- 1. 顶部时钟区域 -->
+        <header class="widget-clock">
+            <h1 id="clock">00:00</h1>
+            <p id="greeting">时间在静静流淌</p>
+        </header>
+
+        <!-- 2. 搜索框与导航控制区 (位于时间下方，内容上方) -->
+        <div class="top-controls">
+            <!-- 搜索与新增 -->
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="搜索角落里的记忆...">
+                </div>
+                <button class="btn-add glass" onclick="openModal()">
+                    <i class="fas fa-plus"></i> 收录新岛屿
+                </button>
+            </div>
+
+            <!-- 点击可跳转的胶囊导航栏 -->
+            <nav class="nav-bar" id="topNavBar">
+                <!-- 导航锚点由JS动态生成 -->
+            </nav>
+        </div>
+
+        <!-- 3. 具体内容区 -->
+        <main class="main-content" id="mainContent">
+            <!-- 导航分组由JS动态生成 -->
+        </main>
+        
+    </div>
+
+    <!-- 添加链接模态框 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal glass">
+            <h2>收录新岛屿</h2>
+            <form id="addForm">
+                <div class="form-group">
+                    <label>归属群岛 (分组名称)</label>
+                    <input type="text" id="linkGroup" class="form-control" list="groupList" required placeholder="例如：奇妙探索">
+                    <datalist id="groupList"></datalist>
+                </div>
+                <div class="form-group">
+                    <label>岛屿名称 (网站名)</label>
+                    <input type="text" id="linkTitle" class="form-control" required placeholder="例如：The Useless Web">
+                </div>
+                <div class="form-group">
+                    <label>航线坐标 (URL)</label>
+                    <input type="url" id="linkUrl" class="form-control" required placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label>岛屿随笔 (一句话描述)</label>
+                    <input type="text" id="linkDesc" class="form-control" required placeholder="写下一句关于它的低语...">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeModal()">取消</button>
+                    <button type="submit" class="btn btn-submit">确认收录</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. 原封不动的深度数据 ---
+        const defaultData = [
+            {
+                group: "在线阅读",
+                links: [
+                    { title: "漫画人", url: "https://www.manhuaren.com", desc: "海量高清的漫画更新与在线阅读平台" },
+                    { title: "readcomiconline", url: "https://readcomiconline.li", desc: "资源极为丰富的生肉在线漫画网站" },
+                    { title: "batcave", url: "https://batcave.biz/", desc: "专注蝙蝠家族及相关汉化漫画的秘密基地" }
+                ]
+            },
+            {
+                group: "学术与思想",
+                links: [
+                    { title: "斯坦福哲学百科", url: "https://plato.stanford.edu", desc: "极具权威的线上哲学学术参考书" },
+                    { title: "互联网哲学百科全书", url: "https://iep.utm.edu", desc: "严谨的同行评审哲学在线资源" },
+                    { title: "Aeon", url: "https://aeon.co", desc: "探讨深层哲学、科学与人类文化的数字杂志" },
+                    { title: "Simply Psychology", url: "https://www.simplypsychology.org", desc: "通俗易懂的心理学理论与学生指南" },
+                    { title: "PEP Web", url: "https://pep-web.org", desc: "权威的精神分析文献与期刊数字档案" }
+                ]
+            },
+            {
+                group: "音乐与沉浸",
+                links: [
+                    { title: "Spotify", url: "https://open.spotify.com", desc: "发掘并聆听全球数百万首单曲与播客" },
+                    { title: "YouTube Music", url: "https://music.youtube.com", desc: "基于视频生态的流媒体音乐世界" },
+                    { title: "Radio Garden", url: "https://radio.garden", desc: "转动地球，收听世界各地的实时广播" },
+                    { title: "A Soft Murmur", url: "https://asoftmurmur.com/", desc: "自定义混合白噪音，洗刷尘世的喧嚣" }
+                ]
+            },
+            {
+                group: "阅读与灵感",
+                links: [
+                    { title: "Substack", url: "https://substack.com", desc: "优质的独立作者新闻邮件与写作平台" },
+                    { title: "The Marginalian", url: "https://www.themarginalian.org", desc: "对文学、科学与艺术的深度反思与摘录" },
+                    { title: "Are.na", url: "https://www.are.na/", desc: "无广告的视觉书签与创作者思维互联网络" }
+                ]
+            },
+            {
+                group: "创作与工具",
+                links: [
+                    { title: "World Anvil", url: "https://www.worldanvil.com", desc: "用于构建宏大世界观与跑团设定的终极工具" },
+                    { title: "Write.as", url: "https://write.as", desc: "无干扰的极简主义匿名写作空间" },
+                    { title: "Figma Community", url: "https://www.figma.com/community", desc: "探索设计师们共享的无尽UI资源与插件" },
+                    { title: "CodePen", url: "https://codepen.io/", desc: "前端开发者的创意代码实验沙盒" }
+                ]
+            },
+            {
+                group: "AI 角色与共创",
+                links: [
+                    { title: "Chub AI", url: "https://chub.ai/characters", desc: "汇聚海量AI角色设定的分享中心" },
+                    { title: "AI Character Cards", url: "https://aicharactercards.com", desc: "精选高质量的AI对话角色卡片库" },
+                    { title: "Lucid Cards", url: "https://lucid.cards", desc: "优雅且丰富的AI角色卡片探索站" },
+                    { title: "SillyTavern Cards", url: "https://cards.sillytavern.one", desc: "专为SillyTavern酒馆打造的角色卡库" },
+                    { title: "Pygmalion", url: "https://pygmalion.chat", desc: "开源且不受限制的AI角色扮演对话模型" },
+                    { title: "Character Hub", url: "https://www.characterhub.org", desc: "AI角色的灵感分享与社交平台" },
+                    { title: "Janitor AI", url: "https://janitorai.com", desc: "极高自由度的热门AI角色聊天室" },
+                    { title: "RPFiend Grimoire", url: "https://rpfiend.com/grimoire-launch-character-card-editor/", desc: "功能强大的本地角色卡片编辑器" },
+                    { title: "Card Converter", url: "https://www.charactercardconverter.com/", desc: "不同平台AI角色卡格式的万能转换器" },
+                    { title: "Tavern Card", url: "https://www.taverncard.com/about", desc: "发掘并分享酒馆角色的故事设定" },
+                    { title: "Tavern Sprite", url: "https://tavernsprite.com/", desc: "为你的酒馆AI提供精美灵动的角色资源" }
+                ]
+            },
+            {
+                group: "奇妙探索",
+                links: [
+                    { title: "The Useless Web", url: "https://theuselessweb.com", desc: "带你去往互联网上最无用的角落" },
+                    { title: "Neal.fun", url: "https://neal.fun/", desc: "充满奇思妙想与脑洞的交互式小游戏合集" },
+                    { title: "Window Swap", url: "https://www.window-swap.com/", desc: "打开世界某处陌生人窗外的风景" },
+                    { title: "This Person Does Not Exist", url: "https://thispersondoesnotexist.com/", desc: "每次刷新都会生成一张并不存在的人脸" },
+                    { title: "MapCrunch", url: "https://www.mapcrunch.com/", desc: "随机把你丢到地球上某个有街景的角落" },
+                    { title: "Pointer Pointer", url: "https://pointerpointer.com/", desc: "用奇妙的照片指引你鼠标光标的位置" },
+                    { title: "Hacker Typer", url: "https://hackertyper.net/", desc: "在键盘上乱敲，假装自己是黑客电影主角" },
+                    { title: "Boomcatcher", url: "https://www.boomcatcher.com/", desc: "发掘充满创意和美感的数字艺术体验" },
+                    { title: "Cool Explore", url: "https://www.coolexplore.com/zh/", desc: "收集全球各类有趣且冷门的宝藏网站" },
+                    { title: "qqll.fun", url: "https://qqll.fun/", desc: "奇妙且略带神秘的小众趣味实验田" }
+                ]
+            },
+            {
+                group: "极客与复古",
+                links: [
+                    { title: "TV Tropes", url: "https://tvtropes.org", desc: "解构一切虚构作品的流行文化与梗百科" },
+                    { title: "Neocities", url: "https://neocities.org", desc: "复兴Web 1.0精神的纯手工个人主页托管" },
+                    { title: "Windows 93", url: "https://www.windows93.net/", desc: "充满恶搞和怀旧风情的浏览器操作系统" },
+                    { title: "Internet Archive", url: "https://archive.org/", desc: "保存人类数字记忆的伟岸互联网档案馆" }
+                ]
+            },
+            {
+                group: "权威数据库 (DC)",
+                links: [
+                    { title: "DC Database", url: "https://dc.fandom.com", desc: "极详尽的DC宇宙维基百科全书" },
+                    { title: "Comic Vine", url: "https://comicvine.gamespot.com", desc: "全面的漫画角色与期刊大词典" },
+                    { title: "Mike's Amazing World", url: "https://www.mikesamazingworld.com", desc: "专注经典漫画出版历史的数据库" },
+                    { title: "Grand Comics Database", url: "https://www.comics.org", desc: "由志愿者维护的全球最大漫画资料库" }
+                ]
+            },
+            {
+                group: "同人与社区 (DC)",
+                links: [
+                    { title: "Reddit r/DCcomics", url: "https://www.reddit.com/r/DCcomics", desc: "极其活跃的综合性Reddit DC讨论板块" },
+                    { title: "AO3", url: "https://archiveofourown.org", desc: "全球最大、质量最高的同人小说宝库" },
+                    { title: "Tumblr", url: "https://www.tumblr.com", desc: "同人美图、GIF与奇思妙想的发源地" },
+                    { title: "Fanlore", url: "https://fanlore.org", desc: "记录同人圈历史、术语与文化的百科" },
+                    { title: "Shipping Wiki", url: "https://shipping.fandom.com", desc: "专门收录各路CP与配对设定的百科" }
+                ]
+            },
+            {
+                group: "阅读指引与资讯",
+                links: [
+                    { title: "Comic Book Herald", url: "https://www.comicbookherald.com", desc: "优质的新手入坑与大事件阅读指南" },
+                    { title: "DC Reading Order", url: "https://dcreadingorder.net", desc: "沉浸式的大事件与补漫绝对时间线排版" },
+                    { title: "GamesRadar Comics", url: "https://www.gamesradar.com/comics", desc: "专业的漫画评测、访谈与未来期刊前瞻" }
+                ]
+            }
+        ];
+
+        let bookmarksData = JSON.parse(localStorage.getItem('melancholyBookmarks')) || defaultData;
+
+        // --- 2. 核心渲染功能 ---
+        function renderBookmarks(filterText = "") {
+            const mainContent = document.getElementById('mainContent');
+            const topNavBar = document.getElementById('topNavBar');
+            const groupList = document.getElementById('groupList'); 
+            
+            mainContent.innerHTML = '';
+            topNavBar.innerHTML = '';
+            groupList.innerHTML = '';
+
+            bookmarksData.forEach((groupData, index) => {
+                const filteredLinks = groupData.links.filter(link => 
+                    link.title.toLowerCase().includes(filterText.toLowerCase()) || 
+                    link.desc.toLowerCase().includes(filterText.toLowerCase())
+                );
+
+                if (filteredLinks.length === 0) return;
+
+                const groupId = `group-${index}`;
+
+                // 1. 生成顶部横向胶囊导航
+                const navItem = document.createElement('a');
+                navItem.href = `#${groupId}`;
+                navItem.innerText = groupData.group;
+                topNavBar.appendChild(navItem);
+
+                // 2. 更新表单的分组下拉提示
+                const option = document.createElement('option');
+                option.value = groupData.group;
+                groupList.appendChild(option);
+
+                // 3. 渲染主内容分组容器
+                const section = document.createElement('section');
+                section.className = 'group-section';
+                section.id = groupId;
+
+                const title = document.createElement('h2');
+                title.className = 'group-title';
+                title.innerText = groupData.group;
+                section.appendChild(title);
+
+                const grid = document.createElement('div');
+                grid.className = 'links-grid';
+
+                // 渲染链接卡片
+                filteredLinks.forEach(link => {
+                    const card = document.createElement('a');
+                    card.className = 'link-card glass';
+                    card.href = link.url;
+                    card.target = "_blank";
+                    
+                    const domain = new URL(link.url).hostname;
+                    const iconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+
+                    card.innerHTML = `
+                        <div class="link-icon">
+                            <img src="${iconUrl}" alt="icon" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\\'fas fa-paper-plane\\'></i>'">
+                        </div>
+                        <div class="link-info">
+                            <div class="link-title">${link.title}</div>
+                            <div class="link-desc">${link.desc}</div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+                section.appendChild(grid);
+                mainContent.appendChild(section);
+            });
+        }
+
+        // --- 3. 诗意的时钟与问候 ---
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('clock').innerText = `${hours.toString().padStart(2, '0')}:${minutes}`;
+
+            let greeting = "时间在静静流淌";
+            if (hours >= 5 && hours < 11) greeting = "晨雾还未散去，早安。";
+            else if (hours >= 11 && hours < 16) greeting = "午后的阳光也带点慵懒。";
+            else if (hours >= 16 && hours < 20) greeting = "日落了，世界慢慢变得安静。";
+            else greeting = "夜深了，留一盏灯给你。";
+            
+            document.getElementById('greeting').innerText = greeting;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- 4. 搜索功能 ---
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            renderBookmarks(e.target.value);
+        });
+
+        // --- 5. 模态框与添加功能 ---
+        const modal = document.getElementById('modalOverlay');
+        const form = document.getElementById('addForm');
+
+        function openModal() {
+            modal.classList.add('active');
+            document.getElementById('linkGroup').focus();
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            setTimeout(() => form.reset(), 300);
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const groupName = document.getElementById('linkGroup').value.trim();
+            const newLink = {
+                title: document.getElementById('linkTitle').value.trim(),
+                url: document.getElementById('linkUrl').value.trim(),
+                desc: document.getElementById('linkDesc').value.trim()
+            };
+
+            let groupIndex = bookmarksData.findIndex(g => g.group === groupName);
+            
+            if (groupIndex > -1) {
+                bookmarksData[groupIndex].links.push(newLink);
+            } else {
+                bookmarksData.push({
+                    group: groupName,
+                    links: [newLink]
+                });
+            }
+
+            localStorage.setItem('melancholyBookmarks', JSON.stringify(bookmarksData));
+            renderBookmarks();
+            closeModal();
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // 初始渲染
+        renderBookmarks();
+
+    </script>
+</body>
+</html>
