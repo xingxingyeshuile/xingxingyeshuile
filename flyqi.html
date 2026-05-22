@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>补刊物飞行棋 - Vaporwave Edition</title>
+    <style>
+        /* 基础变量与重置 - 蒸汽波 & 玻璃拟态风格 */
+        :root {
+            --color-bg: #120b29; 
+            --color-text: #e0f2fe; 
+            --color-border: rgba(255, 255, 255, 0.2);
+            --color-accent-pink: #ff2a85;
+            --color-accent-cyan: #00f3ff;
+            --color-accent-purple: #9d4edd;
+            
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            
+            --font-main: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font-main);
+            color: var(--color-text);
+            background-color: var(--color-bg);
+            background-image: 
+                linear-gradient(to bottom, transparent 60%, rgba(255, 42, 133, 0.15) 100%),
+                radial-gradient(circle at 50% 50%, #2a1050 0%, #120b29 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 0;
+        }
+
+        /* 蒸汽波透视网格背景动画 */
+        body::before {
+            content: '';
+            position: fixed;
+            bottom: -50%;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.2) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: perspective(600px) rotateX(60deg);
+            z-index: -1;
+            pointer-events: none;
+            animation: gridMove 10s linear infinite;
+        }
+        @keyframes gridMove {
+            0% { transform: perspective(600px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(600px) rotateX(60deg) translateY(50px); }
+        }
+
+        /* 全局滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.4); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 243, 255, 0.7); }
+
+        /* 顶部导航 */
+        header {
+            background: rgba(18, 11, 41, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 243, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-title { 
+            font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; 
+            color: #fff; text-shadow: 2px 2px 0px var(--color-accent-pink), -2px -2px 0px var(--color-accent-cyan);
+            font-style: italic;
+        }
+        .header-info { display: none; font-weight: bold; font-size: 1.2rem; color: var(--color-accent-cyan); text-shadow: 0 0 5px rgba(0,243,255,0.5); }
+        .btn-home {
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); cursor: pointer; color: #fff; backdrop-filter: blur(5px);
+            padding: 6px 16px; font-size: 1rem; font-weight: bold; border-radius: 8px;
+            transition: all 0.3s ease; display: flex; align-items: center; gap: 5px;
+        }
+        .btn-home:hover { background: rgba(255, 255, 255, 0.2); border-color: var(--color-accent-cyan); box-shadow: 0 0 10px rgba(0, 243, 255, 0.5); transform: translateY(-2px); }
+        .btn-home:active { transform: translateY(0); }
+
+        /* 主容器 */
+        .container { flex: 1; display: flex; flex-direction: column; width: 100%; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1;}
+        @media (min-width: 1024px) { .container { flex-direction: row; } }
+
+        /* 开局设置 */
+        #setup-screen { 
+            padding: 25px; background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: var(--glass-border); margin: 20px; box-shadow: var(--glass-shadow); border-radius: 12px; color: #fff;
+        }
+        .setup-section { margin-bottom: 25px; }
+        .setup-title { 
+            font-size: 1.2rem; font-weight: bold; margin-bottom: 10px; padding-bottom: 5px; 
+            border-bottom: 1px solid var(--color-accent-cyan); color: var(--color-accent-cyan); text-shadow: 0 0 5px rgba(0, 243, 255, 0.5);
+        }
+        .radio-group { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 10px; }
+        .radio-label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: bold; color: #fff; }
+        
+        /* 表单控件优化 */
+        .custom-comic-input { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
+        .custom-comic-input input, .custom-comic-input select, .modal-input, .modal-select {
+            padding: 10px; font-family: inherit; font-size: 1rem; font-weight: bold;
+            background: rgba(0, 0, 0, 0.3) !important; border: 1px solid rgba(255, 255, 255, 0.2) !important; color: #fff !important; border-radius: 6px; backdrop-filter: blur(5px); transition: all 0.3s ease;
+        }
+        .custom-comic-input input:focus, .custom-comic-input select:focus, .modal-input:focus, .modal-select:focus {
+            outline: none; border-color: var(--color-accent-cyan) !important; box-shadow: 0 0 8px rgba(0, 243, 255, 0.5);
+        }
+        option { background: var(--color-bg); color: #fff; }
+        .custom-comic-input input { flex: 2; min-width: 150px; }
+        .custom-comic-input select { flex: 1; min-width: 100px; }
+
+        .btn-remove-input { 
+            padding: 8px 12px; font-size: 1rem; cursor: pointer; font-weight: bold; transition: all 0.3s ease;
+            background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: var(--color-accent-pink); border-radius: 8px; backdrop-filter: blur(5px);
+        }
+        .btn-remove-input:hover { box-shadow: 0 0 8px rgba(255, 42, 133, 0.5); background: rgba(255, 42, 133, 0.1); border-color: var(--color-accent-pink); }
+        .btn-remove-input:active { transform: translateY(2px); }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); cursor: pointer;
+            padding: 10px 20px; font-size: 1.1rem; font-weight: 900; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease; text-transform: uppercase; border-radius: 8px; color: #fff; backdrop-filter: blur(5px);
+        }
+        .btn:hover { background: rgba(255, 255, 255, 0.2); border-color: var(--color-accent-cyan); box-shadow: 0 0 10px rgba(0, 243, 255, 0.5); transform: translateY(-2px); }
+        .btn:active { transform: translateY(0); }
+        .btn-primary { background: linear-gradient(45deg, var(--color-accent-purple), var(--color-accent-pink)); border: none; box-shadow: 0 4px 15px rgba(255, 42, 133, 0.4); }
+        .btn-primary:hover { background: linear-gradient(45deg, #b565f5, #ff4c99); box-shadow: 0 0 20px rgba(255, 42, 133, 0.7); border-color: transparent;}
+        .btn-danger { background: rgba(255, 42, 133, 0.2); border-color: var(--color-accent-pink); color: #fff; }
+        .btn-danger:hover { box-shadow: 0 0 10px rgba(255, 42, 133, 0.5); background: rgba(255, 42, 133, 0.4); }
+        .btn-add { background: rgba(255, 255, 255, 0.1); padding: 8px 15px; }
+
+        /* 游戏界面 */
+        #game-screen { display: none; width: 100%; flex: 1; flex-direction: column; }
+        @media (min-width: 1024px) { #game-screen { flex-direction: row; } }
+        
+        /* 棋盘区 */
+        .board-area { flex: 3; padding: 20px; display: flex; flex-direction: column; position: relative; }
+        .board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; position: relative; }
+        @media (min-width: 600px) { .board { grid-template-columns: repeat(6, 1fr); gap: 12px; } }
+        @media (min-width: 900px) { .board { grid-template-columns: repeat(8, 1fr); } }
+        @media (min-width: 1200px) { .board { grid-template-columns: repeat(10, 1fr); } }
+
+        .tile {
+            background: rgba(255,255,255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;
+            aspect-ratio: 1 / 1.2; padding: 5px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center; position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); transition: all 0.3s ease; z-index: 1;
+            backdrop-filter: blur(5px); color: #fff;
+        }
+        .tile:hover { transform: translateY(-5px) scale(1.05); background: rgba(255,255,255, 0.1); box-shadow: 0 10px 20px rgba(0, 243, 255, 0.2); border-color: var(--color-accent-cyan); z-index: 2;}
+        .tile-icon { font-size: 1.8rem; margin-bottom: 4px; line-height: 1; }
+        .tile-text { font-size: 0.75rem; font-weight: bold; line-height: 1.3; word-break: break-all; }
+        .tile-num { position: absolute; top: 4px; left: 6px; font-size: 0.65rem; color: rgba(255, 255, 255, 0.4); font-weight: 900; }
+        
+        /* 特殊格子颜色 */
+        .tile.start { background: rgba(0, 243, 255, 0.15); border-color: var(--color-accent-cyan); }
+        .tile.end { background: rgba(255, 42, 133, 0.15); border-color: var(--color-accent-pink); }
+        .tile.event { background: rgba(157, 78, 221, 0.15); border-color: var(--color-accent-purple); }
+        .tile.catchup { background: rgba(255, 255, 0, 0.1); border-color: rgba(255, 255, 0, 0.5); }
+
+        /* 棋子动画与样式优化 */
+        .player {
+            position: absolute; top: 0; left: 0; width: 32px; height: 32px; 
+            background: radial-gradient(circle, #fff, var(--color-accent-cyan)); border: none; border-radius: 50%; z-index: 10;
+            box-shadow: 0 0 15px var(--color-accent-cyan), 0 0 30px var(--color-accent-cyan);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex; align-items: center; justify-content: center; color: #000; font-weight: 900; font-size: 14px;
+            pointer-events: none;
+        }
+
+        /* 底部控制区 */
+        .controls { margin-top: auto; padding: 25px 0 10px; display: flex; justify-content: center; align-items: center; gap: 20px; }
+        .dice-btn {
+            width: 80px; height: 80px; background: rgba(255, 255, 255, 0.1); border: 2px solid var(--color-accent-cyan);
+            font-size: 2.5rem; font-weight: 900; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2); transition: all 0.3s ease;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); color: var(--color-accent-cyan); backdrop-filter: blur(10px);
+        }
+        .dice-btn:hover:not(:disabled) { box-shadow: 0 0 25px rgba(0, 243, 255, 0.7), inset 0 0 15px rgba(0, 243, 255, 0.4); transform: scale(1.05); }
+        .dice-btn:active:not(:disabled) { transform: translateY(4px) scale(0.95); box-shadow: none; }
+        .dice-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); box-shadow: none; border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.5); }
+        .dice-btn.rolling { animation: rollAnim 0.3s infinite linear; box-shadow: 0 0 30px rgba(255, 42, 133, 0.8), inset 0 0 20px rgba(255, 42, 133, 0.5); border-color: var(--color-accent-pink); color: var(--color-accent-pink); }
+        @keyframes rollAnim { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.1); } 100% { transform: rotate(360deg) scale(1); } }
+        
+        .reroll-container { display: flex; flex-direction: column; align-items: center; }
+        .reroll-count { font-weight: bold; margin-bottom: 5px; color: var(--color-accent-cyan); text-shadow: 0 0 5px rgba(0, 243, 255, 0.5); }
+
+        /* 右侧面板 */
+        .side-panel {
+            flex: 1; background: var(--glass-bg); border-left: var(--glass-border); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            padding: 20px; display: flex; flex-direction: column; overflow-y: auto;
+            max-height: calc(100vh - 65px); min-width: 320px; color: #fff;
+        }
+        @media (max-width: 1023px) {
+            .side-panel { border-left: none; border-top: var(--glass-border); max-height: none; }
+        }
+        .panel-block { margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px; background: rgba(255, 255, 255, 0.03); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); border-radius: 8px; }
+        .panel-title { font-size: 1.1rem; font-weight: 900; border-bottom: 1px solid var(--color-accent-purple); padding-bottom: 6px; margin-bottom: 12px; background: transparent; color: var(--color-accent-cyan); padding-left: 0; text-shadow: 0 0 5px rgba(0, 243, 255, 0.3); }
+        .stat-line { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 6px; font-size: 0.95rem;}
+        
+        .comic-list { list-style: none; }
+        .empty-state-list { text-align: center; color: rgba(255, 255, 255, 0.5); font-size: 0.9rem; padding: 15px 0; font-weight: bold; font-style: italic; }
+        .comic-item {
+            border: 1px solid rgba(255, 255, 255, 0.1); padding: 10px; margin-bottom: 10px; border-radius: 6px;
+            font-size: 0.9rem; position: relative; background: rgba(255, 255, 255, 0.05); transition: all 0.2s; color: #fff;
+        }
+        .comic-item:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); }
+        .comic-item.shelved { opacity: 0.5; background: rgba(0, 0, 0, 0.2); text-decoration: line-through; text-decoration-color: rgba(255,255,255,0.5); }
+        .comic-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 6px; font-size: 1rem; }
+        .comic-type { font-size: 0.75rem; padding: 2px 6px; background: rgba(255, 255, 255, 0.1); color: #fff; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); }
+        .comic-issues { font-size: 0.85rem; color: rgba(255, 255, 255, 0.7); font-weight: bold; }
+        .comic-item.active-comic { border-color: var(--color-accent-cyan); box-shadow: 0 0 10px rgba(0, 243, 255, 0.3); background: rgba(0, 243, 255, 0.1); }
+
+        /* 模态框体系 */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000;
+            backdrop-filter: blur(5px); animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .modal {
+            background: rgba(20, 10, 40, 0.8); border: 1px solid rgba(0, 243, 255, 0.3); padding: 25px; max-width: 90%; width: 420px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 243, 255, 0.2); position: relative; border-radius: 12px;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: #fff;
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes slideUp { from { transform: translateY(30px) scale(0.95); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+
+        .modal-title { font-size: 1.35rem; font-weight: 900; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; color: var(--color-accent-cyan); text-shadow: 0 0 5px rgba(0, 243, 255, 0.5); }
+        .modal-content { font-size: 1.05rem; line-height: 1.6; margin-bottom: 25px; font-weight: bold; color: rgba(255, 255, 255, 0.9); }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 12px; flex-wrap: wrap;}
+        
+        .modal-input-group { margin-bottom: 15px; padding-top: 5px; }
+
+        /* 小提示 (Toast) */
+        .toast {
+            position: fixed; top: 75px; left: 50%; transform: translateX(-50%); 
+            background: rgba(255, 42, 133, 0.85); border: 1px solid rgba(255, 255, 255, 0.3); color: #fff; 
+            padding: 12px 24px; font-weight: bold; border-radius: 30px;
+            z-index: 1100; opacity: 0; transition: opacity 0.3s; pointer-events: none; text-align: center;
+            box-shadow: 0 0 15px rgba(255, 42, 133, 0.5); backdrop-filter: blur(10px); font-size: 1rem; letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">补刊物飞行棋</div>
+        <div class="header-info" id="header-lap-info"></div>
+        <button class="btn-home" onclick="promptReset()" aria-label="返回首页"><span style="font-size:1.2rem">⌂</span> 返回首页</button>
+    </header>
+
+    <div class="container">
+        <!-- 开局设置 -->
+        <div id="setup-screen">
+            <div class="setup-section">
+                <div class="setup-title">1. 选择模式</div>
+                <div class="radio-group" role="radiogroup" aria-label="选择游戏模式">
+                    <label class="radio-label"><input type="radio" name="mode" value="target36" checked> 终点模式 (36格)</label>
+                    <label class="radio-label"><input type="radio" name="mode" value="target50"> 终点模式 (50格)</label>
+                    <label class="radio-label"><input type="radio" name="mode" value="infinite"> 无限循环模式</label>
+                </div>
+            </div>
+
+            <div class="setup-section">
+                <div class="setup-title">2. 添加自定义补刊计划 (可选)</div>
+                <p style="font-size: 0.9rem; margin-bottom: 12px; font-weight: bold; color: rgba(255,255,255,0.7);">留空则全盘使用通用随机任务。支持使用逗号分隔批量添加多个（例如：蝙蝠侠, 超人）。点击“开始游戏”时将自动保存本列表。</p>
+                <div id="custom-inputs">
+                    <!-- JS动态加载渲染 localStorage 数据 -->
+                </div>
+                <button class="btn btn-add" onclick="addCustomInput()">+ 添加更多刊物</button>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; font-size: 1.3rem; padding: 15px; margin-top: 10px;" onclick="startGame()">▶ 开始游戏</button>
+        </div>
+
+        <!-- 游戏主界面 -->
+        <div id="game-screen">
+            <div class="board-area">
+                <div class="board" id="board">
+                    <!-- 动态生成格子，棋子也会动态注入到这里避免计算偏移 -->
+                </div>
+                
+                <div class="controls">
+                    <div class="reroll-container" id="reroll-container" style="display: none;">
+                        <div class="reroll-count">重掷次数: <span id="reroll-num">0</span></div>
+                        <button class="btn btn-add" onclick="useReroll()">使用重掷 ⭾</button>
+                    </div>
+                    <button class="dice-btn" id="dice-btn" onclick="rollDice()" aria-label="掷骰子">🎲</button>
+                </div>
+            </div>
+
+            <div class="side-panel">
+                <div class="panel-block">
+                    <div class="panel-title">数据监控板</div>
+                    <div class="stat-line"><span>当前位置:</span> <span id="stat-pos">第 0 格</span></div>
+                    <div class="stat-line"><span>投掷总数:</span> <span id="stat-rolls">0 次</span></div>
+                    <div class="stat-line" id="stat-lap-line" style="display:none;"><span>当前圈数:</span> <span id="stat-laps">第 1 圈</span></div>
+                    <div class="stat-line" style="color:var(--color-accent-pink); text-shadow: 0 0 5px rgba(255,42,133,0.5); display:none;" id="stat-buff"><span>当前状态:</span> <span>✦ 下次期数×2</span></div>
+                </div>
+
+                <div class="panel-block" style="flex: 1; overflow-y: auto;">
+                    <div class="panel-title">在补刊物 (<span id="active-count">0</span>)</div>
+                    <ul class="comic-list" id="active-comics-list" aria-live="polite"></ul>
+                </div>
+
+                <div class="panel-block">
+                    <div class="panel-title">搁置列表 (<span id="shelved-count">0</span>)</div>
+                    <ul class="comic-list" id="shelved-comics-list" aria-live="polite"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框 -->
+    <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal">
+            <div class="modal-title" id="modal-title">标题</div>
+            <div class="modal-content" id="modal-content">内容</div>
+            <div class="modal-actions" id="modal-actions"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="alert" aria-live="polite">提示信息</div>
+
+<script>
+    // --- 工具类函数 ---
+    
+    // 安全转义函数，防范 XSS
+    function escapeHtml(value) {
+        if (!value) return '';
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#39;");
+    }
+
+    // 标准洗牌算法 (Fisher-Yates Shuffle)，保证打乱足够均匀
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    // --- 图标与类型映射 ---
+    const ICON = {
+        '主宇宙': '◉', '平行宇宙': '◎', '异世界': '◈', '黑标': '⬩', '斜线刊': '◫', '大事件': '⬡', '自定义': '⊡',
+        '↻': '↻', '↺': '↺', '↩': '↩', '↼': '↼', '⇥': '⇥', '⇤': '⇤', '⇄': '⇄', '⊘': '⊘', '✦': '✦', '⭾': '⭾', '▶': '▶', '⚑': '⚑'
+    };
+    const GENERIC_TYPES = ['主宇宙', '平行宇宙', '异世界', '黑标', '斜线刊', '大事件'];
+
+    // --- 状态管理 ---
+    const defaultState = {
+        mode: 'target36',
+        totalTiles: 36,
+        board: [],
+        position: 0,
+        lap: 1,
+        comics: [], 
+        lastComicId: null,
+        buffDouble: false,
+        rerolls: 0,
+        skipNextTurn: false,
+        totalRolls: 0,
+        isStarted: false,
+        isAnimating: false,
+        comicIdCounter: 1
+    };
+    let state = JSON.parse(JSON.stringify(defaultState));
+
+    // --- DOM 元素关联 ---
+    const UI = {
+        setupScreen: document.getElementById('setup-screen'),
+        gameScreen: document.getElementById('game-screen'),
+        board: document.getElementById('board'),
+        diceBtn: document.getElementById('dice-btn'),
+        headerLapInfo: document.getElementById('header-lap-info'),
+        statPos: document.getElementById('stat-pos'),
+        statRolls: document.getElementById('stat-rolls'),
+        statLaps: document.getElementById('stat-laps'),
+        statLapLine: document.getElementById('stat-lap-line'),
+        statBuff: document.getElementById('stat-buff'),
+        activeList: document.getElementById('active-comics-list'),
+        shelvedList: document.getElementById('shelved-comics-list'),
+        activeCount: document.getElementById('active-count'),
+        shelvedCount: document.getElementById('shelved-count'),
+        modalOverlay: document.getElementById('modal-overlay'),
+        modalTitle: document.getElementById('modal-title'),
+        modalContent: document.getElementById('modal-content'),
+        modalActions: document.getElementById('modal-actions'),
+        toast: document.getElementById('toast'),
+        rerollContainer: document.getElementById('reroll-container'),
+        rerollNum: document.getElementById('reroll-num'),
+        player: null 
+    };
+
+    // --- 初始化与持久化存储逻辑 ---
+    
+    // 加载 localStorage 保存的输入
+    function loadCustomInputs() {
+        const saved = localStorage.getItem('customComics');
+        const container = document.getElementById('custom-inputs');
+        container.innerHTML = ''; 
+        
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                if (data && data.length > 0) {
+                    data.forEach(item => {
+                        addCustomInput(item.name, item.type);
+                    });
+                    return;
+                }
+            } catch(e) {}
+        }
+        // 默认情况提供一个空栏
+        addCustomInput();
+    }
+    window.addEventListener('DOMContentLoaded', loadCustomInputs);
+
+    function addCustomInput(name = '', type = '主宇宙') {
+        const div = document.createElement('div');
+        div.className = 'custom-comic-input';
+        div.innerHTML = `
+            <input type="text" placeholder="如: 蝙蝠侠, 超人" class="cc-name" aria-label="输入刊物名称" value="${escapeHtml(name)}">
+            <select class="cc-type" aria-label="选择宇宙类型">
+                <option value="主宇宙" ${type==='主宇宙'?'selected':''}>主宇宙 ◉</option><option value="平行宇宙" ${type==='平行宇宙'?'selected':''}>平行宇宙 ◎</option>
+                <option value="异世界" ${type==='异世界'?'selected':''}>异世界 ◈</option><option value="黑标" ${type==='黑标'?'selected':''}>黑标 ⬩</option>
+                <option value="斜线刊" ${type==='斜线刊'?'selected':''}>斜线刊 ◫</option><option value="大事件" ${type==='大事件'?'selected':''}>大事件 ⬡</option>
+                <option value="自定义" ${type==='自定义'?'selected':''}>自定义 ⊡</option>
+            </select>
+            <button class="btn-remove-input" onclick="this.parentElement.remove()" aria-label="移除此项" title="移除此项">✖</button>
+        `;
+        document.getElementById('custom-inputs').appendChild(div);
+    }
+
+    function promptReset() {
+        if (!state.isStarted) { 
+            showToast('尚未开始游戏'); 
+            return; 
+        }
+        if (confirm('确定要返回首页吗？当前所有补刊进度将被清空！')) {
+            resetGame();
+        }
+    }
+
+    function resetGame() {
+        state = JSON.parse(JSON.stringify(defaultState));
+        UI.gameScreen.style.display = 'none';
+        UI.setupScreen.style.display = 'block';
+        UI.headerLapInfo.style.display = 'none';
+        UI.modalOverlay.style.display = 'none';
+        UI.diceBtn.disabled = false;
+        
+        loadCustomInputs(); // 重建表单时自动调用读取逻辑
+    }
+
+    function startGame() {
+        const modeInput = document.querySelector('input[name="mode"]:checked').value;
+        state.mode = modeInput;
+        state.totalTiles = modeInput === 'target50' ? 50 : 36;
+        
+        const customComicsData = [];
+        const inputs = document.querySelectorAll('.custom-comic-input');
+        const customMissions = [];
+        
+        inputs.forEach(div => {
+            const rawValue = div.querySelector('.cc-name').value;
+            const type = div.querySelector('.cc-type').value;
+            
+            // 存入待持久化的数组（不去重不拆分，还原用户本来填写的内容）
+            if (rawValue.trim() !== '') {
+                customComicsData.push({ name: rawValue, type: type });
+            }
+
+            // 解析生成游戏的任务列表
+            const names = rawValue.split(/[,，]/).map(n => n.trim()).filter(n => n);
+            names.forEach(name => {
+                customMissions.push({ name, type });
+            });
+        });
+
+        // 核心改动：把当前填写的状态保存进 localStorage
+        localStorage.setItem('customComics', JSON.stringify(customComicsData));
+
+        generateBoard(customMissions);
+        
+        state.isStarted = true;
+        UI.setupScreen.style.display = 'none';
+        UI.gameScreen.style.display = 'flex';
+        
+        if (state.mode === 'infinite') {
+            UI.headerLapInfo.style.display = 'block';
+            UI.statLapLine.style.display = 'flex';
+        } else {
+            UI.headerLapInfo.style.display = 'none';
+            UI.statLapLine.style.display = 'none';
+        }
+
+        renderBoard();
+        updateUI();
+        requestAnimationFrame(() => {
+            updatePlayerPosition();
+        });
+    }
+
+    // --- 棋盘生成引擎 ---
+    function generateBoard(customMissions) {
+        let middleSlots = state.mode === 'infinite' ? state.totalTiles - 1 : state.totalTiles - 2;
+        let middleTiles = [];
+
+        // 1. 必选填坑 (4个)
+        middleTiles.push({ type: 'CATCHUP_LAST', text: '补上次后续3期', icon: '↻', issues: 3 });
+        middleTiles.push({ type: 'CATCHUP_UNFIN', text: '选未完成补2期', icon: '↺', issues: 2 });
+        middleTiles.push({ type: 'CATCHUP_SHELVED', text: '补搁置刊物3期', icon: '↩', issues: 3 });
+        middleTiles.push({ type: 'CATCHUP_RANDOM', text: '抽已开启补2期', icon: '↼', issues: 2 });
+
+        // 2. 固定事件 (6个)
+        const events = [
+            { type: 'EVT_FWD', text: '联动刊 前进4格', icon: '⇥' },
+            { type: 'EVT_BWD', text: '买重了 后退3格', icon: '⇤' },
+            { type: 'EVT_JUMP', text: '跳转最近补后续', icon: '⇄' },
+            { type: 'EVT_SKIP', text: '休刊 暂停掷骰', icon: '⊘' },
+            { type: 'EVT_DBL', text: '灵感 下次期数×2', icon: '✦' },
+            { type: 'EVT_REROLL', text: '借刊 获重掷机会', icon: '⭾' }
+        ];
+        
+        let remainingSlots = middleSlots - 4;
+        let eventsToKeep = remainingSlots >= 6 ? 6 : Math.max(remainingSlots, 4);
+        
+        for (let i = 0; i < eventsToKeep; i++) middleTiles.push(events[i]);
+        remainingSlots -= eventsToKeep;
+
+        // 3. 注入自定义任务
+        let customToAdd = Math.min(customMissions.length, Math.max(0, remainingSlots));
+        let shuffledCustom = shuffle([...customMissions]);
+        
+        for (let i = 0; i < customToAdd; i++) {
+            let num = Math.floor(Math.random() * 5) + 1;
+            middleTiles.push({
+                type: 'CUSTOM',
+                name: shuffledCustom[i].name, 
+                cType: shuffledCustom[i].type,
+                text: `补《${shuffledCustom[i].name}》${num}期`,
+                icon: ICON[shuffledCustom[i].type] || '⊡',
+                issues: num
+            });
+        }
+        remainingSlots -= customToAdd;
+
+        // 4. 通用模糊任务填充剩余
+        for (let i = 0; i < remainingSlots; i++) {
+            let num = Math.floor(Math.random() * 5) + 1;
+            let gType = GENERIC_TYPES[Math.floor(Math.random() * GENERIC_TYPES.length)];
+            middleTiles.push({
+                type: 'GENERIC',
+                cType: gType,
+                text: `补${gType}刊物${num}期`,
+                icon: ICON[gType],
+                issues: num
+            });
+        }
+
+        middleTiles = shuffle(middleTiles);
+
+        // 5. 组装头尾
+        state.board = [{ type: 'START', text: '补刊计划启动', icon: '▶' }];
+        state.board = state.board.concat(middleTiles);
+        if (state.mode !== 'infinite') {
+            state.board.push({ type: 'END', text: '阶段性达成', icon: '⚑' });
+        }
+    }
+
+    function renderBoard() {
+        UI.board.innerHTML = '';
+        
+        state.board.forEach((t, index) => {
+            const el = document.createElement('div');
+            let typeClass = t.type === 'START' ? 'start' : t.type === 'END' ? 'end' : t.type.startsWith('EVT') ? 'event' : (t.type.startsWith('CATCHUP') ? 'catchup' : '');
+            el.className = `tile ${typeClass}`;
+            el.id = `tile-${index}`;
+            el.innerHTML = `
+                <div class="tile-num">${index}</div>
+                <div class="tile-icon">${t.icon}</div>
+                <div class="tile-text">${escapeHtml(t.text)}</div>
+            `;
+            UI.board.appendChild(el);
+        });
+
+        if (!UI.player) {
+            UI.player = document.createElement('div');
+            UI.player.className = 'player';
+            UI.player.id = 'player';
+            UI.player.innerHTML = '1';
+        }
+        UI.board.appendChild(UI.player);
+    }
+
+    // --- 核心交互逻辑 ---
+    function endTurn() {
+        state.isAnimating = false;
+        UI.diceBtn.disabled = false;
+        updateUI();
+    }
+    
+    function showToast(msg) {
+        UI.toast.textContent = msg;
+        UI.toast.style.opacity = 1;
+        setTimeout(() => UI.toast.style.opacity = 0, 2500);
+    }
+
+    async function rollDice() {
+        if (state.isAnimating) return;
+        state.isAnimating = true;
+        UI.diceBtn.disabled = true;
+
+        if (state.skipNextTurn) {
+            state.skipNextTurn = false;
+            showModal({ title: '⊘ 休刊一回合', contentHTML: '本回合作者外出取材，休刊一次。下回合恢复掷骰。', buttons: [{text: '确定', class: 'btn-primary', onClick: () => endTurn()}] });
+            return;
+        }
+        
+        UI.diceBtn.classList.add('rolling');
+        await new Promise(r => setTimeout(r, 450));
+        
+        const steps = Math.floor(Math.random() * 6) + 1;
+        UI.diceBtn.classList.remove('rolling');
+        UI.diceBtn.textContent = steps;
+        state.totalRolls++;
+        
+        await movePlayer(steps);
+    }
+
+    function useReroll() {
+        if (state.isAnimating || state.rerolls <= 0) return;
+        state.rerolls--;
+        updateUI();
+        showToast('🎲 消耗重掷机会！');
+        rollDice();
+    }
+
+    async function movePlayer(steps) {
+        const stepDelay = 220; 
+        let direction = steps > 0 ? 1 : -1;
+        let absSteps = Math.abs(steps);
+
+        for (let i = 0; i < absSteps; i++) {
+            let nextPos = state.position + direction;
+            
+            if (state.mode === 'infinite') {
+                if (nextPos >= state.totalTiles) { nextPos = 0; state.lap++; }
+                if (nextPos < 0) { nextPos = state.totalTiles - 1; state.lap = Math.max(1, state.lap - 1); }
+            } else {
+                if (nextPos >= state.totalTiles - 1) { nextPos = state.totalTiles - 1; i = absSteps; }
+                if (nextPos < 0) { nextPos = 0; }
+            }
+            
+            state.position = nextPos;
+            updatePlayerPosition();
+            updateUI();
+            
+            await new Promise(r => setTimeout(r, stepDelay));
+            
+            if (state.mode !== 'infinite' && state.position === state.totalTiles - 1) break;
+        }
+
+        setTimeout(() => triggerTileEvent(state.position), 150);
+    }
+
+    function updatePlayerPosition() {
+        const tile = document.getElementById(`tile-${state.position}`);
+        if (!tile || !UI.player) return;
+        
+        const targetX = tile.offsetLeft + (tile.offsetWidth / 2) - (UI.player.offsetWidth / 2);
+        const targetY = tile.offsetTop + (tile.offsetHeight / 2) - (UI.player.offsetHeight / 2);
+        
+        UI.player.style.transform = `translate(${targetX}px, ${targetY}px)`;
+    }
+
+    function getComicById(id) { return state.comics.find(c => c.id == id); }
+    function getActiveComics() { return state.comics.filter(c => !c.isShelved); }
+    function getShelvedComics() { return state.comics.filter(c => c.isShelved); }
+
+    async function doAddIssues(comicId, baseCount, title) {
+        let count = baseCount;
+        if (state.buffDouble) {
+            count *= 2;
+            state.buffDouble = false;
+            showToast('✦ 增益生效：期数超级翻倍！');
+        }
+        
+        let comic = getComicById(comicId);
+        let oldCount = comic.issues;
+        comic.issues += count;
+        comic.isShelved = false; 
+        
+        let start = oldCount + 1;
+        let end = comic.issues;
+        if (start === end) comic.desc = comic.desc ? `${comic.desc}, 第${start}期` : `第${start}期`;
+        else comic.desc = comic.desc ? `${comic.desc}, 第${start}-${end}期` : `第${start}-${end}期`;
+        
+        state.lastComicId = comicId;
+        updateUI();
+
+        let msg = `成功为《${escapeHtml(comic.name)}》增加了 ${count} 期。<br><br>🏁 当前总进度: <strong>${comic.issues}期</strong>。`;
+        
+        await new Promise(resolve => {
+            showModal({ title, contentHTML: msg, buttons: [{ text: '确定', class: 'btn-primary', onClick: () => resolve() }] });
+        });
+
+        if (oldCount < 12 && comic.issues >= 12) {
+            await new Promise(resolve => {
+                showModal({
+                    title: '🎉 补刊里程碑！',
+                    contentHTML: `《${escapeHtml(comic.name)}》已累计补满12期！<br><br>获得激励奖励：<b>前进2格</b>，且<b>重掷机会+1</b>！`,
+                    buttons: [{ text: '领取奖励', class: 'btn-danger', onClick: () => resolve() }]
+                });
+            });
+            state.rerolls++;
+            updateUI();
+            movePlayer(2); 
+        } else {
+            endTurn();
+        }
+    }
+
+    async function doShelve(comicId, title) {
+        let comic = getComicById(comicId);
+        if(comic) comic.isShelved = true;
+        updateUI();
+        
+        await new Promise(resolve => {
+            showModal({
+                title: `${title} - 已搁置`,
+                contentHTML: `已将《${comic ? escapeHtml(comic.name) : '未知'}》放入搁置区。<br>作为拖延惩罚：<b>后退3格</b>。`,
+                buttons: [{ text: '自吞苦果', onClick: () => resolve() }]
+            });
+        });
+        movePlayer(-3);
+    }
+
+    // --- 事件路由分发器 ---
+    function triggerTileEvent(index) {
+        const tile = state.board[index];
+        if(!tile) { endTurn(); return; }
+        const title = `${tile.icon} ${escapeHtml(tile.text)}`; 
+
+        switch (tile.type) {
+            case 'START':
+                showModal({ title: '▶ 起点', contentHTML: '补刊计划正式启动！掷出你的第一步吧。', buttons: [{text: '出发', class:'btn-primary', onClick: () => endTurn()}] });
+                break;
+            case 'END':
+                handleEndGame(); 
+                break;
+            case 'EVT_FWD':
+                showModal({ title, contentHTML: '意外发现了珍稀联动刊，士气大振！', buttons: [{text: '前进4格', class: 'btn-primary', onClick: () => movePlayer(4)}] });
+                break;
+            case 'EVT_BWD':
+                showModal({ title, contentHTML: '糟糕，迷糊买到了重复的期数...', buttons: [{text: '退货后退3格', onClick: () => movePlayer(-3)}] });
+                break;
+            case 'EVT_SKIP':
+                state.skipNextTurn = true;
+                showModal({ title, contentHTML: '作者休刊采风去了。下回合你只能干瞪眼。', buttons: [{text: '无奈接受', onClick: () => endTurn()}] });
+                break;
+            case 'EVT_DBL':
+                state.buffDouble = true;
+                updateUI();
+                showModal({ title, contentHTML: '整理书架获得突发灵感！下一次补刊行动（任意形式）期数直接翻倍！', buttons: [{text: '太棒了', class: 'btn-primary', onClick: () => endTurn()}] });
+                break;
+            case 'EVT_REROLL':
+                state.rerolls++;
+                updateUI();
+                showModal({ title, contentHTML: '朋友借走了一本你看完的实体刊，并送你一枚神秘骰子作为谢礼。', buttons: [{text: '收下重掷机会', class: 'btn-primary', onClick: () => endTurn()}] });
+                break;
+            case 'EVT_JUMP':
+                handleJump(title);
+                break;
+            case 'CUSTOM':
+                handleCustom(tile, title);
+                break;
+            case 'GENERIC':
+                handleGeneric(tile, title);
+                break;
+            case 'CATCHUP_LAST':
+                handleCatchupLast(tile, title);
+                break;
+            case 'CATCHUP_UNFIN':
+                handleCatchupUnfin(tile, title);
+                break;
+            case 'CATCHUP_SHELVED':
+                handleCatchupShelved(tile, title);
+                break;
+            case 'CATCHUP_RANDOM':
+                handleCatchupRandom(tile, title);
+                break;
+            default:
+                endTurn();
+        }
+    }
+
+    function handleJump(title) {
+        let target = -1;
+        for (let i = state.position + 1; i < state.board.length; i++) {
+            if (state.board[i].type.startsWith('CATCHUP')) { target = i; break; }
+        }
+        if (target === -1 && state.mode === 'infinite') {
+            for (let i = 0; i < state.position; i++) {
+                if (state.board[i].type.startsWith('CATCHUP')) { target = i; break; }
+            }
+        }
+
+        if (target !== -1) {
+            let steps = target - state.position;
+            if (steps < 0) steps += state.totalTiles; 
+            showModal({ title, contentHTML: '收到神秘推荐信，借助虫洞跃迁到最近的补坑点！', buttons: [{text: '立即跃迁', class: 'btn-primary', onClick: () => movePlayer(steps)}] });
+        } else {
+            showModal({ title, contentHTML: '环顾四周，目前毫无补坑任务可以接取，原地休息。', buttons: [{text: '确定', onClick: () => endTurn()}] });
+        }
+    }
+
+    function handleCustom(tile, title) {
+        let comic = state.comics.find(c => c.name === tile.name);
+        if (!comic) {
+            comic = { id: state.comicIdCounter++, name: tile.name, type: tile.cType, issues: 0, desc: '', isShelved: false };
+            state.comics.push(comic);
+        }
+        showModal({
+            title, contentHTML: `请准备阅读《${escapeHtml(comic.name)}》${tile.issues}期。`,
+            buttons: [
+                { text: '马上开看', class: 'btn-primary', onClick: () => doAddIssues(comic.id, tile.issues, title) },
+                { text: '无情搁置', class: 'btn-add', onClick: () => doShelve(comic.id, title) }
+            ]
+        });
+    }
+
+    function handleGeneric(tile, title) {
+        let typeComics = getActiveComics().filter(c => c.type === tile.cType);
+        let content = `<p>请在下方选择或创建一本【${escapeHtml(tile.cType)}】刊物补看 ${tile.issues} 期：</p>`;
+        
+        let hasExisting = typeComics.length > 0;
+        if (hasExisting) {
+            content += `<select id="modal-select" class="modal-select" style="margin-top:10px;">`;
+            typeComics.forEach(c => content += `<option value="${c.id}">${escapeHtml(c.name)} (已补${c.issues}期)</option>`);
+            content += `<option value="NEW">-- ➕ 创建新刊物 --</option></select>`;
+        }
+        
+        let displayNew = hasExisting ? 'style="display:none;"' : '';
+        content += `
+            <div id="modal-new-input" ${displayNew} class="modal-input-group">
+                <input type="text" id="modal-input-name" placeholder="请输入新刊物名称" class="modal-input">
+            </div>
+        `;
+
+        showModal({
+            title, contentHTML: content,
+            buttons: [
+                { text: '确认补签', class: 'btn-primary', onClick: () => {
+                    let select = document.getElementById('modal-select');
+                    let chosenId = select ? select.value : 'NEW';
+                    if (chosenId === 'NEW') {
+                        let name = document.getElementById('modal-input-name').value.trim();
+                        if (!name) { showToast('请输入有效刊物名称！'); return false; } 
+                        let newComic = { id: state.comicIdCounter++, name, type: tile.cType, issues: 0, desc: '', isShelved: false };
+                        state.comics.push(newComic);
+                        doAddIssues(newComic.id, tile.issues, title);
+                    } else {
+                        doAddIssues(chosenId, tile.issues, title);
+                    }
+                }},
+                { text: '推辞搁置', class: 'btn-add', onClick: () => {
+                     let select = document.getElementById('modal-select');
+                     let chosenId = select ? select.value : null;
+                     if(chosenId && chosenId !== 'NEW') doShelve(chosenId, title);
+                     else { showToast('放弃创建，执行惩罚后退3格'); movePlayer(-3); }
+                }}
+            ]
+        });
+
+        const selectEl = document.getElementById('modal-select');
+        if (selectEl) {
+            selectEl.addEventListener('change', (e) => {
+                document.getElementById('modal-new-input').style.display = e.target.value === 'NEW' ? 'block' : 'none';
+            });
+        }
+    }
+
+    function handleCatchupLast(tile, title) {
+        let comic = getComicById(state.lastComicId);
+        if (!comic || comic.isShelved) {
+            handleGenericFallback(tile, title, '当前没有历史记录或最近一期已被搁置，请手动选择一本补偿阅读 3 期。', 3);
+            return;
+        }
+        showModal({
+            title, contentHTML: `继续阅读上次尚未读过瘾的《${escapeHtml(comic.name)}》 ${tile.issues}期。`,
+            buttons: [
+                { text: '接力续看', class: 'btn-primary', onClick: () => doAddIssues(comic.id, tile.issues, title) },
+                { text: '没兴趣搁置', class: 'btn-add', onClick: () => doShelve(comic.id, title) }
+            ]
+        });
+    }
+
+    function handleCatchupUnfin(tile, title) {
+        let unfin = getActiveComics().filter(c => c.issues > 0);
+        if (unfin.length === 0) {
+            handleGenericFallback(tile, title, '完美！当前没有任何遗留坑位，请新开一本打发 2 期时光。', 2, true);
+            return;
+        }
+        
+        let content = `<p>选择一本未完成刊物继续填坑 ${tile.issues} 期：</p><select id="modal-select" class="modal-select" style="margin-top:10px;">`;
+        unfin.forEach(c => content += `<option value="${c.id}">${escapeHtml(c.name)} (已补${c.issues}期)</option>`);
+        content += `</select>`;
+
+        showModal({
+            title, contentHTML: content,
+            buttons: [
+                { text: '马上填坑', class: 'btn-primary', onClick: () => doAddIssues(document.getElementById('modal-select').value, tile.issues, title) },
+                { text: '继续养着', class: 'btn-add', onClick: () => doShelve(document.getElementById('modal-select').value, title) }
+            ]
+        });
+    }
+
+    function handleCatchupShelved(tile, title) {
+        let shelved = getShelvedComics();
+        if (shelved.length === 0) {
+            showToast('当前无搁置废案，转换为：任选未完结刊物补3期');
+            tile.issues = 3;
+            handleCatchupUnfin(tile, '回退转换: 选未完成补3期');
+            return;
+        }
+        
+        let content = `<p>选择一本曾被抛弃的刊物恢复活力，并怒补 ${tile.issues} 期：</p><select id="modal-select" class="modal-select" style="margin-top:10px;">`;
+        shelved.forEach(c => content += `<option value="${c.id}">${escapeHtml(c.name)} (尘封于${c.issues}期)</option>`);
+        content += `</select>`;
+
+        showModal({
+            title, contentHTML: content,
+            buttons: [
+                { text: '拂去灰尘阅读', class: 'btn-primary', onClick: () => doAddIssues(document.getElementById('modal-select').value, tile.issues, title) },
+                { text: '让它烂着', class: 'btn-add', onClick: () => { showToast('拒绝拯救，扣分后退3格'); movePlayer(-3); } }
+            ]
+        });
+    }
+
+    function handleCatchupRandom(tile, title) {
+        let active = getActiveComics();
+        if (active.length <= 1) {
+             showToast('由于开启坑位不足，触发兜底协议：转为填补上次后续2期');
+             tile.issues = 2;
+             handleCatchupLast(tile, '转换: 补上次后续2期');
+             return;
+        }
+        let randomComic = active[Math.floor(Math.random() * active.length)];
+        
+        showModal({
+            title, contentHTML: `量子计算机随机指定了《${escapeHtml(randomComic.name)}》，请补看 ${tile.issues} 期！`,
+            buttons: [
+                { text: '接受宿命', class: 'btn-primary', onClick: () => doAddIssues(randomComic.id, tile.issues, title) },
+                { text: '抗命搁置', class: 'btn-add', onClick: () => doShelve(randomComic.id, title) }
+            ]
+        });
+    }
+
+    function handleGenericFallback(tile, title, msg, issues, forceNew = false) {
+        let content = `<p>${escapeHtml(msg)}</p>`;
+        let active = getActiveComics();
+        
+        if (!forceNew && active.length > 0) {
+            content += `<select id="modal-select" class="modal-select" style="margin-top:10px;">`;
+            active.forEach(c => content += `<option value="${c.id}">${escapeHtml(c.name)} (${escapeHtml(c.type)})</option>`);
+            content += `<option value="NEW">-- ➕ 创建新刊物 --</option></select>`;
+        } else {
+            content += `<input type="hidden" id="modal-select" value="NEW">`;
+        }
+
+        let displayNew = (!forceNew && active.length > 0) ? 'style="display:none;"' : '';
+        content += `
+            <div id="modal-new-input" ${displayNew} class="modal-input-group">
+                <input type="text" id="modal-input-name" placeholder="输入新刊物名称" class="modal-input">
+                <select id="modal-input-type" class="modal-select" style="margin-top:10px;">
+                    ${GENERIC_TYPES.map(t => `<option value="${t}">${t}</option>`).join('')}
+                </select>
+            </div>
+        `;
+
+        showModal({
+            title, contentHTML: content,
+            buttons: [
+                { text: '确认选择', class: 'btn-primary', onClick: () => {
+                    let selectVal = document.getElementById('modal-select').value;
+                    if (selectVal === 'NEW') {
+                        let name = document.getElementById('modal-input-name').value.trim();
+                        if (!name) { showToast('名称不能为空！'); return false; } 
+                        let type = document.getElementById('modal-input-type').value;
+                        let newComic = { id: state.comicIdCounter++, name, type, issues: 0, desc: '', isShelved: false };
+                        state.comics.push(newComic);
+                        doAddIssues(newComic.id, issues, title);
+                    } else {
+                        doAddIssues(selectVal, issues, title);
+                    }
+                }},
+                { text: '放弃行动', class: 'btn-add', onClick: () => {
+                     let selectVal = document.getElementById('modal-select').value;
+                     if(selectVal !== 'NEW') doShelve(selectVal, title);
+                     else { showToast('终止开荒，后退3格'); movePlayer(-3); }
+                }}
+            ]
+        });
+
+        const selectEl = document.getElementById('modal-select');
+        if (selectEl && selectEl.type !== 'hidden') {
+            selectEl.addEventListener('change', (e) => {
+                document.getElementById('modal-new-input').style.display = e.target.value === 'NEW' ? 'block' : 'none';
+            });
+        }
+    }
+
+    function handleEndGame() {
+        let totalIssues = state.comics.reduce((sum, c) => sum + c.issues, 0);
+        let titleName = totalIssues < 10 ? '摸鱼看客' : (totalIssues < 30 ? '忠实漫迷' : '补漫狂人');
+        
+        let content = `
+            <div style="text-align:center;">
+                <h2 style="color:var(--color-accent-pink); margin-bottom:15px; font-size:1.6rem; text-shadow:0 0 10px rgba(255,42,133,0.5);">达成称号：【${escapeHtml(titleName)}】</h2>
+                <div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:8px; display:inline-block; text-align:left; border: 1px solid rgba(255,255,255,0.1);">
+                    <p style="margin-bottom:8px; color:#fff;">🎲 总掷骰子: <b style="color:var(--color-accent-cyan);">${state.totalRolls} 次</b></p>
+                    <p style="margin-bottom:8px; color:#fff;">📚 累计补刊: <b style="color:var(--color-accent-cyan);">${totalIssues} 期</b></p>
+                    <p style="color:#fff;">🏷️ 涉猎刊物: <b style="color:var(--color-accent-cyan);">${state.comics.length} 本</b></p>
+                </div>
+            </div>
+        `;
+        showModal({
+            title: '🏁 阶段性补刊伟业达成！', contentHTML: content,
+            buttons: [{ text: '满载而归 (返回首页)', class: 'btn-primary', onClick: () => resetGame() }]
+        });
+    }
+
+    // --- UI 更新反馈引擎 ---
+    function updateUI() {
+        UI.statPos.textContent = `第 ${state.position} 格`;
+        UI.statRolls.textContent = `${state.totalRolls} 次`;
+        UI.statLaps.textContent = `第 ${state.lap} 圈`;
+        UI.headerLapInfo.textContent = `第 ${state.lap} 圈`;
+        
+        UI.statBuff.style.display = state.buffDouble ? 'flex' : 'none';
+        
+        if (state.rerolls > 0) {
+            UI.rerollContainer.style.display = 'flex';
+            UI.rerollNum.textContent = state.rerolls;
+        } else {
+            UI.rerollContainer.style.display = 'none';
+        }
+
+        document.querySelectorAll('.tile').forEach(el => {
+            el.style.boxShadow = '';
+            el.style.borderColor = '';
+        });
+        let currentTile = document.getElementById(`tile-${state.position}`);
+        if(currentTile) {
+            currentTile.style.boxShadow = `0 0 15px var(--color-accent-pink), inset 0 0 10px var(--color-accent-pink)`;
+            currentTile.style.borderColor = `var(--color-accent-pink)`;
+        }
+
+        let active = getActiveComics();
+        let shelved = getShelvedComics();
+        UI.activeCount.textContent = active.length;
+        UI.shelvedCount.textContent = shelved.length;
+
+        const renderLi = (c, isShelved) => `
+            <li class="comic-item ${isShelved ? 'shelved' : ''} ${c.id === state.lastComicId ? 'active-comic' : ''}">
+                <div class="comic-header">
+                    <span>${escapeHtml(c.name)}</span>
+                    <span class="comic-type">${escapeHtml(c.type)} ${ICON[c.type] || ''}</span>
+                </div>
+                <div class="comic-issues">已补 ${c.issues} 期 ${c.desc ? `<span style="font-size:0.75rem;font-weight:normal;margin-left:4px;">(${escapeHtml(c.desc)})</span>` : ''}</div>
+            </li>
+        `;
+
+        if (active.length === 0) {
+            UI.activeList.innerHTML = '<li class="empty-state-list">暂无在补刊物，快去踩格子触发任务吧！</li>';
+        } else {
+            UI.activeList.innerHTML = active.map(c => renderLi(c, false)).join('');
+        }
+
+        if (shelved.length === 0) {
+            UI.shelvedList.innerHTML = '<li class="empty-state-list">搁置列表空空如也，真是个好习惯！</li>';
+        } else {
+            UI.shelvedList.innerHTML = shelved.map(c => renderLi(c, true)).join('');
+        }
+    }
+
+    // --- 全局通用模态框组件 ---
+    function showModal({ title, contentHTML, buttons }) {
+        UI.modalTitle.innerHTML = title;
+        UI.modalContent.innerHTML = contentHTML;
+        UI.modalActions.innerHTML = '';
+        
+        buttons.forEach(btn => {
+            const b = document.createElement('button');
+            b.className = `btn ${btn.class || ''}`;
+            b.textContent = btn.text;
+            b.setAttribute('role', 'button');
+            b.onclick = () => {
+                if (btn.onClick) {
+                    let result = btn.onClick();
+                    if (result === false) return; 
+                }
+                UI.modalOverlay.style.display = 'none';
+            };
+            UI.modalActions.appendChild(b);
+        });
+
+        UI.modalOverlay.style.display = 'flex';
+    }
+
+    // 窗口Resize自适应重算棋子落点，保障视觉无暇
+    window.addEventListener('resize', () => { 
+        if(state.isStarted && !state.isAnimating) requestAnimationFrame(updatePlayerPosition); 
+    });
+
+</script>
+</body>
+</html>
