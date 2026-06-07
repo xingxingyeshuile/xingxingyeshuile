@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCU Comic Randomizer</title>
+    <style>
+        /* 基础变量与重置 */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #FAF9F6 0%, #DCE5ED 100%);
+            --card-bg: rgba(255, 255, 255, 0.45);
+            --card-border: rgba(255, 255, 255, 0.7);
+            --text-main: #3B3E42;
+            --text-sub: #6B7280;
+            --accent-blue: #5A7BB5;
+            --accent-blue-hover: #48689F;
+            --shadow-light: rgba(255, 255, 255, 0.9);
+            --shadow-dark: rgba(163, 177, 198, 0.3);
+            --glass-blur: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 自定义滚动条融入玻璃质感 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(90, 123, 181, 0.3);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(90, 123, 181, 0.5);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* 视图切换逻辑 */
+        .view {
+            display: none;
+            width: 100%;
+            max-width: 480px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .view.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 玻璃拟态卡片 */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 40px 32px;
+            box-shadow: 
+                10px 10px 30px var(--shadow-dark),
+                -10px -10px 30px var(--shadow-light),
+                inset 1px 1px 2px rgba(255, 255, 255, 0.5);
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+
+        /* 抽取结果展示区 */
+        .result-box {
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 30px 20px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: inset 3px 3px 10px var(--shadow-dark), inset -3px -3px 10px var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+
+        .result-placeholder {
+            color: var(--text-sub);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .comic-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 12px;
+        }
+
+        .comic-meta {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .comic-creators {
+            font-size: 13px;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            opacity: 0.8;
+        }
+
+        .comic-intro {
+            font-size: 14px;
+            color: var(--text-main);
+            line-height: 1.6;
+            font-style: italic;
+            position: relative;
+            padding: 0 15px;
+        }
+
+        /* 玻璃拟物按钮 */
+        .glass-btn {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, rgba(90, 123, 181, 0.1) 0%, rgba(90, 123, 181, 0.2) 100%);
+            color: var(--accent-blue);
+            box-shadow: 
+                6px 6px 16px var(--shadow-dark),
+                -6px -6px 16px var(--shadow-light),
+                inset 1px 1px 2px rgba(255, 255, 255, 0.9);
+        }
+
+        .btn-primary:active {
+            box-shadow: 
+                2px 2px 5px var(--shadow-dark),
+                -2px -2px 5px var(--shadow-light),
+                inset 3px 3px 8px rgba(90, 123, 181, 0.15);
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 100%);
+            color: var(--text-sub);
+            box-shadow: 
+                4px 4px 12px var(--shadow-dark),
+                -4px -4px 12px var(--shadow-light),
+                inset 1px 1px 2px rgba(255, 255, 255, 0.9);
+            margin-top: 16px;
+        }
+
+        .btn-secondary:active {
+            box-shadow: inset 3px 3px 8px var(--shadow-dark), inset -3px -3px 8px var(--shadow-light);
+            transform: scale(0.98);
+        }
+
+        .small-btn {
+            padding: 8px 16px;
+            font-size: 13px;
+            border-radius: 14px;
+            margin-top: 0;
+            width: auto;
+            letter-spacing: 0;
+        }
+
+        /* 页面切换按钮组 */
+        .action-row {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .ghost-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 12px 24px;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 2px 2px 8px rgba(163, 177, 198, 0.15), -2px -2px 8px rgba(255, 255, 255, 0.5);
+        }
+        .ghost-btn:hover {
+            color: var(--accent-blue);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 表单输入框 */
+        .form-group {
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 8px;
+            font-weight: 500;
+            padding-left: 4px;
+        }
+
+        .glass-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 18px;
+            font-size: 15px;
+            color: var(--text-main);
+            outline: none;
+            box-shadow: inset 2px 2px 6px var(--shadow-dark), inset -2px -2px 6px var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+
+        .glass-input::placeholder {
+            color: rgba(107, 114, 128, 0.5);
+        }
+
+        .glass-input:focus {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(90, 123, 181, 0.4);
+            box-shadow: inset 3px 3px 8px var(--shadow-dark), inset -3px -3px 8px var(--shadow-light), 0 0 0 2px rgba(90, 123, 181, 0.1);
+        }
+
+        /* 下拉组合框 */
+        .combo-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .combo-btn {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            font-size: 12px;
+            cursor: pointer;
+            padding: 5px;
+            outline: none;
+            transition: color 0.2s;
+        }
+        .combo-btn:hover {
+            color: var(--accent-blue);
+        }
+        .combo-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            max-height: 180px;
+            overflow-y: auto;
+            margin-top: 6px;
+            box-shadow: 4px 8px 24px rgba(163, 177, 198, 0.4);
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-5px);
+            transition: all 0.2s ease;
+        }
+        .combo-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .combo-item {
+            padding: 12px 18px;
+            font-size: 14px;
+            color: var(--text-main);
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            transition: background 0.2s;
+        }
+        .combo-item:last-child {
+            border-bottom: none;
+        }
+        .combo-item:hover {
+            background: rgba(90, 123, 181, 0.1);
+            color: var(--accent-blue);
+        }
+
+        /* 导入区 */
+        .import-area {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px dashed rgba(90, 123, 181, 0.4);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .import-actions {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+        .import-actions .glass-btn {
+            flex: 1;
+        }
+
+        /* 管理页 Tab 切换 */
+        .manage-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 6px;
+            margin-bottom: 20px;
+            box-shadow: inset 2px 2px 6px rgba(163, 177, 198, 0.3), inset -2px -2px 6px rgba(255, 255, 255, 0.9);
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px 0;
+            text-align: center;
+            border: none;
+            background: transparent;
+            color: var(--text-sub);
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background: #fff;
+            color: var(--accent-blue);
+            box-shadow: 2px 2px 8px rgba(163, 177, 198, 0.2);
+        }
+
+        /* 图库管理列表 */
+        .manage-list {
+            max-height: 340px;
+            overflow-y: auto;
+            padding-right: 6px;
+            margin-bottom: 20px;
+        }
+        .manage-item {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            flex-direction: column; /* 改为上下排列，给标题足够空间 */
+            justify-content: flex-start;
+            align-items: stretch;
+            box-shadow: 2px 2px 10px rgba(163, 177, 198, 0.15);
+            transition: transform 0.2s;
+        }
+        .manage-item:hover {
+            transform: translateX(4px);
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .manage-info {
+            width: 100%;
+            margin-bottom: 12px; /* 与下方按钮拉开间距 */
+        }
+        .manage-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            white-space: normal; /* 解决被截断看不见的问题 */
+            word-wrap: break-word;
+        }
+        .manage-meta {
+            font-size: 13px;
+            color: var(--text-sub);
+        }
+        .manage-actions {
+            display: flex;
+            gap: 8px; /* 调整间距 */
+            flex-wrap: nowrap; /* 强制不换行，保证所有按钮都在同一行 */
+            justify-content: space-between;
+            width: 100%;
+        }
+        .manage-actions .small-btn {
+            flex: 1; /* 平分空间确保同一行宽度均匀 */
+            padding: 8px 4px; /* 减小内边距防止拥挤 */
+            text-align: center;
+        }
+        .btn-delete {
+            color: #8896A6; /* 灰蓝色调，不突兀但具备提示性 */
+        }
+        .btn-success {
+            color: var(--accent-blue-hover); /* 采用主题强调色深蓝 */
+        }
+
+        /* 必填项提示 */
+        .required::after {
+            content: '*';
+            color: var(--accent-blue);
+            margin-left: 4px;
+        }
+
+        /* 优雅的Toast提示 */
+        #toast {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            color: var(--accent-blue);
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        #toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Toast 提示 -->
+    <div id="toast">操作成功</div>
+
+    <!-- 视图 1：抽取页面 (主页) -->
+    <div id="view-draw" class="view active">
+        <div class="glass-card">
+            <div class="card-title">DCU 漫画抽取</div>
+            
+            <div class="result-box" id="result-box">
+                <div class="result-placeholder">
+                    数据库已就绪。<br>点击下方按钮，开始探索 DC 宇宙。
+                </div>
+            </div>
+
+            <button class="glass-btn btn-primary" onclick="drawComic()">抽取一部漫画</button>
+        </div>
+        <div class="action-row">
+            <button class="ghost-btn" onclick="openAddForm()">添加刊物</button>
+            <button class="ghost-btn" onclick="openManageView()">管理图库</button>
+        </div>
+    </div>
+
+    <!-- 视图 2：添加/编辑页面 -->
+    <div id="view-add" class="view">
+        <div class="glass-card">
+            <div class="card-title" id="form-title">录入新刊物</div>
+            
+            <form id="add-form" onsubmit="saveComic(event)">
+                <div class="form-group">
+                    <label class="form-label required">漫画名称</label>
+                    <input type="text" id="comic-name" class="glass-input" placeholder="例如：Flashpoint" required autocomplete="off">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required">出版年份</label>
+                        <input type="text" id="comic-year" class="glass-input" placeholder="例如：2011" required autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">期数 (选填)</label>
+                        <input type="text" id="comic-issue" class="glass-input" placeholder="例如：#1-5" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">编剧 (选填/可输入/可下选)</label>
+                        <div class="combo-box">
+                            <input type="text" id="comic-writer" class="glass-input" placeholder="输入或选择" autocomplete="off">
+                            <button type="button" class="combo-btn" onclick="toggleDropdown(event, 'writer-dropdown')">▼</button>
+                            <!-- 预设编剧列表 -->
+                            <div class="combo-dropdown" id="writer-dropdown">
+                                <div class="combo-item" onclick="selectOption('comic-writer', 'Geoff Johns', 'writer-dropdown')">Geoff Johns</div>
+                                <div class="combo-item" onclick="selectOption('comic-writer', 'Grant Morrison', 'writer-dropdown')">Grant Morrison</div>
+                                <div class="combo-item" onclick="selectOption('comic-writer', 'Scott Snyder', 'writer-dropdown')">Scott Snyder</div>
+                                <div class="combo-item" onclick="selectOption('comic-writer', 'Tom King', 'writer-dropdown')">Tom King</div>
+                                <div class="combo-item" onclick="selectOption('comic-writer', 'Mark Waid', 'writer-dropdown')">Mark Waid</div>
+                                <div class="combo-item" onclick="selectOption('comic-writer', 'Alan Moore', 'writer-dropdown')">Alan Moore</div>
+                                <div class="combo-item" onclick="selectOption('comic-writer', 'Frank Miller', 'writer-dropdown')">Frank Miller</div>
+                                <div class="combo-item" onclick="selectOption('comic-writer', 'Paul Dini', 'writer-dropdown')">Paul Dini</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">画师 (选填/可输入/可下选)</label>
+                        <div class="combo-box">
+                            <input type="text" id="comic-artist" class="glass-input" placeholder="输入或选择" autocomplete="off">
+                            <button type="button" class="combo-btn" onclick="toggleDropdown(event, 'artist-dropdown')">▼</button>
+                            <!-- 预设画师列表 -->
+                            <div class="combo-dropdown" id="artist-dropdown">
+                                <div class="combo-item" onclick="selectOption('comic-artist', 'Jim Lee', 'artist-dropdown')">Jim Lee</div>
+                                <div class="combo-item" onclick="selectOption('comic-artist', 'Greg Capullo', 'artist-dropdown')">Greg Capullo</div>
+                                <div class="combo-item" onclick="selectOption('comic-artist', 'Jason Fabok', 'artist-dropdown')">Jason Fabok</div>
+                                <div class="combo-item" onclick="selectOption('comic-artist', 'Ivan Reis', 'artist-dropdown')">Ivan Reis</div>
+                                <div class="combo-item" onclick="selectOption('comic-artist', 'Gary Frank', 'artist-dropdown')">Gary Frank</div>
+                                <div class="combo-item" onclick="selectOption('comic-artist', 'Alex Ross', 'artist-dropdown')">Alex Ross</div>
+                                <div class="combo-item" onclick="selectOption('comic-artist', 'Tim Sale', 'artist-dropdown')">Tim Sale</div>
+                                <div class="combo-item" onclick="selectOption('comic-artist', 'Lee Bermejo', 'artist-dropdown')">Lee Bermejo</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">一句话介绍 (选填)</label>
+                    <input type="text" id="comic-intro" class="glass-input" placeholder="例如：闪电侠醒来发现世界全变了..." autocomplete="off">
+                </div>
+
+                <button type="submit" class="glass-btn btn-primary" style="margin-top: 10px;">保存至库中</button>
+                <button type="button" class="glass-btn btn-secondary" onclick="switchView('view-draw')">返回主页</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 视图 3：管理图库页面 -->
+    <div id="view-manage" class="view">
+        <div class="glass-card">
+            <div class="card-title">图库管理</div>
+            
+            <!-- 导入区域 -->
+            <div class="import-area">
+                <input type="file" id="import-file" accept=".json, .txt" style="display: none;" onchange="updateFileName()">
+                <div class="import-actions">
+                    <button class="glass-btn btn-secondary small-btn" onclick="document.getElementById('import-file').click()">选择文件</button>
+                    <button class="glass-btn btn-primary small-btn" onclick="importComics()">一键导入</button>
+                </div>
+                <div id="file-name-display" style="font-size: 13px; color: var(--text-sub);">未选择任何文件</div>
+                <button class="ghost-btn" style="padding: 6px 16px; font-size: 12px; border-radius: 12px;" onclick="downloadSample()">下载示例 JSON</button>
+            </div>
+
+            <!-- 待阅 / 已看 Tab 切换 -->
+            <div class="manage-tabs">
+                <button class="tab-btn active" id="tab-unread" onclick="switchManageTab('unread')">待阅抽取池</button>
+                <button class="tab-btn" id="tab-read" onclick="switchManageTab('read')">已看列表</button>
+            </div>
+
+            <!-- 列表容器 -->
+            <div class="manage-list" id="manage-list">
+                <!-- 列表动态生成 -->
+            </div>
+
+            <button type="button" class="glass-btn btn-secondary" onclick="switchView('view-draw')">返回主页</button>
+        </div>
+    </div>
+
+    <script>
+        // 初始化数据
+        // 数据结构增加隐式字段: isRead (boolean)
+        let comicDatabase = JSON.parse(localStorage.getItem('dcuComics')) || [];
+        let currentEditIndex = -1; 
+        let currentManageTab = 'unread'; // 'unread' or 'read'
+
+        // 切换页面视图
+        function switchView(viewId) {
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.remove('active');
+            });
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        // 优雅的Toast提示函数
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ===== 自定义下拉选单逻辑 =====
+        function toggleDropdown(event, dropdownId) {
+            event.stopPropagation();
+            const targetDropdown = document.getElementById(dropdownId);
+            
+            document.querySelectorAll('.combo-dropdown').forEach(el => {
+                if (el.id !== dropdownId) el.classList.remove('show');
+            });
+
+            targetDropdown.classList.toggle('show');
+        }
+
+        function selectOption(inputId, value, dropdownId) {
+            document.getElementById(inputId).value = value;
+            document.getElementById(dropdownId).classList.remove('show');
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.combo-box')) {
+                document.querySelectorAll('.combo-dropdown').forEach(el => {
+                    el.classList.remove('show');
+                });
+            }
+        });
+
+        // ===== 漫画数据操作逻辑 =====
+
+        // 打开新增表单
+        function openAddForm() {
+            currentEditIndex = -1;
+            document.getElementById('add-form').reset();
+            document.getElementById('form-title').textContent = '录入新刊物';
+            switchView('view-add');
+        }
+
+        // 保存漫画
+        function saveComic(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('comic-name').value.trim();
+            const year = document.getElementById('comic-year').value.trim();
+            const issue = document.getElementById('comic-issue').value.trim();
+            const writer = document.getElementById('comic-writer').value.trim();
+            const artist = document.getElementById('comic-artist').value.trim();
+            const intro = document.getElementById('comic-intro').value.trim();
+
+            // 保持原有的已读状态
+            const isRead = currentEditIndex === -1 ? false : (comicDatabase[currentEditIndex].isRead || false);
+
+            const comicData = { name, year, issue, writer, artist, intro, isRead };
+
+            if (currentEditIndex === -1) {
+                comicDatabase.push(comicData);
+                showToast('刊物已成功录入');
+            } else {
+                comicDatabase[currentEditIndex] = comicData;
+                showToast('刊物信息已更新');
+            }
+
+            localStorage.setItem('dcuComics', JSON.stringify(comicDatabase));
+
+            setTimeout(() => {
+                switchView('view-draw');
+                updateResultBoxToReady();
+            }, 500);
+        }
+
+        // ===== 管理图库及已读/未读逻辑 =====
+
+        // 切换管理页的Tab
+        function switchManageTab(tab) {
+            currentManageTab = tab;
+            document.getElementById('tab-unread').classList.toggle('active', tab === 'unread');
+            document.getElementById('tab-read').classList.toggle('active', tab === 'read');
+            renderManageList();
+        }
+
+        // 打开管理界面
+        function openManageView() {
+            renderManageList();
+            switchView('view-manage');
+        }
+
+        // 渲染管理列表 (区分已看/待阅)
+        function renderManageList() {
+            const listContainer = document.getElementById('manage-list');
+            
+            // 为漫画附加原始索引，方便操作
+            const comicsWithIndex = comicDatabase.map((comic, index) => ({ ...comic, originalIndex: index }));
+            
+            // 根据当前Tab过滤数据
+            const filteredComics = comicsWithIndex.filter(comic => 
+                currentManageTab === 'read' ? comic.isRead : !comic.isRead
+            );
+            
+            if (filteredComics.length === 0) {
+                const emptyMsg = currentManageTab === 'read' ? '还未标记过已看漫画。' : '目前没有待阅漫画。';
+                listContainer.innerHTML = `<div class="result-placeholder" style="padding: 40px 0; text-align: center;">${emptyMsg}</div>`;
+                return;
+            }
+
+            let html = '';
+            filteredComics.forEach(comic => {
+                const index = comic.originalIndex;
+                let metaText = comic.year;
+                if (comic.issue) metaText += ` | ${comic.issue}`;
+
+                let actionButtons = '';
+                if (currentManageTab === 'unread') {
+                    // 待阅列表按钮
+                    actionButtons = `
+                        <button class="glass-btn btn-secondary small-btn" onclick="editComic(${index})">编辑</button>
+                        <button class="glass-btn btn-secondary small-btn btn-success" onclick="markAsRead(${index})">已看</button>
+                        <button class="glass-btn btn-secondary small-btn btn-delete" onclick="deleteComic(${index})">删除</button>
+                    `;
+                } else {
+                    // 已阅列表按钮
+                    actionButtons = `
+                        <button class="glass-btn btn-secondary small-btn" onclick="editComic(${index})">编辑</button>
+                        <button class="glass-btn btn-secondary small-btn btn-success" onclick="markAsUnread(${index})">转待阅</button>
+                        <button class="glass-btn btn-secondary small-btn btn-delete" onclick="deleteComic(${index})">删除</button>
+                    `;
+                }
+
+                html += `
+                <div class="manage-item">
+                    <div class="manage-info">
+                        <div class="manage-title" title="${comic.name}">${comic.name}</div>
+                        <div class="manage-meta">${metaText}</div>
+                    </div>
+                    <div class="manage-actions">
+                        ${actionButtons}
+                    </div>
+                </div>`;
+            });
+            listContainer.innerHTML = html;
+        }
+
+        // 标记为已读 (从抽取池或管理列表操作)
+        function markAsRead(index, fromDrawResult = false) {
+            comicDatabase[index].isRead = true;
+            localStorage.setItem('dcuComics', JSON.stringify(comicDatabase));
+            
+            if (fromDrawResult) {
+                showToast('已标记为已看，并移出抽取池');
+                updateResultBoxToReady();
+            } else {
+                showToast('已移至已看列表');
+                renderManageList();
+            }
+        }
+
+        // 撤销已读 (重新放回抽取池)
+        function markAsUnread(index) {
+            comicDatabase[index].isRead = false;
+            localStorage.setItem('dcuComics', JSON.stringify(comicDatabase));
+            showToast('已放回待阅抽取池');
+            renderManageList();
+            updateResultBoxToReady(); 
+        }
+
+        // 编辑指定漫画
+        function editComic(index) {
+            currentEditIndex = index;
+            const comic = comicDatabase[index];
+            
+            document.getElementById('comic-name').value = comic.name;
+            document.getElementById('comic-year').value = comic.year;
+            document.getElementById('comic-issue').value = comic.issue || '';
+            document.getElementById('comic-writer').value = comic.writer || '';
+            document.getElementById('comic-artist').value = comic.artist || '';
+            document.getElementById('comic-intro').value = comic.intro || '';
+
+            document.getElementById('form-title').textContent = '编辑刊物信息';
+            switchView('view-add');
+        }
+
+        // 删除指定漫画
+        function deleteComic(index) {
+            if (confirm(`确定要删除《${comicDatabase[index].name}》吗？`)) {
+                comicDatabase.splice(index, 1);
+                localStorage.setItem('dcuComics', JSON.stringify(comicDatabase));
+                renderManageList();
+                showToast('已删除');
+                updateResultBoxToReady(); 
+            }
+        }
+
+        // ===== 导入及下载辅助逻辑 =====
+
+        // 更新文件名称显示
+        function updateFileName() {
+            const fileInput = document.getElementById('import-file');
+            const display = document.getElementById('file-name-display');
+            if (fileInput.files.length > 0) {
+                display.textContent = fileInput.files[0].name;
+                display.style.color = "var(--accent-blue)";
+            } else {
+                display.textContent = '未选择任何文件';
+                display.style.color = "var(--text-sub)";
+            }
+        }
+
+        // 下载示例 JSON 
+        function downloadSample() {
+            const sampleData = [
+                {
+                    "name": "Flashpoint",
+                    "year": "2011",
+                    "issue": "#1-5",
+                    "writer": "Geoff Johns",
+                    "artist": "Andy Kubert",
+                    "intro": "闪电侠醒来发现世界全变了..."
+                },
+                {
+                    "name": "Batman: The Long Halloween",
+                    "year": "1996",
+                    "issue": "#1-13",
+                    "writer": "Jeph Loeb",
+                    "artist": "Tim Sale",
+                    "intro": "哥谭市连环杀手在节假日作案的故事。"
+                }
+            ];
+            
+            const blob = new Blob([JSON.stringify(sampleData, null, 4)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "dcu_comics_sample.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // 核心导入逻辑
+        function importComics() {
+            const fileInput = document.getElementById('import-file');
+            if (fileInput.files.length === 0) {
+                showToast('请先点击“选择文件”');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const content = e.target.result;
+                    const data = JSON.parse(content);
+                    
+                    if (!Array.isArray(data)) {
+                        showToast('数据格式错误，请上传漫画数组');
+                        return;
+                    }
+
+                    let successCount = 0;
+                    let failCount = 0;
+
+                    // 遍历校验数据，缺失必填字段则跳过
+                    data.forEach(item => {
+                        if (
+                            item && 
+                            item.name != null && item.year != null && 
+                            String(item.name).trim() !== '' && 
+                            String(item.year).trim() !== ''
+                        ) {
+                            const comicData = {
+                                name: String(item.name).trim(),
+                                year: String(item.year).trim(),
+                                issue: item.issue ? String(item.issue).trim() : '',
+                                writer: item.writer ? String(item.writer).trim() : '',
+                                artist: item.artist ? String(item.artist).trim() : '',
+                                intro: item.intro ? String(item.intro).trim() : '',
+                                isRead: false // 导入的默认都是未读
+                            };
+                            comicDatabase.push(comicData);
+                            successCount++;
+                        } else {
+                            failCount++;
+                        }
+                    });
+
+                    // 存储并更新UI
+                    localStorage.setItem('dcuComics', JSON.stringify(comicDatabase));
+                    
+                    fileInput.value = '';
+                    updateFileName();
+                    
+                    renderManageList();
+                    updateResultBoxToReady();
+
+                    showToast(`导入完成: 成功 ${successCount} 条, 失败跳过 ${failCount} 条`);
+
+                } catch (error) {
+                    showToast('文件解析失败，请确保格式是有效的JSON');
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+
+        // ===== 抽取逻辑 =====
+
+        // 更新抽取区状态 (仅计算未读刊物)
+        function updateResultBoxToReady() {
+            const box = document.getElementById('result-box');
+            box.style.opacity = 0;
+            
+            const unreadCount = comicDatabase.filter(c => !c.isRead).length;
+
+            setTimeout(() => {
+                if (unreadCount > 0) {
+                    box.innerHTML = `<div class="result-placeholder">抽取池已就绪，共有 ${unreadCount} 部待阅漫画。<br>随时可以抽取。</div>`;
+                } else if (comicDatabase.length > 0) {
+                    box.innerHTML = `<div class="result-placeholder">当前库中所有漫画都已看完啦！<br>请在管理图库中重置或添加新刊物。</div>`;
+                } else {
+                    box.innerHTML = `<div class="result-placeholder">你的漫画库还是空的哦。<br>请先添加或导入刊物。</div>`;
+                }
+                box.style.opacity = 1;
+            }, 200);
+        }
+
+        // 随机抽取 (仅从待阅抽取池中抽取)
+        function drawComic() {
+            const box = document.getElementById('result-box');
+            
+            // 过滤出未读的漫画，并记录它们在原数组中的真实索引
+            const unreadComics = comicDatabase
+                .map((comic, index) => ({ ...comic, originalIndex: index }))
+                .filter(comic => !comic.isRead);
+
+            if (unreadComics.length === 0) {
+                box.style.opacity = 0;
+                setTimeout(() => {
+                    if (comicDatabase.length > 0) {
+                        box.innerHTML = `<div class="result-placeholder" style="color: #5A7BB5;">太棒了，所有漫画都已经看完了！<br>去添加新坑吧。</div>`;
+                    } else {
+                        box.innerHTML = `<div class="result-placeholder" style="color: #C05B5B;">你的漫画库还是空的哦。<br>请先添加或导入刊物。</div>`;
+                    }
+                    box.style.opacity = 1;
+                }, 200);
+                return;
+            }
+
+            box.style.opacity = 0;
+            box.style.transform = "scale(0.98)";
+
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * unreadComics.length);
+                const comic = unreadComics[randomIndex];
+
+                let html = `<div class="comic-title">${comic.name}</div>`;
+                
+                let metaText = `${comic.year}`;
+                if (comic.issue) metaText += ` | ${comic.issue}`;
+                html += `<div class="comic-meta">${metaText}</div>`;
+
+                if (comic.writer || comic.artist) {
+                    let creators = [];
+                    if (comic.writer) creators.push(`编剧: ${comic.writer}`);
+                    if (comic.artist) creators.push(`画师: ${comic.artist}`);
+                    html += `<div class="comic-creators">${creators.join(' / ')}</div>`;
+                }
+
+                if (comic.intro) {
+                    html += `<div class="comic-intro">“${comic.intro}”</div>`;
+                }
+
+                // 加入标记已读按钮，传入原始索引
+                html += `<button class="glass-btn btn-primary small-btn" style="margin-top: 24px; padding: 10px 24px;" onclick="markAsRead(${comic.originalIndex}, true)">标记为已看</button>`;
+
+                box.innerHTML = html;
+                box.style.opacity = 1;
+                box.style.transform = "scale(1)";
+            }, 300);
+        }
+
+        // 初始化载入
+        window.onload = () => {
+            const unreadCount = comicDatabase.filter(c => !c.isRead).length;
+            const box = document.getElementById('result-box');
+            
+            if (unreadCount > 0) {
+                box.innerHTML = `<div class="result-placeholder">当前库中有 ${unreadCount} 部漫画待阅。<br>点击下方按钮抽取。</div>`;
+            } else if (comicDatabase.length > 0) {
+                box.innerHTML = `<div class="result-placeholder">你已经看完了库里的所有漫画！<br>真了不起。</div>`;
+            }
+        };
+    </script>
+</body>
+</html>
