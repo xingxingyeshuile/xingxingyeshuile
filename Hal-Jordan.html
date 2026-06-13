@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哈尔·乔丹阅读指南 - 绿灯侠</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #e6ebe3;
+            --card-bg: #ecf0e8;
+            --card-shadow-dark: #c8cfc2;
+            --card-shadow-light: #ffffff;
+            --text-primary: #2c3328;
+            --text-secondary: #4a5543;
+            --text-muted: #6b7563;
+            --accent: #3d7a4f;
+            --accent-soft: #5a9e6b;
+            --accent-light: #c8dfcd;
+            --accent-glow: rgba(61, 122, 79, 0.15);
+            --tag-bg: #dce5d7;
+            --divider: #d5dcd0;
+            --quote-bg: #e2e9dd;
+            --highlight: #f5f2e8;
+            --gold: #b8934e;
+            --gold-soft: #e8d5a3;
+            --danger-soft: #f0e4e0;
+            --danger-text: #8b4a3a;
+            --stage-1: #4a7c59;
+            --stage-2: #7a5c4a;
+            --stage-3: #3a6b7c;
+            --stage-4: #5a4a7c;
+            --stage-5: #7c6a3a;
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --radius-xl: 36px;
+            --shadow-raise: 6px 6px 14px var(--card-shadow-dark), -6px -6px 14px var(--card-shadow-light);
+            --shadow-raise-sm: 3px 3px 8px var(--card-shadow-dark), -3px -3px 8px var(--card-shadow-light);
+            --shadow-raise-lg: 10px 10px 22px var(--card-shadow-dark), -10px -10px 22px var(--card-shadow-light);
+            --shadow-inset: inset 4px 4px 10px var(--card-shadow-dark), inset -4px -4px 10px var(--card-shadow-light);
+            --shadow-inset-sm: inset 2px 2px 5px var(--card-shadow-dark), inset -2px -2px 5px var(--card-shadow-light);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', '思源宋体', 'Songti SC', 'STSong', 'SimSun', serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            padding: 20px 16px 60px;
+            display: flex;
+            justify-content: center;
+            background-image:
+                radial-gradient(ellipse at 20% 8%, rgba(61, 122, 79, 0.06) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 92%, rgba(61, 122, 79, 0.05) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 50%, rgba(180, 150, 100, 0.03) 0%, transparent 70%);
+        }
+
+        .container {
+            max-width: 720px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* ===== 顶部标题区域 ===== */
+        .hero {
+            text-align: center;
+            padding: 36px 28px 28px;
+            position: relative;
+        }
+
+        .hero-icon {
+            display: inline-block;
+            margin-bottom: 16px;
+            animation: floatGentle 4s ease-in-out infinite;
+        }
+        @keyframes floatGentle {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            background: var(--card-bg);
+            box-shadow: var(--shadow-raise-sm);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: var(--accent);
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: 0.03em;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        .hero h1 .highlight {
+            color: var(--accent);
+            position: relative;
+        }
+        .hero .subtitle {
+            font-size: 1.05rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+        }
+
+        /* ===== 引言卡片 ===== */
+        .intro-card {
+            background: var(--highlight);
+            border-radius: var(--radius-lg);
+            padding: 28px 24px;
+            box-shadow: var(--shadow-raise);
+            position: relative;
+            border-left: 5px solid var(--gold-soft);
+        }
+        .intro-card .intro-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .intro-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            line-height: 1.8;
+        }
+        .intro-card strong {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        .intro-card .highlight-text {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ===== 阶段标题 ===== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 4px;
+            padding: 0 4px;
+        }
+        .section-header .stage-num {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-raise-sm);
+            letter-spacing: 0;
+        }
+        .stage-1-bg {
+            background: var(--stage-1);
+        }
+        .stage-2-bg {
+            background: var(--stage-2);
+        }
+        .stage-3-bg {
+            background: var(--stage-3);
+        }
+        .stage-4-bg {
+            background: var(--stage-4);
+        }
+        .stage-5-bg {
+            background: var(--stage-5);
+        }
+
+        .section-header .stage-info h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 0.02em;
+            line-height: 1.3;
+        }
+        .section-header .stage-info span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            letter-spacing: 0.03em;
+        }
+
+        /* ===== 故事卡片 ===== */
+        .story-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: 20px 22px;
+            box-shadow: var(--shadow-raise);
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .story-card:hover {
+            box-shadow: var(--shadow-raise-lg);
+            transform: translateY(-2px);
+        }
+        .story-card .card-icon {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background: var(--card-bg);
+            box-shadow: var(--shadow-inset-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+        }
+        .story-card .card-body {
+            flex: 1;
+            min-width: 0;
+        }
+        .story-card .card-title-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .story-card .card-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            letter-spacing: 0.02em;
+        }
+        .story-card .card-meta {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+        }
+        .story-card .card-desc {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+        .story-card .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: var(--tag-bg);
+            box-shadow: var(--shadow-inset-sm);
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+        }
+        .tag.accent {
+            background: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .tag.gold {
+            background: var(--gold-soft);
+            color: #7a5e2e;
+            font-weight: 600;
+        }
+
+        /* ===== 子阶段分组 ===== */
+        .sub-group {
+            margin-left: 16px;
+            border-left: 2px dashed var(--divider);
+            padding-left: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+        .sub-group-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-left: -18px;
+            padding-left: 18px;
+            margin-bottom: 2px;
+        }
+
+        /* ===== TOP10 区域 ===== */
+        .top10-section {
+            background: var(--card-bg);
+            border-radius: var(--radius-xl);
+            padding: 30px 24px;
+            box-shadow: var(--shadow-raise-lg);
+            position: relative;
+            overflow: hidden;
+        }
+        .top10-section::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--accent-glow);
+            pointer-events: none;
+        }
+        .top10-section .top10-header {
+            text-align: center;
+            margin-bottom: 22px;
+            position: relative;
+            z-index: 1;
+        }
+        .top10-section .top10-header h2 {
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            color: var(--text-primary);
+        }
+        .top10-section .top10-header .top10-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            font-weight: 400;
+        }
+        .top10-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        .top10-list li {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            background: var(--card-bg);
+            box-shadow: var(--shadow-raise-sm);
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            letter-spacing: 0.02em;
+        }
+        .top10-list li:hover {
+            box-shadow: var(--shadow-raise);
+            transform: translateX(3px);
+        }
+        .top10-list .top10-num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-raise-sm);
+        }
+        .top10-list .top10-num.special {
+            background: var(--gold);
+        }
+
+        /* ===== 引用提示框 ===== */
+        .quote-block {
+            background: var(--quote-bg);
+            border-radius: var(--radius-lg);
+            padding: 22px 20px;
+            box-shadow: var(--shadow-inset);
+            position: relative;
+            text-align: center;
+        }
+        .quote-block .quote-mark {
+            font-size: 3rem;
+            color: var(--accent);
+            opacity: 0.3;
+            line-height: 1;
+            font-weight: 900;
+            display: block;
+            margin-bottom: -16px;
+            font-family: 'Noto Serif SC', serif;
+        }
+        .quote-block p {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            letter-spacing: 0.03em;
+            line-height: 1.7;
+            font-style: italic;
+        }
+        .quote-block .quote-author {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-style: normal;
+            letter-spacing: 0.05em;
+        }
+
+        /* ===== 警告提示 ===== */
+        .warning-note {
+            background: var(--danger-soft);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            box-shadow: var(--shadow-inset-sm);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: var(--danger-text);
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            line-height: 1.6;
+        }
+        .warning-note .warn-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        /* ===== 底部 ===== */
+        .footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            padding: 16px;
+            opacity: 0.7;
+        }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            .story-card {
+                flex-direction: column;
+                gap: 10px;
+                padding: 16px 18px;
+            }
+            .story-card .card-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: 10px;
+            }
+            .story-card .card-title {
+                font-size: 0.95rem;
+            }
+            .story-card .card-desc {
+                font-size: 0.82rem;
+            }
+            .section-header .stage-num {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+            .section-header .stage-info h2 {
+                font-size: 1.1rem;
+            }
+            .sub-group {
+                margin-left: 8px;
+                padding-left: 12px;
+            }
+            .top10-list li {
+                font-size: 0.8rem;
+                padding: 10px 12px;
+                gap: 10px;
+            }
+            .container {
+                gap: 20px;
+            }
+        }
+
+        /* ===== 极简SVG图标样式 ===== */
+        .svg-icon-sm {
+            width: 20px;
+            height: 20px;
+        }
+        .svg-icon-md {
+            width: 24px;
+            height: 24px;
+        }
+        .svg-icon-lg {
+            width: 36px;
+            height: 36px;
+        }
+        svg.icon-ring {
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        svg.icon-book {
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        svg.icon-star {
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- 顶部标题 -->
+        <header class="hero">
+            <div class="hero-icon">
+                <!-- 极简绿灯戒指SVG -->
+                <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-ring" style="color:#3d7a4f;">
+                    <circle cx="28" cy="28" r="22" stroke-width="3.5" />
+                    <circle cx="28" cy="28" r="12" stroke-width="2.5" />
+                    <line x1="28" y1="6" x2="28" y2="16" stroke-width="3" />
+                    <line x1="28" y1="40" x2="28" y2="50" stroke-width="3" />
+                    <line x1="6" y1="28" x2="16" y2="28" stroke-width="3" />
+                    <line x1="40" y1="28" x2="50" y2="28" stroke-width="3" />
+                </svg>
+            </div>
+            <div class="hero-badge">阅读指南 · 角色成长线</div>
+            <h1>哈尔·乔丹<span class="highlight">漫画阅读顺序</span></h1>
+            <p class="subtitle">从白银时代英雄到宇宙第一绿灯侠</p>
+        </header>
+
+        <!-- 引言 -->
+        <div class="intro-card">
+            <span class="intro-icon">💡</span>
+            <p>
+                如果你的目标是<strong>系统了解哈尔·乔丹这个角色</strong>，而不是把所有绿灯刊物都读完，那么请按<strong class="highlight-text">「角色成长线」</strong>来读。下面这套顺序兼顾经典性、剧情完整度和现代阅读体验——<strong>先爱上哈尔，再看翡翠暮光。</strong>
+            </p>
+        </div>
+
+        <!-- 引用 -->
+        <div class="quote-block">
+            <span class="quote-mark">"</span>
+            <p>先爱上哈尔，再看翡翠暮光。你得先知道他原本是什么样的人，后面的崩塌才有冲击力。</p>
+            <span class="quote-author">—— 老绿灯粉的共识</span>
+        </div>
+
+        <!-- ==================== 第一阶段 ==================== -->
+        <div class="section-header">
+            <div class="stage-num stage-1-bg">Ⅰ</div>
+            <div class="stage-info">
+                <h2>第一阶段：起源与经典时代</h2>
+                <span>1956 - 1972 · 白银时代根基</span>
+            </div>
+        </div>
+
+        <!-- 1. Showcase -->
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" />
+                </svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">《Showcase》V1</span>
+                    <span class="card-meta">1959 · #22-24</span>
+                </div>
+                <p class="card-desc">哈尔·乔丹首次登场。飞行员哈尔被垂死的阿宾·苏尔选中成为地球绿灯侠，奠定所有后续故事的基础。必读中的必读。</p>
+                <div class="card-tags"><span class="tag accent">起源</span><span class="tag">初次登场</span></div>
+            </div>
+        </div>
+
+        <!-- 2. GL V2 主线 -->
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <line x1="8" y1="8" x2="16" y2="8" />
+                    <line x1="8" y1="12" x2="16" y2="12" />
+                    <line x1="8" y1="16" x2="12" y2="16" />
+                </svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">《Green Lantern》V2</span>
+                    <span class="card-meta">1960 · #1-75 精选</span>
+                </div>
+                <p class="card-desc">银时代哈尔的主刊，建立欧阿星、守护者、塞尼斯托等核心设定，是现代绿灯宇宙的根基。</p>
+                <div class="card-tags">
+                    <span class="tag accent">重点期数</span>
+                    <span class="tag">#1</span><span class="tag">#4</span><span class="tag">#7</span><span class="tag">#9</span><span class="tag">#10</span><span class="tag">#16</span><span class="tag">#40</span><span class="tag">#59</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 子分组：白银时代深度推荐 -->
+        <div class="sub-group">
+            <span class="sub-group-label">🔍 白银时代深度推荐（先爱上哈尔）</span>
+
+            <div class="story-card">
+                <div class="card-icon">
+                    <svg class="svg-icon-md icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" /></svg>
+                </div>
+                <div class="card-body">
+                    <div class="card-title-row"><span class="card-title">GL V2 #10</span><span class="card-meta">哈尔与卡萝尔</span></div>
+                    <p class="card-desc">哈尔和卡萝尔互动很多。如果你喜欢《秘密起源》里的哈尔与卡萝尔，这一话很有味道。</p>
+                </div>
+            </div>
+
+            <div class="story-card">
+                <div class="card-icon">
+                    <svg class="svg-icon-md icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="8" y1="8" x2="16" y2="8" /><line x1="8" y1="12" x2="16" y2="12" /></svg>
+                </div>
+                <div class="card-body">
+                    <div class="card-title-row"><span class="card-title">GL V2 #16 & #21-23 & #25</span><span class="card-meta">军团世界观</span></div>
+                    <p class="card-desc">军团味开始变浓，各种外星绿灯出现，宇宙警察设定逐渐展开。白银时代特有的科幻冒险味。</p>
+                </div>
+            </div>
+
+            <div class="story-card">
+                <div class="card-icon">
+                    <svg class="svg-icon-md icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" /></svg>
+                </div>
+                <div class="card-body">
+                    <div class="card-title-row"><span class="card-title">GL V2 #40 & #59</span><span class="card-meta">哈尔性格成熟期</span></div>
+                    <p class="card-desc">自信、固执、有责任感、有点爱逞强——这些后来一直延续到现代的性格在这段开始明显成型。</p>
+                </div>
+            </div>
+
+            <div class="story-card">
+                <div class="card-icon">
+                    <svg class="svg-icon-md icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="8" y1="10" x2="16" y2="10" /></svg>
+                </div>
+                <div class="card-body">
+                    <div class="card-title-row"><span class="card-title">《The Brave and the Bold》#59</span><span class="card-meta">哈尔×蝙蝠侠</span></div>
+                    <p class="card-desc">哈尔和蝙蝠侠组队。能看到白银时代哈尔和布鲁斯的互动，蝙蝠家读者尤其推荐。</p>
+                </div>
+            </div>
+
+            <div class="story-card">
+                <div class="card-icon">
+                    <svg class="svg-icon-md icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="8" y1="10" x2="16" y2="10" /></svg>
+                </div>
+                <div class="card-body">
+                    <div class="card-title-row"><span class="card-title">《The Flash》#131 & #168</span><span class="card-meta">哈尔×巴里</span></div>
+                    <p class="card-desc">绿灯侠与闪电侠——白银时代最佳搭档。意气风发、满宇宙乱跑的哈尔和巴里。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. GL/GA -->
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">《Green Lantern / Green Arrow》V1</span>
+                    <span class="card-meta">#76-89 · 丹尼斯·奥尼尔 & 尼尔·亚当斯</span>
+                </div>
+                <p class="card-desc">传奇作品。哈尔与绿箭侠横跨美国旅行，讨论种族、贫困、毒品等现实议题，是DC最著名的社会派超级英雄漫画之一。</p>
+                <div class="card-tags"><span class="tag gold">经典必读</span><span class="tag">社会议题</span></div>
+            </div>
+        </div>
+
+        <!-- ==================== 第二阶段 ==================== -->
+        <div class="section-header">
+            <div class="stage-num stage-2-bg">Ⅱ</div>
+            <div class="stage-info">
+                <h2>第二阶段：哈尔的堕落与救赎</h2>
+                <span>1990 - 1999 · DC历史转折点</span>
+            </div>
+        </div>
+
+        <!-- 警告 -->
+        <div class="warning-note">
+            <span class="warn-icon">⚠️</span>
+            <span>建议先读完第一阶段、真正<strong>爱上哈尔</strong>之后再阅读此阶段。翡翠暮光本质上是建立在读者已经认识哈尔三十多年的基础上——你得先知道他原本是什么样的人，后面的崩塌才有冲击力。</span>
+        </div>
+
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">《Emerald Twilight》</span>
+                    <span class="card-meta">GL V3 #46-50 · 1990</span>
+                </div>
+                <p class="card-desc">DC历史转折点。海岸城被毁后，哈尔精神崩溃，屠杀绿灯军团并成为<strong>视差魔（Parallax）</strong>。这是旧时代哈尔故事的终章前奏。</p>
+                <div class="card-tags"><span class="tag accent">重大转折</span><span class="tag">黑化</span></div>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="8" y1="10" x2="16" y2="10" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">GL V3 #81 & 《The Final Night》</span>
+                    <span class="card-meta">1996 · #1-4</span>
+                </div>
+                <p class="card-desc">哈尔作为视差魔拯救太阳，牺牲自己，完成最终赎罪，为后来复活铺垫。</p>
+                <div class="card-tags"><span class="tag">牺牲</span><span class="tag">赎罪</span></div>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="8" y1="10" x2="16" y2="10" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">《Day of Judgment》</span>
+                    <span class="card-meta">1999 · #1-5</span>
+                </div>
+                <p class="card-desc">哈尔成为<strong>幽灵（Spectre）</strong>的开端，在赎罪之路上更进一步。</p>
+                <div class="card-tags"><span class="tag">幽灵</span></div>
+            </div>
+        </div>
+
+        <!-- ==================== 第三阶段 ==================== -->
+        <div class="section-header">
+            <div class="stage-num stage-3-bg">Ⅲ</div>
+            <div class="stage-info">
+                <h2>第三阶段：现代哈尔 · 强烈推荐</h2>
+                <span>2004 - 2011 · Geoff Johns 时代</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">《Green Lantern: Rebirth》</span>
+                    <span class="card-meta">2004 · #1-6</span>
+                </div>
+                <p class="card-desc"><strong>Geoff Johns神作。</strong>解释"视差魔"真相，正式让哈尔回归英雄身份。现代绿灯宇宙从这里开始。</p>
+                <div class="card-tags"><span class="tag gold">必读</span><span class="tag accent">复活</span></div>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="8" y1="10" x2="16" y2="10" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">《Green Lantern Corps: Recharge》</span>
+                    <span class="card-meta">2005 · #1-5</span>
+                </div>
+                <p class="card-desc">绿灯军团重建，介绍现代军团体系，是后续所有大战的基础。</p>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="8" y1="10" x2="16" y2="10" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">GL V4 #1-6 · No Fear</span>
+                    <span class="card-meta">2005</span>
+                </div>
+                <p class="card-desc">复活后的哈尔重新适应地球生活，重新建立人设。</p>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">《Sinestro Corps War》</span>
+                    <span class="card-meta">GL V4 #21-25 · 2007</span>
+                </div>
+                <p class="card-desc"><strong>绿灯史上最经典大战。</strong>黄灯军团正式崛起，哈尔与塞尼斯托的宿命对决，Geoff Johns时代进入高潮。</p>
+                <div class="card-tags"><span class="tag gold">巅峰之战</span></div>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">《Secret Origin》</span>
+                    <span class="card-meta">GL V4 #29-35 · 2005</span>
+                </div>
+                <p class="card-desc"><strong>哈尔现代重制起源。</strong>目前最经典、最完整的哈尔起源重述。很多读者直接从这里入坑。</p>
+                <div class="card-tags"><span class="tag accent">起源重述</span><span class="tag gold">入坑推荐</span></div>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="8" y1="10" x2="16" y2="10" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">Rage of the Red Lanterns & Agent Orange</span>
+                    <span class="card-meta">GL V4 #36-42</span>
+                </div>
+                <p class="card-desc">红灯军团首次登场，橙灯拉弗利兹登场。情感光谱宇宙逐渐展开。</p>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">《Blackest Night》</span>
+                    <span class="card-meta">2009 · #0-8</span>
+                </div>
+                <p class="card-desc"><strong>DC史诗级大事件。</strong>黑灯军团入侵，全宇宙亡者复活。哈尔是绝对主角之一，绿灯神话巅峰事件。</p>
+                <div class="card-tags"><span class="tag gold">史诗事件</span><span class="tag accent">必读</span></div>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="8" y1="10" x2="16" y2="10" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">《War of the Green Lanterns》</span>
+                    <span class="card-meta">GL V4 #63-67</span>
+                </div>
+                <p class="card-desc">Geoff Johns前期宇宙传奇的最终大战，长期伏笔回收。</p>
+            </div>
+        </div>
+
+        <!-- ==================== 第四阶段 ==================== -->
+        <div class="section-header">
+            <div class="stage-num stage-4-bg">Ⅳ</div>
+            <div class="stage-info">
+                <h2>第四阶段：新52哈尔</h2>
+                <span>2011 - 2016 · New 52 时期</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="8" y1="10" x2="16" y2="10" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">《Green Lantern》V5</span>
+                    <span class="card-meta">2011 · #1-52</span>
+                </div>
+                <p class="card-desc">新52开始后哈尔依然保留大量旧设定。重点看与塞尼斯托搭档的剧情。后半段为Geoff Johns离任前的收尾阶段，含第三军团、初灯侠等故事。</p>
+                <div class="card-tags"><span class="tag">New 52</span><span class="tag">塞尼斯托搭档</span></div>
+            </div>
+        </div>
+
+        <!-- ==================== 第五阶段 ==================== -->
+        <div class="section-header">
+            <div class="stage-num stage-5-bg">Ⅴ</div>
+            <div class="stage-info">
+                <h2>第五阶段：哈尔与绿灯军团</h2>
+                <span>2016 - 至今 · 现代最佳长篇之一</span>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">《Hal Jordan and the Green Lantern Corps》</span>
+                    <span class="card-meta">2016 · Rebirth #1 + #1-50</span>
+                </div>
+                <p class="card-desc"><strong>Robert Venditti时代。</strong>哈尔重建绿灯军团、对抗塞尼斯托帝国。四大地球绿灯侠（哈尔、约翰、盖、凯尔）共同活跃，被很多绿灯粉认为是Rebirth时期最佳系列。</p>
+                <div class="card-tags"><span class="tag gold">最佳长篇</span><span class="tag accent">Rebirth</span></div>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="card-icon">
+                <svg class="svg-icon-md icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /><line x1="8" y1="10" x2="16" y2="10" /></svg>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <span class="card-title">《The Green Lantern》</span>
+                    <span class="card-meta">2018 · #1-12 · Grant Morrison</span>
+                </div>
+                <p class="card-desc">Grant Morrison版哈尔，风格非常科幻、非常"宇宙警察"，适合喜欢独特叙事风格的读者。</p>
+                <div class="card-tags"><span class="tag">科幻</span><span class="tag">宇宙警察</span></div>
+            </div>
+        </div>
+
+        <!-- ==================== TOP10 必读 ==================== -->
+        <div class="top10-section">
+            <div class="top10-header">
+                <h2>🔥 哈尔必读 TOP 10</h2>
+                <p class="top10-sub">完整角色弧光：传奇绿灯侠 → 堕落为视差魔 → 救赎复活 → 宇宙第一绿灯侠</p>
+            </div>
+            <ol class="top10-list">
+                <li>
+                    <span class="top10-num">1</span>
+                    《Showcase》V1（1959）#22 —— 哈尔初登场，获得绿灯戒
+                </li>
+                <li>
+                    <span class="top10-num">2</span>
+                    《Green Lantern》V3（1990）#46-50 · 翡翠暮光 —— 黑化转折点
+                </li>
+                <li>
+                    <span class="top10-num">3</span>
+                    《Green Lantern: Rebirth》（2004）#1-6 —— 复活与洗白
+                </li>
+                <li>
+                    <span class="top10-num">4</span>
+                    《Green Lantern Corps: Recharge》（2005）#1-5 —— 军团重建
+                </li>
+                <li>
+                    <span class="top10-num">5</span>
+                    《Green Lantern》V4（2005）#1-20 —— Geoff Johns时代开篇
+                </li>
+                <li>
+                    <span class="top10-num">6</span>
+                    《Sinestro Corps War》（2007）#21-25 —— 宿命对决
+                </li>
+                <li>
+                    <span class="top10-num">7</span>
+                    《Secret Origin》（2005）#29-35 —— 现代起源重述
+                </li>
+                <li>
+                    <span class="top10-num special">8</span>
+                    《Blackest Night》（2009）#0-8 —— 史诗巅峰事件
+                </li>
+                <li>
+                    <span class="top10-num">9</span>
+                    《War of the Green Lanterns》（2005）#63-67 —— 宇宙传奇终战
+                </li>
+                <li>
+                    <span class="top10-num special">10</span>
+                    《Hal Jordan and the Green Lantern Corps》（2016）#1-50 —— Rebirth最佳
+                </li>
+            </ol>
+        </div>
+
+        <!-- 底部引用 -->
+        <div class="quote-block">
+            <span class="quote-mark">"</span>
+            <p>那个充满理想主义、把自己当宇宙飞行员兼超级英雄的哈尔。等你真的喜欢上这个版本的哈尔以后，再去看翡翠暮光，冲击力会大很多。否则就像——<br>"等等，我还没和这个人熟起来呢，你怎么就让我参加他的葬礼了？"</p>
+            <span class="quote-author">—— 给新读者的忠告 😭</span>
+        </div>
+
+        <!-- 页脚 -->
+        <div class="footer-note">
+            📚 资料整理自 Screen Rant · Reddit r/Greenlantern · 维基百科 · ComicBookWire<br>
+            设计风格：拟态（Neumorphism）+ 极简图标 · 字体：思源宋体
+        </div>
+
+    </div>
+</body>
+</html>
