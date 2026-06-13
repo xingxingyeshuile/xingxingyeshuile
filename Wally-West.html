@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>沃利·韦斯特阅读指南 - 闪电侠全集</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: rgba(255, 255, 255, 0.03);
+            --glass: rgba(255, 255, 255, 0.04);
+            --glass-hover: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.14);
+            --text: #e0ddd6;
+            --text-dim: #9a9790;
+            --text-muted: #6b6760;
+            --gold: #e2b04a;
+            --gold-light: #f0d078;
+            --gold-dark: #b8861e;
+            --red: #c0392b;
+            --red-light: #e74c3c;
+            --blue: #4a90c4;
+            --blue-light: #6db3d8;
+            --green: #5a8f6a;
+            --amber: #d4953a;
+            --sss: #e2b04a;
+            --s-tier: #d4453b;
+            --a-tier: #5a90c4;
+            --b-tier: #6a9f72;
+            --c-tier: #7a7670;
+            --radius-sm: 8px;
+            --radius: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 26px;
+            --shadow-glass: 0 4px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            --shadow-card: 0 8px 40px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-serif: 'Noto Serif SC', 'Source Han Serif SC', 'STSong', 'Songti SC', 'SimSun', 'Noto Serif CJK SC', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 15px;
+        }
+
+        body {
+            background: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 15% 10%, rgba(226, 176, 74, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 75% 25%, rgba(200, 60, 40, 0.04) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 60%, rgba(180, 140, 80, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(100, 140, 180, 0.04) 0%, transparent 50%);
+            color: var(--text);
+            font-family: var(--font-serif);
+            line-height: 1.7;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: 0.01em;
+        }
+
+        /* 粒子光点背景 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.25), transparent),
+                radial-gradient(1px 1px at 28% 42%, rgba(255, 255, 255, 0.2), transparent),
+                radial-gradient(1px 1px at 55% 15%, rgba(255, 255, 255, 0.22), transparent),
+                radial-gradient(1px 1px at 68% 55%, rgba(255, 255, 255, 0.18), transparent),
+                radial-gradient(1.5px 1.5px at 80% 22%, rgba(255, 255, 255, 0.2), transparent),
+                radial-gradient(1px 1px at 35% 72%, rgba(255, 255, 255, 0.22), transparent),
+                radial-gradient(1px 1px at 90% 68%, rgba(255, 255, 255, 0.16), transparent),
+                radial-gradient(1.5px 1.5px at 8% 60%, rgba(255, 255, 255, 0.2), transparent),
+                radial-gradient(1px 1px at 45% 35%, rgba(255, 255, 255, 0.18), transparent),
+                radial-gradient(1px 1px at 72% 78%, rgba(255, 255, 255, 0.15), transparent);
+        }
+
+        /* 主容器 */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 20px 18px 60px;
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            text-align: center;
+            padding: 50px 20px 36px;
+            position: relative;
+        }
+
+        .hero-icon {
+            display: inline-block;
+            font-size: 56px;
+            line-height: 1;
+            margin-bottom: 10px;
+            animation: pulse-glow 2.4s ease-in-out infinite;
+            filter: drop-shadow(0 0 28px rgba(226, 176, 74, 0.5));
+            user-select: none;
+        }
+
+        @keyframes pulse-glow {
+            0%,
+            100% {
+                filter: drop-shadow(0 0 22px rgba(226, 176, 74, 0.45));
+                transform: scale(1);
+            }
+            50% {
+                filter: drop-shadow(0 0 44px rgba(240, 200, 100, 0.75));
+                transform: scale(1.06);
+            }
+        }
+
+        .hero-title {
+            font-size: 2.4rem;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            color: #f2efe8;
+            margin-bottom: 6px;
+            line-height: 1.25;
+        }
+        .hero-title .accent {
+            color: var(--gold-light);
+            text-shadow: 0 0 40px rgba(226, 176, 74, 0.5);
+        }
+        .hero-subtitle {
+            font-size: 1.05rem;
+            font-weight: 400;
+            color: var(--text-dim);
+            letter-spacing: 0.03em;
+            max-width: 580px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .hero-divider {
+            width: 50px;
+            height: 2px;
+            background: var(--gold);
+            margin: 18px auto;
+            border-radius: 2px;
+            opacity: 0.7;
+        }
+
+        /* ========== 玻璃卡片 ========== */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px 26px;
+            margin-bottom: 18px;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card:hover {
+            background: var(--glass-hover);
+            border-color: var(--border-strong);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.55), 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+            transform: translateY(-1px);
+        }
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+            pointer-events: none;
+            border-radius: inherit;
+        }
+
+        /* 阶段卡片 */
+        .phase-card {
+            background: var(--glass);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 28px 28px 22px;
+            margin-bottom: 22px;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+            position: relative;
+        }
+        .phase-card:hover {
+            border-color: var(--border-strong);
+            box-shadow: 0 14px 50px rgba(0, 0, 0, 0.55);
+        }
+        .phase-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(226, 176, 74, 0.35), transparent);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            pointer-events: none;
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .phase-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(226, 176, 74, 0.15);
+            border: 1px solid rgba(226, 176, 74, 0.3);
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--gold-light);
+            flex-shrink: 0;
+            font-family: var(--font-serif);
+        }
+        .phase-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #f0ede6;
+            letter-spacing: 0.02em;
+            line-height: 1.3;
+        }
+        .phase-years {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        /* 分级标签 */
+        .tier-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            line-height: 1.5;
+            font-family: var(--font-serif);
+        }
+        .tier-sss {
+            background: rgba(226, 176, 74, 0.18);
+            color: var(--gold-light);
+            border: 1px solid rgba(226, 176, 74, 0.35);
+            text-shadow: 0 0 12px rgba(226, 176, 74, 0.3);
+        }
+        .tier-s {
+            background: rgba(212, 69, 59, 0.16);
+            color: #e8837a;
+            border: 1px solid rgba(212, 69, 59, 0.35);
+        }
+        .tier-a {
+            background: rgba(90, 144, 196, 0.15);
+            color: #8ab8db;
+            border: 1px solid rgba(90, 144, 196, 0.3);
+        }
+        .tier-b {
+            background: rgba(106, 159, 114, 0.14);
+            color: #8dbd94;
+            border: 1px solid rgba(106, 159, 114, 0.28);
+        }
+        .tier-c {
+            background: rgba(140, 135, 128, 0.12);
+            color: #a09b94;
+            border: 1px solid rgba(140, 135, 128, 0.25);
+        }
+
+        /* 条目 */
+        .entry-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 0;
+        }
+        .entry-item {
+            padding: 10px 14px;
+            margin: 5px 0;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.015);
+            border-left: 3px solid transparent;
+            transition: var(--transition);
+            position: relative;
+            font-size: 0.93rem;
+            line-height: 1.55;
+        }
+        .entry-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-left-color: rgba(226, 176, 74, 0.5);
+        }
+        .entry-item.tier-sss-item {
+            border-left-color: rgba(226, 176, 74, 0.55);
+            background: rgba(226, 176, 74, 0.04);
+        }
+        .entry-item.tier-s-item {
+            border-left-color: rgba(212, 69, 59, 0.5);
+            background: rgba(212, 69, 59, 0.03);
+        }
+        .entry-item.tier-a-item {
+            border-left-color: rgba(90, 144, 196, 0.4);
+        }
+        .entry-item .entry-title {
+            font-weight: 600;
+            color: #ece8e0;
+            letter-spacing: 0.02em;
+        }
+        .entry-item .entry-issue {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .entry-item .entry-note {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            margin-top: 3px;
+            font-style: italic;
+        }
+
+        /* 引用块 */
+        .quote-block {
+            margin: 14px 0;
+            padding: 14px 18px;
+            background: rgba(226, 176, 74, 0.04);
+            border-left: 3px solid rgba(226, 176, 74, 0.4);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            font-style: italic;
+            color: #d5cfc4;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+            line-height: 1.6;
+        }
+
+        /* 20故事精选卡片 */
+        .top20-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .top20-item {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px 15px;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            position: relative;
+            cursor: default;
+            letter-spacing: 0.02em;
+            line-height: 1.5;
+        }
+        .top20-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border-strong);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        .top20-rank {
+            display: inline-block;
+            width: 26px;
+            height: 26px;
+            line-height: 26px;
+            text-align: center;
+            border-radius: 50%;
+            background: rgba(226, 176, 74, 0.2);
+            color: var(--gold-light);
+            font-weight: 700;
+            font-size: 0.8rem;
+            margin-right: 8px;
+            flex-shrink: 0;
+            font-family: var(--font-serif);
+        }
+
+        /* 分隔线 */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 28px 0 20px;
+            opacity: 0.5;
+        }
+        .section-divider .line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .section-divider .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+            flex-shrink: 0;
+        }
+
+        /* 返回顶部 */
+        .back-to-top {
+            position: fixed;
+            bottom: 28px;
+            right: 24px;
+            z-index: 100;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-strong);
+            color: var(--gold-light);
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            text-decoration: none;
+            user-select: none;
+        }
+        .back-to-top:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(226, 176, 74, 0.5);
+            box-shadow: 0 6px 28px rgba(0, 0, 0, 0.55);
+            transform: translateY(-2px);
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 0.03em;
+        }
+        .footer .bolt {
+            color: var(--gold);
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .hero-title {
+                font-size: 1.7rem;
+            }
+            .hero-icon {
+                font-size: 42px;
+            }
+            .phase-card {
+                padding: 18px 14px 16px;
+            }
+            .glass-card {
+                padding: 16px 14px;
+            }
+            .top20-grid {
+                grid-template-columns: 1fr;
+            }
+            .phase-header {
+                gap: 8px;
+            }
+            .phase-title {
+                font-size: 1.1rem;
+            }
+            .phase-years {
+                font-size: 0.75rem;
+                margin-left: 0;
+                width: 100%;
+                text-align: left;
+            }
+            html {
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 380px) {
+            .hero-title {
+                font-size: 1.4rem;
+            }
+            .phase-title {
+                font-size: 1rem;
+            }
+            .entry-item {
+                font-size: 0.82rem;
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <!-- ==================== HERO ==================== -->
+        <header class="hero">
+            <div class="hero-icon">⚡</div>
+            <h1 class="hero-title">沃利·韦斯特<span class="accent">阅读指南</span></h1>
+            <div class="hero-divider"></div>
+            <p class="hero-subtitle">
+                从 Kid Flash 到传奇闪电侠，一份跨越六十年的完整阅读地图。<br>
+                按层级梳理：<strong style="color:#f0d078;">SSS级</strong>核心必读 ·
+                <strong style="color:#e8837a;">S级</strong>关键塑造 ·
+                <strong style="color:#8ab8db;">A级</strong>强烈推荐
+            </p>
+        </header>
+
+        <!-- ==================== 20个故事精选 ==================== -->
+        <section class="glass-card" id="top20">
+            <h2 style="font-weight:700;font-size:1.15rem;color:#f0ede6;margin-bottom:4px;letter-spacing:0.03em;">⚡ 如果只看 20 个故事</h2>
+            <p style="font-size:0.85rem;color:var(--text-dim);margin-bottom:12px;">按优先级排序，覆盖沃利人生所有关键节点</p>
+            <div class="top20-grid">
+                <div class="top20-item"><span class="top20-rank">1</span><strong>Born to Run</strong> — Flash #62-65</div>
+                <div class="top20-item"><span class="top20-rank">2</span><strong>Return of Barry Allen</strong> — Flash #74-79</div>
+                <div class="top20-item"><span class="top20-rank">3</span><strong>Terminal Velocity</strong> — Flash #90-94</div>
+                <div class="top20-item"><span class="top20-rank">4</span><strong>Life Story of the Flash</strong> (1997)</div>
+                <div class="top20-item"><span class="top20-rank">5</span><strong>Flash #100</strong> — 百期纪念</div>
+                <div class="top20-item"><span class="top20-rank">6</span><strong>Dead Heat</strong> — Flash #101-106</div>
+                <div class="top20-item"><span class="top20-rank">7</span><strong>Human Race</strong> — Flash #130-141</div>
+                <div class="top20-item"><span class="top20-rank">8</span><strong>Johns时代</strong> — Flash #164-225</div>
+                <div class="top20-item"><span class="top20-rank">9</span><strong>Infinite Crisis</strong> #1-7</div>
+                <div class="top20-item"><span class="top20-rank">10</span><strong>All-Flash</strong> #1</div>
+                <div class="top20-item"><span class="top20-rank">11</span><strong>Wild Wests</strong> — Flash #231-247</div>
+                <div class="top20-item"><span class="top20-rank">12</span><strong>Flash: Rebirth</strong> #1-6</div>
+                <div class="top20-item"><span class="top20-rank">13</span><strong>Flashpoint</strong> #1-5</div>
+                <div class="top20-item"><span class="top20-rank">14</span><strong>Titans Hunt</strong> #1-8</div>
+                <div class="top20-item"><span class="top20-rank">15</span><strong>DC Universe Rebirth</strong> #1</div>
+                <div class="top20-item"><span class="top20-rank">16</span><strong>Titans (2016)</strong> #1-30</div>
+                <div class="top20-item"><span class="top20-rank">17</span><strong>Flash War</strong></div>
+                <div class="top20-item"><span class="top20-rank">18</span><strong>Heroes in Crisis</strong></div>
+                <div class="top20-item"><span class="top20-rank">19</span><strong>Flash Forward</strong> #1-6</div>
+                <div class="top20-item"><span class="top20-rank">20</span><strong>Speed Metal</strong> #1</div>
+            </div>
+        </section>
+
+        <div class="section-divider">
+            <span class="line"></span><span class="dot"></span><span class="line"></span>
+        </div>
+
+        <!-- ==================== 第一部：Kid Flash时代 ==================== -->
+        <article class="phase-card" id="phase1">
+            <div class="phase-header">
+                <span class="phase-number">Ⅰ</span>
+                <span class="phase-title">Kid Flash 时代</span>
+                <span class="phase-years">1959–1985</span>
+            </div>
+            <p style="font-size:0.88rem;color:var(--text-dim);margin-bottom:12px;">白银时代至铜时代，沃利从初登场到成为少年泰坦创始成员。</p>
+
+            <span class="tier-badge tier-s">S 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-s-item">
+                    <span class="entry-title">The Flash #110</span> <span class="entry-issue">(1959)</span> — 首次登场，获得神速力，成为 Kid Flash。
+                </li>
+                <li class="entry-item tier-s-item">
+                    <span class="entry-title">The Brave and the Bold #54</span> <span class="entry-issue">(1964)</span> — 初代少年泰坦成立：罗宾、神奇女孩、海少侠、Kid Flash。
+                </li>
+                <li class="entry-item tier-s-item">
+                    <span class="entry-title">New Teen Titans #1-40</span> <span class="entry-issue">(1980)</span> — Donna、Dick、Roy、Raven、Starfire，全部关系基础在此。
+                </li>
+            </ul>
+
+            <span class="tier-badge tier-a" style="margin-top:10px;">A 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-a-item">
+                    <span class="entry-title">Secret Origins Annual #2</span> <span class="entry-issue">(1988)</span> — 《The Unforgiving Minute》，经典起源补完，前闪时期最佳沃利故事之一。
+                </li>
+                <li class="entry-item tier-a-item">
+                    <span class="entry-title">Teen Titans Vol.1 #1-43</span> <span class="entry-issue">(1966)</span> — Dick、Donna、Garth、Wally 四元老时期。
+                </li>
+            </ul>
+        </article>
+
+        <!-- ==================== 第二部：接班闪电侠 ==================== -->
+        <article class="phase-card" id="phase2">
+            <div class="phase-header">
+                <span class="phase-number">Ⅱ</span>
+                <span class="phase-title">接班闪电侠</span>
+                <span class="phase-years">1986–1992</span>
+            </div>
+            <p style="font-size:0.88rem;color:var(--text-dim);margin-bottom:12px;">巴里牺牲，沃利正式接过闪电侠衣钵。不成熟、爱炫耀、有点混蛋——正因如此，后来的成长才伟大。</p>
+
+            <span class="tier-badge tier-s">S 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-s-item">
+                    <span class="entry-title">Crisis on Infinite Earths #8 & #12</span> <span class="entry-issue">(1985-1986)</span> — 巴里牺牲，沃利正式成为 Flash。
+                </li>
+                <li class="entry-item tier-s-item">
+                    <span class="entry-title">The Flash Vol.2 #1-61</span> <span class="entry-issue">(1987)</span> — Mike Baron & William Messner-Loebs 时期。不要跳！这里是全部成长过程。
+                </li>
+            </ul>
+
+            <span class="tier-badge tier-a" style="margin-top:10px;">A 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-a-item">
+                    <span class="entry-title">Justice League International #1-25</span> <span class="entry-issue">(1987)</span> — 沃利在正联的重要时期。
+                </li>
+                <li class="entry-item tier-a-item">
+                    <span class="entry-title">Justice League Europe #1+</span> <span class="entry-issue">(1989)</span> — 沃利是创始成员之一。
+                </li>
+            </ul>
+        </article>
+
+        <!-- ==================== 第三部：马克·韦德时代 ==================== -->
+        <article class="phase-card" id="phase3">
+            <div class="phase-header">
+                <span class="phase-number">Ⅲ</span>
+                <span class="phase-title">马克·韦德神话时代</span>
+                <span class="phase-years">1992–2000</span>
+            </div>
+            <p style="font-size:0.88rem;color:var(--text-dim);margin-bottom:12px;">很多人心中的神作时期，沃利真正"封神"。</p>
+
+            <span class="tier-badge tier-sss">SSS 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-sss-item">
+                    <span class="entry-title">Born to Run — Flash #62-65</span> — 沃利圣经，相当于 Year One + Origin + Character Manifesto 的结合体。
+                </li>
+                <li class="entry-item tier-sss-item">
+                    <span class="entry-title">Return of Barry Allen — Flash #74-79</span> — DC历史最佳闪电侠故事候选，沃利真正超越巴里的故事。
+                </li>
+                <li class="entry-item tier-sss-item">
+                    <span class="entry-title">Terminal Velocity — Flash #90-94</span> — 神速力神话正式建立。
+                </li>
+                <li class="entry-item tier-sss-item">
+                    <span class="entry-title">Flash #100</span> — 百期纪念。
+                </li>
+                <li class="entry-item tier-sss-item">
+                    <span class="entry-title">Dead Heat — Flash #101-106</span> — 神速力宇宙扩展。
+                </li>
+            </ul>
+
+            <span class="tier-badge tier-a" style="margin-top:10px;">A 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-a-item">
+                    <span class="entry-title">Life Story of the Flash</span> <span class="entry-issue">(1997)</span> — 全DC最伟大的闪电侠书之一，既是巴里传记也是沃利传记，建议放在 Return of Barry Allen 之后阅读。
+                </li>
+                <li class="entry-item tier-a-item">
+                    <span class="entry-title">Chain Lightning — Flash #145-150</span> & <span class="entry-title">Dark Flash — #150-159</span>
+                </li>
+            </ul>
+        </article>
+
+        <!-- ==================== 第四部：JLA时代 ==================== -->
+        <article class="phase-card" id="phase4">
+            <div class="phase-header">
+                <span class="phase-number">Ⅳ</span>
+                <span class="phase-title">JLA 时代</span>
+                <span class="phase-years">1997+</span>
+            </div>
+            <p style="font-size:0.88rem;color:var(--text-dim);margin-bottom:12px;">很多沃利粉认为：JLA里的沃利和主刊沃利一样重要。</p>
+            <span class="tier-badge tier-s">S 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-s-item"><span class="entry-title">JLA #1-60</span> — 重点：Rock of Ages、DC One Million、World War III。</li>
+                <li class="entry-item tier-s-item"><span class="entry-title">JLA #61-90</span> & <span class="entry-title">#91-114</span> — 持续阅读。</li>
+            </ul>
+        </article>
+
+        <!-- ==================== 第五部：Geoff Johns时代 ==================== -->
+        <article class="phase-card" id="phase5">
+            <div class="phase-header">
+                <span class="phase-number">Ⅴ</span>
+                <span class="phase-title">Geoff Johns 时代</span>
+                <span class="phase-years">2000–2005</span>
+            </div>
+            <p style="font-size:0.88rem;color:var(--text-dim);margin-bottom:12px;">沃利第二个黄金时代，另一座高峰。</p>
+            <span class="tier-badge tier-sss">SSS 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-sss-item">
+                    <span class="entry-title">Flash Vol.2 #164-225</span> — <strong>全读，不要挑。</strong>包括 Zoom、Rogue War、Blitz、Ignition 等，几乎每个都影响后续设定。
+                </li>
+            </ul>
+        </article>
+
+        <!-- ==================== 第六部：无限危机时代 ==================== -->
+        <article class="phase-card" id="phase6">
+            <div class="phase-header">
+                <span class="phase-number">Ⅵ</span>
+                <span class="phase-title">无限危机时代</span>
+                <span class="phase-years">2005–2008</span>
+            </div>
+            <span class="tier-badge tier-s">S 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-s-item"><span class="entry-title">Infinite Crisis #1-7</span> — 必须读，对沃利影响巨大。</li>
+                <li class="entry-item tier-s-item"><span class="entry-title">The Lightning Saga</span> <span class="entry-issue">(2007)</span> — JLA #8-10 & JSA #5-6，重要闪家剧情。</li>
+                <li class="entry-item tier-s-item"><span class="entry-title">All-Flash #1</span> <span class="entry-issue">(2007)</span> — 沃利回归。</li>
+                <li class="entry-item tier-s-item"><span class="entry-title">Flash Vol.2 #231-247</span> — Wild Wests 时期，沃利当爹带娃。</li>
+            </ul>
+        </article>
+
+        <!-- ==================== 第七部：巴里归来 ==================== -->
+        <article class="phase-card" id="phase7">
+            <div class="phase-header">
+                <span class="phase-number">Ⅶ</span>
+                <span class="phase-title">巴里归来</span>
+                <span class="phase-years">2008–2011</span>
+            </div>
+            <span class="tier-badge tier-s">S 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-s-item"><span class="entry-title">Final Crisis</span> <span class="entry-issue">(2008)</span></li>
+                <li class="entry-item tier-s-item"><span class="entry-title">Flash: Rebirth #1-6</span> <span class="entry-issue">(2009)</span> — 巴里回归，沃利开始让位。</li>
+                <li class="entry-item tier-s-item"><span class="entry-title">Blackest Night: The Flash #1-3</span></li>
+            </ul>
+        </article>
+
+        <!-- ==================== 第八部：Flashpoint前夜 ==================== -->
+        <article class="phase-card" id="phase8">
+            <div class="phase-header">
+                <span class="phase-number">Ⅷ</span>
+                <span class="phase-title">Flashpoint 前夜</span>
+                <span class="phase-years">2011</span>
+            </div>
+            <span class="tier-badge tier-s">S 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-s-item"><span class="entry-title">Flash #248-247 结束</span> → <span class="entry-title">Flashpoint #1-5</span> — 旧宇宙终结，沃利时代落幕。</li>
+            </ul>
+        </article>
+
+        <!-- ==================== 第九部：失踪五年 ==================== -->
+        <article class="phase-card" id="phase9">
+            <div class="phase-header">
+                <span class="phase-number">Ⅸ</span>
+                <span class="phase-title">失踪五年</span>
+                <span class="phase-years">2011–2016</span>
+            </div>
+            <p style="font-size:0.88rem;color:var(--text-dim);margin-bottom:8px;">最痛苦时期——原版沃利基本不存在于 New 52 宇宙。</p>
+            <span class="tier-badge tier-a">A 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-a-item"><span class="entry-title">Titans Hunt #1-8</span> — 沃利本人几乎没出场，但这是他回归的前奏，必须读。</li>
+            </ul>
+        </article>
+
+        <!-- ==================== 第十部：Rebirth回归 ==================== -->
+        <article class="phase-card" id="phase10">
+            <div class="phase-header">
+                <span class="phase-number">Ⅹ</span>
+                <span class="phase-title">Rebirth 回归</span>
+                <span class="phase-years">2016+</span>
+            </div>
+            <p style="font-size:0.88rem;color:var(--text-dim);margin-bottom:8px;">沃利第三次封神。这是很多老粉哭出来的一本。</p>
+            <span class="tier-badge tier-sss">SSS 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-sss-item"><span class="entry-title">DC Universe Rebirth #1</span> <span class="entry-issue">(2016)</span> — 神作，沃利粉必须看。</li>
+                <li class="entry-item tier-sss-item"><span class="entry-title">Titans (2016) #1-30</span> — 元老泰坦重聚，迪克+沃利含量爆炸。</li>
+                <li class="entry-item tier-sss-item"><span class="entry-title">Nightwing #15 & #21</span> — 沃利×迪克经典友情。</li>
+            </ul>
+            <span class="tier-badge tier-a" style="margin-top:8px;">A 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-a-item"><span class="entry-title">Lazarus Contract</span> — Titans / Teen Titans / Deathstroke 联动事件。</li>
+            </ul>
+        </article>
+
+        <!-- ==================== 第十一部：Flash War ==================== -->
+        <article class="phase-card" id="phase11">
+            <div class="phase-header">
+                <span class="phase-number">Ⅺ</span>
+                <span class="phase-title">Flash War</span>
+                <span class="phase-years">2018</span>
+            </div>
+            <span class="tier-badge tier-s">S 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-s-item"><span class="entry-title">The Flash (2016) #40-51</span> — 巴里与沃利冲突，必补。</li>
+            </ul>
+        </article>
+
+        <!-- ==================== 第十二部：英雄危机 ==================== -->
+        <article class="phase-card" id="phase12">
+            <div class="phase-header">
+                <span class="phase-number">Ⅻ</span>
+                <span class="phase-title">英雄危机</span>
+                <span class="phase-years">2018–2019</span>
+            </div>
+            <span class="tier-badge tier-s" style="background:rgba(180,100,40,0.2);color:#e8b878;border-color:rgba(200,140,60,0.4);">⚠ 谨慎阅读</span>
+            <ul class="entry-list">
+                <li class="entry-item"><span class="entry-title">Heroes in Crisis #1-9</span> — 看，但做好心理准备。沃利粉普遍血压升高作品。</li>
+            </ul>
+        </article>
+
+        <!-- ==================== 第十三部：沃利救赎三部曲 ==================== -->
+        <article class="phase-card" id="phase13">
+            <div class="phase-header">
+                <span class="phase-number">ⅩⅢ</span>
+                <span class="phase-title">沃利救赎三部曲</span>
+                <span class="phase-years">2019–2020</span>
+            </div>
+            <span class="tier-badge tier-s">S 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-s-item"><span class="entry-title">Flash Forward #1-6</span> — 给沃利正名，必须看。</li>
+                <li class="entry-item tier-s-item"><span class="entry-title">Dark Nights: Death Metal #1-7</span></li>
+                <li class="entry-item tier-s-item"><span class="entry-title">Speed Metal #1</span> — 沃利粉狂喜篇。</li>
+            </ul>
+        </article>
+
+        <!-- ==================== 第十四部：沃利重新成为主闪 ==================== -->
+        <article class="phase-card" id="phase14">
+            <div class="phase-header">
+                <span class="phase-number">ⅩⅣ</span>
+                <span class="phase-title">沃利重新成为主闪</span>
+                <span class="phase-years">2021+</span>
+            </div>
+            <span class="tier-badge tier-s">S 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-s-item"><span class="entry-title">The Flash #768-800</span> — Jeremy Adams 时期，几乎全好评。重点：One-Minute War、Family Adventures、Linda线、孩子线。</li>
+            </ul>
+        </article>
+
+        <!-- ==================== 第十五部：现行连载 ==================== -->
+        <article class="phase-card" id="phase15">
+            <div class="phase-header">
+                <span class="phase-number">ⅩⅤ</span>
+                <span class="phase-title">现行连载</span>
+                <span class="phase-years">2023–至今</span>
+            </div>
+            <span class="tier-badge tier-a">A 级</span>
+            <ul class="entry-list">
+                <li class="entry-item tier-a-item"><span class="entry-title">The Flash (2023–至今)</span> — 沃利一家主角，继续追即可。</li>
+            </ul>
+        </article>
+
+        <!-- ==================== 个性化推荐 ==================== -->
+        <section class="glass-card" id="personal-recs" style="margin-top:24px;">
+            <h2 style="font-weight:700;font-size:1.1rem;color:#f0ede6;margin-bottom:8px;letter-spacing:0.03em;">🔍 如果你偏爱人际关系线</h2>
+            <p style="font-size:0.85rem;color:var(--text-dim);margin-bottom:10px;">最大化看到：迪克×沃利 · 巴里×沃利 · 泰坦元老组 · 闪家传承 · "英雄的英雄"主题</p>
+            <ol style="padding-left:20px;color:#d5cfc4;font-size:0.9rem;line-height:2;letter-spacing:0.02em;">
+                <li>New Teen Titans（迪克+沃利）</li>
+                <li>Born to Run</li>
+                <li>Return of Barry Allen</li>
+                <li>JLA（沃利+联盟）</li>
+                <li>Geoff Johns 时代</li>
+                <li>Lightning Saga</li>
+                <li>Wild Wests</li>
+                <li>DC Universe Rebirth</li>
+                <li>Titans (2016)</li>
+                <li>Nightwing #21</li>
+                <li>Flash War</li>
+                <li>Flash Forward</li>
+                <li>Speed Metal</li>
+                <li>Jeremy Adams 时期</li>
+            </ol>
+        </section>
+
+        <!-- ==================== 引用块 ==================== -->
+        <div class="quote-block" style="margin-top:20px;">
+            "沃利最重要的主线其实就是《闪电侠V2》(1987) #1-247。从1987一直到2009，几乎完整讲完了他从少年到丈夫、父亲、传奇英雄的全过程。"
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>⚡ 沃利·韦斯特阅读指南 · 收藏家级完整版 ⚡</p>
+            <p style="margin-top:4px;">基于 ComicBookWire · Comic Book Treasury · Reddit 等多个来源综合整理</p>
+        </footer>
+
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <a href="#" class="back-to-top" title="返回顶部" aria-label="返回顶部">↑</a>
+
+    <script>
+        // 返回顶部按钮 - 滚动到一定距离后显示
+        const backToTopBtn = document.querySelector('.back-to-top');
+
+        function updateBackToTop() {
+            if (window.scrollY > 500) {
+                backToTopBtn.style.opacity = '1';
+                backToTopBtn.style.pointerEvents = 'auto';
+            } else {
+                backToTopBtn.style.opacity = '0';
+                backToTopBtn.style.pointerEvents = 'none';
+            }
+        }
+
+        // 初始状态
+        backToTopBtn.style.opacity = '0';
+        backToTopBtn.style.pointerEvents = 'none';
+        backToTopBtn.style.transition = 'opacity 0.35s ease';
+
+        window.addEventListener('scroll', updateBackToTop, { passive: true });
+
+        // 平滑滚动到顶部
+        backToTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 卡片入场动画 - 使用 Intersection Observer
+        const observerOptions = {
+            threshold: 0.08,
+            rootMargin: '0px 0px -30px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.phase-card, .glass-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(18px)';
+            card.style.transition = 'opacity 0.55s ease, transform 0.55s cubic-bezier(0.22,0.61,0.36,1)';
+            observer.observe(card);
+        });
+
+        // 页面加载后立即触发可见区域的卡片
+        setTimeout(() => {
+            document.querySelectorAll('.phase-card, .glass-card').forEach(card => {
+                const rect = card.getBoundingClientRect();
+                if (rect.top < window.innerHeight) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+        }, 100);
+    </script>
+</body>
+</html>
