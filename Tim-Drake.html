@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tim Drake 阅读路线 — 究极版</title>
+    <style>
+        :root {
+            --crimson: #7C0A18;
+            --crimson-glow: rgba(124, 10, 24, 0.35);
+            --crimson-bright: #9B0D1E;
+            --matte-black: #0A0A0E;
+            --matte-black-alt: #111117;
+            --dark-gold: #C8A437;
+            --dark-gold-soft: rgba(200, 164, 55, 0.25);
+            --dark-gold-glow: rgba(200, 164, 55, 0.12);
+            --gunmetal: #868686;
+            --gunmetal-soft: rgba(134, 134, 134, 0.30);
+            --gunmetal-subtle: rgba(134, 134, 134, 0.14);
+            --text-primary: #e8e6e3;
+            --text-secondary: #b0aeab;
+            --text-muted: #7a7875;
+            --glass-bg: rgba(17, 17, 23, 0.55);
+            --glass-bg-hover: rgba(22, 22, 30, 0.62);
+            --glass-border: rgba(134, 134, 134, 0.17);
+            --glass-border-hover: rgba(200, 164, 55, 0.30);
+            --glass-highlight: rgba(255, 255, 255, 0.03);
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+            --radius-xs: 6px;
+            --font-sans: 'Inter', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', 'Monaco', monospace;
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-card-hover: 0 16px 48px rgba(0, 0, 0, 0.55), 0 4px 16px rgba(0, 0, 0, 0.35);
+            --shadow-glow-crimson: 0 0 60px rgba(124, 10, 24, 0.25), 0 0 120px rgba(124, 10, 24, 0.10);
+            --shadow-glow-gold: 0 0 40px rgba(200, 164, 55, 0.18), 0 0 80px rgba(200, 164, 55, 0.06);
+            --transition-smooth: 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+            --transition-fast: 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--matte-black);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+            letter-spacing: 0.01em;
+            position: relative;
+        }
+
+        /* 背景光晕 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: -15%;
+            width: 70vw;
+            height: 70vh;
+            background: radial-gradient(ellipse at 30% 25%, rgba(124, 10, 24, 0.10) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -15%;
+            right: -10%;
+            width: 60vw;
+            height: 60vh;
+            background: radial-gradient(ellipse at 70% 65%, rgba(200, 164, 55, 0.07) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 背景纹理 */
+        .bg-texture {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.025;
+            background-image:
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(134, 134, 134, 0.4) 2px,
+                    rgba(134, 134, 134, 0.4) 2.5px),
+                repeating-linear-gradient(90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(134, 134, 134, 0.4) 2px,
+                    rgba(134, 134, 134, 0.4) 2.5px);
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+        }
+
+        .bg-texture {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.025;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(134, 134, 134, 0.4) 2px, rgba(134, 134, 134, 0.4) 2.5px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(134, 134, 134, 0.4) 2px, rgba(134, 134, 134, 0.4) 2.5px);
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+        }
+
+        /* 主容器 */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            text-align: center;
+            padding: 50px 20px 30px;
+            position: relative;
+        }
+        .header-icon {
+            display: inline-block;
+            margin-bottom: 16px;
+            opacity: 0.8;
+        }
+        .header-icon svg {
+            width: 44px;
+            height: 44px;
+            stroke: var(--dark-gold);
+            fill: none;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 12px rgba(200, 164, 55, 0.3));
+        }
+        .header h1 {
+            font-size: clamp(2rem, 4.5vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            color: #f0ede8;
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+        .header h1 .accent {
+            color: var(--dark-gold);
+            position: relative;
+        }
+        .header .subtitle {
+            font-size: 0.95rem;
+            color: var(--gunmetal);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .header .divider-line {
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: var(--crimson);
+            margin: 0 auto 18px;
+            border-radius: 1px;
+            opacity: 0.7;
+        }
+        .header .intro-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .header .intro-text strong {
+            color: var(--dark-gold);
+            font-weight: 600;
+        }
+
+        /* 版本提示卡片 */
+        .version-badge-row {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .version-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            transition: var(--transition-fast);
+            white-space: nowrap;
+        }
+        .version-badge:hover {
+            border-color: var(--glass-border-hover);
+            color: var(--text-primary);
+            background: var(--glass-bg-hover);
+        }
+        .version-badge .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .version-badge .dot.crimson {
+            background: var(--crimson);
+            box-shadow: 0 0 8px var(--crimson-glow);
+        }
+        .version-badge .dot.gold {
+            background: var(--dark-gold);
+            box-shadow: 0 0 8px var(--dark-gold-soft);
+        }
+
+        /* ========== 时间线区域 ========== */
+        .timeline-section {
+            position: relative;
+            padding: 20px 0 10px;
+        }
+        .timeline-section::before {
+            content: '';
+            position: absolute;
+            left: 28px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom,
+                    transparent 0%,
+                    var(--gunmetal-subtle) 5%,
+                    var(--gunmetal-soft) 20%,
+                    var(--crimson-glow) 50%,
+                    var(--gunmetal-soft) 80%,
+                    transparent 100%);
+            border-radius: 1px;
+            z-index: 0;
+        }
+
+        /* 阶段卡片 */
+        .phase-card {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 28px;
+            margin-left: 56px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(22px) saturate(170%);
+            -webkit-backdrop-filter: blur(22px) saturate(170%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 26px 30px;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: visible;
+        }
+        .phase-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-lg);
+            pointer-events: none;
+            border-top: 1px solid var(--glass-highlight);
+            opacity: 0.6;
+        }
+        .phase-card:hover {
+            border-color: var(--glass-border-hover);
+            box-shadow: var(--shadow-card-hover), var(--shadow-glow-gold);
+            background: var(--glass-bg-hover);
+            transform: translateY(-2px);
+        }
+
+        /* 时间线节点 */
+        .phase-card .timeline-node {
+            position: absolute;
+            left: -40px;
+            top: 28px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--matte-black-alt);
+            border: 2px solid var(--crimson);
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 0 6px rgba(124, 10, 24, 0.12), 0 0 20px rgba(124, 10, 24, 0.2);
+            transition: var(--transition-fast);
+        }
+        .phase-card:hover .timeline-node {
+            border-color: var(--dark-gold);
+            box-shadow: 0 0 0 8px rgba(200, 164, 55, 0.14), 0 0 28px rgba(200, 164, 55, 0.22);
+            background: #1a1a20;
+        }
+        .phase-card .timeline-node-inner {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--crimson);
+            transition: var(--transition-fast);
+        }
+        .phase-card:hover .timeline-node-inner {
+            background: var(--dark-gold);
+        }
+
+        /* 特殊阶段——Red Robin高亮 */
+        .phase-card.featured {
+            border-color: rgba(200, 164, 55, 0.28);
+            box-shadow: var(--shadow-card), var(--shadow-glow-gold);
+            background: rgba(20, 18, 14, 0.48);
+        }
+        .phase-card.featured:hover {
+            border-color: rgba(200, 164, 55, 0.45);
+            box-shadow: var(--shadow-card-hover), 0 0 60px rgba(200, 164, 55, 0.2);
+        }
+        .phase-card.featured .timeline-node {
+            border-color: var(--dark-gold);
+            box-shadow: 0 0 0 6px rgba(200, 164, 55, 0.14), 0 0 24px rgba(200, 164, 55, 0.22);
+        }
+        .phase-card.featured .timeline-node-inner {
+            background: var(--dark-gold);
+        }
+        .phase-card .featured-star {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .phase-card .featured-star svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--dark-gold);
+            fill: none;
+            stroke-width: 1.8;
+        }
+
+        /* 卡片内部 */
+        .phase-card .phase-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .phase-card .phase-number {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: var(--crimson);
+            background: rgba(124, 10, 24, 0.12);
+            padding: 3px 10px;
+            border-radius: var(--radius-xs);
+            text-transform: uppercase;
+        }
+        .phase-card .phase-years {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--gunmetal);
+            letter-spacing: 0.04em;
+        }
+        .phase-card h3 {
+            font-size: 1.25rem;
+            font-weight: 650;
+            letter-spacing: 0.02em;
+            color: #ece8e2;
+            margin-bottom: 6px;
+            line-height: 1.35;
+        }
+        .phase-card .phase-desc {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        .phase-card .reading-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 8px;
+        }
+        .phase-card .reading-list li {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            background: rgba(134, 134, 134, 0.07);
+            border: 1px solid rgba(134, 134, 134, 0.15);
+            padding: 4px 11px;
+            border-radius: var(--radius-xs);
+            color: var(--text-secondary);
+            letter-spacing: 0.02em;
+            transition: var(--transition-fast);
+            white-space: nowrap;
+        }
+        .phase-card .reading-list li:hover {
+            background: rgba(200, 164, 55, 0.08);
+            border-color: rgba(200, 164, 55, 0.25);
+            color: #d4c8a0;
+        }
+        .phase-card .reading-list li.key-issue {
+            border-color: rgba(200, 164, 55, 0.30);
+            background: rgba(200, 164, 55, 0.06);
+            color: #d4c298;
+            font-weight: 500;
+        }
+        .phase-card .highlight-quote {
+            margin-top: 10px;
+            padding: 10px 14px;
+            border-left: 2px solid var(--crimson);
+            font-style: italic;
+            font-size: 0.84rem;
+            color: #c5bfb4;
+            background: rgba(124, 10, 24, 0.04);
+            border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+            letter-spacing: 0.02em;
+        }
+
+        /* ========== TOP10 精华区 ========== */
+        .top10-section {
+            margin: 50px 0 30px;
+            position: relative;
+            z-index: 1;
+        }
+        .top10-section .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-left: 4px;
+        }
+        .top10-section .section-header svg {
+            width: 26px;
+            height: 26px;
+            stroke: var(--dark-gold);
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+        .top10-section .section-header h2 {
+            font-size: 1.4rem;
+            font-weight: 650;
+            letter-spacing: 0.03em;
+            color: #ece8e2;
+        }
+        .top10-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+        }
+        .top10-item {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            transition: var(--transition-smooth);
+            box-shadow: var(--shadow-card);
+            position: relative;
+        }
+        .top10-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-md);
+            pointer-events: none;
+            border-top: 1px solid var(--glass-highlight);
+            opacity: 0.5;
+        }
+        .top10-item:hover {
+            border-color: var(--glass-border-hover);
+            box-shadow: var(--shadow-card-hover);
+            transform: translateY(-1px);
+            background: var(--glass-bg-hover);
+        }
+        .top10-item .rank-num {
+            font-family: var(--font-mono);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-gold);
+            flex-shrink: 0;
+            line-height: 1;
+            min-width: 28px;
+            text-align: center;
+        }
+        .top10-item .rank-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .top10-item .rank-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #e0dcd6;
+            letter-spacing: 0.02em;
+            line-height: 1.35;
+            margin-bottom: 2px;
+        }
+        .top10-item .rank-sub {
+            font-size: 0.75rem;
+            color: var(--gunmetal);
+            font-family: var(--font-mono);
+            letter-spacing: 0.03em;
+        }
+
+        /* ========== 黄金路线 ========== */
+        .golden-route {
+            position: relative;
+            z-index: 1;
+            margin: 40px 0 20px;
+            background: rgba(20, 16, 10, 0.45);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(200, 164, 55, 0.30);
+            border-radius: var(--radius-lg);
+            padding: 28px 32px;
+            box-shadow: var(--shadow-card), var(--shadow-glow-gold);
+            position: relative;
+            overflow: hidden;
+        }
+        .golden-route::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-lg);
+            pointer-events: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .golden-route::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(200, 164, 55, 0.09) 0%, transparent 70%);
+            pointer-events: none;
+            border-radius: 50%;
+        }
+        .golden-route .gr-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .golden-route .gr-header svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--dark-gold);
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+        .golden-route .gr-header h2 {
+            font-size: 1.3rem;
+            font-weight: 650;
+            color: #ece8e2;
+            letter-spacing: 0.03em;
+        }
+        .golden-route .gr-header .gr-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #1a1a10;
+            background: var(--dark-gold);
+            padding: 4px 12px;
+            border-radius: 50px;
+            white-space: nowrap;
+        }
+        .golden-route .gr-steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: #d0c8b0;
+            letter-spacing: 0.02em;
+            line-height: 1.7;
+        }
+        .golden-route .gr-steps .gr-arrow {
+            color: var(--dark-gold);
+            font-weight: 700;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+        .golden-route .gr-steps .gr-step {
+            background: rgba(200, 164, 55, 0.07);
+            border: 1px solid rgba(200, 164, 55, 0.20);
+            padding: 3px 10px;
+            border-radius: var(--radius-xs);
+            white-space: nowrap;
+            font-weight: 500;
+            transition: var(--transition-fast);
+        }
+        .golden-route .gr-steps .gr-step:hover {
+            background: rgba(200, 164, 55, 0.14);
+            border-color: rgba(200, 164, 55, 0.35);
+        }
+        .golden-route .gr-note {
+            margin-top: 14px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-style: italic;
+            letter-spacing: 0.02em;
+            line-height: 1.5;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer-note {
+            text-align: center;
+            padding: 30px 20px 10px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            position: relative;
+            z-index: 1;
+        }
+        .footer-note span {
+            color: var(--gunmetal);
+        }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 20px 12px 50px;
+            }
+            .phase-card {
+                margin-left: 44px;
+                padding: 20px 18px;
+                border-radius: var(--radius-md);
+            }
+            .phase-card .timeline-node {
+                left: -32px;
+                width: 20px;
+                height: 20px;
+                top: 24px;
+            }
+            .phase-card .timeline-node-inner {
+                width: 6px;
+                height: 6px;
+            }
+            .timeline-section::before {
+                left: 22px;
+            }
+            .phase-card h3 {
+                font-size: 1.1rem;
+            }
+            .phase-card .reading-list li {
+                font-size: 0.72rem;
+                padding: 3px 8px;
+            }
+            .top10-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .golden-route {
+                padding: 20px 18px;
+                border-radius: var(--radius-md);
+            }
+            .golden-route .gr-steps {
+                font-size: 0.74rem;
+                gap: 5px;
+            }
+            .version-badge-row {
+                gap: 8px;
+            }
+            .version-badge {
+                font-size: 0.74rem;
+                padding: 6px 14px;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            .phase-card .featured-star {
+                top: 12px;
+                right: 14px;
+            }
+            .phase-card .featured-star svg {
+                width: 15px;
+                height: 15px;
+            }
+        }
+        @media (max-width: 420px) {
+            .phase-card {
+                margin-left: 36px;
+                padding: 16px 14px;
+            }
+            .phase-card .timeline-node {
+                left: -27px;
+                width: 18px;
+                height: 18px;
+                top: 20px;
+            }
+            .phase-card .timeline-node-inner {
+                width: 5px;
+                height: 5px;
+            }
+            .timeline-section::before {
+                left: 18px;
+            }
+            .phase-card h3 {
+                font-size: 1rem;
+            }
+            .phase-card .reading-list {
+                gap: 4px 5px;
+            }
+            .phase-card .reading-list li {
+                font-size: 0.7rem;
+                padding: 2px 7px;
+            }
+            .phase-card .phase-number {
+                font-size: 0.68rem;
+                padding: 2px 7px;
+            }
+            .golden-route .gr-steps {
+                font-size: 0.7rem;
+            }
+            .golden-route .gr-steps .gr-step {
+                padding: 2px 7px;
+            }
+            .top10-item {
+                padding: 12px 14px;
+                gap: 8px;
+            }
+            .top10-item .rank-num {
+                font-size: 1.1rem;
+                min-width: 22px;
+            }
+            .top10-item .rank-title {
+                font-size: 0.82rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-texture"></div>
+
+    <div class="main-container">
+        <!-- ========== HEADER ========== -->
+        <header class="header">
+            <div class="header-icon">
+                <!-- 极简书本图标 -->
+                <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="8" y="8" width="12" height="28" rx="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <rect x="24" y="8" width="12" height="28" rx="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="20" y1="8" x2="24" y2="8" stroke-linecap="round"/>
+                    <line x1="20" y1="36" x2="24" y2="36" stroke-linecap="round"/>
+                    <line x1="14" y1="16" x2="18" y2="16" stroke-linecap="round" stroke-width="1.2" opacity="0.6"/>
+                    <line x1="28" y1="16" x2="32" y2="16" stroke-linecap="round" stroke-width="1.2" opacity="0.6"/>
+                    <line x1="14" y1="21" x2="18" y2="21" stroke-linecap="round" stroke-width="1.2" opacity="0.6"/>
+                    <line x1="28" y1="21" x2="32" y2="21" stroke-linecap="round" stroke-width="1.2" opacity="0.6"/>
+                </svg>
+            </div>
+            <h1>Tim Drake <span class="accent">阅读路线</span></h1>
+            <p class="subtitle">究极版 · 完整成长轨迹</p>
+            <div class="divider-line"></div>
+            <p class="intro-text">
+                Tim Drake —— DC漫画中<strong>Batman家族</strong>的核心成员，第三代Robin（后转为Red Robin），
+                以侦探天赋、智力、科技能力和战略头脑著称。1989年首次登场于《Batman #436》。
+            </p>
+            <div class="version-badge-row">
+                <span class="version-badge">
+                    <span class="dot crimson"></span> 入坑版：50~100期核心必读
+                </span>
+                <span class="version-badge">
+                    <span class="dot gold"></span> 考据版：300+期完整覆盖
+                </span>
+            </div>
+        </header>
+
+        <!-- ========== 时间线 ========== -->
+        <section class="timeline-section" aria-label="阅读路线时间线">
+
+            <!-- 阶段一 -->
+            <article class="phase-card">
+                <div class="timeline-node"><div class="timeline-node-inner"></div></div>
+                <div class="phase-meta">
+                    <span class="phase-number">阶段一</span>
+                    <span class="phase-years">1989–1992</span>
+                </div>
+                <h3>诞生篇：Tim成为Robin的全过程</h3>
+                <p class="phase-desc">Tim发现蝙蝠侠与迪克的身份，说出著名论断，奠定整个人设核心。</p>
+                <ul class="reading-list">
+                    <li class="key-issue">Batman #436–439</li>
+                    <li class="key-issue">Batman #440–442</li>
+                    <li>The New Titans #60–61</li>
+                </ul>
+                <p class="highlight-quote">"Batman needs Robin." — Tim Drake</p>
+            </article>
+
+            <!-- 阶段二 -->
+            <article class="phase-card">
+                <div class="timeline-node"><div class="timeline-node-inner"></div></div>
+                <div class="phase-meta">
+                    <span class="phase-number">阶段二</span>
+                    <span class="phase-years">1991–1993</span>
+                </div>
+                <h3>早期Robin · 三次个人迷你刊</h3>
+                <p class="phase-desc">Ra's al Ghul测试Tim、Tim单挑小丑、King Snake线埋下阴影。</p>
+                <ul class="reading-list">
+                    <li class="key-issue">Robin Vol.1 #1–5</li>
+                    <li>Robin II #1–4</li>
+                    <li>Robin III #1–6</li>
+                    <li>Detective Comics #618–621</li>
+                </ul>
+            </article>
+
+            <!-- 阶段三 -->
+            <article class="phase-card">
+                <div class="timeline-node"><div class="timeline-node-inner"></div></div>
+                <div class="phase-meta">
+                    <span class="phase-number">阶段三</span>
+                    <span class="phase-years">1993–2009</span>
+                </div>
+                <h3>Robin个人刊 · 黄金时代</h3>
+                <p class="phase-desc">Chuck Dixon塑造Tim的核心刊，整刊#1–120。涵盖Contagion、Legacy、No Man's Land、War Games等重大事件。</p>
+                <ul class="reading-list">
+                    <li class="key-issue">Robin Vol.2 #1–120（整刊）</li>
+                    <li>Detective Comics #647–649</li>
+                    <li>Robin #27–35 / #67–73</li>
+                    <li>Robin #89–90 / #126–131</li>
+                </ul>
+            </article>
+
+            <!-- 阶段四 -->
+            <article class="phase-card">
+                <div class="timeline-node"><div class="timeline-node-inner"></div></div>
+                <div class="phase-meta">
+                    <span class="phase-number">阶段四</span>
+                    <span class="phase-years">1998–2003</span>
+                </div>
+                <h3>Young Justice时代</h3>
+                <p class="phase-desc">许多人最爱的Tim时期。经典四人组：Tim、Kon、Bart、Cassie。</p>
+                <ul class="reading-list">
+                    <li class="key-issue">Young Justice Vol.1 #1–55</li>
+                    <li>全部Annual + Secret Files</li>
+                    <li>JLA: World Without Grown-Ups #1–2</li>
+                    <li>Young Justice: The Secret</li>
+                </ul>
+            </article>
+
+            <!-- 阶段五 -->
+            <article class="phase-card">
+                <div class="timeline-node"><div class="timeline-node-inner"></div></div>
+                <div class="phase-meta">
+                    <span class="phase-number">阶段五</span>
+                    <span class="phase-years">2003–2011</span>
+                </div>
+                <h3>Teen Titans时代</h3>
+                <p class="phase-desc">Geoff Johns重组泰坦。Tim担任队长，经历Superboy死亡、Infinite Crisis、Bart死亡，逐渐黑化——最惨也最受欢迎的时期。</p>
+                <ul class="reading-list">
+                    <li class="key-issue">Teen Titans Vol.3 #1–100</li>
+                </ul>
+            </article>
+
+            <!-- 阶段六：Red Robin · 重点高亮 -->
+            <article class="phase-card featured">
+                <div class="timeline-node"><div class="timeline-node-inner"></div></div>
+                <div class="featured-star">
+                    <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="10,2 12.6,7.5 18.6,8.2 14.3,12.3 15.5,18.2 10,15.1 4.5,18.2 5.7,12.3 1.4,8.2 7.4,7.5" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="phase-meta">
+                    <span class="phase-number">阶段六 ★ 巅峰</span>
+                    <span class="phase-years">2009–2011</span>
+                </div>
+                <h3>Red Robin时代 · 最推荐</h3>
+                <p class="phase-desc">Tim Drake VS 整个蝙蝠家。不相信Bruce已死，独自全球寻找Bruce，与Ra's斗智，与Dick蝙和Damian Robin的复杂关系——公认Tim个人最佳刊。</p>
+                <ul class="reading-list">
+                    <li class="key-issue">Battle for the Cowl #1–3</li>
+                    <li class="key-issue">Red Robin #1–26（全部读）</li>
+                </ul>
+            </article>
+
+            <!-- 阶段七 -->
+            <article class="phase-card">
+                <div class="timeline-node"><div class="timeline-node-inner"></div></div>
+                <div class="phase-meta">
+                    <span class="phase-number">阶段七</span>
+                    <span class="phase-years">2011–2016</span>
+                </div>
+                <h3>New 52</h3>
+                <p class="phase-desc">质量一般。Tim直接从Robin变成Red Robin，大量前史被重启。可选择性阅读。</p>
+                <ul class="reading-list">
+                    <li>Teen Titans Vol.4 #1–30</li>
+                    <li>Futures End（可选）</li>
+                    <li>Batman Beyond - Tim Drake（可选）</li>
+                </ul>
+            </article>
+
+            <!-- 阶段八 -->
+            <article class="phase-card">
+                <div class="timeline-node"><div class="timeline-node-inner"></div></div>
+                <div class="phase-meta">
+                    <span class="phase-number">阶段八</span>
+                    <span class="phase-years">2016–2021</span>
+                </div>
+                <h3>Rebirth</h3>
+                <p class="phase-desc">Tynion时期Bat-family群像，Tim戏份非常重。N52后最好看的Tim。</p>
+                <ul class="reading-list">
+                    <li class="key-issue">Detective Comics #934–981</li>
+                    <li>Young Justice Vol.3 #1–20</li>
+                </ul>
+            </article>
+
+            <!-- 阶段九 -->
+            <article class="phase-card">
+                <div class="timeline-node"><div class="timeline-node-inner"></div></div>
+                <div class="phase-meta">
+                    <span class="phase-number">阶段九</span>
+                    <span class="phase-years">2021–2023</span>
+                </div>
+                <h3>Tim Drake重新成为Robin</h3>
+                <p class="phase-desc">Tim与Bernard关系线开始。个人刊评价两极，但作为角色历史的一部分值得补。</p>
+                <ul class="reading-list">
+                    <li>Batman: Urban Legends #4–6, #10</li>
+                    <li>Tim Drake: Robin #1–10</li>
+                </ul>
+            </article>
+
+            <!-- 阶段十 -->
+            <article class="phase-card">
+                <div class="timeline-node"><div class="timeline-node-inner"></div></div>
+                <div class="phase-meta">
+                    <span class="phase-number">阶段十</span>
+                    <span class="phase-years">2024–至今</span>
+                </div>
+                <h3>现行时间线</h3>
+                <p class="phase-desc">Damian主刊期间，Tim持续作为蝙蝠家成员活跃。最新连载中。</p>
+                <ul class="reading-list">
+                    <li>Batman and Robin（当前连载）</li>
+                    <li>DC Pride: Tim Drake Special</li>
+                    <li>Robins 迷你系列</li>
+                </ul>
+            </article>
+        </section>
+
+        <!-- ========== TOP10 精华 ========== -->
+        <section class="top10-section" aria-label="TOP10精华推荐">
+            <div class="section-header">
+                <!-- 极简星标图标 -->
+                <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="13,3 16.3,10.2 24.2,11.1 18.5,16.4 20.1,24.2 13,20.1 5.9,24.2 7.5,16.4 1.8,11.1 9.7,10.2" stroke-linejoin="round"/>
+                </svg>
+                <h2>如果只看精华 · TOP10</h2>
+            </div>
+            <div class="top10-grid">
+                <div class="top10-item">
+                    <span class="rank-num">01</span>
+                    <div class="rank-content">
+                        <div class="rank-title">A Lonely Place of Dying</div>
+                        <div class="rank-sub">Batman #440–442 + New Titans #60–61</div>
+                    </div>
+                </div>
+                <div class="top10-item">
+                    <span class="rank-num">02</span>
+                    <div class="rank-content">
+                        <div class="rank-title">Robin Vol.1 #1–5</div>
+                        <div class="rank-sub">Ra's al Ghul测试Tim</div>
+                    </div>
+                </div>
+                <div class="top10-item">
+                    <span class="rank-num">03</span>
+                    <div class="rank-content">
+                        <div class="rank-title">Detective Comics #618–621</div>
+                        <div class="rank-sub">Robin毕业考试</div>
+                    </div>
+                </div>
+                <div class="top10-item">
+                    <span class="rank-num">04</span>
+                    <div class="rank-content">
+                        <div class="rank-title">Robin Vol.2 #1–100</div>
+                        <div class="rank-sub">Chuck Dixon核心刊</div>
+                    </div>
+                </div>
+                <div class="top10-item">
+                    <span class="rank-num">05</span>
+                    <div class="rank-content">
+                        <div class="rank-title">Young Justice #1–55</div>
+                        <div class="rank-sub">经典四人组</div>
+                    </div>
+                </div>
+                <div class="top10-item">
+                    <span class="rank-num">06</span>
+                    <div class="rank-content">
+                        <div class="rank-title">Teen Titans Vol.3 #1–100</div>
+                        <div class="rank-sub">Tim担任队长</div>
+                    </div>
+                </div>
+                <div class="top10-item">
+                    <span class="rank-num">07</span>
+                    <div class="rank-content">
+                        <div class="rank-title">Battle for the Cowl</div>
+                        <div class="rank-sub">#1–3</div>
+                    </div>
+                </div>
+                <div class="top10-item">
+                    <span class="rank-num">08</span>
+                    <div class="rank-content">
+                        <div class="rank-title">Red Robin #1–26</div>
+                        <div class="rank-sub">Tim巅峰 · 个人最佳刊</div>
+                    </div>
+                </div>
+                <div class="top10-item">
+                    <span class="rank-num">09</span>
+                    <div class="rank-content">
+                        <div class="rank-title">Detective Comics #934–981</div>
+                        <div class="rank-sub">Rebirth Tynion时期</div>
+                    </div>
+                </div>
+                <div class="top10-item">
+                    <span class="rank-num">10</span>
+                    <div class="rank-content">
+                        <div class="rank-title">Young Justice (2019) #1–20</div>
+                        <div class="rank-sub">经典四人组重聚</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== 黄金推荐路线 ========== -->
+        <section class="golden-route" aria-label="黄金推荐路线">
+            <div class="gr-header">
+                <!-- 极简菱形图标 -->
+                <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="14,3 25,14 14,25 3,14" stroke-linejoin="round"/>
+                    <circle cx="14" cy="14" r="3" fill="currentColor" opacity="0.5"/>
+                </svg>
+                <h2>黄金路线 · 最推荐顺序</h2>
+                <span class="gr-badge">Tim成长完整弧线</span>
+            </div>
+            <div class="gr-steps">
+                <span class="gr-step">A Lonely Place of Dying</span>
+                <span class="gr-arrow">→</span>
+                <span class="gr-step">Robin (1993)</span>
+                <span class="gr-arrow">→</span>
+                <span class="gr-step">Young Justice</span>
+                <span class="gr-arrow">→</span>
+                <span class="gr-step">Teen Titans (2003)</span>
+                <span class="gr-arrow">→</span>
+                <span class="gr-step">Red Robin</span>
+                <span class="gr-arrow">→</span>
+                <span class="gr-step">Detective Comics Rebirth</span>
+            </div>
+            <p class="gr-note">
+                这是Tim从"最像普通人的Robin"成长为"能够独当一面的Red Robin"的完整成长线，
+                也是大多数Tim粉心里的黄金路线。结合你之前喜欢沃利、凯尔、巴特的阅读记录，这条路线最为契合。
+            </p>
+        </section>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="footer-note">
+            <p>Tim Drake 阅读路线 · 究极版 <span>|</span> 基于 Comic Book Herald / Comic Book Treasury / DCU Guide 整理</p>
+            <p style="margin-top:4px;">享受阅读 Bat-family 最佳侦探的故事。🦇</p>
+        </footer>
+    </div>
+</body>
+</html>
