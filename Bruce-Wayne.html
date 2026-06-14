@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蝙蝠侠阅读指南 - 全网最全刊物推荐</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #08090b;
+            --bg-surface: #0f1115;
+            --bg-card: rgba(16, 18, 24, 0.55);
+            --bg-card-hover: rgba(20, 23, 30, 0.7);
+            --bg-glass-light: rgba(22, 25, 33, 0.5);
+            --gold: #c4a35a;
+            --gold-light: #d4b868;
+            --gold-pale: #e0d0a0;
+            --gold-dim: #8a7040;
+            --gold-glow: rgba(196, 163, 90, 0.25);
+            --text-primary: #e6ddd0;
+            --text-secondary: #b5ada0;
+            --text-muted: #7a7468;
+            --text-accent: #f0e6cc;
+            --border-subtle: rgba(196, 163, 90, 0.18);
+            --border-strong: rgba(196, 163, 90, 0.35);
+            --border-glow: rgba(196, 163, 90, 0.5);
+            --shadow-card: 0 4px 32px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(196, 163, 90, 0.08) inset;
+            --shadow-gold: 0 0 40px rgba(196, 163, 90, 0.12), 0 0 80px rgba(196, 163, 90, 0.04);
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+            --radius-xs: 6px;
+            --font-serif: 'Noto Serif SC', 'Source Han Serif SC', 'STSong', 'SimSun', 'Songti SC', 'NSimSun', 'FangSong', serif;
+            --transition-smooth: 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+            --transition-fast: 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            background-image:
+                radial-gradient(ellipse at 20% 10%, rgba(196, 163, 90, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 75% 30%, rgba(196, 163, 90, 0.03) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 60%, rgba(140, 120, 80, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 30% 85%, rgba(160, 130, 70, 0.03) 0%, transparent 50%);
+            color: var(--text-primary);
+            font-family: var(--font-serif);
+            line-height: 1.75;
+            min-height: 100vh;
+            letter-spacing: 0.02em;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Subtle grain texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+            background-size: 200px 200px;
+        }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-deep);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(196, 163, 90, 0.3);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(196, 163, 90, 0.5);
+        }
+
+        /* ── Container ── */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+
+        /* ── Header ── */
+        .header {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 60px 20px 40px;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 50px;
+        }
+        .header-icon {
+            display: inline-block;
+            margin-bottom: 20px;
+            opacity: 0.85;
+        }
+        .header-icon svg {
+            width: 52px;
+            height: 52px;
+            filter: drop-shadow(0 0 20px rgba(196, 163, 90, 0.3));
+        }
+        .header h1 {
+            font-family: var(--font-serif);
+            font-weight: 900;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            letter-spacing: 0.06em;
+            color: var(--text-accent);
+            margin-bottom: 8px;
+            text-shadow: 0 0 60px rgba(196, 163, 90, 0.2);
+        }
+        .header .subtitle {
+            font-weight: 300;
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .header .meta-line {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+        }
+        .header .meta-line span {
+            color: var(--gold);
+        }
+
+        /* ── Navigation Pills ── */
+        .nav-pills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 0 auto 50px;
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 0 10px;
+        }
+        .nav-pills a {
+            display: inline-block;
+            padding: 9px 18px;
+            font-family: var(--font-serif);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .nav-pills a:hover,
+        .nav-pills a:focus {
+            color: var(--gold-light);
+            border-color: var(--border-strong);
+            background: var(--bg-card-hover);
+            box-shadow: 0 0 20px rgba(196, 163, 90, 0.1);
+            outline: none;
+        }
+        .nav-pills a.active {
+            color: var(--gold-light);
+            border-color: var(--border-glow);
+            background: rgba(196, 163, 90, 0.1);
+            box-shadow: 0 0 24px rgba(196, 163, 90, 0.15);
+        }
+
+        /* ── Section ── */
+        .section {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 60px;
+            scroll-margin-top: 80px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 28px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .section-number {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 3rem;
+            color: rgba(196, 163, 90, 0.2);
+            line-height: 1;
+            letter-spacing: -0.03em;
+            flex-shrink: 0;
+            min-width: 50px;
+            user-select: none;
+        }
+        .section-title-group h2 {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 0.05em;
+            color: var(--text-accent);
+            margin: 0;
+            line-height: 1.3;
+        }
+        .section-title-group .section-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            font-weight: 300;
+            margin-top: 2px;
+        }
+
+        /* ── Glass Card ── */
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 28px 30px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: var(--shadow-card);
+            transition: all var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(196, 163, 90, 0.25), transparent);
+            opacity: 0;
+            transition: opacity var(--transition-smooth);
+            pointer-events: none;
+        }
+        .glass-card:hover::after {
+            opacity: 1;
+        }
+        .glass-card:hover {
+            border-color: var(--border-strong);
+            box-shadow: var(--shadow-card), var(--shadow-gold);
+            transform: translateY(-2px);
+        }
+        .glass-card h3 {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 0.05em;
+            color: var(--gold-light);
+            margin: 0 0 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .glass-card h4 {
+            font-family: var(--font-serif);
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.04em;
+            color: var(--text-accent);
+            margin: 18px 0 8px;
+            position: relative;
+            z-index: 1;
+        }
+        .glass-card p,
+        .glass-card li {
+            position: relative;
+            z-index: 1;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            letter-spacing: 0.03em;
+            line-height: 1.8;
+        }
+        .glass-card ul {
+            list-style: none;
+            padding-left: 0;
+            position: relative;
+            z-index: 1;
+        }
+        .glass-card ul li {
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 4px;
+        }
+        .glass-card ul li::before {
+            content: '';
+            position: absolute;
+            left: 2px;
+            top: 0.65em;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--gold-dim);
+            box-shadow: 0 0 6px rgba(196, 163, 90, 0.4);
+        }
+
+        /* ── Highlighted comic title ── */
+        .comic-title {
+            color: var(--gold-light);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+        .comic-ref {
+            color: var(--text-muted);
+            font-size: 0.85em;
+            letter-spacing: 0.03em;
+            font-style: italic;
+        }
+
+        /* ── Route Cards (4路线概览) ── */
+        .route-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+        .route-card {
+            background: var(--bg-glass-light);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 24px 22px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            cursor: default;
+            transition: all var(--transition-smooth);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .route-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(196, 163, 90, 0.06), transparent 70%);
+            pointer-events: none;
+        }
+        .route-card:hover {
+            border-color: var(--border-strong);
+            box-shadow: var(--shadow-gold);
+            transform: translateY(-3px);
+        }
+        .route-card .route-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            opacity: 0.8;
+        }
+        .route-card h3 {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            color: var(--gold-light);
+            margin: 0 0 6px;
+            position: relative;
+            z-index: 1;
+        }
+        .route-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+            line-height: 1.5;
+        }
+
+        /* ── Badge / Tag ── */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            font-family: var(--font-serif);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            border-radius: 20px;
+            background: rgba(196, 163, 90, 0.1);
+            color: var(--gold-light);
+            border: 1px solid rgba(196, 163, 90, 0.25);
+            margin: 2px 4px 2px 0;
+            white-space: nowrap;
+        }
+        .badge-era {
+            background: rgba(140, 120, 80, 0.15);
+            color: #c8b080;
+            border-color: rgba(160, 130, 70, 0.3);
+        }
+        .badge-essential {
+            background: rgba(196, 140, 60, 0.18);
+            color: #e0b860;
+            border-color: rgba(210, 150, 60, 0.35);
+            font-weight: 600;
+        }
+
+        /* ── Timeline flow arrow ── */
+        .flow-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            flex-wrap: wrap;
+            padding: 10px 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            position: relative;
+            z-index: 1;
+        }
+        .flow-arrow .arrow-sep {
+            display: inline-flex;
+            align-items: center;
+            color: var(--gold-dim);
+            margin: 0 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .flow-arrow .arrow-sep svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--gold-dim);
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+
+        /* ── Details / Accordion ── */
+        details.glass-details {
+            background: var(--bg-glass-light);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 0;
+            margin-bottom: 14px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all var(--transition-fast);
+            overflow: hidden;
+            cursor: pointer;
+        }
+        details.glass-details:hover {
+            border-color: var(--border-strong);
+        }
+        details.glass-details summary {
+            padding: 16px 22px;
+            font-family: var(--font-serif);
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.04em;
+            color: var(--text-accent);
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            user-select: none;
+            transition: color var(--transition-fast);
+        }
+        details.glass-details summary::-webkit-details-marker {
+            display: none;
+        }
+        details.glass-details summary::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid var(--gold-dim);
+            border-bottom: 2px solid var(--gold-dim);
+            transform: rotate(-45deg);
+            transition: transform var(--transition-fast);
+            flex-shrink: 0;
+            margin-right: 4px;
+        }
+        details.glass-details[open] summary::before {
+            transform: rotate(45deg);
+        }
+        details.glass-details[open] summary {
+            color: var(--gold-light);
+        }
+        details.glass-details .details-content {
+            padding: 0 22px 20px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.03em;
+            line-height: 1.8;
+        }
+
+        /* ── Top 20 Grid ── */
+        .top20-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+            counter-reset: top20;
+        }
+        .top20-item {
+            background: var(--bg-glass-light);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: all var(--transition-fast);
+            counter-increment: top20;
+            position: relative;
+        }
+        .top20-item:hover {
+            border-color: var(--border-strong);
+            box-shadow: 0 0 18px rgba(196, 163, 90, 0.08);
+        }
+        .top20-item .rank {
+            font-family: var(--font-serif);
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: rgba(196, 163, 90, 0.35);
+            line-height: 1;
+            flex-shrink: 0;
+            min-width: 28px;
+            text-align: center;
+            user-select: none;
+        }
+        .top20-item .info {
+            font-size: 0.9rem;
+            letter-spacing: 0.03em;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .top20-item .info strong {
+            color: var(--gold-light);
+            font-weight: 600;
+        }
+
+        /* ── Table ── */
+        .glass-table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-glass-light);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .glass-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            letter-spacing: 0.03em;
+            min-width: 500px;
+        }
+        .glass-table thead th {
+            text-align: left;
+            padding: 14px 18px;
+            font-weight: 600;
+            color: var(--gold-light);
+            border-bottom: 1px solid var(--border-strong);
+            font-family: var(--font-serif);
+            letter-spacing: 0.05em;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        .glass-table tbody td {
+            padding: 11px 18px;
+            border-bottom: 1px solid rgba(196, 163, 90, 0.08);
+            color: var(--text-secondary);
+        }
+        .glass-table tbody tr:hover td {
+            background: rgba(196, 163, 90, 0.04);
+            color: var(--text-primary);
+        }
+        .glass-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ── Quote block ── */
+        .quote-block {
+            border-left: 3px solid var(--gold-dim);
+            padding: 14px 20px;
+            margin: 18px 0;
+            background: rgba(196, 163, 90, 0.04);
+            border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+            font-style: italic;
+            color: var(--text-accent);
+            letter-spacing: 0.04em;
+            position: relative;
+            z-index: 1;
+        }
+        .quote-block strong {
+            color: var(--gold-light);
+            font-style: normal;
+        }
+
+        /* ── Divider ── */
+        .divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+            margin: 40px 0;
+            position: relative;
+            z-index: 1;
+        }
+        .divider-dot {
+            border: none;
+            height: 0;
+            margin: 30px 0;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            color: var(--gold-dim);
+            font-size: 1.2rem;
+            letter-spacing: 0.3em;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            padding: 40px 20px 30px;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 60px;
+            position: relative;
+            z-index: 2;
+        }
+        .footer p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+        }
+        .footer .footer-icon {
+            opacity: 0.4;
+            margin-bottom: 10px;
+        }
+        .footer .footer-icon svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        /* ── Highlight text ── */
+        .highlight-gold {
+            color: var(--gold-light);
+            font-weight: 600;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+            .header {
+                padding: 40px 14px 28px;
+                margin-bottom: 30px;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+                letter-spacing: 0.04em;
+            }
+            .header .subtitle {
+                font-size: 0.85rem;
+            }
+            .nav-pills {
+                gap: 6px;
+                margin-bottom: 30px;
+            }
+            .nav-pills a {
+                padding: 7px 13px;
+                font-size: 0.75rem;
+                border-radius: 22px;
+            }
+            .section {
+                margin-bottom: 36px;
+                scroll-margin-top: 60px;
+            }
+            .section-number {
+                font-size: 2.2rem;
+                min-width: 36px;
+            }
+            .section-title-group h2 {
+                font-size: 1.2rem;
+            }
+            .glass-card {
+                padding: 18px 16px;
+                border-radius: var(--radius-md);
+            }
+            .glass-card h3 {
+                font-size: 1rem;
+            }
+            .route-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 10px;
+            }
+            .route-card {
+                padding: 16px 14px;
+            }
+            .route-card h3 {
+                font-size: 0.85rem;
+            }
+            .top20-grid {
+                grid-template-columns: 1fr;
+            }
+            details.glass-details summary {
+                padding: 12px 14px;
+                font-size: 0.85rem;
+            }
+            details.glass-details .details-content {
+                padding: 0 14px 14px;
+                font-size: 0.8rem;
+            }
+            .flow-arrow {
+                font-size: 0.75rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .nav-pills a {
+                padding: 6px 10px;
+                font-size: 0.7rem;
+                letter-spacing: 0.02em;
+            }
+            .route-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .route-card {
+                padding: 12px 10px;
+            }
+            .route-card h3 {
+                font-size: 0.78rem;
+            }
+            .route-card p {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════════ HEADER ═══════════════ -->
+    <header class="header" id="top">
+        <div class="header-icon">
+            <!-- 极简几何蝙蝠标志 -->
+            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M40 8 L18 36 L8 28 L12 46 L4 58 L20 54 L32 72 L40 52 L48 72 L60 54 L76 58 L68 46 L72 28 L62 36 Z"
+                fill="none" stroke="#c4a35a" stroke-width="2.5" stroke-linejoin="round"/>
+                <ellipse cx="40" cy="38" rx="8" ry="5" fill="none" stroke="#c4a35a" stroke-width="1.8"/>
+                <circle cx="36" cy="46" r="1.5" fill="#c4a35a" opacity="0.7"/>
+                <circle cx="44" cy="46" r="1.5" fill="#c4a35a" opacity="0.7"/>
+            </svg>
+        </div>
+        <h1>蝙蝠侠阅读指南</h1>
+        <p class="subtitle">全网最全刊物推荐 · 四条路线 · 究极补完工程</p>
+        <p class="meta-line">覆盖 <span>1939—2026</span> · 黄金时代至Infinite Frontier · 超过<span>80年</span>出版史</p>
+    </header>
+
+    <!-- ═══════════════ NAVIGATION ═══════════════ -->
+    <nav class="nav-pills" aria-label="页面导航">
+        <a href="#overview">路线总览</a>
+        <a href="#history">出版史路线</a>
+        <a href="#modern">现代主宇宙</a>
+        <a href="#n52">新52</a>
+        <a href="#rebirth">Rebirth</a>
+        <a href="#infinite">Infinite Frontier</a>
+        <a href="#top20">神作榜20</a>
+        <a href="#ultimate">究极补完</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- ═══════════════ SECTION: 四种路线概览 ═══════════════ -->
+        <section class="section" id="overview">
+            <div class="section-header">
+                <span class="section-number">Ⅰ</span>
+                <div class="section-title-group">
+                    <h2>四种阅读路线</h2>
+                    <p class="section-sub">选择适合你的入口</p>
+                </div>
+            </div>
+            <div class="route-grid">
+                <div class="route-card">
+                    <div class="route-icon">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><rect x="4" y="6" width="28" height="24" rx="2" stroke="#c4a35a" stroke-width="1.8" fill="none"/><line x1="4" y1="14" x2="32" y2="14" stroke="#c4a35a" stroke-width="1" opacity="0.5"/><circle cx="11" cy="10" r="1.5" fill="#c4a35a" opacity="0.6"/></svg>
+                    </div>
+                    <h3>历史研究路线</h3>
+                    <p>按出版史看蝙蝠侠如何演变<br>Publication Order</p>
+                </div>
+                <div class="route-card">
+                    <div class="route-icon">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="#c4a35a" stroke-width="1.8" fill="none"/><polyline points="18,6 18,18 27,22" stroke="#c4a35a" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+                    </div>
+                    <h3>现代主宇宙路线</h3>
+                    <p>Post-Crisis → Infinite Frontier<br>最推荐主流读者</p>
+                </div>
+                <div class="route-card">
+                    <div class="route-icon">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><polygon points="18,4 33,30 3,30" stroke="#c4a35a" stroke-width="1.8" fill="none" stroke-linejoin="round"/><line x1="18" y1="14" x2="18" y2="22" stroke="#c4a35a" stroke-width="1.3"/></svg>
+                    </div>
+                    <h3>经典名作路线</h3>
+                    <p>只看最优秀作品<br>Essential Batman</p>
+                </div>
+                <div class="route-card">
+                    <div class="route-icon">
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="12" cy="12" r="5" stroke="#c4a35a" stroke-width="1.6" fill="none"/><circle cx="24" cy="12" r="5" stroke="#c4a35a" stroke-width="1.6" fill="none"/><circle cx="18" cy="25" r="5" stroke="#c4a35a" stroke-width="1.6" fill="none"/></svg>
+                    </div>
+                    <h3>蝙蝠家族扩展路线</h3>
+                    <p>罗宾·夜翼·蝙蝠少女<br>Bat-Family</p>
+                </div>
+            </div>
+            <p style="text-align:center;color:var(--text-muted);font-size:0.85rem;letter-spacing:0.04em;">
+                蝙蝠侠从1939年至今持续出版80多年，仅《侦探漫画》和《蝙蝠侠》两本主刊累计就超过一千多期。
+            </p>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ═══════════════ SECTION: 历史研究路线 ═══════════════ -->
+        <section class="section" id="history">
+            <div class="section-header">
+                <span class="section-number">Ⅱ</span>
+                <div class="section-title-group">
+                    <h2>蝙蝠侠出版史路线（最完整）</h2>
+                    <p class="section-sub">Publication Order · 1939至今</p>
+                </div>
+            </div>
+
+            <!-- 黄金时代 -->
+            <div class="glass-card">
+                <h3>黄金时代 <span class="badge badge-era">1939-1956</span></h3>
+                <p><strong class="highlight-gold">首读：</strong></p>
+                <ul>
+                    <li><span class="comic-title">Detective Comics #27</span> — 蝙蝠侠首次登场</li>
+                    <li><span class="comic-title">Batman #1</span> — 独立主刊创刊号</li>
+                </ul>
+                <p style="margin-top:10px;"><strong class="highlight-gold">重点：</strong></p>
+                <ul>
+                    <li><span class="comic-title">Batman #1</span> — 小丑、猫女初登场</li>
+                    <li><span class="comic-title">Detective Comics #38</span> — 罗宾初登场</li>
+                    <li><span class="comic-title">Batman #181</span> — 毒藤女初登场</li>
+                </ul>
+                <p style="margin-top:8px;font-size:0.85rem;color:var(--text-muted);">
+                    蝙蝠侠首次登场于《Detective Comics #27》，随后于1940年拥有独立主刊《Batman》。
+                </p>
+            </div>
+
+            <!-- 白银时代 -->
+            <div class="glass-card">
+                <h3>白银时代 <span class="badge badge-era">1956-1970</span></h3>
+                <p>这一时期比较跳。推荐：</p>
+                <ul>
+                    <li><span class="comic-title">Detective Comics #327</span></li>
+                    <li><span class="comic-title">Batman #156</span></li>
+                    <li><span class="comic-title">Batman #171</span></li>
+                </ul>
+                <p style="margin-top:8px;">主要看：蝙蝠螨 · 彩虹蝙蝠侠 · 外星蝙蝠侠</p>
+                <p style="font-size:0.85rem;color:var(--text-muted);">属于今天常被调侃的"发癫时代"。</p>
+            </div>
+
+            <!-- 青铜时代 -->
+            <div class="glass-card">
+                <h3>青铜时代 <span class="badge badge-era">1970-1985</span></h3>
+                <p>这是<strong class="highlight-gold">现代蝙蝠侠真正形成的时期</strong>。</p>
+                <p>核心作者：<span class="highlight-gold">Dennis O'Neil</span> & <span class="highlight-gold">Neal Adams</span></p>
+                <p style="margin-top:8px;"><strong>必读：</strong></p>
+                <ul>
+                    <li><span class="comic-title">Detective Comics #395</span></li>
+                    <li><span class="comic-title">Batman #232</span> — Ra's al Ghul登场</li>
+                    <li><span class="comic-title">Batman #251</span> — 经典小丑</li>
+                    <li><span class="comic-title">Batman #255</span></li>
+                    <li><span class="comic-title">Batman #404</span></li>
+                </ul>
+                <p style="font-size:0.85rem;color:var(--text-muted);margin-top:8px;">
+                    这一时期重新塑造了阴郁、侦探风格的蝙蝠侠，并引入了塔利亚和刺客联盟。
+                </p>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ═══════════════ SECTION: 现代主宇宙路线 ═══════════════ -->
+        <section class="section" id="modern">
+            <div class="section-header">
+                <span class="section-number">Ⅲ</span>
+                <div class="section-title-group">
+                    <h2>现代主宇宙路线（最推荐）</h2>
+                    <p class="section-sub">Post-Crisis → 绝大多数读者实际采用的路线</p>
+                </div>
+            </div>
+
+            <!-- 第一阶段 -->
+            <div class="glass-card">
+                <h3>第一阶段：Year One时代</h3>
+                <p><strong class="highlight-gold">必读：</strong><span class="comic-title">Batman: Year One</span> — Frank Miller作品，现代蝙蝠侠起源，几乎所有现代蝙蝠侠作品都建立于此。</p>
+                <p style="margin-top:8px;"><strong>推荐补充：</strong></p>
+                <ul>
+                    <li><span class="comic-title">The Man Who Laughs</span></li>
+                    <li><span class="comic-title">Batman and the Monster Men</span></li>
+                    <li><span class="comic-title">Batman and the Mad Monk</span></li>
+                </ul>
+            </div>
+
+            <!-- 第二阶段 -->
+            <div class="glass-card">
+                <h3>第二阶段：早期传奇</h3>
+                <p><strong class="highlight-gold">必读：</strong></p>
+                <div class="flow-arrow">
+                    <span class="comic-title">The Long Halloween</span>
+                    <span class="arrow-sep">↓</span>
+                    <span class="comic-title">Dark Victory</span>
+                    <span class="arrow-sep">↓</span>
+                    <span class="comic-title">Catwoman: When in Rome</span>
+                </div>
+                <p style="font-size:0.85rem;color:var(--text-muted);">这是蝙蝠侠成长史核心，同时也是迪克成为罗宾的重要时期。</p>
+            </div>
+
+            <!-- 第三阶段 -->
+            <div class="glass-card">
+                <h3>第三阶段：杰森时代</h3>
+                <p><strong>推荐：</strong></p>
+                <ul>
+                    <li><span class="comic-title">Batman: Second Chances</span></li>
+                    <li><span class="comic-title">A Death in the Family</span></li>
+                    <li><span class="comic-title">A Lonely Place of Dying</span></li>
+                </ul>
+                <div class="flow-arrow" style="margin-top:6px;">
+                    <span>迪克毕业</span><span class="arrow-sep">→</span>
+                    <span>杰森死亡</span><span class="arrow-sep">→</span>
+                    <span>提姆登场</span>
+                </div>
+            </div>
+
+            <!-- 第四阶段 -->
+            <details class="glass-details">
+                <summary>第四阶段：90年代大事件（展开）</summary>
+                <div class="details-content">
+                    <p><strong class="highlight-gold">Knightfall：</strong></p>
+                    <ul>
+                        <li>Batman #491-500</li>
+                        <li>Detective Comics #659-666</li>
+                    </ul>
+                    <p><strong>Knightquest → KnightsEnd → Prodigal → Troika</strong></p>
+                    <div class="flow-arrow">
+                        <span>Cataclysm</span><span class="arrow-sep">↓</span>
+                        <span>Road to No Man's Land</span><span class="arrow-sep">↓</span>
+                        <span>No Man's Land</span>
+                    </div>
+                    <p style="font-size:0.8rem;color:var(--text-muted);margin-top:6px;">这是90年代最重要的蝙蝠侠时期。</p>
+                </div>
+            </details>
+
+            <!-- 第五阶段 -->
+            <div class="glass-card">
+                <h3>第五阶段：New Gotham</h3>
+                <p><strong>推荐：</strong></p>
+                <ul>
+                    <li><span class="comic-title">Gotham Knights</span></li>
+                    <li><span class="comic-title">Officer Down</span></li>
+                    <li><span class="comic-title">Bruce Wayne: Murderer?</span></li>
+                    <li><span class="comic-title">Bruce Wayne: Fugitive</span></li>
+                </ul>
+            </div>
+
+            <!-- 第六阶段 -->
+            <div class="glass-card">
+                <h3>第六阶段：Hush时代</h3>
+                <p><strong class="highlight-gold">必读：</strong><span class="comic-title">Batman: Hush</span></p>
+                <p>Jim Lee + Loeb神作。无数新人入坑作。</p>
+            </div>
+
+            <!-- 第七阶段 -->
+            <details class="glass-details">
+                <summary>第七阶段：Grant Morrison史诗（展开）</summary>
+                <div class="details-content">
+                    <p>这是蝙蝠侠最大史诗之一。顺序：</p>
+                    <div class="flow-arrow">
+                        <span>Batman and Son</span><span class="arrow-sep">↓</span>
+                        <span>The Black Glove</span><span class="arrow-sep">↓</span>
+                        <span>Batman RIP</span><span class="arrow-sep">↓</span>
+                        <span>Final Crisis</span><span class="arrow-sep">↓</span>
+                        <span>Battle for the Cowl</span><span class="arrow-sep">↓</span>
+                        <span>Batman & Robin</span><span class="arrow-sep">↓</span>
+                        <span>Batman Incorporated</span>
+                    </div>
+                    <p style="font-size:0.8rem;color:var(--text-muted);margin-top:6px;">许多读者认为这是现代蝙蝠侠最宏大的个人长篇。</p>
+                </div>
+            </details>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ═══════════════ SECTION: 新52路线 ═══════════════ -->
+        <section class="section" id="n52">
+            <div class="section-header">
+                <span class="section-number">Ⅳ</span>
+                <div class="section-title-group">
+                    <h2>新52路线</h2>
+                    <p class="section-sub">Scott Snyder 主刊</p>
+                </div>
+            </div>
+            <div class="glass-card">
+                <h3>Scott Snyder · Batman Vol.2 <span class="badge badge-essential">必读</span></h3>
+                <ol style="padding-left:20px;color:var(--text-secondary);line-height:2;">
+                    <li><span class="comic-title">Court of Owls</span></li>
+                    <li><span class="comic-title">City of Owls</span></li>
+                    <li><span class="comic-title">Death of the Family</span></li>
+                    <li><span class="comic-title">Zero Year</span></li>
+                    <li><span class="comic-title">Endgame</span></li>
+                    <li><span class="comic-title">Superheavy</span></li>
+                    <li><span class="comic-title">Bloom</span></li>
+                </ol>
+                <p style="font-size:0.85rem;color:var(--text-muted);">这是新52最成功蝙蝠侠主刊。</p>
+            </div>
+            <div class="glass-card">
+                <h3>Detective Comics（可选）</h3>
+                <ul>
+                    <li><span class="comic-title">Emperor Penguin</span></li>
+                    <li><span class="comic-title">Icarus</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ═══════════════ SECTION: Rebirth路线 ═══════════════ -->
+        <section class="section" id="rebirth">
+            <div class="section-header">
+                <span class="section-number">Ⅴ</span>
+                <div class="section-title-group">
+                    <h2>Rebirth路线</h2>
+                    <p class="section-sub">DC于2016进入Rebirth时代</p>
+                </div>
+            </div>
+            <div class="glass-card">
+                <h3>Batman（Tom King）</h3>
+                <ul>
+                    <li><span class="comic-title">I Am Gotham</span></li>
+                    <li><span class="comic-title">I Am Suicide</span></li>
+                    <li><span class="comic-title">I Am Bane</span></li>
+                    <li><span class="comic-title">War of Jokes and Riddles</span></li>
+                    <li><span class="comic-title">Wedding</span></li>
+                    <li><span class="comic-title">City of Bane</span></li>
+                </ul>
+            </div>
+            <div class="glass-card">
+                <h3>Detective Comics（Tynion）<span class="badge badge-essential">蝙蝠家族必读</span></h3>
+                <p>很多提姆粉最喜欢的时期。成员：</p>
+                <p style="color:var(--text-accent);">
+                    Batman · Batwoman · Tim · Cass · Steph · Clayface
+                </p>
+                <p style="font-size:0.85rem;color:var(--text-muted);">Rebirth《Detective Comics》被很多蝙蝠家族读者视为必读。</p>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ═══════════════ SECTION: Infinite Frontier → 现在 ═══════════════ -->
+        <section class="section" id="infinite">
+            <div class="section-header">
+                <span class="section-number">Ⅵ</span>
+                <div class="section-title-group">
+                    <h2>Infinite Frontier → 现在</h2>
+                    <p class="section-sub">Chip Zdarsky时期 · 当前主刊核心</p>
+                </div>
+            </div>
+            <div class="glass-card">
+                <div class="flow-arrow" style="flex-direction:column;align-items:flex-start;gap:2px;">
+                    <span style="color:var(--gold-light);">Joker War</span>
+                    <span class="arrow-sep" style="margin-left:12px;">↓</span>
+                    <span style="color:var(--gold-light);">Fear State</span>
+                    <span class="arrow-sep" style="margin-left:12px;">↓</span>
+                    <span style="color:var(--gold-light);">Failsafe</span>
+                    <span class="arrow-sep" style="margin-left:12px;">↓</span>
+                    <span style="color:var(--gold-light);">The Bat-Man of Gotham</span>
+                    <span class="arrow-sep" style="margin-left:12px;">↓</span>
+                    <span style="color:var(--gold-light);">Gotham War</span>
+                    <span class="arrow-sep" style="margin-left:12px;">↓</span>
+                    <span style="color:var(--gold-light);">Dark Prisons</span>
+                    <span class="arrow-sep" style="margin-left:12px;">↓</span>
+                    <span style="color:var(--gold-light);">Hush 2</span>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ═══════════════ SECTION: 神作榜20 ═══════════════ -->
+        <section class="section" id="top20">
+            <div class="section-header">
+                <span class="section-number">Ⅶ</span>
+                <div class="section-title-group">
+                    <h2>蝙蝠侠神作榜（只看精品）</h2>
+                    <p class="section-sub">如果只留20部</p>
+                </div>
+            </div>
+            <div class="top20-grid">
+                <div class="top20-item"><span class="rank">01</span><span class="info"><strong>Batman: Year One</strong></span></div>
+                <div class="top20-item"><span class="rank">02</span><span class="info"><strong>The Long Halloween</strong></span></div>
+                <div class="top20-item"><span class="rank">03</span><span class="info"><strong>Dark Victory</strong></span></div>
+                <div class="top20-item"><span class="rank">04</span><span class="info"><strong>The Killing Joke</strong></span></div>
+                <div class="top20-item"><span class="rank">05</span><span class="info"><strong>Arkham Asylum</strong></span></div>
+                <div class="top20-item"><span class="rank">06</span><span class="info"><strong>The Dark Knight Returns</strong></span></div>
+                <div class="top20-item"><span class="rank">07</span><span class="info"><strong>Hush</strong></span></div>
+                <div class="top20-item"><span class="rank">08</span><span class="info"><strong>Batman RIP</strong></span></div>
+                <div class="top20-item"><span class="rank">09</span><span class="info"><strong>Court of Owls</strong></span></div>
+                <div class="top20-item"><span class="rank">10</span><span class="info"><strong>Death of the Family</strong></span></div>
+                <div class="top20-item"><span class="rank">11</span><span class="info"><strong>Batman & Robin</strong> (Morrison)</span></div>
+                <div class="top20-item"><span class="rank">12</span><span class="info"><strong>Batman & Robin</strong> (Tomasi)</span></div>
+                <div class="top20-item"><span class="rank">13</span><span class="info"><strong>No Man's Land</strong></span></div>
+                <div class="top20-item"><span class="rank">14</span><span class="info"><strong>Knightfall</strong></span></div>
+                <div class="top20-item"><span class="rank">15</span><span class="info"><strong>Ego</strong></span></div>
+                <div class="top20-item"><span class="rank">16</span><span class="info"><strong>Gotham Central</strong></span></div>
+                <div class="top20-item"><span class="rank">17</span><span class="info"><strong>Black Mirror</strong></span></div>
+                <div class="top20-item"><span class="rank">18</span><span class="info"><strong>Under the Red Hood</strong></span></div>
+                <div class="top20-item"><span class="rank">19</span><span class="info"><strong>The Man Who Laughs</strong></span></div>
+                <div class="top20-item"><span class="rank">20</span><span class="info"><strong>Batman Incorporated</strong></span></div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- ═══════════════ SECTION: 补完建议 ═══════════════ -->
+        <section class="section" id="ultimate">
+            <div class="section-header">
+                <span class="section-number">Ⅷ</span>
+                <div class="section-title-group">
+                    <h2>究极补完工程</h2>
+                    <p class="section-sub">DC老读者级别 · 蝙蝠侠全刊物补完目录</p>
+                </div>
+            </div>
+
+            <div class="quote-block">
+                <strong>真正意义上的"补完蝙蝠侠"</strong>，不是读《Batman》主刊。而是读：<br>
+                Batman + Detective Comics + Legends of the Dark Knight + Shadow of the Bat + Gotham Knights + Batman and Robin + Batman Incorporated + 各时代大事件。
+            </div>
+
+            <p style="color:var(--text-secondary);margin-bottom:20px;text-align:center;font-size:0.9rem;">
+                蝙蝠侠是DC唯一一个长期保持<strong class="highlight-gold">多本月刊并行连载</strong>的角色。90年代甚至同时有四本主刊在讲同一时间线故事。
+            </p>
+
+            <!-- 究极补完十层 - 使用details手风琴 -->
+            <details class="glass-details">
+                <summary>第一层：核心主干（必须补）— 黄金时代 & 青铜时代</summary>
+                <div class="details-content">
+                    <p><strong>黄金时代：</strong>Detective Comics #27-37 · Batman #1-25</p>
+                    <p>重点：Batman初登场 · 起源公开 · 小丑初登场 · 猫女初登场 · 罗宾初登场</p>
+                    <p><strong>青铜时代：</strong>Batman #232（Ra's al Ghul）· Batman #251（经典小丑）· Detective Comics #395-526</p>
+                </div>
+            </details>
+
+            <details class="glass-details">
+                <summary>第二层：现代连续性起点 — Year One时代</summary>
+                <div class="details-content">
+                    <p>Year One → The Man Who Laughs → Shaman → Gothic → Prey → Venom → Monster Men → Mad Monk</p>
+                    <p style="font-size:0.8rem;color:var(--text-muted);">很多原本刊登于 Batman: Legends of the Dark Knight（1989-2007共214期）。</p>
+                </div>
+            </details>
+
+            <details class="glass-details">
+                <summary>第三层：罗宾时代 — 迪克·杰森·提姆</summary>
+                <div class="details-content">
+                    <p><strong>迪克时期：</strong>Long Halloween → Dark Victory → Robin Year One → Batgirl Year One</p>
+                    <p><strong>杰森时期：</strong>Second Chances → The Cult → A Death in the Family</p>
+                    <p><strong>提姆时期：</strong>Lonely Place of Dying → Robin (1991) → Robin II → Robin III</p>
+                </div>
+            </details>
+
+            <details class="glass-details">
+                <summary>第四层：90年代蝙蝠帝国 — 四刊联动</summary>
+                <div class="details-content">
+                    <p>同时存在：<strong>Batman + Detective Comics + Shadow of the Bat + Legends of the Dark Knight</strong> 四刊联动。</p>
+                    <p><strong>Knightfall宇宙：</strong>Sword of Azrael → Knightfall → Knightquest → KnightsEnd → Prodigal → Troika（接近两百期）</p>
+                    <p><strong>传染病时代：</strong>Contagion → Legacy</p>
+                    <p><strong>地震时代：</strong>Cataclysm → Road to No Man's Land → No Man's Land（横跨十几本刊）</p>
+                </div>
+            </details>
+
+            <details class="glass-details">
+                <summary>第五层：New Gotham时代（2000-2006）</summary>
+                <div class="details-content">
+                    <p>刊物：Batman · Detective Comics · Gotham Knights（取代Shadow of the Bat）</p>
+                    <p>顺序：Officer Down → Bruce Wayne Murderer? → Bruce Wayne Fugitive → Hush → Broken City → War Games → Under the Hood</p>
+                </div>
+            </details>
+
+            <details class="glass-details">
+                <summary>第六层：莫里森史诗（接近150期）</summary>
+                <div class="details-content">
+                    <p>Batman and Son → Black Glove → Batman RIP → Final Crisis → Battle for the Cowl → Batman & Robin → Return of Bruce Wayne → Batman Incorporated</p>
+                </div>
+            </details>
+
+            <details class="glass-details">
+                <summary>第七层：新52 — Snyder主刊 + Tomasi的Batman and Robin</summary>
+                <div class="details-content">
+                    <p><strong>Snyder：</strong>Court of Owls → City of Owls → Death of the Family → Zero Year → Endgame → Superheavy → Bloom → Epilogue</p>
+                    <p><strong>Tomasi：</strong>达米安时期神作，很多人认为比主刊还好看。</p>
+                </div>
+            </details>
+
+            <details class="glass-details">
+                <summary>第八层：Rebirth — Tom King + Tynion双线</summary>
+                <div class="details-content">
+                    <p><strong>Tom King：</strong>I Am Gotham → I Am Suicide → I Am Bane → Wedding → City of Bane</p>
+                    <p><strong>Tynion：</strong>蝙蝠家族战队时期，提姆粉圣经。</p>
+                </div>
+            </details>
+
+            <details class="glass-details">
+                <summary>第九层：Infinite Frontier</summary>
+                <div class="details-content">
+                    <p>Joker War → Fear State → Shadows of the Bat → Failsafe → Bat-Man of Gotham → Gotham War</p>
+                    <p style="font-size:0.8rem;color:var(--text-muted);">《Shadows of the Bat》主要刊载于《Detective Comics》#1047-1058。</p>
+                </div>
+            </details>
+
+            <details class="glass-details">
+                <summary>第十层：究极补完模式 — 全部长期连载</summary>
+                <div class="details-content">
+                    <div class="glass-table-wrapper">
+                        <table class="glass-table">
+                            <thead>
+                                <tr><th>刊物</th><th>期数</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Detective Comics</td><td>1939-至今</td></tr>
+                                <tr><td>Batman</td><td>1940-至今</td></tr>
+                                <tr><td>World's Finest</td><td>1941-1986</td></tr>
+                                <tr><td>Brave and the Bold</td><td>1955-1983</td></tr>
+                                <tr><td>Legends of the Dark Knight</td><td>214期</td></tr>
+                                <tr><td>Shadow of the Bat</td><td>96期</td></tr>
+                                <tr><td>Gotham Knights</td><td>74期</td></tr>
+                                <tr><td>Batman Confidential</td><td>54期</td></tr>
+                                <tr><td>Batman and Robin</td><td>多卷</td></tr>
+                                <tr><td>Batman Incorporated</td><td>多卷</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="font-size:0.8rem;color:var(--text-muted);margin-top:10px;">这些基本构成了蝙蝠侠出版史的主体。</p>
+                </div>
+            </details>
+
+            <!-- 推荐阅读顺序 -->
+            <div class="glass-card" style="margin-top:24px;">
+                <h3>最接近"既完整又不至于读到老死"的阅读路线</h3>
+                <div class="flow-arrow" style="flex-direction:column;align-items:flex-start;gap:0;line-height:2.2;">
+                    <span style="color:var(--gold-light);">Year One</span>
+                    <span style="color:var(--text-secondary);">→ Long Halloween → Dark Victory → Robin Year One → Batgirl Year One</span>
+                    <span style="color:var(--text-secondary);">→ Death in the Family → Lonely Place of Dying → Knightfall → No Man's Land</span>
+                    <span style="color:var(--text-secondary);">→ Hush → Under the Red Hood → Morrison Batman → Snyder Batman</span>
+                    <span style="color:var(--text-secondary);">→ Rebirth Detective Comics → Infinite Frontier</span>
+                </div>
+            </div>
+
+            <!-- 核心洞察 -->
+            <div class="quote-block" style="margin-top:20px;">
+                <strong>蝙蝠侠最精彩的部分，恰恰是：</strong><br>
+                从迪克成为罗宾开始，一个孤独复仇者如何一步步拥有家人。<br>
+                这条线比单纯补《Batman》#1-900多期有意思得多。
+            </div>
+        </section>
+
+    </div><!-- /.container -->
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <footer class="footer">
+        <div class="footer-icon">
+            <svg viewBox="0 0 40 40" fill="none"><path d="M20 4 L9 18 L4 14 L6 23 L2 29 L10 27 L16 36 L20 26 L24 36 L30 27 L38 29 L34 23 L36 14 L31 18 Z" fill="none" stroke="#c4a35a" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </div>
+        <p>蝙蝠侠阅读指南 · 1939—2026 · 全网最全刊物推荐</p>
+        <p style="font-size:0.7rem;opacity:0.5;">Gotham never sleeps. 🦇</p>
+    </footer>
+
+    <!-- ═══════════════ Scroll-aware nav highlight ═══════════════ -->
+    <script>
+        (function() {
+            const navLinks = document.querySelectorAll('.nav-pills a');
+            const sections = [];
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    const el = document.querySelector(href);
+                    if (el) sections.push({ link, el });
+                }
+            });
+
+            function updateActive() {
+                let currentId = '';
+                const scrollPos = window.scrollY + 120;
+                for (const s of sections) {
+                    if (s.el.offsetTop <= scrollPos) {
+                        currentId = s.link.getAttribute('href');
+                    }
+                }
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === currentId) {
+                        link.classList.add('active');
+                    }
+                });
+                // If scrolled to very top, clear all
+                if (window.scrollY < 60) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                }
+            }
+
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        updateActive();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            updateActive();
+
+            // Smooth scroll for nav pills (ensure behavior)
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
