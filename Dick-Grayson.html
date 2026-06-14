@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dick Grayson · 夜翼全时期阅读指南</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #060a10;
+            --bg-mid: #0b101b;
+            --glass-bg: rgba(14, 20, 35, 0.55);
+            --glass-bg-hover: rgba(18, 26, 44, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-border-strong: rgba(255, 255, 255, 0.14);
+            --glass-highlight: rgba(255, 255, 255, 0.04);
+            --text-primary: #e8e6e3;
+            --text-secondary: #b8b5b0;
+            --text-muted: #7a7671;
+            --accent-blue: #5b8ec9;
+            --accent-blue-bright: #7aade0;
+            --accent-gold: #b8974a;
+            --accent-gold-dim: #8a6e32;
+            --accent-silver: #9ca8b8;
+            --accent-crimson: #8b3a3a;
+            --accent-teal: #4a8b82;
+            --accent-obsidian: #2a2d35;
+            --robin-color: #b8974a;
+            --nightwing-color: #5b8ec9;
+            --batman-color: #3a3d44;
+            --agent-color: #6b8a9e;
+            --shadow-card: 0 4px 32px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.03) inset;
+            --shadow-glow-blue: 0 0 60px rgba(91, 142, 201, 0.12), 0 0 120px rgba(91, 142, 201, 0.05);
+            --shadow-glow-gold: 0 0 40px rgba(184, 151, 74, 0.1);
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+            --transition-smooth: 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', 'STSong', 'Songti SC', 'SimSun', serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.75;
+            min-height: 100vh;
+            letter-spacing: 0.02em;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-image:
+                radial-gradient(ellipse at 20% 15%, rgba(91, 142, 201, 0.06) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 60%, rgba(184, 151, 74, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 85%, rgba(91, 142, 201, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 10% 90%, rgba(107, 138, 158, 0.04) 0%, transparent 45%);
+            background-attachment: fixed;
+        }
+
+        /* Subtle noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+            background-size: 200px 200px;
+        }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-deep);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ── Layout ── */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+
+        /* ── Hero Header ── */
+        .hero {
+            position: relative;
+            padding: 60px 0 40px;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+        .hero-icon {
+            display: inline-block;
+            margin-bottom: 16px;
+            opacity: 0.85;
+        }
+        .hero-icon svg {
+            width: 52px;
+            height: 52px;
+            filter: drop-shadow(0 0 20px rgba(91, 142, 201, 0.35));
+        }
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: #f0ece7;
+            margin-bottom: 8px;
+            text-shadow: 0 0 60px rgba(91, 142, 201, 0.25);
+        }
+        .hero .subtitle {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .hero .timeline-range {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+            padding: 6px 18px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* ── Section Titles ── */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: #e0dcd5;
+            margin: 48px 0 20px;
+            padding-left: 16px;
+            border-left: 3px solid var(--accent-blue);
+            position: relative;
+        }
+        .section-title.gold {
+            border-left-color: var(--accent-gold);
+        }
+        .section-title.silver {
+            border-left-color: var(--accent-silver);
+        }
+        .section-title.crimson {
+            border-left-color: var(--accent-crimson);
+        }
+        .section-title.teal {
+            border-left-color: var(--accent-teal);
+        }
+
+        /* ── Glass Card ── */
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 28px 30px;
+            margin-bottom: 18px;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: var(--shadow-card);
+            transition: all var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+            opacity: 0.7;
+        }
+        .glass-card:hover {
+            background: var(--glass-bg-hover);
+            border-color: var(--glass-border-strong);
+            box-shadow: var(--shadow-card), var(--shadow-glow-blue);
+            transform: translateY(-2px);
+        }
+        .glass-card .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        .glass-card .card-icon {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card .card-icon svg {
+            width: 22px;
+            height: 22px;
+            opacity: 0.8;
+        }
+        .glass-card .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            color: #ece8e0;
+            margin-bottom: 2px;
+        }
+        .glass-card .card-subtitle {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .glass-card .card-body {
+            color: var(--text-secondary);
+            font-size: 0.93rem;
+            line-height: 1.8;
+        }
+        .glass-card .card-body ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .glass-card .card-body ul li {
+            position: relative;
+            padding-left: 18px;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        .glass-card .card-body ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.55em;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            opacity: 0.6;
+        }
+        .glass-card .tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            letter-spacing: 0.06em;
+            padding: 5px 12px;
+            border-radius: 14px;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            font-weight: 500;
+            text-transform: uppercase;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-muted);
+        }
+        .glass-card .tag.robin {
+            border-color: rgba(184, 151, 74, 0.35);
+            color: var(--accent-gold);
+            background: rgba(184, 151, 74, 0.06);
+        }
+        .glass-card .tag.nightwing {
+            border-color: rgba(91, 142, 201, 0.35);
+            color: var(--accent-blue-bright);
+            background: rgba(91, 142, 201, 0.06);
+        }
+        .glass-card .tag.batman {
+            border-color: rgba(160, 160, 170, 0.35);
+            color: #b0b0b8;
+            background: rgba(160, 160, 170, 0.05);
+        }
+        .glass-card .tag.agent {
+            border-color: rgba(107, 138, 158, 0.35);
+            color: #8aacbe;
+            background: rgba(107, 138, 158, 0.05);
+        }
+        .glass-card .highlight-box {
+            background: rgba(255, 255, 255, 0.025);
+            border-radius: var(--radius-sm);
+            padding: 16px 20px;
+            margin-top: 14px;
+            border-left: 2px solid var(--accent-blue);
+            font-size: 0.88rem;
+            color: #c8c4be;
+            letter-spacing: 0.02em;
+            line-height: 1.7;
+        }
+        .glass-card .highlight-box.gold-border {
+            border-left-color: var(--accent-gold);
+        }
+
+        /* ── Timeline Connector ── */
+        .timeline-dot {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 8px auto;
+            position: relative;
+            z-index: 2;
+        }
+        .timeline-dot .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            box-shadow: 0 0 16px rgba(91, 142, 201, 0.5);
+            position: relative;
+        }
+        .timeline-dot .dot.gold {
+            background: var(--accent-gold);
+            box-shadow: 0 0 14px rgba(184, 151, 74, 0.45);
+        }
+        .timeline-dot .dot.silver {
+            background: var(--accent-silver);
+            box-shadow: 0 0 12px rgba(156, 168, 184, 0.4);
+        }
+        .timeline-line {
+            width: 1px;
+            height: 24px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02));
+            margin: 0 auto;
+        }
+
+        /* ── Phase Label ── */
+        .phase-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            font-weight: 500;
+        }
+        .phase-label span {
+            width: 20px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.15);
+            display: inline-block;
+        }
+
+        /* ── Compact List ── */
+        .compact-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 6px;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+        .compact-list .item {
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all var(--transition-smooth);
+            cursor: default;
+        }
+        .compact-list .item:hover {
+            background: rgba(255, 255, 255, 0.035);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .compact-list .item strong {
+            color: #e0dcd5;
+            font-weight: 600;
+        }
+
+        /* ── Reading Path ── */
+        .reading-path {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 16px 0;
+        }
+        .reading-path .step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all var(--transition-smooth);
+            cursor: default;
+            white-space: nowrap;
+        }
+        .reading-path .step:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.18);
+            color: #e0dcd5;
+        }
+        .reading-path .step .num {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            letter-spacing: 0;
+        }
+
+        /* ── Quote ── */
+        .quote-block {
+            margin: 24px 0;
+            padding: 22px 26px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            font-style: italic;
+            color: #c8c4bd;
+            font-size: 1rem;
+            letter-spacing: 0.03em;
+            line-height: 1.8;
+            position: relative;
+        }
+        .quote-block::before {
+            content: '"';
+            position: absolute;
+            top: -8px;
+            left: 16px;
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.06);
+            font-style: normal;
+            line-height: 1;
+        }
+
+        /* ── Footer ── */
+        .site-footer {
+            text-align: center;
+            padding: 50px 0 36px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 40px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .glass-card {
+                padding: 20px 18px;
+            }
+            .glass-card .card-header {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .reading-path {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .reading-path .step {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .compact-list {
+                grid-template-columns: 1fr 1fr;
+            }
+            .compact-list.three-col {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- ═══════════ HERO ═══════════ -->
+        <header class="hero">
+            <div class="hero-icon">
+                <!-- 极简几何夜翼鸟形图标 -->
+                <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M26 4L10 38L18 42L26 30L34 42L42 38L26 4Z" stroke="#5b8ec9" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
+                    <path d="M26 4V30" stroke="#5b8ec9" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+                    <circle cx="26" cy="22" r="3" stroke="#7aade0" stroke-width="2" fill="none"/>
+                </svg>
+            </div>
+            <h1>Dick Grayson</h1>
+            <p class="subtitle">夜翼 · 全时期刊物阅读指南</p>
+            <span class="timeline-range">1940 — 2026 · 究极完整版</span>
+        </header>
+
+        <!-- ═══════════ INTRO ═══════════ -->
+        <div class="glass-card" style="text-align:center;">
+            <div class="card-body" style="font-size:0.95rem;color:#c8c4bd;">
+                <p>迪克是DC漫画中少数经历了<strong style="color:#e0dcd5;">"罗宾 → 少年泰坦领袖 → 夜翼 → 蝙蝠侠 → 间谍特工 → 回归夜翼"</strong>全成长路线的角色。如果蝙蝠侠是DC最庞大的角色，那Dick Grayson大概是DC历史跨度第二夸张的人物之一。</p>
+            </div>
+            <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;">
+                <span class="tag robin">Robin</span>
+                <span style="color:var(--text-muted);">→</span>
+                <span class="tag nightwing">Teen Titan</span>
+                <span style="color:var(--text-muted);">→</span>
+                <span class="tag nightwing">Nightwing</span>
+                <span style="color:var(--text-muted);">→</span>
+                <span class="tag batman">Batman</span>
+                <span style="color:var(--text-muted);">→</span>
+                <span class="tag agent">Agent 37</span>
+                <span style="color:var(--text-muted);">→</span>
+                <span class="tag nightwing">Nightwing</span>
+            </div>
+        </div>
+
+        <!-- ═══════════ 一、黄金时代 ═══════════ -->
+        <div class="timeline-dot"><div class="dot gold"></div></div>
+        <div class="timeline-line"></div>
+        <h2 class="section-title gold">一、黄金时代：初代罗宾（1940–1950s）</h2>
+        <div class="phase-label"><span></span> 身份：Robin（初代罗宾） <span></span></div>
+
+        <div class="glass-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#b8974a" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+                </div>
+                <div>
+                    <div class="card-title">必读刊物</div>
+                    <div class="card-subtitle">Golden Age · 起源与经典</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>Detective Comics #38</strong>（1940）—— 迪克·格雷森首次登场，"飞翔的格雷森"起源</li>
+                    <li><strong>Batman #1–25</strong>（1940–1944）—— 动态双雄经典时期</li>
+                    <li><strong>Star-Spangled Comics #65–130</strong>（1947–1952）—— 罗宾个人故事连载</li>
+                </ul>
+                <div class="highlight-box gold-border">
+                    <strong>阅读意义：</strong>了解"飞翔的格雷森"起源、与布鲁斯的父子关系雏形，以及罗宾这一角色如何改变蝙蝠侠漫画。
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ 二、白银时代 ═══════════ -->
+        <div class="timeline-dot"><div class="dot silver"></div></div>
+        <div class="timeline-line"></div>
+        <h2 class="section-title silver">二、白银时代：少年英雄时代（1960s）</h2>
+        <div class="phase-label"><span></span> 身份：Robin / Teen Titans 创始成员 <span></span></div>
+
+        <div class="glass-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#9ca8b8" stroke-width="2"><polygon points="12,2 22,20 2,20"/><circle cx="12" cy="14" r="3"/></svg>
+                </div>
+                <div>
+                    <div class="card-title">必读刊物</div>
+                    <div class="card-subtitle">Silver Age · 泰坦初创</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>The Brave and the Bold #54</strong>（1964）—— 初代少年泰坦成立</li>
+                    <li><strong>The Brave and the Bold #60</strong>（1965）—— "Teen Titans"名称正式出现</li>
+                    <li><strong>Teen Titans #1–43</strong>（1966–1972）—— 早期泰坦团队故事</li>
+                </ul>
+                <div class="highlight-box" style="border-left-color:var(--accent-silver);">
+                    <strong>阅读意义：</strong>迪克第一次脱离蝙蝠侠、成为团队领袖。沃利·韦斯特、唐娜·特洛伊等关系线都在此奠基。
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ 三、青铜时代 ═══════════ -->
+        <div class="timeline-dot"><div class="dot gold"></div></div>
+        <div class="timeline-line"></div>
+        <h2 class="section-title gold">三、青铜时代：独立与成长（1970s）</h2>
+        <div class="phase-label"><span></span> 身份：Robin（大学时期） <span></span></div>
+
+        <div class="glass-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#b8974a" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="14" y2="14"/></svg>
+                </div>
+                <div>
+                    <div class="card-title">必读刊物</div>
+                    <div class="card-subtitle">Bronze Age · 大学时期</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>Batman #217–242</strong>（1969–1972）—— 蝙蝠侠回归黑暗风格，迪克逐渐独立</li>
+                    <li><strong>Detective Comics #395–440</strong>（1969–1974）—— 哈德逊大学时期个人冒险</li>
+                </ul>
+                <div class="highlight-box gold-border">
+                    <strong>阅读意义：</strong>迪克开始摆脱"蝙蝠侠的小跟班"定位，为夜翼诞生做铺垫。
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ 四、新少年泰坦时代 ═══════════ -->
+        <div class="timeline-dot"><div class="dot"></div></div>
+        <div class="timeline-line"></div>
+        <h2 class="section-title">四、新少年泰坦时代（1980–1984）—— 夜翼诞生前夜</h2>
+        <div class="phase-label"><span></span> 身份：Robin / Titans 领袖 <span></span></div>
+
+        <div class="glass-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#5b8ec9" stroke-width="2"><polygon points="12,2 18,18 6,18"/><line x1="12" y1="10" x2="12" y2="18"/></svg>
+                </div>
+                <div>
+                    <div class="card-title">核心刊物</div>
+                    <div class="card-subtitle">Wolfman & Pérez 经典神作</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>DC Comics Presents #26</strong>（1980）—— 新少年泰坦组队序章</li>
+                    <li><strong>The New Teen Titans #1–40</strong>（1980–1984）—— Marv Wolfman与George Pérez经典</li>
+                    <li><strong>Tales of the Teen Titans #41–43</strong>（1984）—— 迪克与布鲁斯关系决裂前奏</li>
+                </ul>
+                <div class="highlight-box">
+                    <strong>阅读意义：</strong>迪克真正成为独立英雄，团队领袖气质完全成型。与星火（Starfire）的感情线也在此建立。
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ 五、夜翼诞生 ═══════════ -->
+        <div class="timeline-dot"><div class="dot"></div></div>
+        <div class="timeline-line"></div>
+        <h2 class="section-title">五、夜翼诞生（1984）—— 历史转折点</h2>
+        <div class="phase-label"><span></span> 身份：Nightwing（首次登场） <span></span></div>
+
+        <div class="glass-card" style="border-color:rgba(91,142,201,0.25);box-shadow:var(--shadow-card),var(--shadow-glow-blue);">
+            <div class="card-header">
+                <div class="card-icon" style="background:rgba(91,142,201,0.08);border-color:rgba(91,142,201,0.2);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#7aade0" stroke-width="2.5"><path d="M12 3L5 19L9 21L12 14L15 21L19 19L12 3Z"/></svg>
+                </div>
+                <div>
+                    <div class="card-title">必读刊物</div>
+                    <div class="card-subtitle">罗宾→夜翼 · 标志性转折</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>Tales of the Teen Titans #44</strong>（1984）—— 迪克正式放弃罗宾身份，成为夜翼</li>
+                    <li><strong>Nightwing: Year One</strong>（Nightwing #101–106，2005）—— 现代版夜翼起源重述</li>
+                </ul>
+                <div class="highlight-box">
+                    <strong>阅读意义：</strong>这是迪克成长为"成年人超级英雄"的标志性节点。
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ 六、1984-1995成熟夜翼 ═══════════ -->
+        <div class="timeline-dot"><div class="dot"></div></div>
+        <div class="timeline-line"></div>
+        <h2 class="section-title">六、1984–1995：成熟夜翼与泰坦领袖</h2>
+        <div class="phase-label"><span></span> 身份：Nightwing <span></span></div>
+
+        <div class="glass-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#5b8ec9" stroke-width="2"><circle cx="12" cy="12" r="9"/><polygon points="12,6 14,10 18,10 15,13.5 16.5,17.5 12,15 7.5,17.5 9,13.5 6,10 10,10"/></svg>
+                </div>
+                <div>
+                    <div class="card-title">推荐刊物</div>
+                    <div class="card-subtitle">奠定"DC第一长兄"地位</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>Tales of the Teen Titans #45–58</strong></li>
+                    <li><strong>The New Teen Titans (Vol.2) #1–49</strong></li>
+                    <li><strong>New Titans #50–130</strong></li>
+                    <li><strong>Batman: Prodigal</strong>（1994）—— 迪克首次正式代替布鲁斯成为蝙蝠侠</li>
+                </ul>
+                <div class="highlight-box">
+                    <strong>阅读意义：</strong>这一时期奠定了迪克"DC第一长兄"的地位，也是他第一次证明自己可以成为蝙蝠侠。
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ 七、Nightwing Vol.1 ═══════════ -->
+        <div class="timeline-dot"><div class="dot"></div></div>
+        <div class="timeline-line"></div>
+        <h2 class="section-title">七、Nightwing Vol.1（1995）—— 个人刊开端</h2>
+        <div class="phase-label"><span></span> 身份：Nightwing <span></span></div>
+
+        <div class="glass-card">
+            <div class="card-body">
+                <ul>
+                    <li><strong>Nightwing: Alfred's Return #1</strong>（1995）</li>
+                    <li><strong>Nightwing (1995) #1–4</strong> —— 迷你系列，调查父母死亡真相</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ═══════════ 八、Nightwing Vol.2 布鲁德海文 ═══════════ -->
+        <div class="timeline-dot"><div class="dot"></div></div>
+        <div class="timeline-line"></div>
+        <h2 class="section-title">八、Nightwing Vol.2（1996–2009）—— 布鲁德海文时期（核心必读）</h2>
+        <div class="phase-label"><span></span> 身份：Nightwing / 布鲁德海文守护者 <span></span></div>
+
+        <div class="glass-card" style="border-color:rgba(91,142,201,0.2);">
+            <div class="card-header">
+                <div class="card-icon" style="background:rgba(91,142,201,0.06);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#5b8ec9" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+                </div>
+                <div>
+                    <div class="card-title">最重要的个人刊</div>
+                    <div class="card-subtitle">Chuck Dixon经典长篇</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>Nightwing Vol.2 #1–70</strong>（Chuck Dixon）—— 夜翼最经典长篇</li>
+                    <li><strong>Nightwing Vol.2 #71–100</strong>（Devin Grayson）—— 争议但重要</li>
+                    <li><strong>Nightwing Vol.2 #101–117</strong>（包含《Year One》）—— 回顾从罗宾到夜翼</li>
+                    <li><strong>Nightwing Vol.2 #118–153</strong> —— 后期故事，连接《Batman R.I.P.》</li>
+                </ul>
+                <div class="compact-list" style="margin-top:12px;">
+                    <div class="item"><strong>No Man's Land</strong>（1999）</div>
+                    <div class="item"><strong>Graduation Day</strong>（2003）—— 泰坦解散</div>
+                    <div class="item"><strong>Outsiders (2003) #1–50</strong> —— 迪克担任团队核心</div>
+                    <div class="item"><strong>Infinite Crisis</strong>（2005–2006）</div>
+                </div>
+                <div class="highlight-box">
+                    <strong>阅读意义：</strong>这是绝大多数读者心中的"标准夜翼"时期。布鲁德海文、Blockbuster、与芭芭拉的关系等经典元素都源于此。
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ 九、迪克成为蝙蝠侠 ═══════════ -->
+        <div class="timeline-dot"><div class="dot silver"></div></div>
+        <div class="timeline-line"></div>
+        <h2 class="section-title crimson">九、迪克成为蝙蝠侠（2008–2011）—— 必读阶段</h2>
+        <div class="phase-label"><span></span> 身份：Batman（迪克版蝙蝠侠） <span></span></div>
+
+        <div class="glass-card" style="border-color:rgba(139,58,58,0.2);box-shadow:var(--shadow-card),0 0 50px rgba(139,58,58,0.08);">
+            <div class="card-header">
+                <div class="card-icon" style="background:rgba(139,58,58,0.06);border-color:rgba(139,58,58,0.2);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#b06060" stroke-width="2.5"><path d="M12 2C9 6 5 8 2 9L3 14C6 14 9 16 12 22C15 16 18 14 21 14L22 9C19 8 15 6 12 2Z"/></svg>
+                </div>
+                <div>
+                    <div class="card-title">核心阅读顺序</div>
+                    <div class="card-subtitle">迪克蝙 × 达米安罗宾</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <ol style="padding-left:20px;line-height:2;">
+                    <li><strong>Batman R.I.P.</strong>（Batman #676–681）</li>
+                    <li><strong>Final Crisis #1–7</strong></li>
+                    <li><strong>Battle for the Cowl #1–3</strong></li>
+                    <li><strong>Batman and Robin #1–16</strong>（Grant Morrison）—— 迪克蝙×达米安罗宾</li>
+                    <li><strong>Batman: The Black Mirror</strong>（Detective Comics #871–881）—— 公认迪克蝙时期巅峰</li>
+                    <li><strong>Batman Incorporated</strong>（前期）</li>
+                </ol>
+                <div class="highlight-box" style="border-left-color:#b06060;">
+                    <strong>阅读意义：</strong>许多读者认为这是迪克角色魅力最强的时期：更温暖、更积极的蝙蝠侠与叛逆的达米安形成鲜明对比。
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ 十、新52 ═══════════ -->
+        <div class="timeline-dot"><div class="dot"></div></div>
+        <div class="timeline-line"></div>
+        <h2 class="section-title">十、新52时期（2011–2014）</h2>
+        <div class="phase-label"><span></span> 身份：Nightwing <span></span></div>
+
+        <div class="glass-card">
+            <div class="card-body">
+                <ul>
+                    <li><strong>Nightwing Vol.3 #1–30</strong> —— 新52夜翼主刊</li>
+                    <li><strong>Batman: Court of Owls</strong> —— 迪克与"灰子"背景深度绑定</li>
+                    <li><strong>Forever Evil</strong> —— 迪克身份被公开</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ═══════════ 十一、Grayson ═══════════ -->
+        <div class="timeline-dot"><div class="dot"></div></div>
+        <div class="timeline-line"></div>
+        <h2 class="section-title teal">十一、《Grayson》时期（2014–2016）—— 间谍神作</h2>
+        <div class="phase-label"><span></span> 身份：Agent 37（Spyral 特工） <span></span></div>
+
+        <div class="glass-card" style="border-color:rgba(74,139,130,0.2);">
+            <div class="card-header">
+                <div class="card-icon" style="background:rgba(74,139,130,0.06);border-color:rgba(74,139,130,0.2);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#6bb5ab" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><circle cx="12" cy="12" r="3"/></svg>
+                </div>
+                <div>
+                    <div class="card-title">必读刊物</div>
+                    <div class="card-subtitle">Tom King / Tim Seeley 联合创作</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>Grayson #1–20</strong> —— 彻底跳出传统超级英雄框架</li>
+                </ul>
+                <div class="highlight-box" style="border-left-color:#6bb5ab;">
+                    <strong>阅读意义：</strong>迪克最独特的时期之一，假死加入Spyral，代号Agent 37。被许多人认为是Tom King最好的作品之一。
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ 十二、DC Rebirth ═══════════ -->
+        <div class="timeline-dot"><div class="dot"></div></div>
+        <div class="timeline-line"></div>
+        <h2 class="section-title">十二、DC Rebirth 夜翼（2016–2021）</h2>
+        <div class="phase-label"><span></span> 身份：Nightwing <span></span></div>
+
+        <div class="glass-card">
+            <div class="card-body">
+                <ul>
+                    <li><strong>Nightwing Vol.4 #1–43</strong> —— Rebirth前期（Seeley时期）</li>
+                    <li><strong>Nightwing Vol.4 #44–49</strong> —— "Ric Grayson"事件开端</li>
+                    <li><strong>Nightwing Vol.4 #50–77</strong> —— Ric时代（可选择性阅读）</li>
+                    <li><strong>Nightwing Vol.4 #78–83</strong> —— 记忆恢复，回归夜翼</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ═══════════ 十三、Infinite Frontier ═══════════ -->
+        <div class="timeline-dot"><div class="dot"></div></div>
+        <div class="timeline-line"></div>
+        <h2 class="section-title">十三、Infinite Frontier / Dawn of DC（2021–2024）—— 现代最佳入坑点</h2>
+        <div class="phase-label"><span></span> 身份：Nightwing <span></span></div>
+
+        <div class="glass-card" style="border-color:rgba(91,142,201,0.3);box-shadow:var(--shadow-card),var(--shadow-glow-blue);">
+            <div class="card-header">
+                <div class="card-icon" style="background:rgba(91,142,201,0.1);border-color:rgba(91,142,201,0.25);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#7aade0" stroke-width="2.5"><path d="M12 3L5 19L9 21L12 14L15 21L19 19L12 3Z"/></svg>
+                </div>
+                <div>
+                    <div class="card-title">核心刊物</div>
+                    <div class="card-subtitle">Tom Taylor & Bruno Redondo · 口碑最高</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>Nightwing Vol.4 #78–118</strong>（Tom Taylor & Bruno Redondo）—— 近年口碑最高夜翼连载</li>
+                    <li><strong>Nightwing #105</strong> —— 第一人称叙事名篇</li>
+                </ul>
+                <div class="highlight-box">
+                    <strong>阅读意义：</strong>角色塑造成熟、与芭芭拉关系稳定、布鲁德海文建设线完整，非常适合作为现代入坑点。
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ 十四、All In ═══════════ -->
+        <div class="timeline-dot"><div class="dot"></div></div>
+        <div class="timeline-line"></div>
+        <h2 class="section-title">十四、All In 时期（2024–至今）</h2>
+        <div class="phase-label"><span></span> 身份：Nightwing <span></span></div>
+
+        <div class="glass-card">
+            <div class="card-body">
+                <ul>
+                    <li><strong>Nightwing Vol.5 #119–至今</strong>（Dan Watters & Dexter Soy）—— All In新阶段</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ═══════════ 十五、团队刊补充 ═══════════ -->
+        <div class="timeline-dot"><div class="dot silver"></div></div>
+        <h2 class="section-title silver">十五、团队刊补充（按重要性排序）</h2>
+
+        <div class="glass-card">
+            <div class="compact-list three-col">
+                <div class="item"><strong>1.</strong> The New Teen Titans（1980）—— 最重要团队刊</div>
+                <div class="item"><strong>2.</strong> New Titans（1988）</div>
+                <div class="item"><strong>3.</strong> Titans（1999）</div>
+                <div class="item"><strong>4.</strong> Outsiders（2003）—— 迪克担任核心领导</div>
+                <div class="item"><strong>5.</strong> Titans（Rebirth及后续）</div>
+                <div class="item"><strong>6.</strong> Justice League若干时期（尤其Infinite Frontier之后）</div>
+            </div>
+        </div>
+
+        <!-- ═══════════ 十六、终极精选 ═══════════ -->
+        <h2 class="section-title gold">十六、如果只想读"迪克精华"—— 15本终极精选</h2>
+
+        <div class="glass-card" style="border-color:rgba(184,151,74,0.2);box-shadow:var(--shadow-card),var(--shadow-glow-gold);">
+            <div class="compact-list">
+                <div class="item"><strong>1.</strong> Detective Comics #38（1940）</div>
+                <div class="item"><strong>2.</strong> The Brave and the Bold #54（1964）</div>
+                <div class="item"><strong>3.</strong> The New Teen Titans #1–8（1980）</div>
+                <div class="item"><strong>4.</strong> Tales of the Teen Titans #44（1984）</div>
+                <div class="item"><strong>5.</strong> Nightwing: Year One（2005）</div>
+                <div class="item"><strong>6.</strong> Nightwing Vol.2 #1–8（1996）</div>
+                <div class="item"><strong>7.</strong> Nightwing Vol.2 #25（布鲁德海文经典）</div>
+                <div class="item"><strong>8.</strong> Batman: Prodigal（1994）</div>
+                <div class="item"><strong>9.</strong> Batman and Robin #1–16（2009）</div>
+                <div class="item"><strong>10.</strong> Batman: The Black Mirror（2011）</div>
+                <div class="item"><strong>11.</strong> Nightwing Vol.3 #1–7（新52）</div>
+                <div class="item"><strong>12.</strong> Grayson #1–20（2014）</div>
+                <div class="item"><strong>13.</strong> Nightwing Vol.4 #1–4（Rebirth）</div>
+                <div class="item"><strong>14.</strong> Nightwing Vol.4 #78–83（回归夜翼）</div>
+                <div class="item"><strong>15.</strong> Nightwing Vol.4 #78–118（Tom Taylor全阶段）</div>
+            </div>
+        </div>
+
+        <!-- ═══════════ 十七、阅读路线 ═══════════ -->
+        <h2 class="section-title">十七、推荐阅读路线（从易到难）</h2>
+
+        <div class="glass-card">
+            <div class="reading-path">
+                <div class="step"><span class="num">1</span> Nightwing Vol.4 #78–118 <span style="font-size:0.7rem;color:var(--text-muted);">现代最佳</span></div>
+                <div class="step"><span class="num">2</span> Nightwing: Year One</div>
+                <div class="step"><span class="num">3</span> Batman: The Black Mirror</div>
+                <div class="step"><span class="num">4</span> Batman and Robin #1–16</div>
+                <div class="step"><span class="num">5</span> Grayson #1–20</div>
+                <div class="step"><span class="num">6</span> Nightwing Vol.2 #1–70</div>
+                <div class="step"><span class="num">7</span> The New Teen Titans全阶段</div>
+                <div class="step"><span class="num">8</span> 黄金/白银时代早期罗宾故事</div>
+            </div>
+        </div>
+
+        <!-- ═══════════ 一句话总结 ═══════════ -->
+        <div class="quote-block">
+            如果把迪克·格雷森的一生看成一部超级英雄成长史，那么<strong>《The New Teen Titans》</strong>讲述他的"成年礼"，<strong>《Nightwing Vol.2》</strong>塑造他的独立人格，<strong>《Batman and Robin》</strong>证明他能够成为蝙蝠侠，而<strong>Tom Taylor的《Nightwing》</strong>则展现了一个真正成熟、完整、充满希望的迪克·格雷森。
+        </div>
+
+        <!-- ═══════════ 额外推荐路线 ═══════════ -->
+        <div class="glass-card" style="text-align:center;">
+            <div class="card-body" style="font-size:0.9rem;color:#b8b5b0;">
+                <p style="margin-bottom:8px;">📖 <strong>最易上头的路线：</strong></p>
+                <p style="color:#c8c4bd;"><strong>《New Teen Titans》→《Judas Contract》→《Batman and Robin (2009)》→《Black Mirror》</strong></p>
+                <p style="font-size:0.82rem;color:var(--text-muted);margin-top:4px;">这条线能看到迪克从"蝙蝠侠的孩子"一步步成长为"别人眼里的蝙蝠侠"，人物弧光是整个DC里最完整的之一。</p>
+            </div>
+            <div style="margin-top:10px;font-size:0.78rem;color:var(--text-muted);">
+                还可延伸整理：迪克×芭芭拉感情线 · 迪克蝙完整事件轴 · 迪克与泰坦成员关系刊物索引
+            </div>
+        </div>
+
+        <!-- ═══════════ FOOTER ═══════════ -->
+        <footer class="site-footer">
+            <p>Dick Grayson · Nightwing 全时期阅读指南 · 究极完整版</p>
+            <p style="margin-top:4px;font-size:0.7rem;">Robin → Teen Titan → Nightwing → Batman → Agent 37 → Nightwing · 1940–2026</p>
+        </footer>
+    </div>
+
+</body>
+</html>
