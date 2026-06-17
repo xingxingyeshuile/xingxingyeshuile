@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>超人（Clark Kent）全网最全刊物推荐 · 究极版</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0052CC;
+            --secondary: #E60026;
+            --accent: #FCEA0E;
+            --background: #EAF4FF;
+            --text: #1A2A44;
+            --text-secondary: #3a4f6b;
+            --text-muted: #5a6d85;
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-bg-hover: rgba(255, 255, 255, 0.7);
+            --glass-bg-elevated: rgba(255, 255, 255, 0.65);
+            --shadow-sm: 0 1px 2px rgba(26, 42, 68, 0.06);
+            --shadow-md: 0 4px 16px rgba(26, 42, 68, 0.08), 0 1px 3px rgba(26, 42, 68, 0.05);
+            --shadow-lg: 0 12px 40px rgba(26, 42, 68, 0.1), 0 2px 8px rgba(26, 42, 68, 0.06);
+            --shadow-xl: 0 24px 64px rgba(26, 42, 68, 0.14), 0 4px 16px rgba(26, 42, 68, 0.07);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --transition-fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-serif: 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', 'STSong', 'Songti SC', 'NSimSun', 'FangSong', 'STFangsong', 'FangSong_GB2312', 'KaiTi', 'STKaiti', 'KaiTi_GB2312', 'BiauKai', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-serif);
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            letter-spacing: 0.01em;
+        }
+
+        /* 背景装饰 */
+        .bg-ornament {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.35;
+            will-change: transform;
+        }
+        .bg-ornament--1 {
+            width: 520px;
+            height: 520px;
+            background: radial-gradient(circle, rgba(0, 82, 204, 0.13) 0%, transparent 70%);
+            top: -120px;
+            right: -160px;
+            animation: floatOrb1 18s ease-in-out infinite;
+        }
+        .bg-ornament--2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(230, 0, 38, 0.09) 0%, transparent 70%);
+            bottom: 10%;
+            left: -100px;
+            animation: floatOrb2 22s ease-in-out infinite;
+        }
+        .bg-ornament--3 {
+            width: 340px;
+            height: 340px;
+            background: radial-gradient(circle, rgba(252, 234, 14, 0.1) 0%, transparent 70%);
+            top: 50%;
+            left: 55%;
+            animation: floatOrb3 20s ease-in-out infinite;
+        }
+        .bg-ornament--4 {
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(0, 82, 204, 0.08) 0%, transparent 70%);
+            bottom: 25%;
+            right: 8%;
+            animation: floatOrb1 24s ease-in-out infinite reverse;
+        }
+
+        @keyframes floatOrb1 {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(40px, -30px) scale(1.08);
+            }
+            50% {
+                transform: translate(-15px, 25px) scale(0.94);
+            }
+            75% {
+                transform: translate(-35px, -20px) scale(1.05);
+            }
+        }
+        @keyframes floatOrb2 {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(-30px, 20px) scale(1.06);
+            }
+            50% {
+                transform: translate(25px, -35px) scale(0.92);
+            }
+            75% {
+                transform: translate(15px, 30px) scale(1.04);
+            }
+        }
+        @keyframes floatOrb3 {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(-25px, -28px) scale(1.07);
+            }
+            66% {
+                transform: translate(30px, 18px) scale(0.93);
+            }
+        }
+
+        /* 顶部导航栏 */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 14px 0;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-smooth);
+        }
+        .top-nav-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text);
+            flex-shrink: 0;
+        }
+        .nav-brand .brand-icon {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+        }
+        .nav-brand .brand-icon svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .nav-brand .brand-text {
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 0.03em;
+            color: var(--text);
+            line-height: 1.2;
+        }
+        .nav-brand .brand-text small {
+            display: block;
+            font-weight: 400;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .nav-links {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .nav-links a {
+            display: inline-block;
+            padding: 7px 14px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 20px;
+            letter-spacing: 0.02em;
+            transition: var(--transition-fast);
+            white-space: nowrap;
+            border: 1px solid transparent;
+            background: transparent;
+        }
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--primary);
+            border-color: rgba(0, 82, 204, 0.2);
+            outline: none;
+        }
+        .nav-links a.nav-pill--active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* 主导航下拉式快捷跳转 */
+        .nav-jump-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #fff;
+            background: var(--primary);
+            border: none;
+            border-radius: 22px;
+            cursor: pointer;
+            letter-spacing: 0.03em;
+            font-family: var(--font-serif);
+            transition: var(--transition-fast);
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0, 82, 204, 0.25);
+        }
+        .nav-jump-btn:hover {
+            background: #0047b3;
+            box-shadow: 0 4px 16px rgba(0, 82, 204, 0.35);
+        }
+        .nav-jump-btn svg {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.25s ease;
+        }
+        .nav-jump-btn.open svg {
+            transform: rotate(180deg);
+        }
+        .nav-jump-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: var(--glass-bg-elevated);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            min-width: 240px;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 8px;
+            display: none;
+            z-index: 200;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .nav-jump-dropdown.show {
+            display: flex;
+        }
+        .nav-jump-dropdown a {
+            display: block;
+            padding: 10px 14px;
+            font-size: 0.78rem;
+            color: var(--text);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            letter-spacing: 0.02em;
+            transition: var(--transition-fast);
+            font-weight: 500;
+        }
+        .nav-jump-dropdown a:hover {
+            background: rgba(0, 82, 204, 0.08);
+            color: var(--primary);
+        }
+        .nav-jump-dropdown a.dropdown-era-num {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 6px 14px 2px;
+            pointer-events: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            margin-bottom: 2px;
+        }
+
+        /* 主布局 */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 24px 60px;
+        }
+
+        /* 页面标题卡片 */
+        .hero-card {
+            background: var(--glass-bg-elevated);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 40px 36px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 4px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            opacity: 0.7;
+        }
+        .hero-card .hero-diamond {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            margin-bottom: 16px;
+        }
+        .hero-card .hero-diamond svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .hero-card h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            color: var(--text);
+            margin-bottom: 6px;
+            line-height: 1.25;
+        }
+        .hero-card h1 .accent-dot {
+            color: var(--secondary);
+        }
+        .hero-card .hero-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .hero-card .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 18px;
+        }
+        .hero-tag {
+            display: inline-block;
+            padding: 5px 14px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            border-radius: 16px;
+            background: rgba(0, 82, 204, 0.07);
+            color: var(--primary);
+            border: 1px solid rgba(0, 82, 204, 0.15);
+        }
+
+        /* 时间线 */
+        .timeline {
+            position: relative;
+            padding-left: 50px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 18px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: linear-gradient(180deg,
+                    rgba(0, 82, 204, 0.25) 0%,
+                    rgba(0, 82, 204, 0.15) 30%,
+                    rgba(230, 0, 38, 0.15) 60%,
+                    rgba(0, 82, 204, 0.2) 100%);
+            border-radius: 1px;
+        }
+        .timeline-node {
+            position: absolute;
+            left: 8px;
+            top: 20px;
+            width: 22px;
+            height: 22px;
+            z-index: 2;
+            background: #fff;
+            border-radius: 50%;
+            border: 2.5px solid var(--primary);
+            box-shadow: 0 0 0 6px rgba(0, 82, 204, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-smooth);
+        }
+        .timeline-node::after {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--primary);
+            transition: var(--transition-smooth);
+        }
+        .era-card:hover .timeline-node {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 10px rgba(230, 0, 38, 0.08);
+        }
+        .era-card:hover .timeline-node::after {
+            background: var(--secondary);
+            transform: scale(1.4);
+        }
+        .timeline-node--accent {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 6px rgba(230, 0, 38, 0.06);
+        }
+        .timeline-node--accent::after {
+            background: var(--secondary);
+        }
+        .timeline-node--gold {
+            border-color: #c4940a;
+            box-shadow: 0 0 0 6px rgba(252, 234, 14, 0.15);
+        }
+        .timeline-node--gold::after {
+            background: #c4940a;
+        }
+
+        /* 时代卡片 */
+        .era-card {
+            position: relative;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 28px 30px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-smooth);
+            cursor: default;
+        }
+        .era-card:hover {
+            background: var(--glass-bg-hover);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+        .era-card__header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .era-card__era-badge {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 14px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            border-radius: 18px;
+            background: rgba(0, 82, 204, 0.08);
+            color: var(--primary);
+            border: 1px solid rgba(0, 82, 204, 0.2);
+        }
+        .era-card__era-badge--golden {
+            background: rgba(200, 155, 20, 0.1);
+            color: #8b6914;
+            border-color: rgba(200, 155, 20, 0.25);
+        }
+        .era-card__era-badge--silver {
+            background: rgba(120, 130, 150, 0.1);
+            color: #556070;
+            border-color: rgba(120, 130, 150, 0.25);
+        }
+        .era-card__era-badge--bronze {
+            background: rgba(180, 120, 60, 0.1);
+            color: #8b5a2b;
+            border-color: rgba(180, 120, 60, 0.25);
+        }
+        .era-card__title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: 0.03em;
+            line-height: 1.3;
+            flex: 1;
+            min-width: 200px;
+        }
+        .era-card__title .year-range {
+            font-weight: 400;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.02em;
+        }
+        .era-card__description {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-bottom: 18px;
+            font-weight: 400;
+            line-height: 1.6;
+            letter-spacing: 0.015em;
+        }
+        .era-card__section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--secondary);
+            margin-bottom: 8px;
+            margin-top: 4px;
+        }
+        .era-card__section-label svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+        }
+        .era-card__list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .era-card__list li {
+            position: relative;
+            padding-left: 20px;
+            font-size: 0.85rem;
+            color: var(--text);
+            line-height: 1.55;
+            letter-spacing: 0.015em;
+        }
+        .era-card__list li::before {
+            content: '';
+            position: absolute;
+            left: 2px;
+            top: 9px;
+            width: 6px;
+            height: 6px;
+            border-radius: 1px;
+            background: var(--primary);
+            transform: rotate(45deg);
+            opacity: 0.7;
+        }
+        .era-card__significance {
+            background: rgba(252, 234, 14, 0.12);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            padding: 14px 18px;
+            margin-top: 10px;
+            font-size: 0.82rem;
+            color: var(--text);
+            letter-spacing: 0.015em;
+            line-height: 1.6;
+        }
+        .era-card__significance strong {
+            color: #8b6914;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+        .era-card__core-birth {
+            background: rgba(0, 82, 204, 0.05);
+            border-left: 3px solid var(--primary);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            padding: 14px 18px;
+            margin-top: 10px;
+            font-size: 0.82rem;
+            color: var(--text);
+            letter-spacing: 0.015em;
+            line-height: 1.6;
+        }
+        .era-card__core-birth strong {
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        /* 补充卡片 */
+        .supplement-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 28px 30px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-smooth);
+            border-left: 3px solid rgba(252, 234, 14, 0.5);
+        }
+        .supplement-card:hover {
+            background: var(--glass-bg-hover);
+            box-shadow: var(--shadow-lg);
+        }
+        .supplement-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            margin-bottom: 14px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .supplement-card h3 svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+        .supplement-card__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px;
+        }
+        .supplement-chip {
+            display: block;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            color: var(--text);
+            letter-spacing: 0.015em;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: var(--transition-fast);
+            line-height: 1.5;
+        }
+        .supplement-chip:hover {
+            background: rgba(255, 255, 255, 0.65);
+            border-color: rgba(0, 82, 204, 0.2);
+            box-shadow: var(--shadow-sm);
+        }
+        .supplement-chip strong {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* 究极路线卡片 */
+        .ultimate-card {
+            background: var(--glass-bg-elevated);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 32px 30px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow-lg);
+            border-top: 3px solid var(--accent);
+        }
+        .ultimate-card h2 {
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            margin-bottom: 16px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .ultimate-card h2 svg {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+        .ultimate-card .route-path {
+            font-size: 0.82rem;
+            color: var(--text);
+            line-height: 1.8;
+            letter-spacing: 0.015em;
+            padding: 18px 20px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: var(--radius-md);
+            word-break: break-all;
+        }
+        .ultimate-card .route-path .arrow {
+            color: var(--secondary);
+            font-weight: 700;
+            margin: 0 3px;
+        }
+        .ultimate-card .route-note {
+            margin-top: 14px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+            line-height: 1.6;
+            padding: 12px 16px;
+            background: rgba(252, 234, 14, 0.08);
+            border-radius: var(--radius-sm);
+        }
+        .reading-tips {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .reading-tip-item {
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.45);
+            border-radius: var(--radius-sm);
+            font-size: 0.78rem;
+            letter-spacing: 0.015em;
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            line-height: 1.5;
+        }
+        .reading-tip-item strong {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* 页脚 */
+        .page-footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            letter-spacing: 0.03em;
+            opacity: 0.7;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .timeline {
+                padding-left: 38px;
+            }
+            .timeline::before {
+                left: 13px;
+            }
+            .timeline-node {
+                left: 3px;
+                width: 18px;
+                height: 18px;
+                top: 18px;
+            }
+            .timeline-node::after {
+                width: 5px;
+                height: 5px;
+            }
+            .era-card {
+                padding: 20px 18px;
+                border-radius: var(--radius-md);
+            }
+            .era-card__title {
+                font-size: 1.1rem;
+            }
+            .hero-card {
+                padding: 28px 18px;
+                border-radius: var(--radius-lg);
+            }
+            .hero-card h1 {
+                font-size: 1.5rem;
+            }
+            .top-nav-inner {
+                padding: 0 14px;
+                gap: 8px;
+            }
+            .nav-links a {
+                padding: 5px 10px;
+                font-size: 0.7rem;
+            }
+            .supplement-card__grid {
+                grid-template-columns: 1fr;
+            }
+            .reading-tips {
+                grid-template-columns: 1fr;
+            }
+            .nav-jump-dropdown {
+                min-width: 200px;
+                right: -10px;
+            }
+        }
+        @media (max-width: 480px) {
+            .timeline {
+                padding-left: 30px;
+            }
+            .timeline::before {
+                left: 9px;
+            }
+            .timeline-node {
+                left: 0px;
+                width: 15px;
+                height: 15px;
+                top: 16px;
+            }
+            .timeline-node::after {
+                width: 4px;
+                height: 4px;
+            }
+            .era-card {
+                padding: 16px 14px;
+                margin-bottom: 18px;
+            }
+            .era-card__title {
+                font-size: 1rem;
+            }
+            .hero-card h1 {
+                font-size: 1.25rem;
+            }
+            .nav-brand .brand-text {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* 打印样式 */
+        @media print {
+            body {
+                background: #fff;
+                color: #000;
+            }
+            .bg-ornament,
+            .top-nav {
+                display: none;
+            }
+            .era-card,
+            .hero-card,
+            .supplement-card,
+            .ultimate-card {
+                background: #fff;
+                border: 1px solid #ccc;
+                box-shadow: none;
+                break-inside: avoid;
+            }
+            .timeline::before {
+                background: #ccc;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 背景装饰光斑 -->
+    <div class="bg-ornament bg-ornament--1" aria-hidden="true"></div>
+    <div class="bg-ornament bg-ornament--2" aria-hidden="true"></div>
+    <div class="bg-ornament bg-ornament--3" aria-hidden="true"></div>
+    <div class="bg-ornament bg-ornament--4" aria-hidden="true"></div>
+
+    <!-- 顶部导航 -->
+    <nav class="top-nav" aria-label="主导航">
+        <div class="top-nav-inner">
+            <a href="#top" class="nav-brand">
+                <span class="brand-icon">
+                    <!-- 极简钻石盾牌图标 -->
+                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="20,2 37,20 20,38 3,20" fill="none" stroke="#0052CC" stroke-width="2.5" stroke-linejoin="round"/>
+                        <polygon points="20,8 31,20 20,32 9,20" fill="none" stroke="#E60026" stroke-width="1.8" stroke-linejoin="round"/>
+                        <circle cx="20" cy="20" r="3" fill="#FCEA0E" stroke="none"/>
+                    </svg>
+                </span>
+                <span class="brand-text">超人阅读指南<small>究极版 · 1938-2026</small></span>
+            </a>
+            <div class="nav-links">
+                <a href="#era-1">黄金时代</a>
+                <a href="#era-2">白银时代</a>
+                <a href="#era-3">青铜时代</a>
+                <a href="#era-4">Post-Crisis</a>
+                <a href="#era-5">2000s经典</a>
+                <a href="#era-6">New 52</a>
+                <a href="#era-7">Rebirth</a>
+                <a href="#era-8">Infinite Frontier</a>
+                <a href="#era-9">Elseworlds</a>
+                <a href="#ultimate">究极路线</a>
+                <!-- 快捷跳转下拉 -->
+                <div style="position:relative;">
+                    <button class="nav-jump-btn" id="navJumpBtn" aria-expanded="false" aria-haspopup="true">
+                        快速跳转
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <polyline points="3,6 8,11 13,6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <div class="nav-jump-dropdown" id="navJumpDropdown" role="menu">
+                        <span class="dropdown-era-num">第一部</span>
+                        <a href="#era-1" role="menuitem">黄金时代 1938-1956</a>
+                        <span class="dropdown-era-num">第二部</span>
+                        <a href="#era-2" role="menuitem">白银时代 1956-1970</a>
+                        <span class="dropdown-era-num">第三部</span>
+                        <a href="#era-3" role="menuitem">青铜时代 1970-1986</a>
+                        <span class="dropdown-era-num">第四部</span>
+                        <a href="#era-4" role="menuitem">Post-Crisis 1986-2011</a>
+                        <span class="dropdown-era-num">第五部</span>
+                        <a href="#era-5" role="menuitem">2000年代现代经典</a>
+                        <span class="dropdown-era-num">第六部</span>
+                        <a href="#era-6" role="menuitem">New 52 2011-2016</a>
+                        <span class="dropdown-era-num">第七部</span>
+                        <a href="#era-7" role="menuitem">Rebirth 2016-2021</a>
+                        <span class="dropdown-era-num">第八部</span>
+                        <a href="#era-8" role="menuitem">Infinite Frontier至今</a>
+                        <span class="dropdown-era-num">第九部</span>
+                        <a href="#era-9" role="menuitem">Elseworlds独立作品</a>
+                        <span class="dropdown-era-num">补充</span>
+                        <a href="#supplements" role="menuitem">补充推荐</a>
+                        <span class="dropdown-era-num">路线</span>
+                        <a href="#ultimate" role="menuitem">究极收藏级路线</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="main-container" id="top">
+
+        <!-- 标题卡片 -->
+        <article class="hero-card" aria-labelledby="hero-title">
+            <div class="hero-diamond" aria-hidden="true">
+                <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="25,3 46,25 25,47 4,25" fill="none" stroke="#0052CC" stroke-width="2.2" stroke-linejoin="round"/>
+                    <polygon points="25,10 39,25 25,40 11,25" fill="none" stroke="#E60026" stroke-width="1.5" stroke-linejoin="round"/>
+                    <polygon points="25,17 32,25 25,33 18,25" fill="#FCEA0E" stroke="none" opacity="0.85"/>
+                </svg>
+            </div>
+            <h1 id="hero-title">超人（Clark Kent）<br>全网最全刊物推荐<span class="accent-dot">·</span>究极版</h1>
+            <p class="hero-subtitle">The Definitive Superman Reading Guide · 1938 — 2026</p>
+            <div class="hero-tags">
+                <span class="hero-tag">DC Comics</span>
+                <span class="hero-tag">克拉克·肯特</span>
+                <span class="hero-tag">Action Comics</span>
+                <span class="hero-tag">Post-Crisis</span>
+                <span class="hero-tag">Rebirth</span>
+                <span class="hero-tag">Elseworlds</span>
+            </div>
+        </article>
+
+        <!-- 时间线 -->
+        <div class="timeline" role="list">
+
+            <!-- 第一部分：黄金时代 -->
+            <article class="era-card" id="era-1" role="listitem" aria-labelledby="era-1-title">
+                <div class="timeline-node timeline-node--gold" aria-hidden="true"></div>
+                <div class="era-card__header">
+                    <span class="era-card__era-badge era-card__era-badge--golden">第一部</span>
+                    <h2 class="era-card__title" id="era-1-title">黄金时代 <span class="year-range">1938-1956</span></h2>
+                </div>
+                <p class="era-card__description">超人的起源时代，奠定核心身份与早期敌人。早期故事风格更像冒险英雄，能力逐步增强。</p>
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="2" width="13" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><line x1="5" y1="5.5" x2="11" y2="5.5" stroke="currentColor" stroke-width="1.2"/><line x1="5" y1="8.5" x2="11" y2="8.5" stroke="currentColor" stroke-width="1.2"/></svg>
+                    必读
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>动作漫画 (Action Comics)</strong> 1938 #1（超人首次登场）</li>
+                    <li><strong>超人 (Superman)</strong> 1939 #1-20左右精选</li>
+                    <li><strong>超人编年史 (Superman Chronicles)</strong> 合集 第1-10卷（推荐现代重印版）</li>
+                </ul>
+                <div class="era-card__significance">
+                    <strong>重要意义：</strong>克拉克·肯特身份建立、露易丝·莱恩登场、莱克斯·卢瑟早期登场。
+                </div>
+            </article>
+
+            <!-- 第二部分：白银时代 -->
+            <article class="era-card" id="era-2" role="listitem" aria-labelledby="era-2-title">
+                <div class="timeline-node timeline-node--accent" aria-hidden="true"></div>
+                <div class="era-card__header">
+                    <span class="era-card__era-badge era-card__era-badge--silver">第二部</span>
+                    <h2 class="era-card__title" id="era-2-title">白银时代 <span class="year-range">1956-1970</span></h2>
+                </div>
+                <p class="era-card__description">"神一样的超人"时代，科幻元素爆炸式增长。</p>
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="2" width="13" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><line x1="5" y1="5.5" x2="11" y2="5.5" stroke="currentColor" stroke-width="1.2"/><line x1="5" y1="8.5" x2="11" y2="8.5" stroke="currentColor" stroke-width="1.2"/></svg>
+                    必读
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>超人 (Superman)</strong> 1950s-1960s 精选</li>
+                    <li><strong>动作漫画 (Action Comics)</strong> 1950s-1960s 精选</li>
+                    <li><strong>超人的好友吉米·奥尔森 (Superman's Pal, Jimmy Olsen)</strong> 1954起 精选</li>
+                    <li><strong>冒险漫画 (Adventure Comics)</strong> 超级英雄军团 (Legion of Super-Heroes) 相关</li>
+                </ul>
+                <div class="era-card__core-birth">
+                    <strong>核心设定诞生：</strong>瓶中坎多城 (Bottled City of Kandor)、布莱尼亚克 (Brainiac)、幻影区 (Phantom Zone)、超级少女 (Supergirl)、比扎罗 (Bizarro)、超级英雄军团、氪石体系等。
+                </div>
+            </article>
+
+            <!-- 第三部分：青铜时代 -->
+            <article class="era-card" id="era-3" role="listitem" aria-labelledby="era-3-title">
+                <div class="timeline-node timeline-node--accent" aria-hidden="true"></div>
+                <div class="era-card__header">
+                    <span class="era-card__era-badge era-card__era-badge--bronze">第三部</span>
+                    <h2 class="era-card__title" id="era-3-title">青铜时代 <span class="year-range">1970-1986</span></h2>
+                </div>
+                <p class="era-card__description">现代超人的前身，故事更严肃化。</p>
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="2" width="13" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><line x1="5" y1="5.5" x2="11" y2="5.5" stroke="currentColor" stroke-width="1.2"/><line x1="5" y1="8.5" x2="11" y2="8.5" stroke="currentColor" stroke-width="1.2"/></svg>
+                    必读
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>超人对穆罕默德·阿里 (Superman vs. Muhammad Ali)</strong> 1978 GN</li>
+                    <li><strong>DC漫画呈现 (DC Comics Presents)</strong> 精选（尤其是与其它英雄crossover）</li>
+                    <li><strong>明日之人到底发生了什么？ (Whatever Happened to the Man of Tomorrow?)</strong> 1986 完整（Superman #423 + Action Comics #583，由Alan Moore创作，被视为前危机时代超人的告别演出）</li>
+                </ul>
+                <div class="era-card__significance">
+                    <strong>重要意义：</strong>前危机时代的巅峰收束，Alan Moore的告别之作将超人神话推向情感与哲学的高峰。
+                </div>
+            </article>
+
+            <!-- 第四部分：Post-Crisis时代 -->
+            <article class="era-card" id="era-4" role="listitem" aria-labelledby="era-4-title">
+                <div class="timeline-node" aria-hidden="true"></div>
+                <div class="era-card__header">
+                    <span class="era-card__era-badge">第四部</span>
+                    <h2 class="era-card__title" id="era-4-title">Post-Crisis时代 <span class="year-range">1986-2011</span></h2>
+                </div>
+                <p class="era-card__description">现代超人最重要时代，连续性最强。四本主刊按周连载，形成史上最庞大连续叙事。</p>
+
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><polygon points="8,1 15,14 1,14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                    第一阶段：John Byrne重启（1986-1990）
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>钢铁之躯 (The Man of Steel)</strong> 1986 #1-6（John Byrne重启起源，奠定现代基础）</li>
+                    <li><strong>超人 (Superman Vol.2)</strong> 1987 #1+</li>
+                    <li><strong>动作漫画 (Action Comics)</strong> #584+</li>
+                    <li><strong>超人历险记 (Adventures of Superman)</strong> #424+</li>
+                </ul>
+
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><polygon points="8,1 15,14 1,14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                    第二阶段：Exile时代
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>超人：流放 (Superman: Exile)</strong> 及相关故事（如The Gangbuster等过渡）</li>
+                </ul>
+
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><polygon points="8,1 15,14 1,14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                    第三阶段：Triangle Era（1991-2002）核心事件
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>超人之死 (The Death of Superman)</strong> 1992-1993</li>
+                    <li><strong>朋友的葬礼 (Funeral for a Friend / World Without a Superman)</strong> 1993</li>
+                    <li><strong>超人的统治 (Reign of the Supermen)</strong> 1993</li>
+                    <li><strong>超人归来 (Superman Returns / The Return of Superman)</strong> 1993</li>
+                    <li><strong>婚礼专辑 (Superman: The Wedding Album)</strong> 1996（克拉克与露易丝结婚）</li>
+                    <li><strong>最后之夜 (Final Night)</strong> 1996（与Green Lantern Hal Jordan关联）</li>
+                    <li><strong>超人红/超人蓝 (Superman Red / Superman Blue)</strong> 1998</li>
+                    <li><strong>皇帝小丑 (Emperor Joker)</strong> 2000</li>
+                    <li><strong>我们的世界交战 (Our Worlds at War)</strong> 2001</li>
+                </ul>
+            </article>
+
+            <!-- 第五部分：2000年代现代经典 -->
+            <article class="era-card" id="era-5" role="listitem" aria-labelledby="era-5-title">
+                <div class="timeline-node" aria-hidden="true"></div>
+                <div class="era-card__header">
+                    <span class="era-card__era-badge">第五部</span>
+                    <h2 class="era-card__title" id="era-5-title">2000年代现代经典</h2>
+                </div>
+                <p class="era-card__description">多重体系并行，包括Birthright、Loeb时期、Infinite Crisis相关及Busiek/Johns黄金期。</p>
+
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2.5" fill="currentColor"/></svg>
+                    Birthright体系
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>超人：天赋权利 (Superman: Birthright)</strong> 2003 #1-12（最佳现代起源之一，常被推荐）</li>
+                </ul>
+
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2.5" fill="currentColor"/></svg>
+                    Loeb时期
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>超人/蝙蝠侠 (Superman/Batman)</strong> 2003 #1-26（超蝙经典，由Jeph Loeb创作）</li>
+                    <li><strong>公敌 (Public Enemies)</strong></li>
+                    <li><strong>来自氪星的超级少女 (Supergirl from Krypton)</strong> 等</li>
+                </ul>
+
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2.5" fill="currentColor"/></svg>
+                    Infinite Crisis相关
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>牺牲 (Sacrifice)</strong> 2005</li>
+                    <li><strong>无限危机 (Infinite Crisis)</strong> 2005-2006（多宇宙冲突）</li>
+                </ul>
+
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2.5" fill="currentColor"/></svg>
+                    Busiek / Johns时代（现代超人黄金期之一）
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>最后的儿子 (Last Son)</strong></li>
+                    <li><strong>逃离畸形世界 (Escape from the Phantom Zone)</strong> 等</li>
+                    <li><strong>脑力强 (Brainiac)</strong></li>
+                    <li><strong>新氪星传奇 (New Krypton Saga)</strong>：包括World of New Krypton、Last Stand of New Krypton、War of the Supermen等（大量氪星人故事，高潮部分）</li>
+                </ul>
+            </article>
+
+            <!-- 第六部分：New 52 -->
+            <article class="era-card" id="era-6" role="listitem" aria-labelledby="era-6-title">
+                <div class="timeline-node timeline-node--accent" aria-hidden="true"></div>
+                <div class="era-card__header">
+                    <span class="era-card__era-badge">第六部</span>
+                    <h2 class="era-card__title" id="era-6-title">New 52 <span class="year-range">2011-2016</span></h2>
+                </div>
+                <p class="era-card__description">年轻化、重启版本。</p>
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="2" width="13" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><line x1="5" y1="5.5" x2="11" y2="5.5" stroke="currentColor" stroke-width="1.2"/><line x1="5" y1="8.5" x2="11" y2="8.5" stroke="currentColor" stroke-width="1.2"/></svg>
+                    必读
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>动作漫画 (Action Comics)</strong> 2011 #1-18（Grant Morrison版年轻超人）</li>
+                    <li><strong>超人：解放 (Superman: Unchained)</strong> 等关键弧</li>
+                    <li><strong>蝙蝠侠/超人 (Batman/Superman)</strong></li>
+                    <li><strong>超人/神奇女侠 (Superman/Wonder Woman)</strong></li>
+                    <li><strong>真相 (Truth)</strong></li>
+                    <li><strong>超人的最后日子 (The Final Days of Superman)</strong> 2016（N52超人谢幕）</li>
+                </ul>
+            </article>
+
+            <!-- 第七部分：Rebirth -->
+            <article class="era-card" id="era-7" role="listitem" aria-labelledby="era-7-title">
+                <div class="timeline-node" aria-hidden="true"></div>
+                <div class="era-card__header">
+                    <span class="era-card__era-badge">第七部</span>
+                    <h2 class="era-card__title" id="era-7-title">Rebirth <span class="year-range">2016-2021</span></h2>
+                </div>
+                <p class="era-card__description">许多读者最喜欢的现代超人，融合Pre-Crisis元素与家庭主题。</p>
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><rect x="1.5" y="2" width="13" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><line x1="5" y1="5.5" x2="11" y2="5.5" stroke="currentColor" stroke-width="1.2"/><line x1="5" y1="8.5" x2="11" y2="8.5" stroke="currentColor" stroke-width="1.2"/></svg>
+                    必读
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>超人：路易斯与克拉克 (Superman: Lois and Clark)</strong> 2015-2016（Pre-New 52家庭过渡）</li>
+                    <li><strong>超人重生 (Superman Rebirth #1 + Superman Reborn 事件)</strong></li>
+                    <li><strong>超人 (Superman Vol.4)</strong> 2016 #1-45（Peter Tomasi & Patrick Gleason，主打家庭）</li>
+                    <li><strong>动作漫画 (Action Comics)</strong> 2016 #957+（Dan Jurgens等）</li>
+                    <li><strong>超级儿子 (Super Sons)</strong> 2017（Jon Kent与Damian Wayne）</li>
+                    <li><strong>动作漫画 #1000</strong> 2018（八十周年纪念）</li>
+                </ul>
+            </article>
+
+            <!-- 第八部分：Infinite Frontier至今 -->
+            <article class="era-card" id="era-8" role="listitem" aria-labelledby="era-8-title">
+                <div class="timeline-node" aria-hidden="true"></div>
+                <div class="era-card__header">
+                    <span class="era-card__era-badge">第八部</span>
+                    <h2 class="era-card__title" id="era-8-title">Infinite Frontier至今 <span class="year-range">2021-现在（含Dawn of DC）</span></h2>
+                </div>
+                <p class="era-card__description">现代超人最受好评的史诗篇章，涵盖PKJ时代与Williamson时代。</p>
+
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><polygon points="8,1 15,14 1,14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                    PKJ时代（Phillip Kennedy Johnson）
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>超人与权威 (Superman and the Authority)</strong></li>
+                    <li><strong>战争世界崛起 (Warworld Rising)</strong></li>
+                    <li><strong>战争世界传奇 (Warworld Saga / The Warworld Saga)</strong> ——现代超人最受好评史诗之一（涉及Mongul、Authority等）</li>
+                </ul>
+
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><polygon points="8,1 15,14 1,14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                    Williamson时代（Joshua Williamson，2023-）
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>超人 (Superman Vol.5)</strong> 2023-</li>
+                    <li><strong>布雷尼亚克家族 / 超级公司 (House of Brainiac)</strong> 等</li>
+                    <li><strong>被锁链束缚者</strong> 等目前主线核心（涉及Lobo、Super-Family、Brainiac入侵）</li>
+                </ul>
+            </article>
+
+            <!-- 第九部分：Elseworlds / 独立作品 -->
+            <article class="era-card" id="era-9" role="listitem" aria-labelledby="era-9-title">
+                <div class="timeline-node timeline-node--gold" aria-hidden="true"></div>
+                <div class="era-card__header">
+                    <span class="era-card__era-badge era-card__era-badge--golden">第九部</span>
+                    <h2 class="era-card__title" id="era-9-title">最佳独立作品 <span class="year-range">Elseworlds / 非主宇宙</span></h2>
+                </div>
+                <p class="era-card__description">这些常年出现在"最佳超人故事"榜单，独立成篇，艺术成就极高。</p>
+                <span class="era-card__section-label">
+                    <svg viewBox="0 0 16 16" fill="none"><polygon points="8,1.5 15,8 8,14.5 1,8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                    必读独立作品
+                </span>
+                <ul class="era-card__list">
+                    <li><strong>全明星超人 (All-Star Superman)</strong> 2005-2008（Grant Morrison & Frank Quitely，公认巅峰之一）</li>
+                    <li><strong>超人四季版 (Superman for All Seasons)</strong> 1998</li>
+                    <li><strong>王国降临 (Kingdom Come)</strong> 1996（Mark Waid & Alex Ross）</li>
+                    <li><strong>超人：秘密身份 (Superman: Secret Identity)</strong> 2004</li>
+                    <li><strong>超人：红之子 (Superman: Red Son)</strong> 2003</li>
+                    <li><strong>超人粉碎三K党 (Superman Smashes the Klan)</strong> 2019</li>
+                    <li><strong>天上的超人 (Superman: Up in the Sky)</strong> 2019 等</li>
+                </ul>
+            </article>
+
+            <!-- 补充推荐卡片 -->
+            <article class="supplement-card" id="supplements" role="listitem" aria-labelledby="supp-title">
+                <h3 id="supp-title">
+                    <svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" fill="none" stroke="#0052CC" stroke-width="1.6"/><line x1="9" y1="4.5" x2="9" y2="9.5" stroke="#E60026" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="12.5" r="1.2" fill="#FCEA0E" stroke="none"/></svg>
+                    补充推荐：各时代额外亮点
+                </h3>
+                <div class="supplement-card__grid">
+                    <div class="supplement-chip"><strong>黄金/白银/青铜额外：</strong>For the Man Who Has Everything (1985, Alan Moore)；Kryptonite Nevermore (1971, O'Neil & Swan)；Elliott S. Maggin超人小说；Superman vs. Muhammad Ali完整GN</div>
+                    <div class="supplement-chip"><strong>Post-Crisis额外：</strong>Up, Up and Away! (2006, Busiek)；For All Seasons (1998, Loeb & Sale)；Lex Luthor: Man of Steel (2005)；Panic in the Sky；President Luthor弧；The Black Ring (Cornell)</div>
+                    <div class="supplement-chip"><strong>New 52额外：</strong>Secret Origin (2009-2010, Johns & Frank)；Grant Morrison Action Comics完整#1-18；Superman Unchained (2013, Snyder & Lee)；Men of Tomorrow (Johns)</div>
+                    <div class="supplement-chip"><strong>Rebirth/Infinite Frontier额外：</strong>The Oz Effect (Action #987-992)；Imperious Lex (Superman #33-36)；Super Sons完整系列；The One Who Fell；House of Brainiac (2024)；Superman Unlimited (2025+ Slott)；Absolute Superman (2024-)</div>
+                    <div class="supplement-chip"><strong>近期/团队：</strong>Batman/Superman: World's Finest (2022+)；Justice League Unlimited相关超人支线</div>
+                    <div class="supplement-chip"><strong>Elseworlds扩展：</strong>Superman: Earth One三部曲 (Straczynski)；Speeding Bullets；The Dark Side；Whom Gods Destroy (Claremont)；Kal (中世纪)；Peace on Earth (Alex Ross)；War of the Worlds；The Golden Age</div>
+                </div>
+            </article>
+
+            <!-- 究极收藏级路线 -->
+            <article class="ultimate-card" id="ultimate" aria-labelledby="ultimate-title">
+                <h2 id="ultimate-title">
+                    <svg viewBox="0 0 28 28" fill="none"><polygon points="14,2 26,14 14,26 2,14" fill="none" stroke="#0052CC" stroke-width="2" stroke-linejoin="round"/><polygon points="14,7 21,14 14,21 7,14" fill="none" stroke="#E60026" stroke-width="1.6" stroke-linejoin="round"/><circle cx="14" cy="14" r="2.5" fill="#FCEA0E" stroke="none"/></svg>
+                    第十部分：究极收藏级路线
+                </h2>
+                <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:12px;letter-spacing:0.015em;">
+                    <strong>目标：尽可能完整现代超人（可按需精简）</strong>
+                </p>
+                <div class="route-path">
+                    Action Comics #1 <span class="arrow">→</span> 黄金时代精选 <span class="arrow">→</span> 白银时代精选 <span class="arrow">→</span> Whatever Happened to the Man of Tomorrow? <span class="arrow">→</span> The Man of Steel (Byrne) <span class="arrow">→</span> Exile <span class="arrow">→</span> Triangle Era (含Death of Superman <span class="arrow">→</span> Funeral <span class="arrow">→</span> Reign <span class="arrow">→</span> Return) <span class="arrow">→</span> Wedding Album <span class="arrow">→</span> Final Night <span class="arrow">→</span> Emperor Joker <span class="arrow">→</span> Our Worlds at War <span class="arrow">→</span> Birthright <span class="arrow">→</span> Superman/Batman <span class="arrow">→</span> Infinite Crisis <span class="arrow">→</span> Last Son / Brainiac <span class="arrow">→</span> New Krypton Saga <span class="arrow">→</span> War of the Supermen <span class="arrow">→</span> Action Comics (2011 Morrison) <span class="arrow">→</span> Batman/Superman <span class="arrow">→</span> Final Days of Superman <span class="arrow">→</span> Lois and Clark <span class="arrow">→</span> Superman Rebirth / Reborn <span class="arrow">→</span> Super Sons <span class="arrow">→</span> Action Comics #1000 <span class="arrow">→</span> Warworld Saga <span class="arrow">→</span> Superman (2023 Williamson主线 + House of Brainiac)
+                </div>
+                <div class="route-note">
+                    <strong>角色研究精简版：</strong>读核心20部左右即可覆盖80%人物塑造（如All-Star、Birthright、Death/Reign、Warworld等）。此框架已接近国内外常见究极指南。
+                </div>
+                <div class="reading-tips">
+                    <div class="reading-tip-item"><strong>精简角色研究：</strong>优先All-Star Superman、For All Seasons、Death/Reign of Superman、Warworld Saga、Tomasi Rebirth家庭线，即可覆盖超人"希望、家庭、人性"核心。</div>
+                    <div class="reading-tip-item"><strong>收藏格式：</strong>优先Trade Paperback、Deluxe Edition或Omnibus（Triangle Era已有Omnibus）；DC Universe Infinite App适合数字追更。</div>
+                    <div class="reading-tip-item"><strong>当前（2026）：</strong>Joshua Williamson主刊仍在进行，关注DC All-In / Absolute线新发展。</div>
+                    <div class="reading-tip-item"><strong>阅读平台：</strong>推荐使用DC Universe Infinite、Omnibus/Deluxe版或Trade Paperback阅读。时代间有Crisis事件过渡，可选读。</div>
+                </div>
+            </article>
+
+        </div><!-- /timeline -->
+
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="page-footer">
+        <p>超人阅读指南 · 究极版 · 1938-2026 &nbsp;|&nbsp; Clark Kent / Kal-El · DC Comics</p>
+        <p style="margin-top:4px;">数据基于DC官方、Comic Book Herald、Comic Book Treasury及社区共识整理</p>
+    </footer>
+
+    <!-- 快捷跳转下拉脚本 -->
+    <script>
+        (function() {
+            const btn = document.getElementById('navJumpBtn');
+            const dropdown = document.getElementById('navJumpDropdown');
+            if (!btn || !dropdown) return;
+
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isOpen = dropdown.classList.contains('show');
+                if (isOpen) {
+                    dropdown.classList.remove('show');
+                    btn.classList.remove('open');
+                    btn.setAttribute('aria-expanded', 'false');
+                } else {
+                    dropdown.classList.add('show');
+                    btn.classList.add('open');
+                    btn.setAttribute('aria-expanded', 'true');
+                }
+            });
+
+            // 点击下拉项关闭
+            dropdown.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    dropdown.classList.remove('show');
+                    btn.classList.remove('open');
+                    btn.setAttribute('aria-expanded', 'false');
+                });
+            });
+
+            // 点击外部关闭
+            document.addEventListener('click', function(e) {
+                if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                    btn.classList.remove('open');
+                    btn.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // ESC关闭
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
+                    btn.classList.remove('open');
+                    btn.setAttribute('aria-expanded', 'false');
+                    btn.focus();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
