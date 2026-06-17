@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>神奇女侠 · 全刊级阅读指南</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #C9A227;
+            --secondary: #8B1E3F;
+            --background: #F7F3EA;
+            --text: #2D2A26;
+            --timeline: #D8C38A;
+            --link-hover: #B8860B;
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(201, 162, 39, 0.25);
+            --glass-shadow: 0 8px 32px rgba(201, 162, 39, 0.12);
+            --card-radius: 20px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', '思源宋体', 'Songti SC', 'STSong', 'SimSun', serif;
+            background: linear-gradient(180deg, #FFFDF8 0%, #F7F3EA 30%, #F7F3EA 70%, #F5EFE3 100%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 背景微妙的几何装饰 */
+        .bg-ornament {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.04;
+        }
+        .bg-ornament.star-1 {
+            top: 8%;
+            left: 5%;
+            width: 120px;
+            height: 120px;
+        }
+        .bg-ornament.star-2 {
+            top: 25%;
+            right: 8%;
+            width: 80px;
+            height: 80px;
+        }
+        .bg-ornament.star-3 {
+            bottom: 15%;
+            left: 10%;
+            width: 100px;
+            height: 100px;
+        }
+        .bg-ornament.star-4 {
+            top: 55%;
+            right: 4%;
+            width: 60px;
+            height: 60px;
+        }
+        .bg-ornament.diamond-1 {
+            top: 40%;
+            left: 3%;
+            width: 50px;
+            height: 50px;
+        }
+        .bg-ornament.diamond-2 {
+            bottom: 30%;
+            right: 12%;
+            width: 70px;
+            height: 70px;
+        }
+
+        /* 主容器 */
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero区域 */
+        .hero-section {
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-icon {
+            display: inline-block;
+            margin-bottom: 20px;
+            animation: floatGentle 5s ease-in-out infinite;
+        }
+        @keyframes floatGentle {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        .hero-title {
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: 0.04em;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 12px rgba(201, 162, 39, 0.2);
+        }
+        .hero-subtitle {
+            font-size: 1.05rem;
+            font-weight: 400;
+            color: var(--secondary);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+        .hero-divider {
+            width: 60px;
+            height: 2px;
+            background: var(--primary);
+            margin: 18px auto;
+            border-radius: 2px;
+            opacity: 0.7;
+        }
+
+        /* 玻璃卡片 */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: var(--card-radius);
+            padding: 32px 36px;
+            margin-bottom: 28px;
+            transition: var(--transition);
+            position: relative;
+            z-index: 2;
+        }
+        .glass-card:hover {
+            box-shadow: 0 12px 40px rgba(201, 162, 39, 0.2);
+            border-color: rgba(201, 162, 39, 0.45);
+            transform: translateY(-2px);
+        }
+        .glass-card.card-highlight {
+            border-left: 4px solid var(--primary);
+            background: rgba(255, 255, 255, 0.62);
+        }
+        .glass-card.card-accent {
+            border-left: 4px solid var(--secondary);
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        /* 卡片内标题 */
+        .card-section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .card-section-label svg {
+            flex-shrink: 0;
+        }
+        .card-main-title {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 6px;
+            letter-spacing: 0.03em;
+        }
+        .card-sub-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 14px;
+            letter-spacing: 0.02em;
+        }
+        .card-body-text {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.85;
+            margin-bottom: 12px;
+        }
+        .card-body-text strong {
+            color: #1f1c18;
+            font-weight: 600;
+        }
+
+        /* 期刊编号样式 */
+        .issue-ref {
+            display: inline-block;
+            font-family: 'Noto Serif SC', serif;
+            font-weight: 500;
+            color: var(--timeline);
+            font-size: 0.9rem;
+            letter-spacing: 0.03em;
+            background: rgba(216, 195, 138, 0.12);
+            padding: 2px 10px;
+            border-radius: 6px;
+            margin: 2px 0;
+        }
+        .issue-ref-large {
+            font-size: 0.95rem;
+            padding: 4px 14px;
+            display: inline-block;
+            margin: 4px 0 8px;
+        }
+
+        /* 看点列表 */
+        .highlights-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 0;
+        }
+        .highlights-list li {
+            position: relative;
+            padding-left: 22px;
+            margin-bottom: 7px;
+            font-size: 0.93rem;
+            color: #3d3832;
+            line-height: 1.7;
+        }
+        .highlights-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 9px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            opacity: 0.7;
+            transform: rotate(45deg);
+            border-radius: 2px;
+        }
+
+        /* 标签 */
+        .tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin: 3px 6px 3px 0;
+            background: rgba(201, 162, 39, 0.1);
+            color: #8a6d1f;
+            border: 1px solid rgba(201, 162, 39, 0.25);
+        }
+        .tag.tag-red {
+            background: rgba(139, 30, 63, 0.08);
+            color: #6b1830;
+            border: 1px solid rgba(139, 30, 63, 0.2);
+        }
+
+        /* 分隔线 */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 20px 0 32px;
+            z-index: 2;
+            position: relative;
+        }
+        .section-divider .line {
+            flex: 1;
+            height: 1px;
+            background: rgba(201, 162, 39, 0.3);
+            border-radius: 1px;
+        }
+        .section-divider .diamond {
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            transform: rotate(45deg);
+            border-radius: 2px;
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+
+        /* 究极路线 - 编号步骤 */
+        .ultimate-route {
+            counter-reset: route-step;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .ultimate-route li {
+            counter-increment: route-step;
+            position: relative;
+            padding: 18px 20px 18px 60px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 14px;
+            border: 1px solid rgba(201, 162, 39, 0.18);
+            transition: var(--transition);
+            cursor: default;
+        }
+        .ultimate-route li:hover {
+            background: rgba(255, 255, 255, 0.65);
+            border-color: rgba(201, 162, 39, 0.4);
+            box-shadow: 0 4px 20px rgba(201, 162, 39, 0.1);
+            transform: translateX(4px);
+        }
+        .ultimate-route li::before {
+            content: counter(route-step);
+            position: absolute;
+            left: 14px;
+            top: 16px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0;
+            box-shadow: 0 2px 10px rgba(201, 162, 39, 0.35);
+        }
+        .ultimate-route li .route-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #1f1c18;
+            margin-bottom: 2px;
+            letter-spacing: 0.02em;
+        }
+        .ultimate-route li .route-detail {
+            font-size: 0.85rem;
+            color: #5c554d;
+            letter-spacing: 0.02em;
+        }
+
+        /* 补充推荐子标题 */
+        .sub-card {
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 14px;
+            padding: 20px 22px;
+            margin: 14px 0;
+            border: 1px solid rgba(201, 162, 39, 0.15);
+        }
+        .sub-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 8px;
+            letter-spacing: 0.03em;
+        }
+        .sub-card .issue-ref {
+            font-size: 0.82rem;
+        }
+
+        /* 链接样式 */
+        a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border-bottom: 1px solid transparent;
+        }
+        a:hover {
+            color: var(--link-hover);
+            border-bottom-color: var(--link-hover);
+        }
+
+        /* 推荐星级标记 */
+        .rec-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            padding: 3px 10px;
+            border-radius: 12px;
+            background: rgba(201, 162, 39, 0.15);
+            color: #7a5f18;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+
+        /* 页脚 */
+        .footer-note {
+            text-align: center;
+            padding: 40px 20px 30px;
+            font-size: 0.85rem;
+            color: #8a8278;
+            letter-spacing: 0.04em;
+            z-index: 2;
+            position: relative;
+        }
+        .footer-note .diamond-row {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .footer-note .diamond-row span {
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            transform: rotate(45deg);
+            border-radius: 1px;
+            opacity: 0.5;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 20px 14px 60px;
+            }
+            .glass-card {
+                padding: 22px 18px;
+                border-radius: 16px;
+                margin-bottom: 20px;
+            }
+            .card-main-title {
+                font-size: 1.3rem;
+            }
+            .card-sub-title {
+                font-size: 1rem;
+            }
+            .hero-title {
+                font-size: 1.7rem;
+            }
+            .hero-subtitle {
+                font-size: 0.85rem;
+            }
+            .ultimate-route li {
+                padding: 14px 12px 14px 48px;
+            }
+            .ultimate-route li::before {
+                width: 28px;
+                height: 28px;
+                font-size: 0.78rem;
+                left: 10px;
+                top: 13px;
+            }
+            .sub-card {
+                padding: 14px 14px;
+            }
+            .bg-ornament {
+                display: none;
+            }
+        }
+        @media (max-width: 480px) {
+            .glass-card {
+                padding: 16px 14px;
+                border-radius: 14px;
+                margin-bottom: 16px;
+            }
+            .hero-section {
+                padding: 30px 10px 20px;
+            }
+            .hero-title {
+                font-size: 1.45rem;
+            }
+            .card-main-title {
+                font-size: 1.15rem;
+            }
+            .ultimate-route li {
+                padding: 12px 10px 12px 40px;
+                font-size: 0.85rem;
+            }
+            .ultimate-route li::before {
+                width: 24px;
+                height: 24px;
+                font-size: 0.7rem;
+                left: 8px;
+                top: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 背景装饰 -->
+    <svg class="bg-ornament star-1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="50,5 61,35 95,35 68,55 79,90 50,70 21,90 32,55 5,35 39,35"
+        fill="none" stroke="#C9A227" stroke-width="1.5" stroke-linejoin="round"/>
+    </svg>
+    <svg class="bg-ornament star-2" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="40,4 49,28 76,28 55,44 63,72 40,56 17,72 25,44 4,28 31,28"
+        fill="none" stroke="#C9A227" stroke-width="1.2" stroke-linejoin="round"/>
+    </svg>
+    <svg class="bg-ornament star-3" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="45,5 55,32 85,32 62,50 72,82 45,62 18,82 28,50 5,32 35,32"
+        fill="none" stroke="#C9A227" stroke-width="1.3" stroke-linejoin="round"/>
+    </svg>
+    <svg class="bg-ornament star-4" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="30,3 37,21 57,21 42,33 48,54 30,42 12,54 18,33 3,21 23,21"
+        fill="none" stroke="#C9A227" stroke-width="1" stroke-linejoin="round"/>
+    </svg>
+    <svg class="bg-ornament diamond-1" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="10" width="30" height="30" fill="none" stroke="#8B1E3F" stroke-width="1" transform="rotate(45,25,25)" rx="3"/>
+    </svg>
+    <svg class="bg-ornament diamond-2" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+        <rect x="12" y="12" width="36" height="36" fill="none" stroke="#8B1E3F" stroke-width="0.8" transform="rotate(45,30,30)" rx="3"/>
+    </svg>
+
+    <!-- 主容器 -->
+    <div class="main-container">
+
+        <!-- Hero -->
+        <header class="hero-section">
+            <div class="hero-icon">
+                <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="28,3 36,20 54,20 40,32 45,52 28,40 11,52 16,32 2,20 20,20"
+                    fill="none" stroke="#C9A227" stroke-width="2.5" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h1 class="hero-title">神奇女侠</h1>
+            <p class="hero-subtitle">全刊级阅读指南 · Wonder Woman Reading Order</p>
+            <div class="hero-divider"></div>
+            <p style="font-size:0.9rem;color:#6b6358;max-width:560px;margin:0 auto;letter-spacing:0.03em;">
+                从入门必读到究极精华路线，覆盖1987年重启至今最完整、评价最高的戴安娜传奇。
+            </p>
+        </header>
+
+        <!-- 第一部分：入门必读 -->
+        <div class="section-divider">
+            <span class="line"></span><span class="diamond"></span><span class="line"></span>
+        </div>
+
+        <!-- 第一站 -->
+        <article class="glass-card card-highlight">
+            <span class="card-section-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+                第一部分 · 入门必读 · 第一站
+            </span>
+            <h2 class="card-main-title">Wonder Woman: Year One</h2>
+            <p class="card-sub-title">2016 / Rebirth · 现代最佳起源故事</p>
+            <span class="issue-ref issue-ref-large">Wonder Woman Vol.5 #2、4、6、8、10、12、14</span>
+            <p style="font-size:0.85rem;color:#6b6358;margin:6px 0 0;">Nicola Scott 主笔 · 常被比作《Batman: Year One》</p>
+            <p class="card-body-text" style="margin-top:12px;"><strong>看点：</strong></p>
+            <ul class="highlights-list">
+                <li>戴安娜首次踏入人类世界</li>
+                <li>Steve Trevor 坠机事件</li>
+                <li>亚马逊文化现代重塑</li>
+                <li>双线叙事（与"The Lies"交织）</li>
+            </ul>
+            <p style="font-size:0.88rem;color:#5c554d;margin-top:8px;font-style:italic;">✓ 完美入门，强烈推荐先读。</p>
+        </article>
+
+        <!-- 第二站 -->
+        <article class="glass-card card-accent">
+            <span class="card-section-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B1E3F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9"/></svg>
+                第一部份 · 入门必读 · 第二站
+            </span>
+            <h2 class="card-main-title" style="color:var(--secondary);">The Hiketeia</h2>
+            <p class="card-sub-title">2002 · 独立 Graphic Novel · Greg Rucka 著</p>
+            <p class="card-body-text"><strong>看点：</strong></p>
+            <ul class="highlights-list">
+                <li>戴安娜 vs 蝙蝠侠（荣誉 vs 正义冲突）</li>
+                <li>希腊悲剧风格叙事</li>
+                <li>深刻展现戴安娜的人格魅力与慈悲</li>
+            </ul>
+            <p style="font-size:0.88rem;color:#5c554d;margin-top:8px;font-style:italic;">✓ 公认体现"真正Wonder Woman"精神的最强单篇之一。</p>
+        </article>
+
+        <!-- 第三站 -->
+        <article class="glass-card">
+            <span class="card-section-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+                第一部分 · 入门必读 · 第三站
+            </span>
+            <h2 class="card-main-title">George Pérez 时代</h2>
+            <p class="card-sub-title">现代基础 · Wonder Woman Vol.2 (1987) #1-62</p>
+            <span class="issue-ref">Wonder Woman Vol.2 #1-62</span>
+            <p style="font-size:0.85rem;color:#6b6358;margin:6px 0;">George Pérez 主要创作者/艺术家 · DC《无限地球危机》后重启</p>
+            <p class="card-body-text" style="margin-top:10px;"><strong>重点弧线：</strong></p>
+            <ul class="highlights-list">
+                <li><strong>Gods and Mortals</strong> (#1-7)：现代起源经典</li>
+                <li><strong>Challenge of the Gods</strong> (#8-14 左右)：奥林匹斯试炼</li>
+                <li><strong>The Contest</strong> (后期，如#90-100 附近)：Artemis 接棒</li>
+                <li><strong>War of the Gods</strong>：大型跨刊事件</li>
+            </ul>
+            <p style="font-size:0.88rem;color:#5c554d;margin-top:8px;">Pérez 重新定义了角色、神话与亚马逊文化，被视为现代WW的基石。</p>
+        </article>
+
+        <!-- 第二部分：最经典时代 -->
+        <div class="section-divider">
+            <span class="line"></span><span class="diamond"></span><span class="line"></span>
+        </div>
+
+        <article class="glass-card card-highlight">
+            <span class="card-section-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12,6 v6 l4,2"/></svg>
+                第二部分 · 最经典时代
+            </span>
+            <h2 class="card-main-title">Greg Rucka 第一轮</h2>
+            <p class="card-sub-title">2003-2006 · Wonder Woman Vol.2 #195-226</p>
+            <span class="issue-ref">Wonder Woman Vol.2 #195-226</span>
+            <p style="font-size:0.85rem;color:#6b6358;margin:6px 0;">许多老读者视之为"最佳戴安娜"——外交官、政治、现代神话叙事。</p>
+            <p class="card-body-text" style="margin-top:10px;"><strong>重点弧线：</strong></p>
+            <ul class="highlights-list">
+                <li><strong>Down to Earth</strong> (#195-200)</li>
+                <li><strong>Bitter Rivals</strong> (#201-205)：优秀 Cheetah 故事</li>
+                <li><strong>Mission's End</strong> (#219-226)：连接《Infinite Crisis》</li>
+            </ul>
+            <p style="font-size:0.88rem;color:#5c554d;margin-top:6px;">特色：媒体、政治、Veronica Cale 等元素。</p>
+        </article>
+
+        <article class="glass-card card-accent">
+            <span class="card-section-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B1E3F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2"/></svg>
+                第二部分 · 最经典时代
+            </span>
+            <h2 class="card-main-title" style="color:var(--secondary);">Gail Simone 时代</h2>
+            <p class="card-sub-title">2007-2010 · Wonder Woman Vol.3 #14-44</p>
+            <span class="issue-ref">Wonder Woman Vol.3 #14-44</span>
+            <p style="font-size:0.85rem;color:#6b6358;margin:6px 0;">Gail Simone · 最长女性作者任期 · 最热血、最"超级英雄化"、适合大众</p>
+            <p class="card-body-text" style="margin-top:10px;"><strong>代表篇：</strong></p>
+            <ul class="highlights-list">
+                <li><strong>The Circle</strong> (#14-17)</li>
+                <li><strong>Ends of the Earth</strong> (#20-23)</li>
+                <li><strong>Rise of the Olympian</strong> (#31-33 等)</li>
+            </ul>
+            <p style="font-size:0.88rem;color:#5c554d;margin-top:6px;">最受欢迎连载之一。</p>
+        </article>
+
+        <!-- 第三部分：神作级长篇 -->
+        <div class="section-divider">
+            <span class="line"></span><span class="diamond"></span><span class="line"></span>
+        </div>
+
+        <article class="glass-card">
+            <span class="card-section-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 15,8 22,8 16.5,12.5 18.5,19 12,15 5.5,19 7.5,12.5 2,8 9,8"/></svg>
+                第三部分 · 神作级长篇
+            </span>
+            <h2 class="card-main-title">Phil Jimenez 时代</h2>
+            <p class="card-sub-title">2001-2003 · Wonder Woman Vol.2 #164-188</p>
+            <span class="issue-ref">Wonder Woman Vol.2 #164-188</span>
+            <p style="font-size:0.85rem;color:#6b6358;margin:6px 0;">Writer/Artist · 被称为"Pérez精神续作"，深度挖掘亚马逊文化、女性主义与神话史诗。</p>
+            <p class="card-body-text" style="margin-top:10px;"><strong>重点弧线：</strong></p>
+            <ul class="highlights-list">
+                <li><strong>Gods of Gotham</strong> (#164-167)</li>
+                <li><strong>Paradise Lost</strong> (#168-176)</li>
+                <li><strong>Witch and the Warrior</strong> (#177-183)</li>
+            </ul>
+        </article>
+
+        <!-- 第四部分：New 52 -->
+        <div class="section-divider">
+            <span class="line"></span><span class="diamond"></span><span class="line"></span>
+        </div>
+
+        <article class="glass-card card-accent">
+            <span class="card-section-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B1E3F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12,2 L2,7 l10,5 l10,-5 L12,2z"/><path d="M2,17 l10,5 l10,-5"/><path d="M2,12 l10,5 l10,-5"/></svg>
+                第四部分 · New 52 时期
+            </span>
+            <h2 class="card-main-title" style="color:var(--secondary);">Brian Azzarello 时代</h2>
+            <p class="card-sub-title">Wonder Woman Vol.4 #1-35</p>
+            <span class="issue-ref">Wonder Woman Vol.4 #1-35</span>
+            <p style="font-size:0.85rem;color:#6b6358;margin:6px 0;">Brian Azzarello 与 Cliff Chiang 等合作 · 最具争议的重构</p>
+            <p class="card-body-text" style="margin-top:8px;">戴安娜为宙斯女儿、神系黑暗化。老粉意见分歧，但故事本身叙事优秀、视觉强。若接受争议可选读。</p>
+        </article>
+
+        <!-- 第五部分：Rebirth -->
+        <div class="section-divider">
+            <span class="line"></span><span class="diamond"></span><span class="line"></span>
+        </div>
+
+        <article class="glass-card card-highlight">
+            <span class="card-section-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8,12 l3,3 l5,-6"/></svg>
+                第五部分 · Rebirth 时期
+            </span>
+            <h2 class="card-main-title">Greg Rucka 第二轮</h2>
+            <p class="card-sub-title">Wonder Woman Vol.5 #1-25（含Rebirth #1）</p>
+            <span class="issue-ref">Wonder Woman Vol.5 #1-25</span>
+            <p class="card-body-text" style="margin-top:10px;"><strong>重点：</strong></p>
+            <ul class="highlights-list">
+                <li><strong>The Lies</strong></li>
+                <li><strong>Year One</strong></li>
+                <li><strong>The Truth</strong></li>
+            </ul>
+            <p style="font-size:0.88rem;color:#5c554d;margin-top:6px;">修复New 52部分设定，重建历史，是优秀现代入口。</p>
+        </article>
+
+        <!-- 第六部分：Infinite Frontier -->
+        <div class="section-divider">
+            <span class="line"></span><span class="diamond"></span><span class="line"></span>
+        </div>
+
+        <article class="glass-card">
+            <span class="card-section-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="21"/><line x1="3" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="21" y2="12"/></svg>
+                第六部分 · Infinite Frontier 时代
+            </span>
+            <h2 class="card-main-title">Becky Cloonan & Michael Conrad</h2>
+            <p class="card-sub-title">Wonder Woman #770-800</p>
+            <span class="issue-ref">Wonder Woman #770-800</span>
+            <p class="card-body-text" style="margin-top:8px;">特色：北欧神话元素、宇宙冒险、亚马逊扩展。近年评价很高的连载之一，充满活力。</p>
+        </article>
+
+        <!-- 第七部分：Dawn of DC -->
+        <div class="section-divider">
+            <span class="line"></span><span class="diamond"></span><span class="line"></span>
+        </div>
+
+        <article class="glass-card card-accent">
+            <span class="card-section-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B1E3F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5,3 L19,3 L21,8 L12,21 L3,8 L5,3z"/><line x1="12" y1="8" x2="12" y2="13"/></svg>
+                第七部分 · Dawn of DC 时代及后续
+            </span>
+            <h2 class="card-main-title" style="color:var(--secondary);">Wonder Woman (2023-)</h2>
+            <p class="card-sub-title">Tom King · 与 Daniel Sampere 主笔 · 连载中</p>
+            <span class="issue-ref">Wonder Woman (2023-) · 进行中</span>
+            <p class="card-body-text" style="margin-top:8px;"><strong>特色：</strong></p>
+            <ul class="highlights-list">
+                <li>美国政府 vs 亚马逊冲突</li>
+                <li>戴安娜作为政治/象征人物</li>
+                <li>Sovereign / Outlaw 等主线</li>
+            </ul>
+            <p style="font-size:0.88rem;color:#5c554d;margin-top:6px;">现代主刊重要延续，视觉与叙事野心大。</p>
+        </article>
+
+        <!-- 第八部分：另类宇宙 -->
+        <div class="section-divider">
+            <span class="line"></span><span class="diamond"></span><span class="line"></span>
+        </div>
+
+        <article class="glass-card">
+            <span class="card-section-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10" transform="rotate(30,12,12)"/></svg>
+                第八部分 · 另类宇宙 / 补充神作
+            </span>
+            <h2 class="card-main-title">另类宇宙 & 补充神作</h2>
+            <div style="margin-top:12px;">
+                <p style="margin-bottom:8px;"><strong style="color:#1f1c18;">The Legend of Wonder Woman</strong> <span class="rec-badge">强烈推荐</span></p>
+                <p style="font-size:0.88rem;color:#5c554d;margin-bottom:14px;">Renae De Liz & Ray Dillon · 现代重述黄金时代起源，几乎零差评。</p>
+
+                <p style="margin-bottom:8px;"><strong style="color:#1f1c18;">Wonder Woman: Dead Earth</strong> <span class="rec-badge">近年最佳短篇</span></p>
+                <p style="font-size:0.88rem;color:#5c554d;margin-bottom:14px;">Daniel Warren Johnson · 末世废土版，情感强烈。</p>
+
+                <p style="margin-bottom:8px;"><strong style="color:#1f1c18;">Wonder Woman: Historia: The Amazons</strong> <span class="rec-badge">必读补充</span></p>
+                <p style="font-size:0.88rem;color:#5c554d;">Kelly Sue DeConnick，Phil Jimenez / Gene Ha / Nicola Scott · 亚马逊起源史诗，神级美术。</p>
+            </div>
+        </article>
+
+        <!-- 第九部分：正义联盟扩展 -->
+        <div class="section-divider">
+            <span class="line"></span><span class="diamond"></span><span class="line"></span>
+        </div>
+
+        <article class="glass-card card-highlight">
+            <span class="card-section-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="16" r="3"/><line x1="8.5" y1="8" x2="10.5" y2="14"/><line x1="15.5" y1="8" x2="13.5" y2="14"/></svg>
+                第九部分 · 正义联盟 / 扩展补充
+            </span>
+            <h2 class="card-main-title">正义联盟 & 扩展阅读</h2>
+            <p class="card-body-text" style="margin-top:8px;">为完整理解戴安娜，推荐：</p>
+            <ul class="highlights-list">
+                <li><strong>JLA</strong>（经典时期）</li>
+                <li><strong>Justice League</strong>（现代）</li>
+                <li><strong>Justice League Dark</strong></li>
+                <li><strong>JLA: A League of One</strong>（强力单篇）</li>
+            </ul>
+            <p style="font-size:0.88rem;color:#5c554d;margin-top:8px;">以及亚马逊家族相关故事。</p>
+        </article>
+
+        <!-- 究极版精华阅读路线 -->
+        <div class="section-divider">
+            <span class="line"></span><span class="diamond"></span><span class="line"></span>
+        </div>
+
+        <section class="glass-card" style="border:2px solid rgba(201,162,39,0.4);background:rgba(255,255,255,0.62);">
+            <span class="card-section-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 15,8 22,8 16.5,13 18.5,19 12,15.5 5.5,19 7.5,13 2,8 9,8"/></svg>
+                究极版精华阅读路线
+            </span>
+            <h2 class="card-main-title" style="font-size:1.7rem;">核心塑造 · 10步路线</h2>
+            <p style="font-size:0.88rem;color:#6b6358;margin-bottom:16px;">覆盖1987重启至今最重要、评价最高、影响力最大的阶段，读完对戴安娜的理解会非常全面。</p>
+            <ol class="ultimate-route">
+                <li>
+                    <span class="route-title">Year One</span>
+                    <span class="route-detail">Rebirth Rucka · 现代最佳起源</span>
+                </li>
+                <li>
+                    <span class="route-title">The Hiketeia</span>
+                    <span class="route-detail">独立Graphic Novel · 最强单篇之一</span>
+                </li>
+                <li>
+                    <span class="route-title">Wonder Woman Vol.2 #1-62</span>
+                    <span class="route-detail">Pérez时代 · 重点前半 · 现代基石</span>
+                </li>
+                <li>
+                    <span class="route-title">Wonder Woman Vol.2 #195-226</span>
+                    <span class="route-detail">Rucka第一轮 · 外交官戴安娜</span>
+                </li>
+                <li>
+                    <span class="route-title">Wonder Woman Vol.2 #164-188</span>
+                    <span class="route-detail">Jimenez时代 · 神话史诗</span>
+                </li>
+                <li>
+                    <span class="route-title">Wonder Woman Vol.3 #14-44</span>
+                    <span class="route-detail">Simone时代 · 最热血超级英雄</span>
+                </li>
+                <li>
+                    <span class="route-title">Wonder Woman Vol.4 #1-35</span>
+                    <span class="route-detail">Azzarello · 可选（若接受争议）</span>
+                </li>
+                <li>
+                    <span class="route-title">Wonder Woman Vol.5 #1-25</span>
+                    <span class="route-detail">Rucka Rebirth · 修复与重建</span>
+                </li>
+                <li>
+                    <span class="route-title">Wonder Woman #770-800</span>
+                    <span class="route-detail">Cloonan/Conrad · 北欧宇宙冒险</span>
+                </li>
+                <li>
+                    <span class="route-title">Wonder Woman (2023-) Tom King</span>
+                    <span class="route-detail">进行中 · 政治象征人物</span>
+                </li>
+            </ol>
+            <p style="font-size:0.85rem;color:#8a6d1f;margin-top:14px;text-align:center;letter-spacing:0.03em;">
+                ★ 扩展建议：可插入黄金时代选集、Spirit of Truth 或 Earth One、Mariko Tamaki 短弧、The True Amazon
+            </p>
+        </section>
+
+        <!-- 补充推荐 -->
+        <div class="section-divider">
+            <span class="line"></span><span class="diamond"></span><span class="line"></span>
+        </div>
+
+        <section class="glass-card">
+            <span class="card-section-label">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                补充推荐
+            </span>
+            <h2 class="card-main-title" style="font-size:1.5rem;">更多优质补充</h2>
+            <p style="font-size:0.88rem;color:#6b6358;margin-bottom:16px;">以下为欧美读者和收集指南中经常被提及的优质或重要补充，按类别整理，进一步丰富戴安娜的出版历史、亚马逊文化、另类解读和配角故事。</p>
+
+            <!-- 类别1 -->
+            <div class="sub-card">
+                <h4>1. 黄金/白银时代基础（起源与早期风格）</h4>
+                <p style="font-size:0.88rem;margin-bottom:6px;"><strong>Wonder Woman: The Golden Age Omnibus / Vol.1+</strong></p>
+                <p style="font-size:0.84rem;color:#5c554d;margin-bottom:4px;">William Moulton Marston & Harry G. Peter 等 · 1940s原版故事（All Star Comics #8、Sensation Comics、Wonder Woman Vol.1早期）。看点：戴安娜诞生、亚马逊社会、反战/女性主义主题、二战背景。虽有时代局限，仍是角色根源。</p>
+                <p style="font-size:0.88rem;margin-bottom:6px;margin-top:10px;"><strong>Robert Kanigher & Ross Andru 时期</strong></p>
+                <p style="font-size:0.84rem;color:#5c554d;">Wonder Woman Vol.1 1950s-1960s选集 · 经典银时代故事，适合了解战后转型和更多奇幻元素。</p>
+            </div>
+
+            <!-- 类别2 -->
+            <div class="sub-card">
+                <h4>2. Post-Crisis 其他重要连载/弧线（1987后未覆盖部分）</h4>
+                <p style="font-size:0.88rem;margin-bottom:4px;"><strong>William Messner-Loebs 时期</strong> <span class="issue-ref">Vol.2 #63-89左右</span></p>
+                <p style="font-size:0.84rem;color:#5c554d;margin-bottom:8px;">Pérez之后过渡，强调冒险与角色发展（含Artemis Contest相关延续）。有争议但有独特魅力。</p>
+                <p style="font-size:0.88rem;margin-bottom:4px;"><strong>John Byrne 时期</strong> <span class="issue-ref">Vol.2 #101-136等</span></p>
+                <p style="font-size:0.84rem;color:#5c554d;margin-bottom:8px;">较短但视觉强，重点探索神系与英雄身份。</p>
+                <p style="font-size:0.88rem;margin-bottom:4px;"><strong>J. Michael Straczynski - Wonder Woman: Odyssey</strong> <span class="issue-ref">Vol.2后期，2010前后</span></p>
+                <p style="font-size:0.84rem;color:#5c554d;">试图重启/更新起源，戴安娜在失忆/新世界中寻找过去。争议较大但叙事野心足，可选读。</p>
+            </div>
+
+            <!-- 类别3 -->
+            <div class="sub-card">
+                <h4>3. Rebirth / Infinite Frontier 补充（Rucka之后）</h4>
+                <p style="font-size:0.88rem;margin-bottom:4px;"><strong>Mariko Tamaki 时期</strong> <span class="issue-ref">Wonder Woman Vol.5 #26-50+左右，2017-2019</span></p>
+                <p style="font-size:0.84rem;color:#5c554d;margin-bottom:8px;">Rucka第二轮后接棒，探索戴安娜作为领袖与个人冲突。情感深度好，适合衔接Rebirth到后续时代。</p>
+                <p style="font-size:0.88rem;margin-bottom:4px;"><strong>Steve Orlando / G. Willow Wilson 等短弧</strong> <span class="issue-ref">Vol.5中后期</span></p>
+                <p style="font-size:0.84rem;color:#5c554d;">填补Rebirth过渡，包含更多团队/外交元素。</p>
+            </div>
+
+            <!-- 类别4 -->
+            <div class="sub-card">
+                <h4>4. 优质 Graphic Novel / One-Shot / 另类神作</h4>
+                <p style="font-size:0.88rem;margin-bottom:4px;"><strong>Wonder Woman: Spirit of Truth</strong> — Paul Dini & Alex Ross</p>
+                <p style="font-size:0.84rem;color:#5c554d;margin-bottom:8px;">精美画风，探讨戴安娜的"真理与慈悲"主题，Alex Ross写实风格极具冲击力。</p>
+                <p style="font-size:0.88rem;margin-bottom:4px;"><strong>Wonder Woman: Earth One</strong> — Grant Morrison & Yanick Paquette</p>
+                <p style="font-size:0.84rem;color:#5c554d;margin-bottom:8px;">Elseworlds风格，重构起源与亚马逊社会，Morrison式奇幻/哲学解读。</p>
+                <p style="font-size:0.88rem;margin-bottom:4px;"><strong>Wonder Woman: The True Amazon</strong> — Jill Thompson</p>
+                <p style="font-size:0.84rem;color:#5c554d;margin-bottom:8px;">独特卡通风格，聚焦戴安娜在天堂岛的成长故事，女性视角强。</p>
+                <p style="font-size:0.88rem;margin-bottom:4px;"><strong>JLA: A League of One</strong> — Christopher Moeller</p>
+                <p style="font-size:0.84rem;color:#5c554d;">已提及但值得强调：戴安娜单人主导的JLA故事，艺术与叙事俱佳。</p>
+            </div>
+
+            <!-- 类别5 -->
+            <div class="sub-card">
+                <h4>5. 亚马逊家族 & 扩展阅读</h4>
+                <p style="font-size:0.88rem;margin-bottom:4px;"><strong>Donna Troy / Nubia / Yara Flor 等相关：</strong></p>
+                <p style="font-size:0.84rem;color:#5c554d;margin-bottom:4px;">· Wonder Woman: Donna Troy miniseries 或相关收集</p>
+                <p style="font-size:0.84rem;color:#5c554d;margin-bottom:4px;">· Nubia 系列（现代黑人亚马逊女王故事）</p>
+                <p style="font-size:0.84rem;color:#5c554d;margin-bottom:8px;">· Wonder Woman: Blood & Truth 或其他家族扩展（Historia已覆盖起源，可接这些）</p>
+                <p style="font-size:0.88rem;margin-bottom:4px;"><strong>Wonder Woman / Justice League Dark 交叉</strong></p>
+                <p style="font-size:0.84rem;color:#5c554d;">尤其是Zatanna、Swamp Thing相关弧。</p>
+            </div>
+
+            <!-- 类别6 -->
+            <div class="sub-card">
+                <h4>6. 其他值得一提</h4>
+                <p style="font-size:0.84rem;color:#5c554d;margin-bottom:4px;">· <strong>Wonder Woman by Kurt Busiek & Trina Robbins</strong>（The Legend of...早期版本，1980s重述黄金时代）</p>
+                <p style="font-size:0.84rem;color:#5c554d;margin-bottom:4px;">· <strong>Meredith Finch 时期</strong>（New 52后期，Vol.4 #36+，女性作者视角）</p>
+                <p style="font-size:0.84rem;color:#5c554d;">· <strong>近期短篇/事件</strong>：参与的 Dark Nights: Death Metal 或其他事件中的WW亮点（可选）</p>
+            </div>
+        </section>
+
+        <!-- 阅读建议 -->
+        <div class="section-divider">
+            <span class="line"></span><span class="diamond"></span><span class="line"></span>
+        </div>
+
+        <article class="glass-card card-highlight" style="text-align:center;">
+            <span class="card-section-label" style="justify-content:center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                阅读建议
+            </span>
+            <p class="card-body-text" style="text-align:center;max-width:650px;margin:0 auto;">
+                <strong>优先 TPB / Omnibus 收集版</strong>；Pérez时代稍显年代感但基础性极强；可按兴趣穿插另类作品。<br>
+                享受阅读！如果需要具体收集链接或更多细节，可进一步询问。
+            </p>
+            <p style="font-size:0.85rem;color:#8a6d1f;margin-top:12px;letter-spacing:0.04em;">
+                覆盖戴安娜 80+ 年历史 · 从黄金时代原典到Dawn of DC
+            </p>
+        </article>
+
+        <!-- 页脚 -->
+        <footer class="footer-note">
+            <div class="diamond-row">
+                <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <p>神奇女侠全刊级阅读指南 · Wonder Woman Complete Reading Guide</p>
+            <p style="font-size:0.75rem;opacity:0.7;margin-top:4px;">基于DC官方信息、Comic Book Herald、Crushing Krisis、DC Fandom Wiki及读者共识验证</p>
+            <p style="font-size:0.7rem;opacity:0.5;margin-top:8px;">Glassmorphism Design · Noto Serif SC · 2026</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
