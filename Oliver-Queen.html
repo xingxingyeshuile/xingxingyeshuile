@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Arrow 阅读指南 | Oliver Queen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #c8d9b5;
+            --bg-surface: #d6e4c4;
+            --green-dark: #1f3d16;
+            --green-mid: #356b26;
+            --green-bright: #428a30;
+            --gold: #9b7518;
+            --gold-light: #b0861e;
+            --gold-pale: #c49628;
+            --text-primary: #1a2414;
+            --text-secondary: #3a4d30;
+            --text-muted: #556348;
+            --glass-bg: rgba(255, 255, 255, 0.5);
+            --glass-bg-hover: rgba(255, 255, 255, 0.68);
+            --glass-bg-light: rgba(255, 255, 255, 0.35);
+            --glass-border: rgba(110, 145, 85, 0.22);
+            --glass-border-strong: rgba(95, 130, 70, 0.38);
+            --glass-border-gold: rgba(170, 120, 25, 0.35);
+            --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.07);
+            --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.09);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 22px;
+            --radius-xl: 28px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', 'SimSun', 'NSimSun', 'FangSong', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-serif);
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            letter-spacing: 0.015em;
+        }
+
+        /* 背景光晕装饰 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -30%;
+            left: -15%;
+            width: 70vw;
+            height: 70vw;
+            background: radial-gradient(ellipse, rgba(50, 100, 35, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            border-radius: 50%;
+            filter: blur(80px);
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -25%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(ellipse, rgba(160, 120, 30, 0.07) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            border-radius: 50%;
+            filter: blur(90px);
+        }
+
+        /* 微妙网格纹理 */
+        .bg-texture {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image:
+                linear-gradient(rgba(60, 80, 40, 0.25) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(60, 80, 40, 0.25) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+        }
+
+        .container {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 20px 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            text-align: center;
+            padding: 50px 20px 40px;
+            position: relative;
+        }
+        .header-icon {
+            display: inline-block;
+            margin-bottom: 18px;
+            opacity: 0.85;
+            animation: floatIcon 5s ease-in-out infinite;
+        }
+        @keyframes floatIcon {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+        .header-icon svg {
+            width: 52px;
+            height: 52px;
+            stroke: var(--gold-light);
+            fill: none;
+            stroke-width: 1.6;
+            filter: drop-shadow(0 0 18px rgba(160, 120, 30, 0.4));
+        }
+        .header h1 {
+            font-size: clamp(2rem, 4.5vw, 2.8rem);
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            text-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+        }
+        .header h1 .accent {
+            color: var(--gold-light);
+        }
+        .header .subtitle {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+            margin-top: 4px;
+        }
+        .header .divider-line {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 18px auto 0;
+            border-radius: 2px;
+            opacity: 0.7;
+        }
+
+        /* ========== GLASS CARD ========== */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 20px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card:hover {
+            border-color: var(--glass-border-strong);
+            box-shadow: var(--shadow-lg), 0 0 40px rgba(60, 130, 50, 0.08);
+            background: var(--glass-bg-hover);
+        }
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            pointer-events: none;
+        }
+
+        /* 金色边框变体 */
+        .glass-card.gold-accent {
+            border-color: var(--glass-border-gold);
+            box-shadow: var(--shadow-md), 0 0 28px rgba(160, 120, 25, 0.1);
+        }
+        .glass-card.gold-accent:hover {
+            border-color: rgba(190, 145, 40, 0.5);
+            box-shadow: var(--shadow-lg), 0 0 44px rgba(160, 120, 25, 0.16);
+        }
+
+        /* ========== SECTION HEADERS ========== */
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            margin-bottom: 6px;
+        }
+        .section-label .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold);
+            flex-shrink: 0;
+            box-shadow: 0 0 8px rgba(160, 120, 25, 0.6);
+        }
+        .section-label.s-rank .dot {
+            background: #b08020;
+            box-shadow: 0 0 12px rgba(170, 125, 30, 0.75);
+        }
+        .section-label.a-rank .dot {
+            background: #5a8a4a;
+            box-shadow: 0 0 8px rgba(80, 130, 60, 0.5);
+        }
+        .section-label.b-rank .dot {
+            background: #5a7080;
+            box-shadow: 0 0 8px rgba(80, 105, 120, 0.5);
+        }
+
+        /* ========== ACCORDION (details/summary) ========== */
+        .accordion {
+            border: none;
+            background: transparent;
+        }
+        .accordion summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            user-select: none;
+            transition: var(--transition);
+            border-radius: var(--radius-lg);
+            position: relative;
+        }
+        .accordion summary::-webkit-details-marker {
+            display: none;
+        }
+        .accordion summary::marker {
+            display: none;
+            content: '';
+        }
+        .accordion summary:hover {
+            background: rgba(0, 0, 0, 0.03);
+        }
+        .accordion-summary-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+            min-width: 0;
+        }
+        .accordion-phase-num {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--gold-light);
+            letter-spacing: 0.06em;
+            white-space: nowrap;
+            flex-shrink: 0;
+            min-width: 55px;
+        }
+        .accordion-phase-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: 0.03em;
+            line-height: 1.4;
+        }
+        .accordion-phase-subtitle {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            display: block;
+        }
+        .accordion-arrow {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.6;
+        }
+        .accordion-arrow svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--text-secondary);
+            fill: none;
+            stroke-width: 2;
+            transition: stroke 0.3s;
+        }
+        details[open]>.accordion summary .accordion-arrow {
+            transform: rotate(180deg);
+            opacity: 1;
+        }
+        details[open]>.accordion summary .accordion-arrow svg {
+            stroke: var(--gold-light);
+        }
+        details[open]>.accordion summary {
+            border-bottom: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            background: rgba(0, 0, 0, 0.025);
+        }
+        .accordion-content {
+            padding: 20px 24px 22px;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            animation: fadeSlideIn 0.35s ease-out;
+        }
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .accordion-content p {
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            font-size: 0.93rem;
+            line-height: 1.75;
+        }
+        .accordion-content p:last-child {
+            margin-bottom: 0;
+        }
+        .accordion-content .highlight-list {
+            list-style: none;
+            padding: 0;
+            margin: 8px 0 0;
+        }
+        .accordion-content .highlight-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 7px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+        .accordion-content .highlight-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6em;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--green-mid);
+            opacity: 0.7;
+            box-shadow: 0 0 6px rgba(50, 105, 35, 0.5);
+        }
+        .accordion-content .highlight-list li.gold-dot::before {
+            background: var(--gold);
+            box-shadow: 0 0 8px rgba(160, 120, 25, 0.6);
+        }
+        .accordion-content .comic-ref {
+            display: inline-block;
+            background: rgba(60, 130, 45, 0.15);
+            border: 1px solid rgba(60, 130, 45, 0.28);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            color: var(--green-dark);
+            margin: 2px 3px;
+            white-space: nowrap;
+        }
+        .accordion-content .comic-ref.gold-ref {
+            background: rgba(160, 120, 25, 0.12);
+            border-color: rgba(170, 130, 35, 0.32);
+            color: #7a5a10;
+        }
+        .meaning-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #8a6515;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            border-left: 2px solid var(--gold);
+            padding-left: 10px;
+        }
+
+        /* ========== 究极路线卡片 ========== */
+        .ultimate-list {
+            list-style: none;
+            padding: 0;
+            counter-reset: ultimate;
+        }
+        .ultimate-list li {
+            counter-increment: ultimate;
+            position: relative;
+            padding: 16px 18px 16px 58px;
+            margin-bottom: 8px;
+            background: var(--glass-bg-light);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            cursor: default;
+        }
+        .ultimate-list li:hover {
+            border-color: var(--glass-border-gold);
+            background: rgba(255, 255, 255, 0.55);
+            box-shadow: var(--shadow-sm);
+        }
+        .ultimate-list li::before {
+            content: counter(ultimate);
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(160, 120, 25, 0.18);
+            border: 1.5px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #8a6015;
+            letter-spacing: 0;
+            text-align: center;
+            line-height: 30px;
+        }
+        .ultimate-list li .comic-name {
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 0.02em;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .ultimate-list li .comic-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+        }
+
+        /* ========== BADGE ========== */
+        .badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+        .badge-s {
+            background: rgba(160, 120, 25, 0.22);
+            color: #7a5510;
+            border: 1px solid rgba(160, 120, 25, 0.4);
+        }
+        .badge-a {
+            background: rgba(80, 130, 60, 0.18);
+            color: #3d6a2a;
+            border: 1px solid rgba(80, 130, 60, 0.35);
+        }
+        .badge-b {
+            background: rgba(80, 105, 120, 0.18);
+            color: #3d5565;
+            border: 1px solid rgba(80, 105, 120, 0.35);
+        }
+        .badge-ultimate {
+            background: rgba(160, 120, 25, 0.25);
+            color: #7a5010;
+            border: 1px solid rgba(180, 140, 40, 0.5);
+            letter-spacing: 0.12em;
+        }
+
+        /* ========== EXTRA SECTION ========== */
+        .extra-category {
+            margin-bottom: 16px;
+            padding: 16px 20px;
+            background: var(--glass-bg-light);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+        }
+        .extra-category:hover {
+            border-color: var(--glass-border-strong);
+            background: rgba(255, 255, 255, 0.52);
+        }
+        .extra-category h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+        }
+        .extra-category .extra-items {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .extra-category .extra-items em {
+            color: var(--green-dark);
+            font-style: normal;
+            font-weight: 500;
+        }
+
+        /* ========== FOOTER NOTE ========== */
+        .footer-note {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
+            line-height: 1.8;
+        }
+        .footer-note .icon-arrow {
+            display: inline-block;
+            color: var(--gold-light);
+            font-size: 1.2rem;
+            animation: bounceHoriz 2s ease-in-out infinite;
+        }
+        @keyframes bounceHoriz {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(6px);
+            }
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 12px 12px 60px;
+            }
+            .header {
+                padding: 30px 12px 24px;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            .accordion summary {
+                padding: 14px 16px;
+                gap: 8px;
+            }
+            .accordion-phase-num {
+                font-size: 0.72rem;
+                min-width: 42px;
+            }
+            .accordion-phase-title {
+                font-size: 0.9rem;
+            }
+            .accordion-content {
+                padding: 14px 16px 16px;
+            }
+            .ultimate-list li {
+                padding: 14px 12px 14px 48px;
+                font-size: 0.82rem;
+            }
+            .ultimate-list li::before {
+                left: 8px;
+                width: 26px;
+                height: 26px;
+                font-size: 0.7rem;
+                line-height: 26px;
+            }
+            .glass-card {
+                border-radius: var(--radius-md);
+                margin-bottom: 14px;
+            }
+            .extra-category {
+                padding: 12px 14px;
+            }
+            .accordion-content .comic-ref {
+                font-size: 0.75rem;
+                padding: 2px 8px;
+            }
+        }
+        @media (max-width: 420px) {
+            .header h1 {
+                font-size: 1.35rem;
+                letter-spacing: 0.02em;
+            }
+            .header-icon svg {
+                width: 38px;
+                height: 38px;
+            }
+            .accordion-phase-num {
+                font-size: 0.68rem;
+                min-width: 35px;
+            }
+            .accordion-phase-title {
+                font-size: 0.8rem;
+            }
+            .accordion-phase-subtitle {
+                font-size: 0.7rem;
+            }
+            .accordion-content {
+                padding: 10px 12px 14px;
+            }
+            .accordion-content p {
+                font-size: 0.8rem;
+            }
+            .accordion-content .highlight-list li {
+                font-size: 0.78rem;
+                padding-left: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-texture" aria-hidden="true"></div>
+
+    <div class="container">
+        <!-- ==================== HEADER ==================== -->
+        <header class="header">
+            <div class="header-icon">
+                <!-- 极简箭矢图标 -->
+                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="8" y1="40" x2="38" y2="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polyline points="38,10 28,7 38,18" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="8" y1="40" x2="6" y2="44" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h1>Oliver Queen <span class="accent">阅读指南</span></h1>
+            <p class="subtitle">GREEN ARROW · 翡翠射手 · 完整研究级路线</p>
+            <div class="divider-line"></div>
+        </header>
+
+        <!-- ==================== S级：核心必读 ==================== -->
+        <section style="margin-bottom: 10px;">
+            <div style="padding: 0 4px 12px;">
+                <span class="section-label s-rank"><span class="dot"></span>S 级 · 核心必读</span>
+                <p style="font-size:0.85rem;color:var(--text-muted);margin-top:2px;letter-spacing:0.03em;">这些刊物塑造了今天大家认识的奥利弗·奎恩（社会活动家、成熟硬汉、家族领袖）。</p>
+            </div>
+
+            <!-- 第一阶段 -->
+            <div class="glass-card gold-accent">
+                <details class="accordion" open>
+                    <summary>
+                        <div class="accordion-summary-content">
+                            <span class="accordion-phase-num">第一阶段</span>
+                            <span>
+                                <span class="accordion-phase-title">经典绿箭形成</span>
+                                <span class="accordion-phase-subtitle">The Brave and the Bold · Justice League of America</span>
+                            </span>
+                        </div>
+                        <span class="accordion-arrow">
+                            <svg viewBox="0 0 20 20"><polyline points="4,7 10,13 16,7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p><span class="comic-ref gold-ref">The Brave and the Bold #85</span> <span style="color:var(--text-muted);">（1969）</span></p>
+                        <p><span class="meaning-tag">意义</span></p>
+                        <ul class="highlight-list">
+                            <li class="gold-dot">Neal Adams 重塑绿箭外观（小胡子、新服装）。</li>
+                            <li class="gold-dot">现代 Oliver 的视觉与态度起点，从"蝙蝠侠模仿者"转向更硬派。</li>
+                        </ul>
+                        <p style="margin-top:12px;"><span class="comic-ref gold-ref">Justice League of America</span> <span style="color:var(--text-muted);">（1969-1970）</span></p>
+                        <p><strong style="color:var(--text-primary);">重点：</strong>#75（核心转变）、#77、#87、#88 等</p>
+                        <p><span class="meaning-tag">意义</span></p>
+                        <ul class="highlight-list">
+                            <li class="gold-dot">Oliver 失去财富，成为社会活动家/左翼代言人。</li>
+                            <li class="gold-dot">Dennis O'Neil 版本诞生，奠定政治/社会议题基调。</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- 第二阶段 -->
+            <div class="glass-card gold-accent">
+                <details class="accordion">
+                    <summary>
+                        <div class="accordion-summary-content">
+                            <span class="accordion-phase-num">第二阶段</span>
+                            <span>
+                                <span class="accordion-phase-title">绿灯绿箭神作</span>
+                                <span class="accordion-phase-subtitle">Green Lantern (1960) · Hard Traveling Heroes</span>
+                            </span>
+                        </div>
+                        <span class="accordion-arrow">
+                            <svg viewBox="0 0 20 20"><polyline points="4,7 10,13 16,7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p><span class="comic-ref gold-ref">Green Lantern (1960) #76-89</span></p>
+                        <p style="color:var(--text-muted);">即 <em style="color:var(--gold-light);font-style:italic;">Green Lantern/Green Arrow: Hard Traveling Heroes</em> 经典部分</p>
+                        <p><span class="meaning-tag">意义</span></p>
+                        <ul class="highlight-list">
+                            <li class="gold-dot">DC 史上最伟大的社会议题漫画之一。</li>
+                            <li class="gold-dot">Hal Jordan × Oliver Queen 黄金搭档，路 trip 直面种族、贫困、毒品等问题。</li>
+                            <li class="gold-dot">Roy Harper 吸毒事件（#85-86），影响深远。</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- 第三阶段 -->
+            <div class="glass-card gold-accent">
+                <details class="accordion">
+                    <summary>
+                        <div class="accordion-summary-content">
+                            <span class="accordion-phase-num">第三阶段</span>
+                            <span>
+                                <span class="accordion-phase-title">现代绿箭诞生</span>
+                                <span class="accordion-phase-subtitle">The Longbow Hunters · Green Arrow Vol.2 (Mike Grell)</span>
+                            </span>
+                        </div>
+                        <span class="accordion-arrow">
+                            <svg viewBox="0 0 20 20"><polyline points="4,7 10,13 16,7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p><span class="comic-ref gold-ref">Green Arrow: The Longbow Hunters #1-3</span> <span style="color:var(--text-muted);">（1987）</span></p>
+                        <p><strong style="color:var(--text-primary);">地位：</strong>绿箭侠版的《黑暗骑士归来》。</p>
+                        <p><span class="meaning-tag">意义</span></p>
+                        <ul class="highlight-list">
+                            <li class="gold-dot">Mike Grell 封神之作。</li>
+                            <li class="gold-dot">彻底转向成人向、去超级英雄化（现实暴力、道德灰度）。</li>
+                            <li class="gold-dot">最经典绿箭故事之一。</li>
+                        </ul>
+                        <p style="margin-top:12px;"><span class="comic-ref gold-ref">Green Arrow (1988) Vol.2</span> — Mike Grell 时代</p>
+                        <p><strong style="color:var(--text-primary);">必读：</strong>#1-80 &nbsp;|&nbsp; <strong style="color:var(--text-primary);">推荐：</strong>#1-137 全读（Grell 主导前80期，后续过渡）</p>
+                        <p><span class="meaning-tag">意义</span></p>
+                        <ul class="highlight-list">
+                            <li class="gold-dot">最伟大的 GA run 之一。</li>
+                            <li class="gold-dot">建立 Seattle 时期、Shado、Eddie Fyers 等。</li>
+                            <li class="gold-dot">成年向、街头硬派绿箭典范。</li>
+                        </ul>
+                        <p style="margin-top:10px;"><strong style="color:var(--text-primary);">配套作品：</strong></p>
+                        <p><span class="comic-ref">Green Arrow Annual 1988 #1-7</span>（补充）&nbsp;
+                            <span class="comic-ref">Green Arrow: The Wonder Year 1993 #1-4</span>（Post-Crisis 起源补完，优秀）</p>
+                    </div>
+                </details>
+            </div>
+
+            <!-- 第四阶段 -->
+            <div class="glass-card gold-accent">
+                <details class="accordion">
+                    <summary>
+                        <div class="accordion-summary-content">
+                            <span class="accordion-phase-num">第四阶段</span>
+                            <span>
+                                <span class="accordion-phase-title">Connor Hawke 时代</span>
+                                <span class="accordion-phase-subtitle">Green Arrow (1988) · 第二代绿箭</span>
+                            </span>
+                        </div>
+                        <span class="accordion-arrow">
+                            <svg viewBox="0 0 20 20"><polyline points="4,7 10,13 16,7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p><span class="comic-ref gold-ref">Green Arrow (1988)</span></p>
+                        <p><strong style="color:var(--text-primary);">重点：</strong>#91-101（Connor 接班引入）&nbsp;|&nbsp; #102-137（Connor 主导）</p>
+                        <p><span class="meaning-tag">意义</span></p>
+                        <ul class="highlight-list">
+                            <li class="gold-dot">DC 最优秀接班人故事之一，探索遗产、身份与成长。</li>
+                            <li class="gold-dot">Connor 作为第二代绿箭的深度刻画。</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- 第五阶段 -->
+            <div class="glass-card gold-accent">
+                <details class="accordion">
+                    <summary>
+                        <div class="accordion-summary-content">
+                            <span class="accordion-phase-num">第五阶段</span>
+                            <span>
+                                <span class="accordion-phase-title">Oliver 复活时代</span>
+                                <span class="accordion-phase-subtitle">Green Arrow Vol.3 · Kevin Smith / Brad Meltzer / Judd Winick</span>
+                            </span>
+                        </div>
+                        <span class="accordion-arrow">
+                            <svg viewBox="0 0 20 20"><polyline points="4,7 10,13 16,7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p><span class="comic-ref gold-ref">Green Arrow (2001) Vol.3</span></p>
+                        <p><strong style="color:var(--text-primary);">Kevin Smith 时期 — 必读：</strong>#1-15（核心 <em>Quiver</em> #1-10）</p>
+                        <p><span class="meaning-tag">意义</span>Oliver 复活，现代 GA 核心神作。重新定义后危机时代 Oliver。</p>
+                        <p style="margin-top:10px;"><strong style="color:var(--text-primary);">Brad Meltzer 时期 — </strong>#16-21（<em>Archer's Quest</em>）：深入 Oliver 内核。</p>
+                        <p style="margin-top:10px;"><strong style="color:var(--text-primary);">Judd Winick 时期 — </strong>#26-75（重点）</p>
+                        <p><span class="meaning-tag">意义</span>Mia Dearden 引入/发展、Connor 与 Roy 回归。现代绿箭家族成型（尽管部分争议）。</p>
+                    </div>
+                </details>
+            </div>
+
+            <!-- 第六阶段 -->
+            <div class="glass-card gold-accent">
+                <details class="accordion">
+                    <summary>
+                        <div class="accordion-summary-content">
+                            <span class="accordion-phase-num">第六阶段</span>
+                            <span>
+                                <span class="accordion-phase-title">无限危机时期</span>
+                                <span class="accordion-phase-subtitle">Identity Crisis · Infinite Crisis · Green Arrow/Black Canary</span>
+                            </span>
+                        </div>
+                        <span class="accordion-arrow">
+                            <svg viewBox="0 0 20 20"><polyline points="4,7 10,13 16,7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                    </summary>
+                    <div class="accordion-content">
+                        <ul class="highlight-list">
+                            <li class="gold-dot"><span class="comic-ref gold-ref">Identity Crisis 2004</span> — 必读（Oliver 是核心成员）。</li>
+                            <li class="gold-dot"><span class="comic-ref gold-ref">Infinite Crisis 2005</span> — 必读。</li>
+                            <li class="gold-dot"><span class="comic-ref">Green Arrow (2001) #52-75</span> — 补充。</li>
+                            <li class="gold-dot"><span class="comic-ref gold-ref">Green Arrow/Black Canary 2007 #1-32</span> — Oliver 与 Dinah 婚后/家庭时期。</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- 第七阶段 -->
+            <div class="glass-card gold-accent">
+                <details class="accordion">
+                    <summary>
+                        <div class="accordion-summary-content">
+                            <span class="accordion-phase-num">第七阶段</span>
+                            <span>
+                                <span class="accordion-phase-title">起源重述</span>
+                                <span class="accordion-phase-subtitle">Green Arrow: Year One (Andy Diggle & Jock)</span>
+                            </span>
+                        </div>
+                        <span class="accordion-arrow">
+                            <svg viewBox="0 0 20 20"><polyline points="4,7 10,13 16,7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p><span class="comic-ref gold-ref">Green Arrow: Year One #1-6</span> <span style="color:var(--text-muted);">（2007 · Andy Diggle & Jock）</span></p>
+                        <p><span class="meaning-tag">意义</span></p>
+                        <ul class="highlight-list">
+                            <li class="gold-dot">现代最佳起源故事之一。</li>
+                            <li class="gold-dot">很多电视剧《Arrow》元素来源于此（岛屿、转变）。</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- 第八阶段 -->
+            <div class="glass-card gold-accent">
+                <details class="accordion">
+                    <summary>
+                        <div class="accordion-summary-content">
+                            <span class="accordion-phase-num">第八阶段</span>
+                            <span>
+                                <span class="accordion-phase-title">New 52</span>
+                                <span class="accordion-phase-subtitle">Green Arrow (2011) · Jeff Lemire / Benjamin Percy</span>
+                            </span>
+                        </div>
+                        <span class="accordion-arrow">
+                            <svg viewBox="0 0 20 20"><polyline points="4,7 10,13 16,7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p><span class="comic-ref">Green Arrow (2011) #1-16</span> — 跳过或选读（评价一般）。</p>
+                        <p style="margin-top:10px;"><span class="comic-ref gold-ref">Jeff Lemire 时期 — 必读：#17-34</span>（神作）</p>
+                        <p><span class="meaning-tag">人物/意义</span></p>
+                        <ul class="highlight-list">
+                            <li class="gold-dot">Emiko Queen、Komodo、Outsiders War。</li>
+                            <li class="gold-dot">New 52 最佳绿箭 run，融合家族与阴谋。</li>
+                        </ul>
+                        <p style="margin-top:10px;"><span class="comic-ref">Benjamin Percy 前期 — 推荐：#35-52</span>（质量不错）。</p>
+                    </div>
+                </details>
+            </div>
+
+            <!-- 第九阶段 -->
+            <div class="glass-card gold-accent">
+                <details class="accordion">
+                    <summary>
+                        <div class="accordion-summary-content">
+                            <span class="accordion-phase-num">第九阶段</span>
+                            <span>
+                                <span class="accordion-phase-title">Rebirth 黄金时期</span>
+                                <span class="accordion-phase-subtitle">Green Arrow (2016) · Benjamin Percy 主笔</span>
+                            </span>
+                        </div>
+                        <span class="accordion-arrow">
+                            <svg viewBox="0 0 20 20"><polyline points="4,7 10,13 16,7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p><span class="comic-ref gold-ref">Green Arrow (2016) — 全读：#1-50</span>（Benjamin Percy 主笔）</p>
+                        <p><span class="meaning-tag">意义</span></p>
+                        <ul class="highlight-list">
+                            <li class="gold-dot">回归经典 Oliver、Black Canary 与社会议题。</li>
+                            <li class="gold-dot">2000 年代后许多人认为的最佳主刊之一。</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+
+            <!-- 第十阶段 -->
+            <div class="glass-card gold-accent">
+                <details class="accordion">
+                    <summary>
+                        <div class="accordion-summary-content">
+                            <span class="accordion-phase-num">第十阶段</span>
+                            <span>
+                                <span class="accordion-phase-title">Infinite Frontier 以后</span>
+                                <span class="accordion-phase-subtitle">Green Arrow (2023) · Joshua Williamson</span>
+                            </span>
+                        </div>
+                        <span class="accordion-arrow">
+                            <svg viewBox="0 0 20 20"><polyline points="4,7 10,13 16,7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                    </summary>
+                    <div class="accordion-content">
+                        <p><span class="comic-ref gold-ref">Green Arrow (2023) — 全读：#1-15+</span>（目前，Joshua Williamson）</p>
+                        <p><span class="meaning-tag">意义</span></p>
+                        <ul class="highlight-list">
+                            <li class="gold-dot">绿箭家族大团圆（Roy、Connor、Emiko、Dinah）。</li>
+                            <li class="gold-dot">现代延续与融合。</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- ==================== A级：强烈推荐 ==================== -->
+        <section style="margin-bottom: 10px;">
+            <div style="padding: 0 4px 12px; margin-top: 8px;">
+                <span class="section-label a-rank"><span class="dot"></span>A 级 · 强烈推荐</span>
+            </div>
+            <div class="glass-card">
+                <div style="padding: 18px 22px;">
+                    <ul class="highlight-list">
+                        <li><span class="comic-ref gold-ref">Green Arrow 80th Anniversary Special 2021</span> — 绿箭百科全书式回顾。</li>
+                        <li><span class="comic-ref">Green Arrow: Rebirth 2016</span> — 前导一期。</li>
+                        <li><span class="comic-ref">Justice League: Cry for Justice 2009</span> — 对 Oliver 后续影响大（虽争议）。</li>
+                        <li><span class="comic-ref gold-ref">Rise and Fall</span> — <span class="comic-ref">Green Arrow (2001) #31-34</span>（2010 左右，必读过渡）。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== B级：绿箭家族扩展 ==================== -->
+        <section style="margin-bottom: 10px;">
+            <div style="padding: 0 4px 12px; margin-top: 8px;">
+                <span class="section-label b-rank"><span class="dot"></span>B 级 · 绿箭家族扩展</span>
+            </div>
+            <div class="glass-card">
+                <div style="padding: 18px 22px;">
+                    <ul class="highlight-list">
+                        <li><strong style="color:var(--text-primary);">Roy Harper：</strong><em>New Teen Titans</em>、<em>Arsenal</em>、<em>Titans</em> 等。</li>
+                        <li><strong style="color:var(--text-primary);">Connor Hawke：</strong><em>Green Arrow (1988) #102-137</em> + 后续出现。</li>
+                        <li><strong style="color:var(--text-primary);">Mia Dearden：</strong><em>Green Arrow (2001)</em> + <em>Green Arrow/Black Canary</em>。</li>
+                        <li><strong style="color:var(--text-primary);">Emiko Queen：</strong><em>Green Arrow (2011) #18+</em> + (2016) + (2023)。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 究极路线 ==================== -->
+        <section style="margin-bottom: 10px;">
+            <div style="padding: 0 4px 12px; margin-top: 12px;">
+                <span class="badge badge-ultimate" style="margin-bottom:8px;">究极路线</span>
+                <p style="font-size:0.88rem;color:var(--text-secondary);margin-top:6px;letter-spacing:0.03em;">"10 本/部分读完就懂绿箭侠" — 覆盖核心弧线与家族，目前公认最完整的研究级路线。</p>
+            </div>
+            <div class="glass-card gold-accent">
+                <div style="padding: 6px 8px;">
+                    <ol class="ultimate-list">
+                        <li>
+                            <span class="comic-name">Green Lantern/Green Arrow #76-89</span>
+                            <span class="comic-desc">社会活动家起源</span>
+                        </li>
+                        <li>
+                            <span class="comic-name">The Longbow Hunters #1-3</span>
+                            <span class="comic-desc">现代硬派起点</span>
+                        </li>
+                        <li>
+                            <span class="comic-name">Green Arrow (1988) #1-80</span>
+                            <span class="comic-desc">Grell 经典 Seattle 时代</span>
+                        </li>
+                        <li>
+                            <span class="comic-name">The Wonder Year #1-4</span>
+                            <span class="comic-desc">起源补完</span>
+                        </li>
+                        <li>
+                            <span class="comic-name">Green Arrow (2001) #1-15</span>
+                            <span class="comic-desc"><em>Quiver</em> 复活</span>
+                        </li>
+                        <li>
+                            <span class="comic-name">Green Arrow (2001) #16-21</span>
+                            <span class="comic-desc"><em>Archer's Quest</em></span>
+                        </li>
+                        <li>
+                            <span class="comic-name">Green Arrow (2001) #26-75</span>
+                            <span class="comic-desc">Winick，家族成型</span>
+                        </li>
+                        <li>
+                            <span class="comic-name">Green Arrow: Year One #1-6</span>
+                            <span class="comic-desc">最佳起源</span>
+                        </li>
+                        <li>
+                            <span class="comic-name">Green Arrow (2011) #17-34</span>
+                            <span class="comic-desc">Lemire，N52 高光</span>
+                        </li>
+                        <li>
+                            <span class="comic-name">Green Arrow (2016) #1-50</span>
+                            <span class="comic-desc">Percy，Rebirth 回归</span>
+                        </li>
+                    </ol>
+                    <p style="padding:10px 18px 14px;font-size:0.85rem;color:var(--text-muted);letter-spacing:0.03em;line-height:1.7;">
+                        <strong style="color:var(--text-primary);">这十部基本覆盖：</strong>社会活动家 Oliver、Hal 搭档、Black Canary 爱情、Connor/Roy/Mia/Emiko、复活后现代 Oliver，以及不同时代的演变。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 额外推荐作品 ==================== -->
+        <section style="margin-bottom: 10px;">
+            <div style="padding: 0 4px 12px; margin-top: 12px;">
+                <span class="section-label"><span class="dot"></span>额外推荐 · 研究级补充</span>
+                <p style="font-size:0.82rem;color:var(--text-muted);margin-top:2px;letter-spacing:0.03em;">聚焦角色深化、家族互动、关键客串/crossover，以及被低估或补充性的故事，适合研究级阅读。</p>
+            </div>
+
+            <div class="glass-card">
+                <div style="padding: 14px 18px;">
+                    <!-- 早期/前危机时代 -->
+                    <div class="extra-category">
+                        <h4>早期 / 前危机时代补充（Silver/Golden Age 背景）</h4>
+                        <div class="extra-items">
+                            <em>More Fun Comics #73 (1941)</em> — Oliver Queen 首次登场（与 Speedy 一起），经典起源。<br>
+                            <em>Adventure Comics</em> 系列（1940s-1950s，多期）— 早期 Green Arrow 备份故事。Jack Kirby 相关作品可参考。<br>
+                            <em>Green Lantern (1960) #85-86</em> — Hard Traveling Heroes 延伸，补充社会议题。
+                        </div>
+                    </div>
+
+                    <!-- Post-Crisis / Grell 时代扩展 -->
+                    <div class="extra-category">
+                        <h4>Post-Crisis / Grell 时代扩展</h4>
+                        <div class="extra-items">
+                            <em>Shado: Song of the Dragon #1-4</em> — 与 Grell run 紧密相关，深入 Shado 角色。<br>
+                            <em>Green Arrow (1988) Annuals</em> 更多期 + <em>Green Arrow #100-101</em> — Grell 时代高潮/过渡，死亡/遗产主题。
+                        </div>
+                    </div>
+
+                    <!-- 2000s 扩展 -->
+                    <div class="extra-category">
+                        <h4>2000s 扩展（复活后家族深化）</h4>
+                        <div class="extra-items">
+                            <em>Green Arrow (2001) #76-89</em> 左右（Winick 后期 + 后续）— 家族故事延续。<br>
+                            <em>Justice League Elite (2004-2005)</em> — Oliver 在更灰暗的 JL 小队中的故事。<br>
+                            <em>Green Arrow/Black Canary Wedding Special</em> + 相关一期 — 婚礼及后续家庭动态。
+                        </div>
+                    </div>
+
+                    <!-- 重大 Crossover / 团队事件 -->
+                    <div class="extra-category">
+                        <h4>重大 Crossover / 团队事件（Oliver 核心参与）</h4>
+                        <div class="extra-items">
+                            <em>Justice League: Tower of Babel</em>（JLA #43-46 等）— Batman contingency 计划对 Oliver 的影响。<br>
+                            <em>JLA #8-9</em>（Grant Morrison 时代）— 经典 JL 故事中 Oliver 的表现。<br>
+                            <em>Infinite Crisis</em> 相关 tie-ins（如 <em>The OMAC Project</em>）— 补充 Oliver 在大事件中的立场。<br>
+                            <em>Cry for Justice</em>（完整阅读）— Oliver 复仇弧，对后续性格影响极大。<br>
+                            <em>Justice League of America (2006-2011)</em> 部分期数 — Oliver 作为 JL 成员的团队动态。
+                        </div>
+                    </div>
+
+                    <!-- New 52 / Rebirth 补充 -->
+                    <div class="extra-category">
+                        <h4>New 52 / Rebirth 补充</h4>
+                        <div class="extra-items">
+                            <em>Green Arrow (2011) Annual #1</em> 及 Lemire run 后过渡。<br>
+                            <em>Green Arrow (2016) #51+</em>（Percy 后期 + 后续编剧）— 家族与社会议题延续。<br>
+                            <em>Green Arrow: Rebirth #1</em> — 作为 Percy run 前导极佳。
+                        </div>
+                    </div>
+
+                    <!-- 近期 / Infinite Frontier 以后 -->
+                    <div class="extra-category">
+                        <h4>近期 / Infinite Frontier 以后补充</h4>
+                        <div class="extra-items">
+                            <em>Green Arrow (2023) #16+</em> 及 <em>2024 Annual</em> — Williamson run 延续，家族团圆深化。<br>
+                            <em>Dark Crisis on Infinite Earths</em> tie-ins — Oliver "失踪"/回归相关。
+                        </div>
+                    </div>
+
+                    <!-- 家族/支持角色重点扩展 -->
+                    <div class="extra-category">
+                        <h4>家族 / 支持角色重点扩展（B级深化）</h4>
+                        <div class="extra-items">
+                            <strong style="color:var(--text-primary);">Roy Harper：</strong><em>Teen Titans</em>（尤其是 Wolfman/Perez 经典）、<em>Arsenal</em> mini、<em>Red Hood and the Outlaws</em> 部分。<br>
+                            <strong style="color:var(--text-primary);">Connor Hawke：</strong><em>Green Arrow (1988) #0</em>、<em>Connor Hawke: Dragon's Blood</em> mini-series。<br>
+                            <strong style="color:var(--text-primary);">Mia Dearden：</strong><em>Green Arrow (2001)</em> 中更多期 + <em>Teen Titans</em> 客串。<br>
+                            <strong style="color:var(--text-primary);">Emiko Queen：</strong><em>Green Arrow (2016)</em> 更多家族弧 + 近期出现。
+                        </div>
+                    </div>
+
+                    <!-- 其他强烈推荐的独立/回顾作品 -->
+                    <div class="extra-category">
+                        <h4>其他强烈推荐的独立 / 回顾作品</h4>
+                        <div class="extra-items">
+                            <em>Green Arrow: 80 Years of the Emerald Archer</em>（Deluxe Edition）— 大型回顾合集，极佳补充"百科"。<br>
+                            <em>Secret Origins</em> 相关 Green Arrow 期数 — 不同时代起源变体。<br>
+                            <em>Batman: The Long Halloween / Dark Victory</em> 客串 — Oliver 与 Batman 互动（虽非主角）。<br>
+                            <em>Injustice</em> 系列（可选 Elseworlds）— 另类 Oliver Queen 故事，性格极端化探索。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 阅读建议 ==================== -->
+        <section>
+            <div class="glass-card" style="padding: 20px 24px; margin-top: 8px;">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="var(--gold-light)" stroke-width="1.8" stroke-linecap="round">
+                        <circle cx="10" cy="10" r="8"/>
+                        <line x1="10" y1="5" x2="10" y2="11"/>
+                        <circle cx="10" cy="14" r="1" fill="var(--gold-light)" stroke="none"/>
+                    </svg>
+                    <span style="font-weight:700;letter-spacing:0.06em;color:var(--text-primary);">阅读建议</span>
+                </div>
+                <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.8;letter-spacing:0.03em;">
+                    优先收集 <strong style="color:var(--text-primary);">Trade Paperback (TPB)</strong> 或 <strong style="color:var(--text-primary);">Omnibus</strong>（如 Grell Omnibus、Quiver 等），结合 <strong style="color:var(--green-dark);">DC Infinite</strong> App 或实体。路线可按时间顺序或主题跳读。这些补充可穿插在主路线中阅读，尤其 crossover 能丰富 Oliver 的 JL 定位和社会活动家形象。如果想专注特定方面（如家族、爱情线、政治主题或特定时代），可进一步细化。
+                </p>
+                <p style="font-size:0.85rem;color:var(--text-muted);margin-top:8px;letter-spacing:0.04em;">
+                    这些推荐基于多个权威阅读指南和粉丝共识，能让你的 Oliver Queen 研究更全面。享受阅读！<span class="icon-arrow">🏹</span>
+                </p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <div class="footer-note">
+            <div style="width:40px;height:1px;background:var(--gold);margin:0 auto 16px;opacity:0.5;border-radius:1px;"></div>
+            Green Arrow Reading Guide · 奥利弗·奎恩研究级路线<br>
+            <span style="font-size:0.75rem;opacity:0.6;">翡翠射手 · 社会活动家 · 家族领袖</span>
+        </div>
+    </div>
+</body>
+</html>
