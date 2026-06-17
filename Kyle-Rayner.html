@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>凯尔·雷纳 阅读指南 | Kyle Rayner Reading Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00A86B;
+            --primary-glow: rgba(0, 168, 107, 0.35);
+            --primary-dim: rgba(0, 168, 107, 0.18);
+            --secondary: #FFFFFF;
+            --background: #090D14;
+            --surface: rgba(255, 255, 255, 0.025);
+            --surface-hover: rgba(255, 255, 255, 0.05);
+            --text: #EAEAEA;
+            --text-muted: #a0a4b0;
+            --text-dim: #6b6f7a;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(255, 255, 255, 0.15);
+            --glass-bg: rgba(255, 255, 255, 0.025);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-highlight: rgba(255, 255, 255, 0.04);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.55);
+            --shadow-md: 0 8px 28px rgba(0, 0, 0, 0.4);
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 8px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Noto Serif CJK SC', Georgia, 'Times New Roman', serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            letter-spacing: 0.01em;
+            background-image:
+                radial-gradient(ellipse at 20% 10%, rgba(0, 168, 107, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 75% 50%, rgba(0, 168, 107, 0.04) 0%, transparent 55%),
+                radial-gradient(ellipse at 40% 85%, rgba(0, 168, 107, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.008) 0%, transparent 70%);
+            background-attachment: fixed;
+        }
+
+        /* Subtle noise overlay for texture */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+            background-size: 200px 200px;
+        }
+
+        /* ── Container ── */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Header ── */
+        .header {
+            text-align: center;
+            padding: 50px 30px 40px;
+            margin-bottom: 36px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg), inset 0 1px 0 var(--glass-highlight);
+            position: relative;
+            overflow: hidden;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            pointer-events: none;
+            border-radius: 50%;
+        }
+        .header-icon {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 1;
+        }
+        .header-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+        .header h1 {
+            font-size: clamp(1.7rem, 3vw, 2.4rem);
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            color: var(--secondary);
+            position: relative;
+            z-index: 1;
+            margin-bottom: 6px;
+        }
+        .header .subtitle {
+            font-size: 0.95rem;
+            font-weight: 300;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+            position: relative;
+            z-index: 1;
+            text-transform: uppercase;
+        }
+        .header .accent-line {
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: var(--primary);
+            margin: 14px auto 0;
+            border-radius: 2px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 18px var(--primary-glow);
+        }
+
+        /* ── Core Conclusion Card ── */
+        .core-conclusion {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-left: 3px solid var(--primary);
+            border-radius: var(--radius-md);
+            padding: 22px 26px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-md), inset 0 1px 0 var(--glass-highlight);
+            position: relative;
+        }
+        .core-conclusion .label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .core-conclusion .label .dot {
+            width: 7px;
+            height: 7px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary-glow);
+            animation: pulse-dot 2.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                box-shadow: 0 0 6px var(--primary-glow);
+            }
+            50% {
+                box-shadow: 0 0 18px var(--primary-glow), 0 0 32px rgba(0, 168, 107, 0.5);
+            }
+        }
+        .core-conclusion p {
+            font-size: 0.95rem;
+            color: var(--text);
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+        .core-conclusion .growth-path {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+            align-items: center;
+        }
+        .core-conclusion .growth-path span {
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            color: var(--text-muted);
+        }
+        .core-conclusion .growth-path .arrow {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        /* ── Section Title ── */
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--secondary);
+            margin: 48px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 22px;
+            background: var(--primary);
+            border-radius: 2px;
+            box-shadow: 0 0 14px var(--primary-glow);
+            flex-shrink: 0;
+        }
+
+        /* ── Timeline ── */
+        .timeline {
+            position: relative;
+            padding-left: 36px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 13px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.15) 5%,
+                    rgba(255, 255, 255, 0.12) 50%,
+                    rgba(255, 255, 255, 0.15) 95%,
+                    transparent 100%);
+        }
+        .timeline-phase {
+            position: relative;
+            margin-bottom: 28px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 22px 24px;
+            box-shadow: var(--shadow-md), inset 0 1px 0 var(--glass-highlight);
+            transition: var(--transition);
+            cursor: default;
+        }
+        .timeline-phase:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-glow);
+            box-shadow: var(--shadow-lg), inset 0 1px 0 var(--glass-highlight), 0 0 0 1px rgba(0, 168, 107, 0.08);
+        }
+        .timeline-phase::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 28px;
+            width: 11px;
+            height: 11px;
+            background: var(--background);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--primary-glow), 0 0 0 6px var(--background);
+            z-index: 2;
+            transition: var(--transition);
+        }
+        .timeline-phase:hover::before {
+            box-shadow: 0 0 20px var(--primary-glow), 0 0 0 10px rgba(0, 168, 107, 0.1), 0 0 0 6px var(--background);
+            background: var(--primary);
+        }
+        .timeline-phase.highlight-phase::before {
+            width: 14px;
+            height: 14px;
+            left: -33px;
+            top: 26px;
+            border-width: 2.5px;
+            box-shadow: 0 0 18px var(--primary-glow), 0 0 30px rgba(0, 168, 107, 0.45), 0 0 0 6px var(--background);
+        }
+        .phase-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .phase-number {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: var(--primary);
+            flex-shrink: 0;
+            padding: 4px 10px;
+            border: 1px solid rgba(0, 168, 107, 0.3);
+            border-radius: 20px;
+            background: rgba(0, 168, 107, 0.08);
+            white-space: nowrap;
+        }
+        .phase-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--secondary);
+            letter-spacing: 0.03em;
+            flex: 1;
+            min-width: 200px;
+        }
+        .phase-badge {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            padding: 3px 10px;
+            border-radius: 14px;
+            white-space: nowrap;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+        .badge-must {
+            background: rgba(0, 168, 107, 0.15);
+            color: var(--primary);
+            border: 1px solid rgba(0, 168, 107, 0.3);
+        }
+        .badge-recommend {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .badge-peak {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--secondary);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            letter-spacing: 0.06em;
+        }
+        .phase-content {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.75;
+            letter-spacing: 0.015em;
+        }
+        .phase-content strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+        .phase-content em {
+            color: var(--secondary);
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+        .phase-content .issue-tag {
+            display: inline-block;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            color: var(--secondary);
+            background: rgba(255, 255, 255, 0.04);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 1px 2px;
+        }
+        .phase-content .highlight-tag {
+            display: inline-block;
+            font-size: 0.76rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            color: var(--primary);
+            background: rgba(0, 168, 107, 0.07);
+            padding: 2px 9px;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 168, 107, 0.2);
+            margin: 1px 2px;
+        }
+        .phase-details {
+            margin-top: 10px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            letter-spacing: 0.02em;
+            line-height: 1.7;
+        }
+        .phase-details strong {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ── Compact List Card ── */
+        .compact-list-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 26px 28px;
+            margin: 36px 0;
+            box-shadow: var(--shadow-lg), inset 0 1px 0 var(--glass-highlight);
+            position: relative;
+            overflow: hidden;
+        }
+        .compact-list-card::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, rgba(0, 168, 107, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            border-radius: 50%;
+        }
+        .compact-list-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--secondary);
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        .compact-list-card ol {
+            list-style: none;
+            counter-reset: cl;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+        }
+        .compact-list-card ol li {
+            counter-increment: cl;
+            position: relative;
+            padding: 10px 0 10px 38px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 0.88rem;
+            letter-spacing: 0.02em;
+            color: var(--text);
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+        .compact-list-card ol li:last-child {
+            border-bottom: none;
+        }
+        .compact-list-card ol li:hover {
+            color: var(--secondary);
+            background: rgba(255, 255, 255, 0.015);
+            border-radius: 6px;
+            padding-left: 42px;
+        }
+        .compact-list-card ol li::before {
+            content: counter(cl);
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(0, 168, 107, 0.1);
+            border: 1px solid rgba(0, 168, 107, 0.3);
+            color: var(--primary);
+            font-size: 0.72rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0;
+            transition: var(--transition);
+        }
+        .compact-list-card ol li:hover::before {
+            background: rgba(0, 168, 107, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 14px var(--primary-glow);
+        }
+
+        /* ── Extra Tips ── */
+        .extra-tips {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin: 28px 0 40px;
+        }
+        .tip-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+            box-shadow: var(--shadow-md), inset 0 1px 0 var(--glass-highlight);
+            transition: var(--transition);
+        }
+        .tip-card:hover {
+            border-color: var(--border-glow);
+            box-shadow: var(--shadow-lg), inset 0 1px 0 var(--glass-highlight);
+        }
+        .tip-card .tip-icon {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+        .tip-card h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: var(--secondary);
+            margin-bottom: 6px;
+        }
+        .tip-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+            line-height: 1.6;
+        }
+
+        /* ── Supplement Accordion ── */
+        .supplement-section {
+            margin: 40px 0;
+        }
+        .supplement-toggle {
+            width: 100%;
+            text-align: left;
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 18px 22px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md), inset 0 1px 0 var(--glass-highlight);
+            margin-bottom: 6px;
+        }
+        .supplement-toggle:hover {
+            border-color: var(--border-glow);
+            background: var(--surface-hover);
+        }
+        .supplement-toggle .toggle-arrow {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.35s ease;
+            flex-shrink: 0;
+            color: var(--primary);
+        }
+        .supplement-toggle[aria-expanded="true"] .toggle-arrow {
+            transform: rotate(180deg);
+        }
+        .supplement-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin 0.35s ease;
+            margin-bottom: 0;
+        }
+        .supplement-panel.open {
+            max-height: 4000px;
+            margin-bottom: 16px;
+        }
+        .supplement-inner {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 20px 22px;
+            box-shadow: var(--shadow-md), inset 0 1px 0 var(--glass-highlight);
+            margin-top: 2px;
+        }
+        .supplement-inner h5 {
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            margin: 16px 0 8px;
+            text-transform: uppercase;
+        }
+        .supplement-inner h5:first-child {
+            margin-top: 0;
+        }
+        .supplement-inner p,
+        .supplement-inner li {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+            line-height: 1.7;
+        }
+        .supplement-inner ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .supplement-inner ul li {
+            padding: 4px 0 4px 18px;
+            position: relative;
+        }
+        .supplement-inner ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 12px;
+            width: 5px;
+            height: 5px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+        .supplement-inner strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+        .supplement-inner em {
+            color: var(--secondary);
+            font-style: italic;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            font-size: 0.78rem;
+            letter-spacing: 0.04em;
+        }
+        .footer .glow-dot {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            background: var(--primary);
+            border-radius: 50%;
+            margin: 0 6px;
+            box-shadow: 0 0 8px var(--primary-glow);
+            vertical-align: middle;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px 14px 60px;
+            }
+            .timeline {
+                padding-left: 26px;
+            }
+            .timeline::before {
+                left: 8px;
+            }
+            .timeline-phase::before {
+                left: -23px;
+                top: 24px;
+                width: 9px;
+                height: 9px;
+                box-shadow: 0 0 8px var(--primary-glow), 0 0 0 5px var(--background);
+            }
+            .timeline-phase.highlight-phase::before {
+                width: 11px;
+                height: 11px;
+                left: -24px;
+                top: 23px;
+                box-shadow: 0 0 14px var(--primary-glow), 0 0 24px rgba(0, 168, 107, 0.4), 0 0 0 5px var(--background);
+            }
+            .header {
+                padding: 32px 16px 28px;
+            }
+            .phase-header {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .phase-title {
+                font-size: 0.95rem;
+            }
+            .extra-tips {
+                grid-template-columns: 1fr;
+            }
+            .compact-list-card {
+                padding: 18px 16px;
+            }
+            .compact-list-card ol li {
+                padding-left: 32px;
+                font-size: 0.82rem;
+            }
+            .compact-list-card ol li::before {
+                width: 22px;
+                height: 22px;
+                font-size: 0.65rem;
+                top: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ═══════════ HEADER ═══════════ -->
+        <header class="header">
+            <div class="header-icon">
+                <!-- 极简几何灯笼图标 -->
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="24" cy="24" r="20" stroke="white" stroke-width="1.5" stroke-opacity="0.3"/>
+                    <circle cx="24" cy="24" r="14" stroke="#00A86B" stroke-width="1.8" stroke-opacity="0.9"/>
+                    <circle cx="24" cy="24" r="6" fill="#00A86B" fill-opacity="0.7"/>
+                    <line x1="24" y1="4" x2="24" y2="10" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
+                    <line x1="24" y1="38" x2="24" y2="44" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
+                    <line x1="4" y1="24" x2="10" y2="24" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
+                    <line x1="38" y1="24" x2="44" y2="24" stroke="white" stroke-width="1" stroke-opacity="0.5"/>
+                </svg>
+            </div>
+            <h1>凯尔·雷纳 阅读指南</h1>
+            <p class="subtitle">Kyle Rayner · Complete Reading Timeline</p>
+            <span class="accent-line"></span>
+        </header>
+
+        <!-- ═══════════ CORE CONCLUSION ═══════════ -->
+        <div class="core-conclusion">
+            <div class="label"><span class="dot"></span>核心结论</div>
+            <p>凯尔是<strong>DC最适合完整追补的角色之一</strong>。他的故事有清晰的成长弧线：</p>
+            <div class="growth-path">
+                <span>菜鸟艺术家</span><span class="arrow">→</span>
+                <span>唯一绿灯</span><span class="arrow">→</span>
+                <span>正联核心</span><span class="arrow">→</span>
+                <span>Ion神级</span><span class="arrow">→</span>
+                <span>军团荣誉卫士</span><span class="arrow">→</span>
+                <span>白灯/全色谱</span><span class="arrow">→</span>
+                <span>Omega Men深度</span><span class="arrow">→</span>
+                <span>Rebirth老将</span>
+            </div>
+            <p style="margin-top:8px;font-size:0.82rem;color:var(--text-muted);">刊物相对集中，支线不多，数字版易得。</p>
+        </div>
+
+        <!-- ═══════════ MAIN TIMELINE ═══════════ -->
+        <h2 class="section-title">成长时间轴 · 八大阶段</h2>
+
+        <div class="timeline">
+
+            <!-- Phase 1 -->
+            <div class="timeline-phase highlight-phase">
+                <div class="phase-header">
+                    <span class="phase-number">第一阶段</span>
+                    <span class="phase-title">凯尔的诞生与早期成长</span>
+                    <span class="phase-badge badge-must">必读</span>
+                </div>
+                <div class="phase-content">
+                    <p><strong>1. Emerald Twilight（哈尔堕落）</strong></p>
+                    <p><span class="issue-tag">Green Lantern (Vol. 3) #48-50</span>（1994）— Coast City毁灭、哈尔（Parallax）屠杀军团、摧毁Oa。凯尔<span class="highlight-tag">首次登场（#50末尾）</span>。这是现代凯尔神话的<strong>直接起点</strong>。</p>
+                    <p style="margin-top:8px;"><strong>2. A New Dawn（正式成为绿灯）</strong></p>
+                    <p><span class="issue-tag">Green Lantern (Vol. 3) #51-55</span>（及#0）— Ganthet选择凯尔（"<em>You have the ability to overcome great fear.</em>"）。关键人物：<strong>Alexandra DeWitt</strong>（女友，被Major Force杀害并"冰箱"事件，成为凯尔创伤与动力）。凯尔从菜鸟漫画家开始学习使用戒指，重新设计制服，搬到纽约。</p>
+                    <p style="margin-top:8px;"><strong>3. Zero Hour: Crisis in Time</strong></p>
+                    <p><span class="issue-tag">Green Lantern (Vol. 3) #54-55</span> + <span class="issue-tag">Zero Hour #4-0</span>（倒序读）— 凯尔首次参与宇宙级事件，与Parallax/Hal对抗，摧毁Oa残骸。</p>
+                </div>
+                <div class="phase-details">
+                    <strong>早期客串/成长：</strong>New Titans、Guy Gardner等联动，凯尔加入Titans，与<strong>Donna Troy</strong>发展感情线（后分合）。
+                </div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="timeline-phase highlight-phase">
+                <div class="phase-header">
+                    <span class="phase-number">第二阶段</span>
+                    <span class="phase-title">唯一绿灯时代</span>
+                    <span class="phase-badge badge-peak">凯尔最重要时期</span>
+                </div>
+                <div class="phase-content">
+                    <p><span class="issue-tag">Green Lantern (Vol. 3) #51-181</span>（凯尔为主角的130+期）。数字版易得，许多有TPB收集。</p>
+                    <p style="margin-top:6px;"><strong>精华弧线（按成长顺序）：</strong></p>
+                    <p>— <strong>Baptism of Fire / Hero Quest：</strong><span class="issue-tag">GL #59, #66-75</span>（含Underworld Unleashed #68-69交叉）。凯尔摆脱菜鸟，寻求Batman、Superman、Wonder Woman等指点，真正成为英雄。</p>
+                    <p>— <strong>Emerald Allies：</strong><span class="issue-tag">GL #76-77, #92</span> + Green Arrow联动。重点凯尔与Oliver Queen/Connor Hawke的关系，建立英雄友谊。</p>
+                    <p>— <strong>The Final Night：</strong><span class="issue-tag">The Final Night #1-4</span> + <span class="issue-tag">GL #80-81</span>。哈尔作为Parallax赎罪牺牲。凯尔时代重要转折，情感冲击大。</p>
+                    <p>— <strong>Emerald Knights：</strong><span class="issue-tag">GL #99-106</span>（+ Green Arrow #136）。Ron Marz时期凯尔成熟代表，与时间旅行Hal互动，展现成长与自尊。</p>
+                    <p>— <strong>Circle of Fire：</strong><span class="issue-tag">GL #129-136</span> + <span class="issue-tag">Circle of Fire #1-2</span> + 相关one-shots。凯尔时代重大个人事件，尝试重建Corps理念。</p>
+                </div>
+                <div class="phase-details">
+                    <strong>其他重要：</strong>与Fatality、Major Force等宿敌；Jade短暂同居/感情线；持续克服恐惧与失去的主题。
+                </div>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="timeline-phase highlight-phase">
+                <div class="phase-header">
+                    <span class="phase-number">第三阶段</span>
+                    <span class="phase-title">正义联盟时期</span>
+                    <span class="phase-badge badge-recommend">超级推荐</span>
+                </div>
+                <div class="phase-content">
+                    <p><span class="issue-tag">JLA (1997) #1-60左右</span>（重点Grant Morrison前期<span class="highlight-tag">#1-41</span>）。</p>
+                    <p>凯尔成为<strong>"真正七巨头"</strong>之一（与Superman、Batman、Wonder Woman、Wally West Flash、Aquaman、Martian Manhunter）。展现凯尔作为新人却可靠的核心成员，与Wally的<strong>Green Lantern-Flash搭档友情</strong>深化。许多粉丝心中的黄金时代。</p>
+                </div>
+                <div class="phase-details">
+                    <strong>感情/成长：</strong>继续Donna Troy线（分手后复合尝试），团队中找到归属感。
+                </div>
+            </div>
+
+            <!-- Phase 4 -->
+            <div class="timeline-phase highlight-phase">
+                <div class="phase-header">
+                    <span class="phase-number">第四阶段</span>
+                    <span class="phase-title">Ion时代</span>
+                    <span class="phase-badge badge-peak">凯尔个人巅峰</span>
+                </div>
+                <div class="phase-content">
+                    <p>— <strong>The Power of Ion：</strong><span class="issue-tag">GL #142-150</span>。凯尔成为Ion实体宿主，最强时期之一。</p>
+                    <p>— <strong>Brother's Keeper：</strong><span class="issue-tag">GL #151-155</span>。Ion剧情延续。</p>
+                    <p>— <strong>Passing the Torch：</strong><span class="issue-tag">GL #156-161</span>（+ Secret Files）。凯尔时代收尾，传递火炬。</p>
+                </div>
+                <div class="phase-details">
+                    <strong>身份变化：</strong>从"唯一绿灯"到神级守护者，探索力量责任。
+                </div>
+            </div>
+
+            <!-- Phase 5 -->
+            <div class="timeline-phase highlight-phase">
+                <div class="phase-header">
+                    <span class="phase-number">第五阶段</span>
+                    <span class="phase-title">军团重建时代</span>
+                    <span class="phase-badge badge-must">必读</span>
+                </div>
+                <div class="phase-content">
+                    <p>凯尔不再是唯一绿灯，但仍是核心/荣誉卫士。</p>
+                    <p>— <span class="issue-tag">Green Lantern: Rebirth (2004)</span>：Hal归来，Corps重建。<strong>必读。</strong></p>
+                    <p>— <span class="issue-tag">Green Lantern Corps: Recharge #1-5</span>：凯尔参与重建，成为关键成员。</p>
+                    <p>— <span class="issue-tag">Green Lantern Corps (2006)</span>：重点凯尔、Guy Gardner、Kilowog三人组。全刊推荐。</p>
+                    <p>— <span class="issue-tag">Ion (2006) #1-12</span>：凯尔第二次成为Ion，角色成长终章。</p>
+                </div>
+                <div class="phase-details">
+                    <strong>重大宇宙事件（凯尔戏份重）：</strong><span class="highlight-tag">Sinestro Corps War</span>（神作，必读）、<span class="highlight-tag">Blackest Night</span>（白灯线前奏，必读）。凯尔情感与力量考验。
+                </div>
+            </div>
+
+            <!-- Phase 6 -->
+            <div class="timeline-phase highlight-phase">
+                <div class="phase-header">
+                    <span class="phase-number">第六阶段</span>
+                    <span class="phase-title">白灯/新守护者</span>
+                    <span class="phase-badge badge-peak">个人第二巅峰</span>
+                </div>
+                <div class="phase-content">
+                    <p>许多凯尔粉丝认为<strong>白灯凯尔最强</strong>。</p>
+                    <p><span class="issue-tag">Green Lantern: New Guardians #1-40</span>：凯尔绝对主角。新52重要凯尔刊。全色谱成长（蓝/红/青/橙/白等环）。最终成为<span class="highlight-tag">White Lantern</span>。重点事件：Rise of the Third Army、Wrath of the First Lantern、Lights Out、Godhead。</p>
+                </div>
+                <div class="phase-details">
+                    <strong>身份：</strong>新守护者领袖，全情感谱系承载者。
+                </div>
+            </div>
+
+            <!-- Phase 7 -->
+            <div class="timeline-phase highlight-phase">
+                <div class="phase-header">
+                    <span class="phase-number">第七阶段</span>
+                    <span class="phase-title">Omega Men</span>
+                    <span class="phase-badge badge-peak">神作·深度刻画</span>
+                </div>
+                <div class="phase-content">
+                    <p><span class="issue-tag">Omega Men (2015) #1-12</span>（Tom King）。政治惊悚+太空歌剧。凯尔（White Lantern）被"杀"后卷入Vega系统冲突，探讨信仰、战争、和平。不需要太多前置绿灯知识，许多人视为<strong>凯尔最佳单本</strong>。<span class="highlight-tag">强烈推荐。</span></p>
+                </div>
+                <div class="phase-details">
+                    <strong>成长：</strong>更成熟、反思英雄主义与道德灰色。
+                </div>
+            </div>
+
+            <!-- Phase 8 -->
+            <div class="timeline-phase">
+                <div class="phase-header">
+                    <span class="phase-number">第八阶段</span>
+                    <span class="phase-title">Rebirth至今</span>
+                    <span class="phase-badge badge-recommend">军团老将</span>
+                </div>
+                <div class="phase-content">
+                    <p>— <span class="issue-tag">Hal Jordan and the Green Lantern Corps #9-50+</span>：凯尔回归军团，重要戏份。</p>
+                    <p>— <span class="issue-tag">Green Lanterns (2016) #22-24, #50-57</span>：担任导师角色。</p>
+                </div>
+                <div class="phase-details">
+                    <strong>后期：</strong>作为White Lantern/Old Guard在各种事件中出现（War of the Green Lanterns余波、Dark Nights等），继续与Hal、Guy、John等互动。身份稳定在高阶军团成员/多色谱英雄。
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ COMPACT MUST-READ LIST ═══════════ -->
+        <div class="compact-list-card">
+            <h3>◆ 究极版浓缩必读清单（按时间/重要性）</h3>
+            <ol>
+                <li>Green Lantern (1990) #48-55 + Zero Hour</li>
+                <li>Baptism of Fire (GL #59, 66-75)</li>
+                <li>The Final Night</li>
+                <li>Emerald Knights (GL #99-106)</li>
+                <li>JLA (Morrison前期)</li>
+                <li>Circle of Fire</li>
+                <li>Power of Ion (GL #142-150)</li>
+                <li>Green Lantern: Rebirth + Recharge</li>
+                <li>Green Lantern Corps (2006) + Ion (2006)</li>
+                <li>Sinestro Corps War + Blackest Night</li>
+                <li>Green Lantern: New Guardians #1-40 + 相关事件</li>
+                <li>Omega Men (2015)</li>
+                <li>Hal Jordan and the Green Lantern Corps (凯尔戏份期)</li>
+            </ol>
+        </div>
+
+        <!-- ═══════════ EXTRA TIPS ═══════════ -->
+        <div class="extra-tips">
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="#00A86B" stroke-width="1.5"/><circle cx="14" cy="14" r="4" fill="#00A86B" fill-opacity="0.6"/></svg>
+                </div>
+                <h4>感情线总结</h4>
+                <p>Alex（创伤起源）、Donna Troy（主要早期恋情）、Jade（短暂）、后期更注重团队/宇宙责任。</p>
+            </div>
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <svg viewBox="0 0 28 28" fill="none"><rect x="5" y="5" width="18" height="18" rx="3" stroke="#00A86B" stroke-width="1.5"/><line x1="9" y1="10" x2="19" y2="10" stroke="#00A86B" stroke-width="1.2"/><line x1="9" y1="14" x2="19" y2="14" stroke="#00A86B" stroke-width="1.2"/><line x1="9" y1="18" x2="15" y2="18" stroke="#00A86B" stroke-width="1.2"/></svg>
+                </div>
+                <h4>收集建议</h4>
+                <p>许多有Compendium/TPB（如Kyle Rayner Rising Compendium）。数字平台（DC Infinite）最全。</p>
+            </div>
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <svg viewBox="0 0 28 28" fill="none"><polygon points="14,4 26,24 2,24" stroke="#00A86B" stroke-width="1.5" stroke-linejoin="round"/><circle cx="14" cy="18" r="1.5" fill="#00A86B"/></svg>
+                </div>
+                <h4>2020s更新</h4>
+                <p>凯尔持续作为资深Lantern出现，重点仍在军团/宇宙事件中。2025-2026年有重要回归。</p>
+            </div>
+        </div>
+
+        <!-- ═══════════ SUPPLEMENT SECTION ═══════════ -->
+        <h2 class="section-title">补充扩展 · 支线 & 客串 & 深度内容</h2>
+        <p style="font-size:0.82rem;color:var(--text-dim);margin:-12px 0 20px;letter-spacing:0.02em;">以下补充不取代原主线，而是丰富团队互动、个人情感深化和宇宙事件配角戏份。</p>
+
+        <div class="supplement-section">
+            <!-- Accordion Item 1 -->
+            <button class="supplement-toggle" aria-expanded="false" onclick="togglePanel(this, 'panel-early')">
+                早期补充（1994-1996，唯一绿灯初期，团队与感情线）
+                <svg class="toggle-arrow" viewBox="0 0 20 20" fill="none"><polyline points="4,7 10,13 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="supplement-panel" id="panel-early">
+                <div class="supplement-inner">
+                    <h5>New Titans / Teen Titans相关（重要感情线起点）</h5>
+                    <p><em>New Titans #116-117, #124-130</em>（尤其是Meltdown弧）。凯尔加入Titans，与<strong>Donna Troy</strong>发展浪漫关系（从合作到恋爱，分分合合多次，是他早期主要感情线）。这段强化了凯尔从"菜鸟艺术家"到"团队英雄"的身份转变。</p>
+                    <h5>Hard Traveling Heroes: The Next Generation</h5>
+                    <p><em>Green Arrow (Vol. 2) #110-111</em>（联动GL #77-78）。凯尔与Connor Hawke的早期友谊与公路旅行故事，寻找凯尔父亲相关。</p>
+                    <h5>其他早期客串</h5>
+                    <ul>
+                        <li><em>Guy Gardner: Warrior #27-28</em>、<em>Darkstars #34</em>、<em>Damage #16</em>（Kyle Rayner Rising Compendium收录部分）</li>
+                        <li><em>Green Lantern/Atom #1</em>、<em>Green Lantern/Power Girl #1</em> 等one-shots（Circle of Fire相关扩展）</li>
+                        <li><strong>Green Lantern: The New Corps #1-2</strong>（1999）— 凯尔尝试重建Corps的早期努力</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Accordion Item 2 -->
+            <button class="supplement-toggle" aria-expanded="false" onclick="togglePanel(this, 'panel-jla')">
+                JLA时期补充（1997-2000s，核心成员成长）
+                <svg class="toggle-arrow" viewBox="0 0 20 20" fill="none"><polyline points="4,7 10,13 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="supplement-panel" id="panel-jla">
+                <div class="supplement-inner">
+                    <ul>
+                        <li><strong>Justice League: A Midsummer's Nightmare #1-3</strong>（JLA前传）</li>
+                        <li><strong>JLA/Titans</strong> crossover</li>
+                        <li><strong>Green Lantern/Flash: Faster Friends #1-2</strong>（与Wally West的经典搭档故事，延续Green Lantern-Flash legacy）</li>
+                        <li><strong>JLA: The Obsidian Age</strong>（JLA弧，凯尔在团队中的表现突出）</li>
+                        <li><strong>Identity Crisis</strong>（凯尔有重要情感戏份）</li>
+                    </ul>
+                    <p style="margin-top:8px;">这些强化了凯尔在"七巨头"中的归属感、与Wally/Connor的下一代英雄友情。</p>
+                </div>
+            </div>
+
+            <!-- Accordion Item 3 -->
+            <button class="supplement-toggle" aria-expanded="false" onclick="togglePanel(this, 'panel-ion')">
+                Ion/中后期补充（2000s，过渡期）
+                <svg class="toggle-arrow" viewBox="0 0 20 20" fill="none"><polyline points="4,7 10,13 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="supplement-panel" id="panel-ion">
+                <div class="supplement-inner">
+                    <ul>
+                        <li><strong>Green Lantern: New Journey, Old Path</strong>（GL Vol.3部分，Judd Winick早期）</li>
+                        <li><strong>Rann-Thanagar War #1-6</strong>（2005）— 凯尔在宇宙事件中的戏份</li>
+                        <li><strong>Infinite Crisis</strong>（凯尔再次成为Ion，Jade死亡相关情感冲击）</li>
+                        <li><strong>Countdown to Final Crisis</strong>（及Countdown: Search for Ray Palmer）— 凯尔多宇宙旅行、身份危机，是他"被边缘化"时期的显著成长点（虽争议大，但戏份重）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Accordion Item 4 -->
+            <button class="supplement-toggle" aria-expanded="false" onclick="togglePanel(this, 'panel-blackest')">
+                Blackest Night前后补充（军团时代）
+                <svg class="toggle-arrow" viewBox="0 0 20 20" fill="none"><polyline points="4,7 10,13 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="supplement-panel" id="panel-blackest">
+                <div class="supplement-inner">
+                    <h5>Green Lantern Corps系列更多弧线</h5>
+                    <ul>
+                        <li><em>Ring Quest</em>、<em>Sins of the Star Sapphire</em>、<em>Emerald Eclipse</em>、<em>Revolt of the Alpha Lanterns</em>、<em>The Weaponer</em></li>
+                        <li><em>War of the Green Lanterns</em> + <em>Aftermath</em>（凯尔Honor Guard地位体现）</li>
+                        <li><strong>Tales of the Sinestro Corps: Ion</strong>（Sinestro Corps War tie-in）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Accordion Item 5 -->
+            <button class="supplement-toggle" aria-expanded="false" onclick="togglePanel(this, 'panel-n52')">
+                New 52 / White Lantern补充
+                <svg class="toggle-arrow" viewBox="0 0 20 20" fill="none"><polyline points="4,7 10,13 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="supplement-panel" id="panel-n52">
+                <div class="supplement-inner">
+                    <ul>
+                        <li><strong>Convergence: Green Lantern/Parallax #1-2</strong>（2015）— 闪回与Parallax互动</li>
+                        <li><strong>Green Lantern: New Guardians</strong>相关crossover（如Lights Out、Godhead的具体tie-ins）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Accordion Item 6 -->
+            <button class="supplement-toggle" aria-expanded="false" onclick="togglePanel(this, 'panel-rebirth')">
+                Rebirth至今补充（军团老将/导师）& 2025-2026近期动态
+                <svg class="toggle-arrow" viewBox="0 0 20 20" fill="none"><polyline points="4,7 10,13 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="supplement-panel" id="panel-rebirth">
+                <div class="supplement-inner">
+                    <h5>Hal Jordan and the Green Lantern Corps 更多卷</h5>
+                    <p><em>Bottled Light</em>、<em>Quest for Hope</em>、<em>Fracture</em>、<em>Twilight of the Guardians</em>、<em>Zod's Will</em>、<em>Darkstars Rising</em> 等。凯尔作为资深成员的互动与成长。</p>
+                    <h5>其他客串</h5>
+                    <ul>
+                        <li><strong>Green Lanterns (2016)</strong> 更多期（导师Simon Baz & Jessica Cruz）</li>
+                        <li><strong>Titans</strong>系列客串（如Titans: Into the Bleed等，Donna Troy线延续可能）</li>
+                    </ul>
+                    <h5>2025-2026近期</h5>
+                    <ul>
+                        <li>凯尔在<em>Green Lantern</em>系列中有显著<strong>White Lantern/Nova形式</strong>展现（2025期）</li>
+                        <li>2026起，<strong>Kyle Rayner正式回归</strong>作为地球主要Green Lantern（<em>Green Lantern #600</em>等），新制服亮相，故事聚焦洛杉矶等地，可能与新角色（如Odyssey）互动。这是近年最重要回归。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Accordion Item 7 -->
+            <button class="supplement-toggle" aria-expanded="false" onclick="togglePanel(this, 'panel-misc')">
+                其他值得一提的单本/支线 & 收集建议
+                <svg class="toggle-arrow" viewBox="0 0 20 20" fill="none"><polyline points="4,7 10,13 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="supplement-panel" id="panel-misc">
+                <div class="supplement-inner">
+                    <h5>单本/支线（可选深度）</h5>
+                    <ul>
+                        <li><em>Green Lantern: Secret Files</em> 系列（背景与起源补充）</li>
+                        <li><em>Green Lantern: Fear Itself</em> one-shot</li>
+                        <li><em>JLA Classified</em> 部分期</li>
+                        <li><em>Hitman Vol. 3: Local Heroes</em>（#3期客串）</li>
+                    </ul>
+                    <h5>感情线额外</h5>
+                    <p>Jade同居期（GL Vol.3中后期）、后期与Donna的反复；Ion时期个人责任 vs. 感情冲突。</p>
+                    <h5>收集建议</h5>
+                    <ul>
+                        <li><strong>Kyle Rayner Rising Compendium</strong>（早期打包最佳）</li>
+                        <li>许多中后期有TPB，但数字/<strong>DC Infinite</strong>最全</li>
+                        <li>完整chronology可参考DC Fandom或Comic Book Treasury</li>
+                    </ul>
+                    <p style="margin-top:8px;color:var(--text-dim);">这些补充让时间轴更全面，尤其是<strong>团队归属（Titans/JLA）、感情深度（Donna/Jade）和过渡期（Countdown/Infinite Crisis）</strong>。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════ FOOTER ═══════════ -->
+        <footer class="footer">
+            <p>凯尔·雷纳阅读指南<span class="glow-dot"></span>完整时间轴</p>
+            <p style="margin-top:4px;">菜鸟艺术家 → 唯一绿灯 → 正联核心 → Ion神级 → 军团荣誉卫士 → 白灯/全色谱 → 深度反思 → 传奇老将</p>
+            <p style="margin-top:8px;font-size:0.7rem;color:var(--text-dim);">数据来源：DC Comics · 整理核查版 · 2026</p>
+        </footer>
+
+    </div>
+
+    <script>
+        function togglePanel(btn, panelId) {
+            const panel = document.getElementById(panelId);
+            const isOpen = panel.classList.contains('open');
+            // Close all panels first (optional: accordion behavior)
+            // document.querySelectorAll('.supplement-panel.open').forEach(p => { p.classList.remove('open'); });
+            // document.querySelectorAll('.supplement-toggle[aria-expanded="true"]').forEach(b => { b.setAttribute('aria-expanded',
+            //     'false'); });
+            if (isOpen) {
+                panel.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            } else {
+                panel.classList.add('open');
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        }
+    </script>
+
+</body>
+</html>
