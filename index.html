@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC 角色阅读顺序指南 | DC Archives</title>
+    <!-- 引入思源宋体 Noto Serif SC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* 基础重置与字体设置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;   /* 改为顶部对齐，防止内容被垂直裁切 */
+            background-color: #1a0b2e;
+            overflow-x: hidden;        /* 只隐藏横向溢出，保留纵向滚动 */
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* 蒸汽波风格背景：渐变星空 */
+        .vaporwave-bg {
+            position: fixed;           /* 改为 fixed，滚动时背景不跟着跑 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #090a0f 0%, #1a0b2e 40%, #4b1d52 100%);
+            z-index: -3;
+        }
+
+        /* 蒸汽波风格背景：落日 */
+        .vaporwave-sun {
+            position: fixed;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: linear-gradient(180deg, #ffcc00 0%, #ff007f 100%);
+            box-shadow: 0 0 60px rgba(255, 0, 127, 0.6);
+            z-index: -2;
+            /* 模拟落日百叶窗切片效果 */
+            -webkit-mask-image: repeating-linear-gradient(to bottom, #000 0%, #000 8%, transparent 8%, transparent 10%);
+            mask-image: repeating-linear-gradient(to bottom, #000 0%, #000 8%, transparent 8%, transparent 10%);
+        }
+
+        /* 蒸汽波风格背景：3D透视霓虹网格 */
+        .vaporwave-grid {
+            position: fixed;
+            bottom: -20%;
+            left: -50%;
+            width: 200%;
+            height: 60%;
+            background-image:
+                linear-gradient(rgba(0, 255, 255, 0.4) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.4) 1px, transparent 1px);
+            background-size: 40px 40px;
+            transform: perspective(600px) rotateX(75deg);
+            z-index: -1;
+            box-shadow: inset 0 20px 40px #4b1d52;
+        }
+
+        /* 玻璃拟态主面板 */
+        .glass-container {
+            width: 90%;
+            max-width: 650px;
+            margin: 40px auto;         /* 上下留出滚动空间 */
+            padding: 40px;
+            border-radius: 20px;
+            /* 核心：高斯模糊与半透明背景 */
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            /* 边缘高光，增强玻璃质感 */
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            text-align: center;
+        }
+
+        /* 标题样式：霓虹发光与思源宋体的结合 */
+        h1 {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+        }
+
+        p.subtitle {
+            color: #ffb3ff;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 35px;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+
+        /* 导航链接列表 - 始终为双栏网格 */
+        .nav-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            text-align: left;
+        }
+
+        /* 分组标题：跨整行，带霓虹色调 */
+        .group-title {
+            grid-column: span 2;
+            color: #00ffff;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin: 10px 0 6px 0;
+            text-shadow: 0 0 8px #00ffff;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            padding-bottom: 4px;
+        }
+
+        /* 按钮/链接样式 */
+        .nav-item {
+            display: block;
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 16px;          /* 中文字号改小，原来是18px */
+            padding: 16px 20px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* 按钮内部中英文排版 */
+        .nav-item .en-name {
+            display: block;
+            font-size: 12px;
+            font-weight: 400;
+            color: #00ffff;
+            opacity: 0.8;
+            margin-top: 4px;
+            font-family: monospace; /* 英文名用等宽字体增加复古科幻感 */
+        }
+
+        /* 悬停交互：蒸汽波粉色/青色霓虹反转 */
+        .nav-item:hover {
+            background: rgba(255, 0, 255, 0.15);
+            border-color: #ff00ff;
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.5), inset 0 0 10px rgba(255, 0, 255, 0.2);
+            transform: translateY(-3px);
+            text-shadow: 0 0 8px #ffffff;
+        }
+
+        .nav-item:hover .en-name {
+            color: #ffb3ff;
+            opacity: 1;
+        }
+
+        /* 响应式调整：仅调整容器内边距和落日尺寸，保持双栏布局 */
+        @media (max-width: 480px) {
+            .glass-container {
+                padding: 30px 20px;
+                margin: 20px auto;
+            }
+            .vaporwave-sun {
+                width: 280px;
+                height: 280px;
+            }
+            /* 不再覆盖 nav-list 和 group-title，强制双栏 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 纯CSS视觉背景层 -->
+    <div class="vaporwave-bg"></div>
+    <div class="vaporwave-sun"></div>
+    <div class="vaporwave-grid"></div>
+
+    <!-- 玻璃拟态导航面板 -->
+    <div class="glass-container">
+        <h1>DC 角色阅读顺序指南</h1>
+        <p class="subtitle">LOCAL ARCHIVE NAVIGATOR</p>
+
+        <div class="nav-list">
+            <!-- 三巨头 -->
+            <div class="group-title">⚡ 三巨头</div>
+            <a href="Bruce-Wayne.html" class="nav-item">
+                布鲁斯·韦恩
+                <span class="en-name">Bruce-Wayne.html</span>
+            </a>
+            <a href="Clark-Kent.html" class="nav-item">
+                克拉克·肯特
+                <span class="en-name">Clark-Kent.html</span>
+            </a>
+            <a href="Diana-Prince.html" class="nav-item">
+                戴安娜·普林斯
+                <span class="en-name">Diana-Prince.html</span>
+            </a>
+
+            <!-- 蝙蝠家 -->
+            <div class="group-title">🦇 蝙蝠家</div>
+            <a href="Dick-Grayson.html" class="nav-item">
+                迪克·格雷森
+                <span class="en-name">Dick-Grayson.html</span>
+            </a>
+            <a href="Tim-Drake.html" class="nav-item">
+                提姆·德雷克
+                <span class="en-name">Tim-Drake.html</span>
+            </a>
+            <a href="Barbara-Gordon.html" class="nav-item">
+                芭芭拉·戈登
+                <span class="en-name">Barbara-Gordon.html</span>
+            </a>
+
+            <!-- 闪系 -->
+            <div class="group-title">⚡ 闪系</div>
+            <a href="Barry-Allen.html" class="nav-item">
+                巴里·艾伦
+                <span class="en-name">Barry-Allen.html</span>
+            </a>
+            <a href="Wally-West.html" class="nav-item">
+                沃利·韦斯特
+                <span class="en-name">Wally-West.html</span>
+            </a>
+
+            <!-- 灯系 -->
+            <div class="group-title">💍 灯系</div>
+            <a href="Hal-Jordan.html" class="nav-item">
+                哈尔·乔丹
+                <span class="en-name">Hal-Jordan.html</span>
+            </a>
+            <a href="Kyle-Rayner.html" class="nav-item">
+                凯尔·雷纳
+                <span class="en-name">Kyle-Rayner.html</span>
+            </a>
+
+            <!-- 魔法 -->
+            <div class="group-title">🔮 魔法</div>
+            <a href="Billy-Batson.html" class="nav-item">
+                比利·巴特森
+                <span class="en-name">Billy-Batson.html</span>
+            </a>
+
+            <!-- 箭系 -->
+            <div class="group-title">🏹 箭系</div>
+            <a href="Oliver-Queen.html" class="nav-item">
+                奥利弗·奎恩
+                <span class="en-name">Oliver-Queen.html</span>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
