@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donna Troy 阅读指南 — 银紫星海 · 时间碎片</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --troia-violet: #7766D7;
+            --titan-purple: #5C4BA8;
+            --starlight-silver: #E8ECFF;
+            --amazon-gold: #D4B16A;
+            --deep-cosmos: #0D1020;
+            --cosmos-mid: #111530;
+            --cosmos-light: #181D3A;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-bg-hover: rgba(255, 255, 255, 0.10);
+            --glass-border: rgba(255, 255, 255, 0.13);
+            --glass-border-hover: rgba(255, 255, 255, 0.22);
+            --glass-blur: blur(24px);
+            --text-primary: #E8ECFF;
+            --text-secondary: #BCC4E8;
+            --text-muted: #8890B8;
+            --shadow-glow: 0 20px 50px rgba(119, 102, 215, 0.25);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.35);
+            --timeline-line: rgba(119, 102, 215, 0.45);
+            --timeline-dot: #7766D7;
+            --timeline-dot-glow: rgba(119, 102, 215, 0.7);
+            --node-size: 14px;
+            --node-size-active: 18px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', 'Source Han Serif SC', 'STSong', 'Songti SC', 'SimSun', 'Noto Serif', serif;
+            background: var(--deep-cosmos);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            position: relative;
+        }
+
+        /* ── 星空背景层 ── */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            background: #fff;
+            animation: starFloat linear infinite;
+            opacity: 0;
+        }
+        @keyframes starFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(0) translateX(0) scale(0.5);
+            }
+            5% {
+                opacity: 0.9;
+            }
+            15% {
+                opacity: 0.55;
+            }
+            40% {
+                opacity: 0.2;
+            }
+            70% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-110vh) translateX(30px) scale(1.2);
+            }
+        }
+
+        /* 星云光晕 */
+        .nebula {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(120px);
+            opacity: 0.22;
+        }
+        .nebula-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--troia-violet) 0%, transparent 70%);
+            top: -15%;
+            left: 10%;
+            animation: nebulaDrift 28s ease-in-out infinite;
+        }
+        .nebula-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--titan-purple) 0%, transparent 70%);
+            bottom: -10%;
+            right: 5%;
+            animation: nebulaDrift 34s ease-in-out infinite reverse;
+        }
+        .nebula-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(119, 102, 215, 0.5) 0%, transparent 70%);
+            top: 40%;
+            left: 55%;
+            animation: nebulaDrift 40s ease-in-out infinite;
+        }
+        @keyframes nebulaDrift {
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(60px, -40px);
+            }
+            50% {
+                transform: translate(-30px, 50px);
+            }
+            75% {
+                transform: translate(-50px, -30px);
+            }
+        }
+
+        /* 记忆碎片 */
+        .memory-shards {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .shard {
+            position: absolute;
+            background: rgba(232, 236, 255, 0.04);
+            border: 1px solid rgba(232, 236, 255, 0.08);
+            animation: shardFloat linear infinite;
+            opacity: 0;
+        }
+        .shard-diamond {
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        }
+        .shard-triangle {
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+        }
+        .shard-hex {
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        }
+        @keyframes shardFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(0) rotate(0deg) scale(0.6);
+            }
+            10% {
+                opacity: 0.5;
+            }
+            30% {
+                opacity: 0.25;
+            }
+            60% {
+                opacity: 0.55;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) rotate(180deg) scale(1.1);
+            }
+        }
+
+        /* 紫色流光 */
+        .purple-stream {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            width: 300px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(119, 102, 215, 0.35), rgba(212, 177, 106, 0.25), transparent);
+            border-radius: 4px;
+            animation: streamFlow 18s linear infinite;
+            opacity: 0;
+        }
+        .purple-stream:nth-child(1) {
+            top: 18%;
+            left: -300px;
+            animation-delay: 0s;
+        }
+        .purple-stream:nth-child(2) {
+            top: 52%;
+            left: -300px;
+            animation-delay: 7s;
+        }
+        .purple-stream:nth-child(3) {
+            top: 78%;
+            left: -300px;
+            animation-delay: 13s;
+        }
+        @keyframes streamFlow {
+            0% {
+                opacity: 0;
+                left: -300px;
+            }
+            8% {
+                opacity: 0.7;
+            }
+            20% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 0.6;
+            }
+            70% {
+                opacity: 0.15;
+            }
+            100% {
+                opacity: 0;
+                left: 110vw;
+            }
+        }
+
+        /* ── 主布局 ── */
+        .app-container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ── Hero区域 (10%) ── */
+        .hero-section {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 3vh 2rem 2vh;
+            text-align: center;
+            min-height: 10vh;
+            flex-shrink: 0;
+        }
+        .hero-glass {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 1.8rem 3rem 1.6rem;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--shadow-card), 0 0 60px rgba(119, 102, 215, 0.12);
+            position: relative;
+            overflow: visible;
+        }
+        .hero-glass::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(212, 177, 106, 0.55), transparent);
+            border-radius: 2px;
+        }
+        .hero-star-symbol {
+            font-size: 2.6rem;
+            color: var(--amazon-gold);
+            line-height: 1;
+            text-shadow: 0 0 30px rgba(212, 177, 106, 0.5);
+            animation: starPulse 4s ease-in-out infinite;
+            user-select: none;
+        }
+        @keyframes starPulse {
+            0%,
+            100% {
+                text-shadow: 0 0 20px rgba(212, 177, 106, 0.4);
+                transform: scale(1);
+            }
+            50% {
+                text-shadow: 0 0 45px rgba(212, 177, 106, 0.75);
+                transform: scale(1.08);
+            }
+        }
+        .hero-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: var(--starlight-silver);
+            text-shadow: 0 0 40px rgba(119, 102, 215, 0.4);
+            line-height: 1.1;
+        }
+        .hero-subtitle-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 1.2rem;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            font-weight: 400;
+        }
+        .hero-subtitle-row span {
+            position: relative;
+            white-space: nowrap;
+        }
+        .hero-subtitle-row span+span::before {
+            content: '·';
+            position: absolute;
+            left: -0.75rem;
+            color: var(--amazon-gold);
+            opacity: 0.6;
+        }
+
+        /* ── 阅读路线区域 (70%) ── */
+        .timeline-section {
+            position: relative;
+            z-index: 2;
+            flex: 0 0 auto;
+            min-height: 70vh;
+            padding: 1rem 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .timeline-section-inner {
+            width: 100%;
+            max-width: 1000px;
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+            scroll-behavior: smooth;
+        }
+        .timeline-section-inner::-webkit-scrollbar {
+            width: 5px;
+        }
+        .timeline-section-inner::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .timeline-section-inner::-webkit-scrollbar-thumb {
+            background: rgba(119, 102, 215, 0.3);
+            border-radius: 10px;
+        }
+        .timeline-section-inner::-webkit-scrollbar-thumb:hover {
+            background: rgba(119, 102, 215, 0.5);
+        }
+
+        /* 时间轴容器 */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+        /* 时间轴主线 */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1.25rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg,
+                    transparent 0%,
+                    var(--timeline-line) 3%,
+                    var(--timeline-line) 97%,
+                    transparent 100%);
+            border-radius: 1px;
+        }
+
+        /* 时间轴节点 */
+        .timeline-node {
+            position: absolute;
+            left: -2.25rem;
+            top: 1.6rem;
+            width: var(--node-size);
+            height: var(--node-size);
+            background: var(--deep-cosmos);
+            border: 2px solid var(--troia-violet);
+            border-radius: 2px;
+            transform: rotate(45deg);
+            z-index: 3;
+            box-shadow: 0 0 14px var(--timeline-dot-glow);
+            transition: all 0.35s ease;
+        }
+        .timeline-item:hover .timeline-node {
+            width: var(--node-size-active);
+            height: var(--node-size-active);
+            border-color: var(--amazon-gold);
+            box-shadow: 0 0 28px rgba(212, 177, 106, 0.7);
+            left: -2.4rem;
+            top: 1.35rem;
+        }
+
+        /* 时间轴条目 */
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.8rem;
+            padding-left: 0;
+        }
+        .timeline-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 1.5rem 1.8rem;
+            box-shadow: var(--shadow-card);
+            transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .timeline-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(232, 236, 255, 0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .timeline-card:hover {
+            background: var(--glass-bg-hover);
+            border-color: var(--glass-border-hover);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-glow), var(--shadow-card);
+        }
+        .timeline-card:hover::after {
+            opacity: 1;
+        }
+
+        /* 阶段标题 */
+        .stage-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.6rem 1rem;
+            margin-bottom: 1rem;
+        }
+        .stage-era-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            background: rgba(119, 102, 215, 0.2);
+            border: 1px solid rgba(119, 102, 215, 0.35);
+            color: var(--troia-violet);
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+        .stage-era-badge.gold {
+            background: rgba(212, 177, 106, 0.15);
+            border-color: rgba(212, 177, 106, 0.35);
+            color: var(--amazon-gold);
+        }
+        .stage-era-badge.purple {
+            background: rgba(92, 75, 168, 0.25);
+            border-color: rgba(92, 75, 168, 0.4);
+            color: #9B8ED4;
+        }
+        .stage-era-badge.blue {
+            background: rgba(100, 130, 200, 0.18);
+            border-color: rgba(130, 160, 220, 0.35);
+            color: #A0B8E8;
+        }
+        .stage-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--starlight-silver);
+            letter-spacing: 0.04em;
+            line-height: 1.3;
+        }
+        .stage-stars {
+            color: var(--amazon-gold);
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            white-space: nowrap;
+            user-select: none;
+        }
+        .stage-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 0.8rem;
+        }
+        .stage-keyword {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            background: rgba(232, 236, 255, 0.05);
+            border: 1px solid rgba(232, 236, 255, 0.12);
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+        }
+
+        /* 刊物列表 */
+        .comic-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.4rem;
+        }
+        .comic-list li {
+            position: relative;
+            padding-left: 1.6rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.55;
+            transition: color 0.25s;
+            cursor: default;
+        }
+        .comic-list li:hover {
+            color: var(--starlight-silver);
+        }
+        .comic-list li::before {
+            content: '◇';
+            position: absolute;
+            left: 0;
+            top: 0.05em;
+            font-size: 0.55rem;
+            color: var(--troia-violet);
+            opacity: 0.7;
+            transition: all 0.25s;
+        }
+        .comic-list li:hover::before {
+            color: var(--amazon-gold);
+            opacity: 1;
+        }
+        .comic-list li.must-read::before {
+            content: '◆';
+            color: var(--amazon-gold);
+            opacity: 0.9;
+            font-size: 0.6rem;
+        }
+        .comic-list li.must-read {
+            font-weight: 500;
+            color: #f0edff;
+        }
+        .comic-list li .tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            padding: 0.1rem 0.45rem;
+            border-radius: 8px;
+            margin-left: 0.4rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            vertical-align: middle;
+            background: rgba(212, 177, 106, 0.2);
+            color: var(--amazon-gold);
+            border: 1px solid rgba(212, 177, 106, 0.3);
+        }
+        .comic-list li .tag.rec {
+            background: rgba(119, 102, 215, 0.2);
+            color: var(--troia-violet);
+            border: 1px solid rgba(119, 102, 215, 0.3);
+        }
+        .comic-list li .tag.god {
+            background: rgba(255, 180, 80, 0.2);
+            color: #ffb850;
+            border: 1px solid rgba(255, 180, 80, 0.35);
+            animation: godGlow 3s ease-in-out infinite;
+        }
+        @keyframes godGlow {
+            0%,
+            100% {
+                box-shadow: 0 0 6px rgba(255, 180, 80, 0.25);
+            }
+            50% {
+                box-shadow: 0 0 16px rgba(255, 180, 80, 0.5);
+            }
+        }
+        .sublist-title {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-top: 0.6rem;
+            margin-bottom: 0.2rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding-left: 0.2rem;
+            border-left: 2px solid rgba(119, 102, 215, 0.4);
+        }
+
+        /* ── 补充资料区域 (20%) ── */
+        .supplement-section {
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+            padding: 1.5rem 1.5rem 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .supplement-inner {
+            width: 100%;
+            max-width: 1000px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+        .supplement-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.2rem 1.4rem;
+            box-shadow: var(--shadow-card);
+            transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        .supplement-card:hover {
+            background: var(--glass-bg-hover);
+            border-color: var(--glass-border-hover);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-glow);
+        }
+        .supplement-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--starlight-silver);
+            margin-bottom: 0.6rem;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .supplement-card h4 .icon-geom {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: var(--troia-violet);
+            transform: rotate(45deg);
+            border-radius: 1px;
+            flex-shrink: 0;
+        }
+        .supplement-card ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+        .supplement-card ul li {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            padding-left: 1.2rem;
+            position: relative;
+            line-height: 1.5;
+        }
+        .supplement-card ul li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--troia-violet);
+            opacity: 0.5;
+            font-size: 0.7rem;
+        }
+        .supplement-tip {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            font-style: italic;
+            letter-spacing: 0.03em;
+            padding: 0.5rem 0.8rem;
+            border-left: 2px solid rgba(212, 177, 106, 0.4);
+            background: rgba(212, 177, 106, 0.04);
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* ── 响应式 ── */
+        @media (max-width: 768px) {
+            .hero-glass {
+                padding: 1.2rem 1.5rem 1rem;
+                border-radius: 18px;
+            }
+            .hero-title {
+                font-size: 1.4rem;
+            }
+            .hero-star-symbol {
+                font-size: 1.8rem;
+            }
+            .hero-subtitle-row {
+                font-size: 0.7rem;
+                gap: 0.3rem 0.7rem;
+            }
+            .hero-subtitle-row span+span::before {
+                left: -0.45rem;
+                font-size: 0.6rem;
+            }
+            .timeline {
+                padding-left: 2.2rem;
+            }
+            .timeline::before {
+                left: 0.85rem;
+            }
+            .timeline-node {
+                left: -1.6rem;
+                top: 1.3rem;
+                width: 11px;
+                height: 11px;
+            }
+            .timeline-item:hover .timeline-node {
+                width: 14px;
+                height: 14px;
+                left: -1.7rem;
+                top: 1.1rem;
+            }
+            .timeline-card {
+                padding: 1rem 1.1rem;
+                border-radius: 14px;
+            }
+            .stage-title {
+                font-size: 1.05rem;
+            }
+            .comic-list li {
+                font-size: 0.78rem;
+                padding-left: 1.2rem;
+            }
+            .comic-list li::before {
+                font-size: 0.45rem;
+            }
+            .supplement-inner {
+                grid-template-columns: 1fr;
+            }
+            .timeline-section {
+                padding: 0.8rem 0.8rem 1.5rem;
+                min-height: auto;
+                flex: 1;
+            }
+            .timeline-section-inner {
+                max-height: none;
+                overflow-y: visible;
+                padding-right: 0;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero-section {
+                padding: 2vh 0.8rem 1.5vh;
+            }
+            .hero-glass {
+                padding: 1rem 1rem 0.8rem;
+                border-radius: 14px;
+                gap: 0.25rem;
+            }
+            .hero-title {
+                font-size: 1.2rem;
+                letter-spacing: 0.03em;
+            }
+            .hero-star-symbol {
+                font-size: 1.4rem;
+            }
+            .hero-subtitle-row {
+                font-size: 0.65rem;
+                gap: 0.2rem 0.5rem;
+            }
+            .hero-subtitle-row span+span::before {
+                left: -0.35rem;
+            }
+            .timeline {
+                padding-left: 1.8rem;
+            }
+            .timeline::before {
+                left: 0.6rem;
+            }
+            .timeline-node {
+                left: -1.35rem;
+                top: 1.1rem;
+                width: 9px;
+                height: 9px;
+                border-width: 1.5px;
+            }
+            .timeline-item:hover .timeline-node {
+                width: 12px;
+                height: 12px;
+                left: -1.45rem;
+                top: 0.95rem;
+            }
+            .timeline-card {
+                padding: 0.8rem 0.9rem;
+                border-radius: 12px;
+            }
+            .stage-title {
+                font-size: 0.95rem;
+            }
+            .stage-era-badge {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.5rem;
+            }
+            .comic-list li {
+                font-size: 0.72rem;
+                padding-left: 1rem;
+                line-height: 1.45;
+            }
+            .comic-list li::before {
+                font-size: 0.4rem;
+            }
+            .sublist-title {
+                font-size: 0.7rem;
+            }
+            .supplement-card {
+                padding: 0.9rem 1rem;
+                border-radius: 12px;
+            }
+            .supplement-card h4 {
+                font-size: 0.85rem;
+            }
+            .supplement-card ul li {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 星空背景 -->
+    <div class="stars-container" id="starsContainer" aria-hidden="true"></div>
+
+    <!-- 星云光晕 -->
+    <div class="nebula nebula-1" aria-hidden="true"></div>
+    <div class="nebula nebula-2" aria-hidden="true"></div>
+    <div class="nebula nebula-3" aria-hidden="true"></div>
+
+    <!-- 记忆碎片 -->
+    <div class="memory-shards" id="memoryShards" aria-hidden="true"></div>
+
+    <!-- 紫色流光 -->
+    <div class="purple-stream" aria-hidden="true"></div>
+    <div class="purple-stream" aria-hidden="true"></div>
+    <div class="purple-stream" aria-hidden="true"></div>
+
+    <!-- 主布局 -->
+    <div class="app-container">
+
+        <!-- Hero区域 10% -->
+        <header class="hero-section">
+            <div class="hero-glass">
+                <span class="hero-star-symbol" aria-hidden="true">✦</span>
+                <h1 class="hero-title">DONNA TROY</h1>
+                <div class="hero-subtitle-row">
+                    <span>Wonder Girl</span>
+                    <span>Troia</span>
+                    <span>Darkstar</span>
+                    <span>Titan Leader</span>
+                    <span>Wonder Woman</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 阅读路线区域 70% -->
+        <section class="timeline-section" aria-label="完整阅读路线">
+            <div class="timeline-section-inner">
+                <div class="timeline">
+
+                    <!-- 阶段1：入门主线 -->
+                    <div class="timeline-item">
+                        <div class="timeline-node" aria-hidden="true"></div>
+                        <div class="timeline-card">
+                            <div class="stage-header">
+                                <span class="stage-era-badge">1965–1978</span>
+                                <span class="stage-title">入门主线 · 核心成长</span>
+                                <span class="stage-stars">★★★★☆</span>
+                            </div>
+                            <div class="stage-keywords">
+                                <span class="stage-keyword">起源</span>
+                                <span class="stage-keyword">初代泰坦</span>
+                                <span class="stage-keyword">Wonder Family</span>
+                                <span class="stage-keyword">身份建立</span>
+                            </div>
+                            <p class="sublist-title">必读</p>
+                            <ul class="comic-list">
+                                <li class="must-read"><strong>The Brave and the Bold #60</strong> — Donna作为Wonder Girl首次登场，加入初代泰坦。</li>
+                                <li class="must-read"><strong>Teen Titans Vol.1 #22</strong> — 真正意义上的"Donna Troy诞生"——首次与Diana明确区分，提供早期起源。</li>
+                                <li class="must-read"><strong>Teen Titans Vol.1 #23–25</strong>（及附近）— 早期团队故事深化。</li>
+                                <li class="must-read"><strong>Teen Titans Vol.1 #53</strong> — 重要早期补完。</li>
+                            </ul>
+                            <p class="sublist-title">补完</p>
+                            <ul class="comic-list">
+                                <li>Teen Titans Vol.1 #1–53 整体（可选精选）</li>
+                                <li>Wonder Woman Vol.1 部分早期客串</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 阶段2：泰坦时期 -->
+                    <div class="timeline-item">
+                        <div class="timeline-node" aria-hidden="true"></div>
+                        <div class="timeline-card">
+                            <div class="stage-header">
+                                <span class="stage-era-badge gold">1980–1988</span>
+                                <span class="stage-title">泰坦时期 · New Teen Titans 黄金时代</span>
+                                <span class="stage-stars">★★★★★</span>
+                            </div>
+                            <div class="stage-keywords">
+                                <span class="stage-keyword">绝对主角</span>
+                                <span class="stage-keyword">核心关系</span>
+                                <span class="stage-keyword">Dick·Kory·Victor·Raven·Garth</span>
+                                <span class="stage-keyword">DC核心英雄</span>
+                            </div>
+                            <p class="sublist-title">必读</p>
+                            <ul class="comic-list">
+                                <li class="must-read"><strong>The New Teen Titans #1–40</strong>（+ Annuals #1–2）— Donna绝对主角之一，团队黄金时代巅峰。</li>
+                                <li class="must-read"><strong>The New Teen Titans #38</strong> — <span class="tag god">神级必读</span> 公认Donna个人最佳故事，DC经典单期之一。重点探索起源与身份。</li>
+                                <li class="must-read"><strong>Tales of the Teen Titans #50</strong>（或#41–50附近）— Donna与Terry Long结婚，泰坦历史名场面。</li>
+                            </ul>
+                            <p class="sublist-title">补完</p>
+                            <ul class="comic-list">
+                                <li>Tales of the Teen Titans #41–91 + Annuals</li>
+                                <li>New Teen Titans Annual #2 等</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 阶段3：Troia时期 -->
+                    <div class="timeline-item">
+                        <div class="timeline-node" aria-hidden="true"></div>
+                        <div class="timeline-card">
+                            <div class="stage-header">
+                                <span class="stage-era-badge purple">1988–1993</span>
+                                <span class="stage-title">Troia时期 · 身份升级</span>
+                                <span class="stage-stars">★★★★☆</span>
+                            </div>
+                            <div class="stage-keywords">
+                                <span class="stage-keyword">身份重构</span>
+                                <span class="stage-keyword">神话起源</span>
+                                <span class="stage-keyword">Titans of Myth</span>
+                                <span class="stage-keyword">Titan Seed</span>
+                                <span class="stage-keyword">Sparta</span>
+                                <span class="stage-keyword">New Cronus</span>
+                            </div>
+                            <p class="sublist-title">必读</p>
+                            <ul class="comic-list">
+                                <li class="must-read"><strong>The New Titans #50–55</strong> — 第二次大规模起源重写，引入Titans of Myth、Titan Seed、Sparta、New Cronus等设定。<strong>#55</strong> 正式从Wonder Girl变为<strong>Troia</strong>（新造型/能力）。</li>
+                            </ul>
+                            <p class="sublist-title">推荐补完</p>
+                            <ul class="comic-list">
+                                <li>The New Titans #56–92 + Annuals</li>
+                                <li>Wonder Woman Vol.2 #47–49 等早期Troia客串/互动</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 阶段4：Darkstar时期 -->
+                    <div class="timeline-item">
+                        <div class="timeline-node" aria-hidden="true"></div>
+                        <div class="timeline-card">
+                            <div class="stage-header">
+                                <span class="stage-era-badge blue">1993–1998</span>
+                                <span class="stage-title">Darkstar时期 · 宇宙执法</span>
+                                <span class="stage-stars">★★★☆☆</span>
+                            </div>
+                            <div class="stage-keywords">
+                                <span class="stage-keyword">宇宙篇章</span>
+                                <span class="stage-keyword">Kyle时期</span>
+                                <span class="stage-keyword">Darkstar Corps</span>
+                                <span class="stage-keyword">失去部分力量</span>
+                                <span class="stage-keyword">宇宙级装备</span>
+                            </div>
+                            <p class="sublist-title">必读</p>
+                            <ul class="comic-list">
+                                <li class="must-read"><strong>Darkstars #21–38</strong>（重点#23起）— Donna加入Darkstars，获得宇宙级装备/战衣。</li>
+                            </ul>
+                            <p class="sublist-title">相关</p>
+                            <ul class="comic-list">
+                                <li><strong>Green Lantern Vol.3</strong>（#58–62、#65、#68–90等）— Kyle Rayner/Donna（凯唐）浪漫时期。</li>
+                                <li><strong>Wonder Woman Vol.2 #121–136</strong>（及周边）— 进一步起源重构与Wonder Family互动。</li>
+                            </ul>
+                            <p class="sublist-title">补完</p>
+                            <ul class="comic-list">
+                                <li>New Titans 此时期部分</li>
+                                <li>Zero Hour 相关事件</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 阶段5：JLA/Titans与Titans时期 -->
+                    <div class="timeline-item">
+                        <div class="timeline-node" aria-hidden="true"></div>
+                        <div class="timeline-card">
+                            <div class="stage-header">
+                                <span class="stage-era-badge gold">1998–2003</span>
+                                <span class="stage-title">JLA/Titans与Titans时期 · 第二黄金时代</span>
+                                <span class="stage-stars">★★★★★</span>
+                            </div>
+                            <div class="stage-keywords">
+                                <span class="stage-keyword">成年泰坦核心</span>
+                                <span class="stage-keyword">Wally·Dick·Roy重聚</span>
+                                <span class="stage-keyword">老泰坦粉必读</span>
+                            </div>
+                            <p class="sublist-title">必读</p>
+                            <ul class="comic-list">
+                                <li class="must-read"><strong>JLA/Titans</strong>（The Technis Imperative，1998–1999）— Wally、Dick、Donna、Roy重聚，老泰坦粉必读。</li>
+                                <li class="must-read"><strong>The Titans #1–50</strong>（+ Annuals/Secret Files）— 成年版泰坦，Donna绝对核心。</li>
+                            </ul>
+                            <p class="sublist-title">神级推荐</p>
+                            <ul class="comic-list">
+                                <li class="must-read"><strong>The Titans #23–25</strong>（"Who Is Troia?"）— <span class="tag god">神级</span> 又一次起源重构。</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 阶段6：死亡与复活时期 -->
+                    <div class="timeline-item">
+                        <div class="timeline-node" aria-hidden="true"></div>
+                        <div class="timeline-card">
+                            <div class="stage-header">
+                                <span class="stage-era-badge">2003–2006</span>
+                                <span class="stage-title">死亡与复活时期</span>
+                                <span class="stage-stars">★★★★☆</span>
+                            </div>
+                            <div class="stage-keywords">
+                                <span class="stage-keyword">情感冲击</span>
+                                <span class="stage-keyword">时代分界线</span>
+                                <span class="stage-keyword">多重起源梳理</span>
+                                <span class="stage-keyword">Phil Jimenez</span>
+                            </div>
+                            <p class="sublist-title">死亡</p>
+                            <ul class="comic-list">
+                                <li class="must-read"><strong>Titans/Young Justice: Graduation Day #1–3</strong> — 时代分界线。</li>
+                            </ul>
+                            <p class="sublist-title">复活</p>
+                            <ul class="comic-list">
+                                <li class="must-read"><strong>Teen Titans/Outsiders Secret Files and Origins 2003</strong></li>
+                                <li class="must-read"><strong>DC Special: The Return of Donna Troy #1–4</strong> — <span class="tag god">核心事件</span> Phil Jimenez代表作，梳理多重起源。</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 阶段7：Wonder Woman时期 -->
+                    <div class="timeline-item">
+                        <div class="timeline-node" aria-hidden="true"></div>
+                        <div class="timeline-card">
+                            <div class="stage-header">
+                                <span class="stage-era-badge gold">2005–2011</span>
+                                <span class="stage-title">Wonder Woman时期 · 短暂接任</span>
+                                <span class="stage-stars">★★★★☆</span>
+                            </div>
+                            <div class="stage-keywords">
+                                <span class="stage-keyword">Donna高光</span>
+                                <span class="stage-keyword">接任神奇女侠</span>
+                                <span class="stage-keyword">JLA成员</span>
+                                <span class="stage-keyword">生涯巅峰</span>
+                            </div>
+                            <p class="sublist-title">必读</p>
+                            <ul class="comic-list">
+                                <li class="must-read"><strong>Infinite Crisis</strong>（相关章节）— 重大危机参与。</li>
+                                <li class="must-read"><strong>Wonder Woman Vol.3 #1–4</strong>（及Annual #1）— Donna正式接任神奇女侠（One Year Later）。</li>
+                            </ul>
+                            <p class="sublist-title">推荐</p>
+                            <ul class="comic-list">
+                                <li><strong>Titans Vol.2</strong></li>
+                                <li><strong>Blackest Night: Titans</strong></li>
+                                <li><strong>Justice League of America Vol.2</strong> — Donna生涯巅峰之一，JLA成员期。</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 阶段8：New 52时期 -->
+                    <div class="timeline-item">
+                        <div class="timeline-node" aria-hidden="true"></div>
+                        <div class="timeline-card">
+                            <div class="stage-header">
+                                <span class="stage-era-badge blue">2011–2016</span>
+                                <span class="stage-title">New 52时期 · 争议阶段</span>
+                                <span class="stage-stars">★★☆☆☆</span>
+                            </div>
+                            <div class="stage-keywords">
+                                <span class="stage-keyword">争议大</span>
+                                <span class="stage-keyword">可降权</span>
+                                <span class="stage-keyword">起源/性格改动多</span>
+                                <span class="stage-keyword">老粉常不满</span>
+                            </div>
+                            <p class="sublist-title">可选</p>
+                            <ul class="comic-list">
+                                <li><strong>Teen Titans Vol.4</strong></li>
+                                <li><strong>Wonder Woman Vol.4</strong>（Donna厨补）</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 阶段9：Rebirth时期 -->
+                    <div class="timeline-item">
+                        <div class="timeline-node" aria-hidden="true"></div>
+                        <div class="timeline-card">
+                            <div class="stage-header">
+                                <span class="stage-era-badge purple">2016–2023</span>
+                                <span class="stage-title">Rebirth时期 · 经典回归</span>
+                                <span class="stage-stars">★★★★★</span>
+                            </div>
+                            <div class="stage-keywords">
+                                <span class="stage-keyword">经典Donna回归</span>
+                                <span class="stage-keyword">现代最佳阅读段</span>
+                                <span class="stage-keyword">团队领袖</span>
+                                <span class="stage-keyword">关系网深化</span>
+                            </div>
+                            <p class="sublist-title">必读</p>
+                            <ul class="comic-list">
+                                <li class="must-read"><strong>Titans Hunt</strong></li>
+                                <li class="must-read"><strong>Titans: Rebirth</strong></li>
+                                <li class="must-read"><strong>Titans Vol.3</strong> — 现代Donna高光，团队领袖/关系网深化。</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 阶段10：现代时期 -->
+                    <div class="timeline-item">
+                        <div class="timeline-node" aria-hidden="true"></div>
+                        <div class="timeline-card">
+                            <div class="stage-header">
+                                <span class="stage-era-badge gold">2023–至今</span>
+                                <span class="stage-title">现代时期</span>
+                                <span class="stage-stars">★★★★☆</span>
+                            </div>
+                            <div class="stage-keywords">
+                                <span class="stage-keyword">当前主力刊</span>
+                                <span class="stage-keyword">Wonder Family强化</span>
+                                <span class="stage-keyword">Dark Crisis</span>
+                            </div>
+                            <p class="sublist-title">必读</p>
+                            <ul class="comic-list">
+                                <li class="must-read"><strong>Titans (2023–)</strong> — 目前主力刊。</li>
+                                <li><strong>Wonder Woman (Tom King)</strong> 及相关 — 偶有高光，强化Wonder Family。</li>
+                            </ul>
+                            <p class="sublist-title">补完</p>
+                            <ul class="comic-list">
+                                <li>Titans Annuals</li>
+                                <li>重大crossover（如Dark Crisis等）</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 阶段11：补完篇 -->
+                    <div class="timeline-item">
+                        <div class="timeline-node" aria-hidden="true"></div>
+                        <div class="timeline-card">
+                            <div class="stage-header">
+                                <span class="stage-era-badge">补完</span>
+                                <span class="stage-title">补完篇 · 重要单刊、外传、客串</span>
+                                <span class="stage-stars">★★★☆☆</span>
+                            </div>
+                            <div class="stage-keywords">
+                                <span class="stage-keyword">Roy Harper</span>
+                                <span class="stage-keyword">Wally West</span>
+                                <span class="stage-keyword">Wonder Family</span>
+                                <span class="stage-keyword">Cassie Sandsmark</span>
+                                <span class="stage-keyword">起源闪回</span>
+                            </div>
+                            <ul class="comic-list">
+                                <li><strong>Wonder Woman: Donna Troy (1998)</strong> mini-series</li>
+                                <li><strong>Team Titans</strong>、<strong>Zero Hour</strong> 相关</li>
+                                <li><strong>Secret Origins (1986)</strong> 等起源闪回</li>
+                                <li>重要客串：与Roy Harper（Arsenal）、Wally West的友情/关系弧；Wonder Family故事</li>
+                                <li>现代：部分 <strong>Wonder Girl (Cassie)</strong> 互动</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 阶段12：究极版核心阅读路线 -->
+                    <div class="timeline-item">
+                        <div class="timeline-node" aria-hidden="true"></div>
+                        <div class="timeline-card" style="border-color: rgba(212,177,106,0.4); box-shadow: var(--shadow-card), 0 0 40px rgba(212,177,106,0.12);">
+                            <div class="stage-header">
+                                <span class="stage-era-badge gold">究极版</span>
+                                <span class="stage-title">Donna Troy 核心阅读路线（精简~50本以内）</span>
+                                <span class="stage-stars">★★★★★</span>
+                            </div>
+                            <div class="stage-keywords">
+                                <span class="stage-keyword">完整弧线</span>
+                                <span class="stage-keyword">Wonder Girl → Troia → Darkstar → 死亡/复活 → Wonder Woman → Titans领袖</span>
+                                <span class="stage-keyword">比纯出版顺序更易理解</span>
+                            </div>
+                            <ul class="comic-list">
+                                <li class="must-read">1. The Brave and the Bold #60</li>
+                                <li class="must-read">2. Teen Titans Vol.1 #22（+ #53）</li>
+                                <li class="must-read">3. The New Teen Titans #1–40（重点）</li>
+                                <li class="must-read">4. The New Teen Titans #38 <span class="tag god">神级</span></li>
+                                <li class="must-read">5. Tales of the Teen Titans #50</li>
+                                <li class="must-read">6. The New Titans #50–55</li>
+                                <li>7. Darkstars #21–38（或精选）</li>
+                                <li>8. Green Lantern Vol.3（Kyle/Donna弧）</li>
+                                <li>9. Wonder Woman Vol.2 #121–136（或关键部分）</li>
+                                <li class="must-read">10. JLA/Titans</li>
+                                <li class="must-read">11. The Titans #1–50（重点#23–25）<span class="tag god">神级</span></li>
+                                <li class="must-read">12. Titans/Young Justice: Graduation Day #1–3</li>
+                                <li class="must-read">13. DC Special: The Return of Donna Troy #1–4</li>
+                                <li>14. Infinite Crisis（相关）</li>
+                                <li class="must-read">15. Wonder Woman Vol.3 #1–4</li>
+                                <li>16. Titans Vol.2 / Blackest Night: Titans</li>
+                                <li>17. Justice League of America Vol.2（精选）</li>
+                                <li class="must-read">18. Titans Hunt / Titans: Rebirth</li>
+                                <li class="must-read">19. Titans Vol.3</li>
+                                <li class="must-read">20. Titans (2023–)（当前）</li>
+                            </ul>
+                            <p class="supplement-tip" style="margin-top:0.8rem;">
+                                ✦ 此路线覆盖Donna全部人生轨迹与阅读价值：泰坦元老、核心人际（Dick/Wally/Roy）、反复身份危机、Wonder Family归属。建议搭配Trade/Paperback或DC Infinite阅读。
+                            </p>
+                        </div>
+                    </div>
+
+                </div><!-- /.timeline -->
+            </div><!-- /.timeline-section-inner -->
+        </section>
+
+        <!-- 补充资料区域 20% -->
+        <section class="supplement-section" aria-label="补充资料">
+            <div class="supplement-inner">
+
+                <!-- 早期/前危机补完 -->
+                <div class="supplement-card">
+                    <h4><span class="icon-geom" aria-hidden="true"></span>早期/前危机补完</h4>
+                    <ul>
+                        <li><strong>Teen Titans Year One #1–6</strong>（2008）— 现代视角重述60年代初代泰坦故事</li>
+                        <li><strong>Wonder Woman Vol.1</strong> 早期客串（如#105、#123–124、#144–155附近）— 早期Wonder Family互动</li>
+                    </ul>
+                </div>
+
+                <!-- Troia/Darkstar额外 -->
+                <div class="supplement-card">
+                    <h4><span class="icon-geom" aria-hidden="true"></span>Troia / Darkstar时期额外</h4>
+                    <ul>
+                        <li><strong>Wonder Woman: Donna Troy (1998) #1</strong>（One-shot/GirlFrenzy特别篇）— 独立故事，探索作为Wonder Woman姐妹的身份</li>
+                    </ul>
+                </div>
+
+                <!-- Wonder Family互动 -->
+                <div class="supplement-card">
+                    <h4><span class="icon-geom" aria-hidden="true"></span>Wonder Family / 与Diana互动</h4>
+                    <ul>
+                        <li><strong>Wonder Woman Vol.2</strong> 部分弧线（如#287、#291、#293；John Byrne时期#121–136扩展）</li>
+                        <li><strong>Wonder Woman Vol.3</strong> 更多客串（接任Wonder Woman前后）</li>
+                        <li>现代 <strong>Wonder Woman (Tom King等)</strong> — 与Cassie Sandsmark、Yara Flor的互动</li>
+                    </ul>
+                </div>
+
+                <!-- 其他团队/事件补完 -->
+                <div class="supplement-card">
+                    <h4><span class="icon-geom" aria-hidden="true"></span>其他重要团队/事件补完</h4>
+                    <ul>
+                        <li><strong>New Teen Titans Annual #2</strong> — 优质单期/年度故事</li>
+                        <li><strong>Zero Hour: Crisis in Time</strong> 相关章节</li>
+                        <li><strong>Nightwing: Year One</strong>（部分）— Donna与Dick互动补充</li>
+                        <li><strong>Justice League of America Vol.2</strong> 更多issue（JLA时期扩展）</li>
+                    </ul>
+                </div>
+
+                <!-- Elseworlds -->
+                <div class="supplement-card">
+                    <h4><span class="icon-geom" aria-hidden="true"></span>Elseworlds / 非正史推荐</h4>
+                    <ul>
+                        <li><strong>DC Bombshells / Bombshells United</strong> — Donna作为Wonder Girls一员的另类版本（二战背景，强女性群像）</li>
+                        <li><strong>Team Titans</strong> 系列（90年代）— 部分故事涉及未来/变体Donna</li>
+                    </ul>
+                </div>
+
+                <!-- 阅读Tips -->
+                <div class="supplement-card">
+                    <h4><span class="icon-geom" aria-hidden="true"></span>阅读Tips</h4>
+                    <ul>
+                        <li>优先补 <strong>Wonder Family</strong>：Wonder Woman相关客串 + 1998 one-shot</li>
+                        <li>想看 <strong>关系网</strong>：多看Titans团队故事边角料（尤其是与Roy、Wally）</li>
+                        <li>Donna的 <strong>身份危机</strong> 几乎每隔几年就重写，补完能感受DC对她"反复折腾"的乐趣（或痛苦）</li>
+                    </ul>
+                    <p class="supplement-tip">
+                        ✦ 收集建议：找TPB/Trades，如《New Teen Titans: Who is Donna Troy?》合集（包含经典#38等）
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+    </div><!-- /.app-container -->
+
+    <script>
+        (function() {
+            // ── 生成星空粒子 ──
+            const starsContainer = document.getElementById('starsContainer');
+            const starCount = 140;
+            const fragments = document.createDocumentFragment();
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 2.5 + 0.8;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDuration = (Math.random() * 18 + 10) + 's';
+                star.style.animationDelay = (Math.random() * 20) + 's';
+                star.style.opacity = Math.random() * 0.7 + 0.1;
+                fragments.appendChild(star);
+            }
+            starsContainer.appendChild(fragments);
+
+            // ── 生成记忆碎片 ──
+            const memoryShards = document.getElementById('memoryShards');
+            const shardCount = 22;
+            const shardClasses = ['shard-diamond', 'shard-triangle', 'shard-hex'];
+            const shardFrag = document.createDocumentFragment();
+            for (let i = 0; i < shardCount; i++) {
+                const shard = document.createElement('div');
+                shard.classList.add('shard');
+                shard.classList.add(shardClasses[Math.floor(Math.random() * shardClasses.length)]);
+                const size = Math.random() * 28 + 10;
+                shard.style.width = size + 'px';
+                shard.style.height = size + 'px';
+                shard.style.left = Math.random() * 94 + '%';
+                shard.style.top = Math.random() * 94 + '%';
+                shard.style.animationDuration = (Math.random() * 22 + 14) + 's';
+                shard.style.animationDelay = (Math.random() * 26) + 's';
+                shardFrag.appendChild(shard);
+            }
+            memoryShards.appendChild(shardFrag);
+
+            // ── 时间轴卡片交错入场动画（仅首屏可见的） ──
+            const timelineCards = document.querySelectorAll('.timeline-card');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -30px 0px',
+                threshold: 0.08
+            };
+            const cardObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        cardObserver.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            timelineCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(18px)';
+                card.style.transition =
+                    'opacity 0.7s cubic-bezier(0.25,0.1,0.25,1), transform 0.7s cubic-bezier(0.25,0.1,0.25,1), background 0.4s, border-color 0.4s, box-shadow 0.4s';
+                card.style.transitionDelay = (index * 0.04) + 's';
+                cardObserver.observe(card);
+            });
+
+            // 初始触发一次（对于已经在视口内的卡片）
+            setTimeout(() => {
+                timelineCards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }
+                });
+            }, 200);
+        })();
+    </script>
+</body>
+</html>
