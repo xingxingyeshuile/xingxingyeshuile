@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zatanna 阅读指南</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0a0612;
+            --card-bg: rgba(22, 16, 40, 0.55);
+            --card-border: rgba(180, 150, 220, 0.18);
+            --gold: #c9a86c;
+            --gold-light: #dcc090;
+            --purple: #8b6fbf;
+            --purple-light: #b49ddf;
+            --text: #e0d8ec;
+            --text-secondary: #b8adcc;
+            --text-muted: #8a7ea0;
+            --accent-glow: rgba(180, 140, 220, 0.3);
+            --star-color: #d4c5e8;
+            --font-serif: 'Noto Serif SC', 'STSong', 'Songti SC', 'NSimSun', 'SimSun', serif;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 10px;
+            --blur: 18px;
+            --transition: 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 15px;
+        }
+
+        body {
+            background: var(--bg-deep);
+            font-family: var(--font-serif);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: 0.015em;
+        }
+
+        /* 星空背景 */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: var(--star-color);
+            border-radius: 50%;
+            animation: twinkle var(--dur) ease-in-out infinite;
+            animation-delay: var(--delay);
+            opacity: 0;
+        }
+        @keyframes twinkle {
+            0%,
+            100% {
+                opacity: 0.15;
+            }
+            40% {
+                opacity: 0.7;
+            }
+            60% {
+                opacity: 0.85;
+            }
+            80% {
+                opacity: 0.25;
+            }
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0.4);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.8;
+            }
+            70% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-110vh) scale(1.3);
+                opacity: 0;
+            }
+        }
+        .spark-particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #dcc8f0;
+            border-radius: 50%;
+            animation: floatUp 7s linear infinite;
+            animation-delay: var(--spark-delay);
+            left: var(--spark-x);
+            bottom: -10px;
+            opacity: 0;
+            box-shadow: 0 0 6px 2px rgba(200, 170, 240, 0.5);
+        }
+
+        /* 魔法阵装饰 */
+        .magic-circle-decor {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.04;
+            border: 2px solid var(--purple-light);
+            border-radius: 50%;
+            animation: slowRotate 90s linear infinite;
+        }
+        .magic-circle-decor.c1 {
+            width: 600px;
+            height: 600px;
+            top: -180px;
+            right: -200px;
+            animation-duration: 110s;
+        }
+        .magic-circle-decor.c2 {
+            width: 400px;
+            height: 400px;
+            bottom: -100px;
+            left: -120px;
+            animation-duration: 80s;
+            animation-direction: reverse;
+            border-style: dashed;
+            border-color: rgba(180, 150, 220, 0.5);
+        }
+        .magic-circle-decor.c3 {
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            left: 60%;
+            animation-duration: 70s;
+            border-width: 1px;
+            border-color: rgba(200, 170, 140, 0.4);
+        }
+        @keyframes slowRotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* 主容器 */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 20px 24px 60px;
+        }
+
+        /* 头部 */
+        .hero {
+            text-align: center;
+            padding: 50px 20px 30px;
+            position: relative;
+        }
+        .hero-icon {
+            display: inline-block;
+            margin-bottom: 8px;
+            opacity: 0.8;
+        }
+        .hero-icon svg {
+            width: 44px;
+            height: 44px;
+            stroke: var(--gold);
+            fill: none;
+            stroke-width: 1.4;
+        }
+        .hero-title {
+            font-size: 3.4rem;
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            color: #f0e6d8;
+            margin-bottom: 4px;
+            line-height: 1.15;
+            text-shadow: 0 0 60px rgba(200, 160, 220, 0.35);
+        }
+        .hero-title .invert-hint {
+            display: inline-block;
+            transform: scaleX(-1);
+            color: var(--gold-light);
+            font-style: italic;
+            letter-spacing: 0.08em;
+        }
+        .hero-subtitle {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            letter-spacing: 0.08em;
+            margin-top: 2px;
+        }
+        .hero-line {
+            width: 70px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 16px auto 0;
+            border-radius: 1px;
+        }
+        .hero-tagline {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        /* 玻璃拟态卡片 */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(var(--blur));
+            -webkit-backdrop-filter: blur(var(--blur));
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 28px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card:hover {
+            border-color: rgba(200, 170, 220, 0.3);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(180, 150, 220, 0.08) inset,
+                0 0 60px rgba(140, 100, 200, 0.08);
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(180, 150, 220, 0.04) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .glass-card>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 卡片头部 */
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(180, 150, 220, 0.15);
+        }
+        .card-icon {
+            flex-shrink: 0;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(180, 150, 220, 0.1);
+            border: 1px solid rgba(180, 150, 220, 0.25);
+        }
+        .card-icon svg {
+            width: 19px;
+            height: 19px;
+            stroke: var(--gold-light);
+            fill: none;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .card-title-group h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: #e8ddf5;
+            margin: 0;
+            line-height: 1.3;
+        }
+        .card-title-group .card-badge {
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: var(--gold);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        /* 内容区 */
+        .card-body {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        .card-body p {
+            margin-bottom: 12px;
+        }
+        .card-body p:last-child {
+            margin-bottom: 0;
+        }
+        .card-body .intro-text {
+            font-style: italic;
+            color: #c5b8d8;
+            margin-bottom: 14px;
+            font-size: 0.88rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* 列表样式 */
+        .reading-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .reading-list li {
+            position: relative;
+            padding: 10px 0 10px 28px;
+            border-bottom: 1px solid rgba(180, 150, 220, 0.07);
+            font-size: 0.88rem;
+            letter-spacing: 0.02em;
+            color: #d5cce5;
+            transition: var(--transition);
+        }
+        .reading-list li:last-child {
+            border-bottom: none;
+        }
+        .reading-list li::before {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 16px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold);
+            opacity: 0.6;
+            transition: var(--transition);
+        }
+        .reading-list li:hover {
+            color: #f0e8f8;
+            padding-left: 32px;
+        }
+        .reading-list li:hover::before {
+            opacity: 1;
+            box-shadow: 0 0 10px rgba(200, 160, 100, 0.6);
+            transform: scale(1.3);
+        }
+        .reading-list li strong {
+            color: #eadcc8;
+            font-weight: 600;
+        }
+        .reading-list li .meta {
+            display: block;
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            margin-top: 2px;
+        }
+        .reading-list li .highlight-tag {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            color: #2a1f18;
+            background: var(--gold);
+            padding: 2px 8px;
+            border-radius: 3px;
+            margin-left: 6px;
+            vertical-align: middle;
+            line-height: 1.4;
+        }
+        .reading-list li .tag-purple {
+            background: rgba(140, 110, 190, 0.35);
+            color: #d5c5f0;
+            font-size: 0.66rem;
+            padding: 2px 7px;
+            border-radius: 3px;
+            letter-spacing: 0.04em;
+            display: inline-block;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+
+        /* 子标题 */
+        .sub-section-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #d5c8e8;
+            margin: 16px 0 10px;
+            text-transform: uppercase;
+            opacity: 0.85;
+            padding-left: 2px;
+        }
+        .sub-section-title::before {
+            content: '◆ ';
+            color: var(--gold);
+            font-size: 0.6rem;
+            vertical-align: middle;
+            letter-spacing: 0;
+        }
+
+        /* 精简10项高亮卡片 */
+        .card-highlight {
+            border-color: rgba(200, 160, 100, 0.35);
+            background: rgba(28, 18, 42, 0.6);
+            box-shadow: 0 8px 36px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(200, 160, 100, 0.12) inset,
+                0 0 80px rgba(180, 130, 80, 0.06);
+        }
+        .card-highlight .card-icon {
+            background: rgba(200, 160, 100, 0.12);
+            border-color: rgba(200, 160, 100, 0.35);
+        }
+        .card-highlight .card-icon svg {
+            stroke: #e0c888;
+        }
+        .numbered-list {
+            list-style: none;
+            padding: 0;
+            counter-reset: item;
+        }
+        .numbered-list li {
+            counter-increment: item;
+            position: relative;
+            padding: 10px 0 10px 38px;
+            border-bottom: 1px solid rgba(200, 160, 100, 0.08);
+            font-size: 0.88rem;
+            letter-spacing: 0.02em;
+            color: #d8cee5;
+        }
+        .numbered-list li:last-child {
+            border-bottom: none;
+        }
+        .numbered-list li::before {
+            content: counter(item);
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(200, 160, 100, 0.2);
+            border: 1px solid rgba(200, 160, 100, 0.4);
+            color: #e0c888;
+            font-size: 0.72rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            font-family: var(--font-serif);
+        }
+        .numbered-list li strong {
+            color: #eadcc8;
+            font-weight: 600;
+        }
+
+        /* Tips区块 */
+        .tips-block {
+            background: rgba(22, 16, 40, 0.4);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            margin-top: 14px;
+            border: 1px dashed rgba(180, 150, 220, 0.2);
+            font-size: 0.82rem;
+            color: #b8a8cc;
+            line-height: 1.8;
+        }
+        .tips-block strong {
+            color: #d5c5e5;
+        }
+
+        /* 折叠面板 */
+        .accordion-toggle {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            background: none;
+            border: none;
+            color: inherit;
+            font-family: inherit;
+            font-size: inherit;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .accordion-toggle .arrow {
+            width: 20px;
+            height: 20px;
+            transition: var(--transition);
+            flex-shrink: 0;
+            stroke: var(--text-muted);
+            stroke-width: 1.8;
+            fill: none;
+            margin-left: 8px;
+        }
+        .accordion-toggle.open .arrow {
+            transform: rotate(180deg);
+            stroke: var(--gold);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s ease;
+            opacity: 0;
+        }
+        .accordion-content.expanded {
+            max-height: 8000px;
+            opacity: 1;
+        }
+
+        /* 标签 */
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .tag-pill {
+            font-size: 0.68rem;
+            letter-spacing: 0.04em;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(180, 150, 220, 0.1);
+            border: 1px solid rgba(180, 150, 220, 0.25);
+            color: #c5b5d8;
+            white-space: nowrap;
+        }
+
+        /* 响应式 */
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            .glass-card {
+                padding: 18px 16px;
+                border-radius: var(--radius-md);
+            }
+            .card-header {
+                gap: 10px;
+            }
+            .card-icon {
+                width: 30px;
+                height: 30px;
+            }
+            .card-icon svg {
+                width: 15px;
+                height: 15px;
+            }
+            .reading-list li {
+                padding-left: 24px;
+                font-size: 0.82rem;
+            }
+            .reading-list li::before {
+                left: 2px;
+                top: 14px;
+                width: 5px;
+                height: 5px;
+            }
+            .card-title-group h3 {
+                font-size: 1rem;
+            }
+            .magic-circle-decor.c1 {
+                width: 300px;
+                height: 300px;
+                top: -80px;
+                right: -100px;
+            }
+            .magic-circle-decor.c2 {
+                width: 200px;
+                height: 200px;
+                bottom: -50px;
+                left: -60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 星空背景 -->
+    <div class="stars-container" id="starsContainer" aria-hidden="true"></div>
+
+    <!-- 魔法阵装饰 -->
+    <div class="magic-circle-decor c1" aria-hidden="true"></div>
+    <div class="magic-circle-decor c2" aria-hidden="true"></div>
+    <div class="magic-circle-decor c3" aria-hidden="true"></div>
+
+    <!-- 主容器 -->
+    <div class="main-container">
+
+        <!-- 头部 -->
+        <header class="hero">
+            <div class="hero-icon">
+                <!-- 极简礼帽+魔杖图标 -->
+                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="8" y="22" width="32" height="4" rx="1" />
+                    <rect x="14" y="8" width="20" height="16" rx="2" />
+                    <rect x="12" y="26" width="24" height="3" rx="1.5" />
+                    <line x1="36" y1="12" x2="44" y2="4" stroke-width="1.5" />
+                    <circle cx="45" cy="3" r="2" fill="currentColor" stroke="none" />
+                    <line x1="34" y1="14" x2="40" y2="8" stroke-width="1" opacity="0.5" />
+                </svg>
+            </div>
+            <h1 class="hero-title">
+                ZATANNA
+                <span class="invert-hint">ZATANNA</span>
+            </h1>
+            <p class="hero-subtitle">阅读指南 · Reading Guide</p>
+            <div class="hero-line"></div>
+            <p class="hero-tagline">"tsac a llips ,dnuora nrut" —— 倒转咒语，开启魔法之旅</p>
+        </header>
+
+        <!-- 入门路线 -->
+        <section class="glass-card" id="section-intro">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div class="card-title-group">
+                    <h3>入门路线</h3>
+                    <span class="card-badge">新读者首选 · 快速建立角色认知</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="intro-text">这些故事独立性强、篇幅适中，适合不熟悉DC魔法线或扎坦娜的新手。重点展现她的舞台魔术师身份、魔法能力、个性与人际关系。</p>
+                <ul class="reading-list">
+                    <li><strong>Zatanna: Everyday Magic</strong> (2003, Paul Dini & Rick Mays) <span class="highlight-tag">最推荐入门</span><span class="meta">温暖、日常生活向，突出舞台表演与魔法平衡，治愈感强。</span></li>
+                    <li><strong>Black Canary and Zatanna: Bloodspell</strong> (2014, Paul Dini) <span class="meta">扎坦娜与黑金丝雀的友情神作，跨时间线冒险，情感丰富。</span></li>
+                    <li><strong>Zatanna by Paul Dini</strong><span class="meta">收集2010-2011系列精华 + Everyday Magic —— 现代经典起点，人气最高。</span></li>
+                    <li><strong>Zatanna: Bring Down the House</strong> (2024, Mariko Tamaki & Javier Rodriguez，黑标) <span class="tag-purple">近年评价极高</span><span class="meta">独立故事，画风惊艳，新人可直接读。</span></li>
+                </ul>
+                <div class="tips-block">
+                    <strong>建议阅读顺序：</strong>Everyday Magic → Bloodspell → Bring Down the House（可选）
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心个人刊 -->
+        <section class="glass-card" id="section-core">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="2" width="18" height="20" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+                </div>
+                <div class="card-title-group">
+                    <h3>核心个人刊</h3>
+                    <span class="card-badge">扎坦娜作为主角的重点故事</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul class="reading-list">
+                    <li><strong>Zatanna (Vol. 2) #1-16</strong> (2010-2011, Paul Dini主笔) <span class="highlight-tag">最高优先级</span><span class="meta">最经典、最易入坑的个人连载，塑造完整，常被视为角色代表作。收集本：<em>Zatanna by Paul Dini</em>。</span></li>
+                    <li><strong>Zatanna Special #1</strong> (1987) <span class="meta">前危机时代高光，召唤与起源相关，老读者推崇。</span></li>
+                    <li><strong>Zatanna: Come Together</strong> (1993迷你系列 #1-4) <span class="meta">后危机早期个人故事。</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- JLA时期 -->
+        <section class="glass-card" id="section-jla">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><polygon points="7,22 12,16 17,22"/></svg>
+                </div>
+                <div class="card-title-group">
+                    <h3>JLA时期</h3>
+                    <span class="card-badge">经典团队与早期英雄生涯</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="intro-text">扎坦娜在银/铜时代活跃，后正式加入JLA（非创始成员，1978年起）。</p>
+                <p class="sub-section-title">起源 / 寻父篇（必读，角色诞生故事）</p>
+                <ul class="reading-list">
+                    <li>Hawkman #4 (1964)</li>
+                    <li>Detective Comics #336 (1965)</li>
+                    <li>The Atom #19 (1965)</li>
+                    <li>Green Lantern (Vol. 2) #42 (1966)</li>
+                    <li>Detective Comics #355 (1966)</li>
+                    <li>Justice League of America #51 (1967)</li>
+                </ul>
+                <p style="font-size:0.8rem;color:var(--text-muted);margin-top:6px;">收集：<em>JLA: Zatanna's Search</em></p>
+                <p class="sub-section-title">JLA团队高光</p>
+                <ul class="reading-list">
+                    <li>Justice League of America #161-167（正式加入时期）</li>
+                    <li>其他精选：#179-180, #187-190, #225-227, #233-261 等Detroit时代相关</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 魔法线 -->
+        <section class="glass-card" id="section-magic">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9"/></svg>
+                </div>
+                <div class="card-title-group">
+                    <h3>魔法线</h3>
+                    <span class="card-badge">DC魔法宇宙核心 · Constantine / Swamp Thing关联</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul class="reading-list">
+                    <li><strong>Books of Magic</strong> (1990迷你系列) <span class="meta">早期重要客串，魔法世界观构建。</span></li>
+                    <li><strong>Swamp Thing (Vol. 2) #50</strong> <span class="meta">关键客串，"The End"故事。</span></li>
+                    <li><strong>Seven Soldiers: Zatanna</strong> (2005, Grant Morrison & Ryan Sook) <span class="tag-purple">高口碑</span><span class="meta">文学性强，角色成长弧完整。</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 蝙蝠侠关联刊 -->
+        <section class="glass-card" id="section-bat">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12,2 C8,2 4,6 4,12 C4,16 8,22 12,22 C16,22 20,16 20,12 C20,6 16,2 12,2 Z M12,5 L12,19"/></svg>
+                </div>
+                <div class="card-title-group">
+                    <h3>蝙蝠侠关联刊</h3>
+                    <span class="card-badge">童年好友 · 布鲁斯×扎坦娜关系</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul class="reading-list">
+                    <li><strong>Detective Comics #833-834</strong> (2007) <span class="highlight-tag">关键</span><span class="meta">现代布鲁斯与扎坦娜童年好友设定的重要来源。</span></li>
+                </ul>
+                <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">额外：Identity Crisis（对扎坦娜影响大，但有争议，可后读）。</p>
+            </div>
+        </section>
+
+        <!-- 黑金丝雀关联刊 -->
+        <section class="glass-card" id="section-bc">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="4"/><circle cx="15" cy="15" r="4"/><line x1="11" y1="11" x2="13" y2="13"/></svg>
+                </div>
+                <div class="card-title-group">
+                    <h3>黑金丝雀关联刊</h3>
+                    <span class="card-badge">友情/团队神作</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul class="reading-list">
+                    <li><strong>Black Canary and Zatanna: Bloodspell</strong> <span class="meta">已列入门，Paul Dini笔下最佳之一。</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Justice League Dark路线 -->
+        <section class="glass-card" id="section-jld">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="currentColor" opacity="0.4"/></svg>
+                </div>
+                <div class="card-title-group">
+                    <h3>Justice League Dark路线</h3>
+                    <span class="card-badge">现代魔法团队核心 · 扎坦娜地位突出</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="sub-section-title">New 52 (2011-2016)</p>
+                <ul class="reading-list">
+                    <li>Justice League Dark Vol. 1 #0-40 + Annuals <span class="meta">扎坦娜成为魔法线核心，后期领导团队。关联：Trinity War、Forever Evil: Blight。</span></li>
+                </ul>
+                <p class="sub-section-title">Rebirth / 后续</p>
+                <ul class="reading-list">
+                    <li>Justice League Dark Vol. 2 #1-29 + The Witching Hour <span class="meta">James Tynion IV等时代，现代魔法线巅峰。</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Elseworld / 独立宇宙 / 青年向 -->
+        <section class="glass-card" id="section-else">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="3"/><path d="M6,18 C6,14 10,10 12,10 C14,10 18,14 18,18"/></svg>
+                </div>
+                <div class="card-title-group">
+                    <h3>Elseworld / 独立宇宙 / 青年向</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul class="reading-list">
+                    <li><strong>Zatanna: The Jewel of Gravesend</strong> (2022) <span class="meta">黑暗童话风YA，评价不错，新读者友好。</span></li>
+                    <li><strong>Zatanna and the House of Secrets</strong> <span class="meta">面向年轻读者。</span></li>
+                    <li><strong>Zatanna: Bring Down the House</strong> (2024) <span class="meta">已列，独立高品质。</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 现代精品推荐 -->
+        <section class="glass-card" id="section-modern">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/></svg>
+                </div>
+                <div class="card-title-group">
+                    <h3>现代精品推荐</h3>
+                    <span class="card-badge">2024以后 / 当前连载</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul class="reading-list">
+                    <li><strong>Zatanna: Bring Down the House</strong> (2024) <span class="highlight-tag">近年最高评价之一</span></li>
+                    <li><strong>Zatanna (Vol. 3)</strong> (2025-, Jamal Campbell) <span class="meta">由Campbell操刀，艺术与故事并重，聚焦巡演与魔法新篇章。</span></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 精简必读10项 -->
+        <section class="glass-card card-highlight" id="section-top10">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><polygon points="12,2 15,8 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,8" fill="currentColor" opacity="0.5"/></svg>
+                </div>
+                <div class="card-title-group">
+                    <h3>如果只读10项 · 精简必读列表</h3>
+                    <span class="card-badge" style="color:#e0c060;">覆盖起源、成长、团队、人际关系与当代魅力</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <ol class="numbered-list">
+                    <li><strong>JLA: Zatanna's Search</strong>（起源）</li>
+                    <li><strong>Zatanna Special #1</strong></li>
+                    <li><strong>Zatanna: Everyday Magic</strong></li>
+                    <li><strong>Seven Soldiers: Zatanna</strong></li>
+                    <li><strong>Detective Comics #833-834</strong>（蝙蝠关联）</li>
+                    <li><strong>Zatanna (Vol. 2) #1-16</strong>（Paul Dini核心个人）</li>
+                    <li><strong>Black Canary and Zatanna: Bloodspell</strong></li>
+                    <li><strong>Justice League Dark (New 52)</strong>（选卷或关键弧）</li>
+                    <li><strong>Justice League Dark (Rebirth)</strong></li>
+                    <li><strong>Zatanna: Bring Down the House</strong>（现代独立精品）</li>
+                </ol>
+                <p style="font-size:0.82rem;color:#b8a8cc;margin-top:10px;">读完这些，你会覆盖扎坦娜的起源、个人成长、JLA/魔法团队地位、关键人际关系（蝙蝠、黑金丝雀、Constantine）以及当代魅力。</p>
+            </div>
+        </section>
+
+        <!-- 额外Tips -->
+        <section class="glass-card" id="section-tips">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>
+                </div>
+                <div class="card-title-group">
+                    <h3>额外 Tips</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul class="reading-list">
+                    <li><strong>收集建议：</strong>优先TPB/Omnibus（如<em>Zatanna by Paul Dini</em>新版收集多部）。DC Infinite或实体店易找。</li>
+                    <li><strong>争议内容：</strong>Identity Crisis影响大但敏感，可按需跳过。</li>
+                    <li><strong>阅读顺序灵活：</strong>入门路线后可跳魔法线或JLD；时间线非必须。</li>
+                </ul>
+                <p style="font-size:0.78rem;color:var(--text-muted);margin-top:6px;">此指南力求"尽可能完整"但实用，避免冗长冷门客串。如需特定弧线细节或PDF/收集信息，可进一步补充。</p>
+            </div>
+        </section>
+
+        <!-- 补充推荐 - 使用可折叠面板 -->
+        <section class="glass-card" id="section-supplement">
+            <div class="card-header">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="8" rx="1"/><rect x="14" y="3" width="7" height="8" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                </div>
+                <div class="card-title-group">
+                    <h3>扩展阅读补充</h3>
+                    <span class="card-badge">原指南之外的精选推荐</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="intro-text">以下根据可靠阅读顺序来源筛选，优先选择有口碑、角色塑造或魔法线/人际关系补充价值的额外故事。</p>
+
+                <!-- 入门补充 -->
+                <button class="accordion-toggle" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span class="sub-section-title" style="margin:0;">入门路线 / 核心个人刊 补充</span>
+                    <svg class="arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="accordion-content">
+                    <ul class="reading-list" style="margin-top:8px;">
+                        <li><strong>Zatanna (Vol. 1, 1993 miniseries #1-4)</strong> <span class="meta">后危机早期个人迷你系列，探索独立冒险。</span></li>
+                        <li><strong>52 #34</strong> <span class="meta">"The Origin of Zatanna"单期，简洁回顾起源与家庭。</span></li>
+                        <li><strong>Zatanna: It's Showtime!</strong> (2025 Jamal Campbell系列收集 #1-6) <span class="meta">聚焦巡演舞台魔术师生活，艺术出色。</span></li>
+                    </ul>
+                </div>
+
+                <!-- JLA补充 -->
+                <button class="accordion-toggle" onclick="toggleAccordion(this)" aria-expanded="false" style="margin-top:8px;">
+                    <span class="sub-section-title" style="margin:0;">JLA时期 补充</span>
+                    <svg class="arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="accordion-content">
+                    <ul class="reading-list" style="margin-top:8px;">
+                        <li><strong>Justice League of America (Detroit Era)</strong> <span class="meta">尤其是#233-261相关弧，部分收录在Detroit Era Omnibus。</span></li>
+                        <li>Justice League of America Annual #2-3 等Detroit时代年刊</li>
+                        <li>Justice League: The Second Coming / When Worlds Collide（后期JLA回归故事）</li>
+                    </ul>
+                </div>
+
+                <!-- 魔法线补充 -->
+                <button class="accordion-toggle" onclick="toggleAccordion(this)" aria-expanded="false" style="margin-top:8px;">
+                    <span class="sub-section-title" style="margin:0;">魔法线 补充</span>
+                    <svg class="arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="accordion-content">
+                    <ul class="reading-list" style="margin-top:8px;">
+                        <li><strong>Swamp Thing (Vol. 2) #43-50</strong>（尤其是#49-50） <span class="meta">与父亲Zatara相关的重要客串，情感与魔法深度强。Saga of the Swamp Thing Book 4收集。</span></li>
+                        <li><strong>Mystik U</strong> (2018 miniseries) <span class="meta">Elseworld/另类大学设定，年轻版Zatanna在魔法学校的故事，轻松有趣。</span></li>
+                        <li>Sentinels of Magic 相关客串（90年代末魔法团队）</li>
+                    </ul>
+                </div>
+
+                <!-- 蝙蝠补充 -->
+                <button class="accordion-toggle" onclick="toggleAccordion(this)" aria-expanded="false" style="margin-top:8px;">
+                    <span class="sub-section-title" style="margin:0;">蝙蝠侠关联刊 补充</span>
+                    <svg class="arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="accordion-content">
+                    <ul class="reading-list" style="margin-top:8px;">
+                        <li><strong>Detective Comics #843-844</strong>（或#824相关） <span class="meta">延续#833-834的布鲁斯×扎坦娜童年好友/浪漫暗示。</span></li>
+                        <li><strong>Batman: Urban Legends Vol. 3</strong>（#11-16） <span class="meta">现代短篇客串。</span></li>
+                    </ul>
+                </div>
+
+                <!-- JLD补充 -->
+                <button class="accordion-toggle" onclick="toggleAccordion(this)" aria-expanded="false" style="margin-top:8px;">
+                    <span class="sub-section-title" style="margin:0;">Justice League Dark路线 补充</span>
+                    <svg class="arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="accordion-content">
+                    <p style="font-size:0.8rem;color:#b8a8cc;margin-top:6px;"><strong>New 52额外：</strong></p>
+                    <ul class="reading-list" style="margin-top:4px;">
+                        <li><strong>I, Vampire #6-8</strong> <span class="meta">与JLD交叉的吸血鬼弧。</span></li>
+                        <li><strong>Trinity War</strong> 和 <strong>Forever Evil: Blight</strong> <span class="meta">JLD关键事件，Zatanna角色重要。</span></li>
+                    </ul>
+                    <p style="font-size:0.8rem;color:#b8a8cc;margin-top:8px;"><strong>Rebirth/Infinite Frontier 额外：</strong></p>
+                    <ul class="reading-list" style="margin-top:4px;">
+                        <li><strong>Justice League Dark: The Great Wickedness</strong>（Justice League #59-71 + Annual）</li>
+                        <li>Justice League: No Justice / Endless Winter（团队事件交叉）</li>
+                        <li><strong>Dark Crisis: Worlds Without a Justice League – Batman #1</strong> <span class="meta">单期，时间线/备用宇宙视角。</span></li>
+                    </ul>
+                </div>
+
+                <!-- Elseworld补充 -->
+                <button class="accordion-toggle" onclick="toggleAccordion(this)" aria-expanded="false" style="margin-top:8px;">
+                    <span class="sub-section-title" style="margin:0;">Elseworld / 独立宇宙 / 青年向 补充</span>
+                    <svg class="arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="accordion-content">
+                    <ul class="reading-list" style="margin-top:8px;">
+                        <li><strong>Zatanna and the House of Secrets</strong> <span class="meta">青年向，适合新读者或轻松阅读。</span></li>
+                        <li><strong>Batman / Santa Claus: Silent Knight Returns</strong> <span class="meta">节日团队故事，Zatanna与Robin合作。</span></li>
+                    </ul>
+                </div>
+
+                <!-- 现代补充 -->
+                <button class="accordion-toggle" onclick="toggleAccordion(this)" aria-expanded="false" style="margin-top:8px;">
+                    <span class="sub-section-title" style="margin:0;">现代精品 / 当前连载 补充</span>
+                    <svg class="arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="accordion-content">
+                    <ul class="reading-list" style="margin-top:8px;">
+                        <li><strong>DC K.O.: Harley Quinn vs. Zatanna #1</strong> (2026) <span class="meta">事件单期，趣味对决。</span></li>
+                        <li><strong>Zatanna (Vol. 3, 2025 Jamal Campbell)</strong> (#1-6) <span class="highlight-tag">强烈推荐</span><span class="meta">已完结限系列，她成为"Prime Magus"（魔法世界监督者）的故事，艺术与新地位塑造出色。</span></li>
+                    </ul>
+                </div>
+
+                <!-- 其他客串 -->
+                <button class="accordion-toggle" onclick="toggleAccordion(this)" aria-expanded="false" style="margin-top:8px;">
+                    <span class="sub-section-title" style="margin:0;">其他值得一提的客串/扩展</span>
+                    <svg class="arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="accordion-content">
+                    <ul class="reading-list" style="margin-top:8px;">
+                        <li><strong>Books of Magic</strong> 完整迷你系列（1990 #1-4）</li>
+                        <li><strong>Secret Origins #27</strong> <span class="meta">早期起源补充。</span></li>
+                        <li>DC Infinite Halloween Special #1 或 Secrets of Sinister House #1 <span class="meta">短篇，收录在Paul Dini Omnibus中。</span></li>
+                    </ul>
+                </div>
+
+                <!-- 收集建议 -->
+                <div class="tips-block" style="margin-top:14px;">
+                    <strong>📚 收集建议（实用TPB/Omnibus）：</strong><br>
+                    · <strong>Zatanna by Paul Dini Omnibus</strong>（2026新版）：包含Vol.2、Everyday Magic、Bloodspell、Detective Comics蝙蝠故事等，一书多得。<br>
+                    · <strong>Justice League Dark: The New 52 Omnibus</strong> / Compendium：完整New 52 JLD。<br>
+                    · <strong>Justice League Dark: Rebirth Omnibus</strong>：Rebirth时代。
+                </div>
+            </div>
+        </section>
+
+        <!-- 底部 -->
+        <footer style="text-align:center;padding:30px 0 10px;font-size:0.72rem;color:var(--text-muted);letter-spacing:0.06em;">
+            <p>Zatanna Reading Guide · 角色元素融入设计 · 玻璃拟态 · 思源宋体</p>
+            <p style="margin-top:4px;opacity:0.5;">"snoitacilppa egam fo dlrow a setagitsevni ehs ,rehtegot smaerd dna ytilaeR"</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // 生成星空
+        (function() {
+            const container = document.getElementById('starsContainer');
+            const starCount = 120;
+            const fragment = document.createDocumentFragment();
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 2.2 + 0.6;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--dur', (Math.random() * 4 + 3) + 's');
+                star.style.setProperty('--delay', Math.random() * 5 + 's');
+                fragment.appendChild(star);
+            }
+
+            // 浮动魔法粒子
+            const sparkCount = 35;
+            for (let i = 0; i < sparkCount; i++) {
+                const spark = document.createElement('div');
+                spark.classList.add('spark-particle');
+                spark.style.setProperty('--spark-delay', Math.random() * 8 + 's');
+                spark.style.setProperty('--spark-x', Math.random() * 100 + '%');
+                spark.style.animationDuration = (Math.random() * 6 + 5) + 's';
+                spark.style.width = (Math.random() * 2 + 1) + 'px';
+                spark.style.height = spark.style.width;
+                fragment.appendChild(spark);
+            }
+
+            container.appendChild(fragment);
+        })();
+
+        // 折叠面板交互
+        function toggleAccordion(btn) {
+            const content = btn.nextElementSibling;
+            const isOpen = content.classList.contains('expanded');
+            // 关闭所有
+            document.querySelectorAll('.accordion-content.expanded').forEach(el => {
+                el.classList.remove('expanded');
+                el.previousElementSibling.classList.remove('open');
+                el.previousElementSibling.setAttribute('aria-expanded', 'false');
+            });
+            if (!isOpen) {
+                content.classList.add('expanded');
+                btn.classList.add('open');
+                btn.setAttribute('aria-expanded', 'true');
+                // 平滑滚动
+                setTimeout(() => {
+                    btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 150);
+            }
+        }
+
+        // 页面加载后微调
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始展开第一个折叠面板（可选，这里保持全部折叠以保持页面整洁）
+            console.log('✨ Zatanna Reading Guide ready. "esrever ni slleps"');
+        });
+    </script>
+</body>
+</html>
