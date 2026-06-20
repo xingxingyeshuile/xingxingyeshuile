@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>斯蒂芬妮·布朗 — 阅读指南</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7B4DFF;
+            --secondary: #C6A4FF;
+            --accent: #FF6BD6;
+            --bg: #0E0B17;
+            --bg-secondary: #171125;
+            --text: #F6F0FF;
+            --text-muted: #b8a8d8;
+            --glass-1: rgba(255, 255, 255, 0.08);
+            --glass-2: rgba(255, 255, 255, 0.12);
+            --glass-3: rgba(255, 255, 255, 0.16);
+            --blur-1: 20px;
+            --blur-2: 28px;
+            --blur-3: 40px;
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --radius-xl: 36px;
+            --transition: 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+            --font-serif: 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', 'STSong', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-serif);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* 星空背景 */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            background: #fff;
+            animation: twinkle var(--dur) ease-in-out infinite;
+            animation-delay: var(--delay);
+            opacity: 0;
+        }
+        @keyframes twinkle {
+            0%,
+            100% {
+                opacity: 0.15;
+                transform: scale(1);
+            }
+            30% {
+                opacity: 0.7;
+                transform: scale(1.6);
+            }
+            60% {
+                opacity: 0.2;
+                transform: scale(0.9);
+            }
+            85% {
+                opacity: 0.55;
+                transform: scale(1.3);
+            }
+        }
+
+        /* 光粒 */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            background: var(--primary);
+            box-shadow: 0 0 12px var(--primary), 0 0 28px var(--secondary);
+            animation: floatUp var(--float-dur) linear infinite;
+            animation-delay: var(--float-delay);
+            opacity: 0;
+        }
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) translateX(0) scale(0.3);
+            }
+            10% {
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateY(50vh) translateX(var(--drift)) scale(1);
+            }
+            90% {
+                opacity: 0.15;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-10vh) translateX(calc(var(--drift) * 1.5)) scale(0.2);
+            }
+        }
+
+        /* 流星 */
+        .meteor {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            width: 2px;
+            height: 80px;
+            background: linear-gradient(to bottom, rgba(255, 107, 214, 0.9), rgba(198, 164, 255, 0.5), transparent);
+            border-radius: 1px;
+            animation: meteorFall var(--meteor-dur) linear infinite;
+            animation-delay: var(--meteor-delay);
+            opacity: 0;
+            box-shadow: 0 0 6px var(--accent), 0 0 20px var(--accent);
+        }
+        @keyframes meteorFall {
+            0% {
+                opacity: 0;
+                transform: translate(0, -100px) rotate(-35deg);
+            }
+            5% {
+                opacity: 1;
+            }
+            15% {
+                opacity: 0.6;
+            }
+            25% {
+                opacity: 0;
+                transform: translate(400px, 600px) rotate(-35deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(400px, 600px) rotate(-35deg);
+            }
+        }
+
+        /* 紫色光晕 */
+        .aurora {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            border-radius: 50%;
+            filter: blur(120px);
+            animation: auroraPulse 10s ease-in-out infinite;
+            opacity: 0.35;
+        }
+        .aurora-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            top: -200px;
+            right: -150px;
+            animation-delay: 0s;
+        }
+        .aurora-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            bottom: -150px;
+            left: -100px;
+            animation-delay: -5s;
+            opacity: 0.25;
+        }
+        .aurora-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -3s;
+            opacity: 0.2;
+        }
+        @keyframes auroraPulse {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            33% {
+                transform: scale(1.25);
+                opacity: 0.45;
+            }
+            66% {
+                transform: scale(0.85);
+                opacity: 0.22;
+            }
+        }
+
+        /* 主容器 */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .hero-mask {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: -1;
+            width: 500px;
+            height: 500px;
+            opacity: 0.18;
+        }
+        .hero-mask .mask-outline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 40% 55% 45% 50%;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 60px var(--primary), 0 0 120px var(--secondary), inset 0 0 30px rgba(123, 77, 255, 0.2);
+            animation: maskFloat 8s ease-in-out infinite;
+        }
+        .hero-mask .mask-inner {
+            position: absolute;
+            top: 15%;
+            left: 12%;
+            width: 76%;
+            height: 70%;
+            border-radius: 45% 50% 40% 55%;
+            border: 1px solid var(--secondary);
+            box-shadow: 0 0 40px var(--secondary);
+            animation: maskFloat 8s ease-in-out infinite reverse;
+        }
+        .hero-mask .mask-core {
+            position: absolute;
+            top: 30%;
+            left: 25%;
+            width: 50%;
+            height: 40%;
+            border-radius: 50% 45% 55% 50%;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 30px var(--accent), 0 0 80px var(--accent);
+            animation: maskFloat 6s ease-in-out infinite;
+        }
+        @keyframes maskFloat {
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(15px, -20px) rotate(3deg);
+            }
+            50% {
+                transform: translate(-10px, 10px) rotate(-2deg);
+            }
+            75% {
+                transform: translate(-18px, -8px) rotate(1deg);
+            }
+        }
+        .hero-title {
+            font-size: clamp(2.4rem, 6vw, 5rem);
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            color: var(--text);
+            text-shadow: 0 0 50px var(--primary), 0 0 100px var(--secondary), 0 4px 20px rgba(0, 0, 0, 0.6);
+            line-height: 1.1;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        .hero-title .highlight {
+            color: var(--accent);
+            text-shadow: 0 0 40px var(--accent), 0 0 80px var(--accent);
+        }
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            font-weight: 400;
+            color: var(--secondary);
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+            text-shadow: 0 0 20px var(--secondary);
+        }
+        .hero-tagline {
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            font-weight: 300;
+            opacity: 0.85;
+        }
+        .hero-scroll {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounceDown 2s ease-in-out infinite;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .hero-scroll span {
+            display: block;
+            width: 28px;
+            height: 28px;
+            border-right: 2px solid var(--secondary);
+            border-bottom: 2px solid var(--secondary);
+            transform: rotate(45deg);
+            opacity: 0.7;
+            box-shadow: 0 0 10px var(--secondary);
+        }
+        @keyframes bounceDown {
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(16px);
+            }
+        }
+
+        /* ========== SECTION TITLES ========== */
+        .section-title {
+            font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--text);
+            text-shadow: 0 0 30px var(--primary);
+            position: relative;
+            z-index: 1;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            margin: 14px auto 0;
+            border-radius: 2px;
+            box-shadow: 0 0 16px var(--accent);
+        }
+
+        /* ========== JOURNEY PATH ========== */
+        .journey-section {
+            position: relative;
+            z-index: 1;
+            padding: 60px 0;
+        }
+        .journey-card {
+            position: relative;
+            background: var(--glass-1);
+            backdrop-filter: blur(var(--blur-1));
+            -webkit-backdrop-filter: blur(var(--blur-1));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: 36px 32px 32px;
+            margin-bottom: 36px;
+            display: flex;
+            gap: 28px;
+            align-items: flex-start;
+            transition: all var(--transition);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        .journey-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--accent), var(--secondary));
+            border-radius: 2px 0 0 2px;
+            opacity: 0.8;
+            box-shadow: 0 0 18px var(--primary);
+        }
+        .journey-card:hover {
+            background: var(--glass-2);
+            backdrop-filter: blur(var(--blur-2));
+            -webkit-backdrop-filter: blur(var(--blur-2));
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 16px 48px rgba(123, 77, 255, 0.25), 0 0 60px rgba(198, 164, 255, 0.1);
+            transform: translateY(-4px);
+        }
+        .journey-card .chapter-num {
+            flex-shrink: 0;
+            font-size: 5rem;
+            font-weight: 900;
+            line-height: 1;
+            color: var(--primary);
+            text-shadow: 0 0 40px var(--primary), 0 0 80px var(--secondary);
+            min-width: 90px;
+            text-align: center;
+            opacity: 0.9;
+            letter-spacing: -0.02em;
+        }
+        .journey-card .chapter-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .journey-card .chapter-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .journey-card .chapter-years {
+            font-size: 0.85rem;
+            color: var(--accent);
+            letter-spacing: 0.08em;
+            font-weight: 500;
+            margin-bottom: 14px;
+            text-shadow: 0 0 10px var(--accent);
+        }
+        .journey-card .chapter-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+        .publication-list {
+            list-style: none;
+            padding: 0;
+        }
+        .publication-list li {
+            position: relative;
+            padding: 7px 0 7px 22px;
+            font-size: 0.9rem;
+            color: var(--text);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            line-height: 1.5;
+            transition: color var(--transition);
+        }
+        .publication-list li::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            font-size: 0.5rem;
+            color: var(--accent);
+            text-shadow: 0 0 6px var(--accent);
+        }
+        .publication-list li:hover {
+            color: #fff;
+            text-shadow: 0 0 8px var(--secondary);
+        }
+        .publication-list li .tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 6px;
+            letter-spacing: 0.04em;
+            font-weight: 500;
+            background: rgba(255, 107, 214, 0.2);
+            color: var(--accent);
+            border: 1px solid rgba(255, 107, 214, 0.35);
+        }
+        .publication-list li .tag-core {
+            background: rgba(123, 77, 255, 0.25);
+            color: var(--secondary);
+            border: 1px solid rgba(123, 77, 255, 0.4);
+        }
+        .sub-section-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: var(--secondary);
+            margin: 14px 0 6px;
+            text-transform: uppercase;
+            opacity: 0.85;
+            text-shadow: 0 0 8px var(--secondary);
+        }
+
+        /* ========== LEGACY IDENTITY ========== */
+        .legacy-section {
+            position: relative;
+            z-index: 1;
+            padding: 60px 0;
+            text-align: center;
+        }
+        .legacy-track {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            padding: 20px 0;
+        }
+        .legacy-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--accent), var(--secondary), #d4a8ff);
+            box-shadow: 0 0 30px var(--primary), 0 0 60px var(--accent);
+            border-radius: 1px;
+            z-index: 0;
+        }
+        .legacy-card {
+            position: relative;
+            z-index: 1;
+            background: var(--glass-2);
+            backdrop-filter: blur(var(--blur-2));
+            -webkit-backdrop-filter: blur(var(--blur-2));
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-md);
+            padding: 18px 28px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            transition: all var(--transition);
+            text-align: center;
+            min-width: 200px;
+            cursor: default;
+        }
+        .legacy-card:nth-child(2) {
+            color: #c9b0ff;
+            box-shadow: 0 0 25px rgba(123, 77, 255, 0.5);
+            border-color: rgba(123, 77, 255, 0.5);
+            margin-left: -40px;
+        }
+        .legacy-card:nth-child(3) {
+            color: #e8b0ff;
+            box-shadow: 0 0 25px rgba(180, 100, 255, 0.55);
+            border-color: rgba(180, 100, 255, 0.5);
+            margin-left: 40px;
+        }
+        .legacy-card:nth-child(4) {
+            color: #d0c0ff;
+            box-shadow: 0 0 25px rgba(140, 100, 240, 0.6);
+            border-color: rgba(140, 100, 240, 0.5);
+            margin-left: -30px;
+        }
+        .legacy-card:nth-child(5) {
+            color: #ffe0c0;
+            box-shadow: 0 0 30px rgba(200, 150, 100, 0.55);
+            border-color: rgba(200, 150, 100, 0.5);
+            margin-left: 30px;
+            text-shadow: 0 0 16px rgba(255, 180, 100, 0.6);
+        }
+        .legacy-card:hover {
+            transform: scale(1.06);
+            box-shadow: 0 0 50px var(--accent), 0 0 80px var(--primary);
+            border-color: rgba(255, 107, 214, 0.6);
+            background: var(--glass-3);
+            backdrop-filter: blur(var(--blur-3));
+            -webkit-backdrop-filter: blur(var(--blur-3));
+        }
+        .legacy-arrow {
+            color: var(--accent);
+            font-size: 1.6rem;
+            z-index: 1;
+            text-shadow: 0 0 14px var(--accent);
+            animation: arrowGlow 2s ease-in-out infinite;
+            letter-spacing: 0;
+        }
+        @keyframes arrowGlow {
+            0%,
+            100% {
+                opacity: 0.5;
+                transform: translateY(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(6px);
+            }
+        }
+
+        /* ========== ESSENTIAL READING ========== */
+        .reading-section {
+            position: relative;
+            z-index: 1;
+            padding: 60px 0;
+        }
+        .poster-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .poster-card {
+            background: var(--glass-1);
+            backdrop-filter: blur(var(--blur-1));
+            -webkit-backdrop-filter: blur(var(--blur-1));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: 20px 16px 16px;
+            text-align: center;
+            transition: all var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        }
+        .poster-card:hover {
+            transform: scale(1.07);
+            z-index: 5;
+            background: var(--glass-3);
+            backdrop-filter: blur(var(--blur-3));
+            -webkit-backdrop-filter: blur(var(--blur-3));
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 20px 50px rgba(123, 77, 255, 0.35), 0 0 70px rgba(255, 107, 214, 0.2);
+        }
+        .poster-card .cover-placeholder {
+            width: 100%;
+            aspect-ratio: 2/3;
+            background: linear-gradient(135deg, var(--primary), var(--bg-secondary), var(--accent));
+            border-radius: 8px;
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+        .poster-card .cover-placeholder::after {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .poster-card .cover-placeholder .cover-inner-text {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+            z-index: 1;
+            text-align: left;
+            line-height: 1.3;
+        }
+        .poster-card .poster-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.03em;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .poster-card .poster-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+        }
+        .poster-card .poster-rating {
+            display: inline-block;
+            color: var(--accent);
+            font-weight: 600;
+            margin-top: 4px;
+            text-shadow: 0 0 8px var(--accent);
+        }
+        .poster-card .poster-importance {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--secondary);
+            letter-spacing: 0.05em;
+            margin-top: 2px;
+        }
+
+        /* ========== CHARACTER NETWORK ========== */
+        .network-section {
+            position: relative;
+            z-index: 1;
+            padding: 60px 0;
+            text-align: center;
+        }
+        .star-map {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            height: 550px;
+            margin: 0 auto;
+        }
+        .star-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--glass-3);
+            backdrop-filter: blur(var(--blur-3));
+            -webkit-backdrop-filter: blur(var(--blur-3));
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.04em;
+            color: #fff;
+            box-shadow: 0 0 50px var(--primary), 0 0 100px var(--accent), 0 0 150px var(--secondary);
+            text-shadow: 0 0 20px #fff;
+            animation: centerPulse 3s ease-in-out infinite;
+        }
+        @keyframes centerPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 50px var(--primary), 0 0 100px var(--accent), 0 0 150px var(--secondary);
+            }
+            50% {
+                box-shadow: 0 0 70px var(--primary), 0 0 140px var(--accent), 0 0 200px var(--secondary);
+            }
+        }
+        .star-node {
+            position: absolute;
+            z-index: 2;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--glass-2);
+            backdrop-filter: blur(var(--blur-2));
+            -webkit-backdrop-filter: blur(var(--blur-2));
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            color: var(--text);
+            transition: all var(--transition);
+            cursor: pointer;
+            text-align: center;
+            line-height: 1.2;
+            box-shadow: 0 0 20px rgba(123, 77, 255, 0.3);
+        }
+        .star-node:hover {
+            background: var(--glass-3);
+            box-shadow: 0 0 50px var(--accent), 0 0 80px var(--primary);
+            border-color: rgba(255, 107, 214, 0.6);
+            transform: scale(1.15);
+            color: #fff;
+            z-index: 4;
+        }
+        .star-node-1 {
+            top: 8%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .star-node-2 {
+            top: 28%;
+            right: 5%;
+            transform: translate(0, -50%);
+        }
+        .star-node-3 {
+            bottom: 18%;
+            right: 8%;
+            transform: translate(0, 50%);
+        }
+        .star-node-4 {
+            bottom: 6%;
+            left: 50%;
+            transform: translate(-50%, 50%);
+        }
+        .star-node-5 {
+            top: 28%;
+            left: 5%;
+            transform: translate(0, -50%);
+        }
+        /* 轨道线 */
+        .orbit-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            pointer-events: none;
+            z-index: 1;
+            box-shadow: 0 0 20px rgba(123, 77, 255, 0.2);
+            animation: orbitSpin 20s linear infinite;
+        }
+        .orbit-ring-1 {
+            width: 340px;
+            height: 340px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 22s;
+        }
+        .orbit-ring-2 {
+            width: 460px;
+            height: 460px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 28s;
+            animation-direction: reverse;
+            border-color: rgba(255, 107, 214, 0.15);
+        }
+        @keyframes orbitSpin {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        /* ========== 精简版 ========== */
+        .essentials-strip {
+            position: relative;
+            z-index: 1;
+            padding: 40px 0 60px;
+        }
+        .essentials-strip .compact-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        .essentials-strip .compact-list li {
+            background: var(--glass-1);
+            backdrop-filter: blur(var(--blur-1));
+            -webkit-backdrop-filter: blur(var(--blur-1));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 10px 18px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            color: var(--text);
+            transition: all var(--transition);
+            cursor: default;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .essentials-strip .compact-list li:hover {
+            background: var(--glass-3);
+            border-color: var(--accent);
+            box-shadow: 0 0 25px var(--accent);
+            transform: translateY(-3px);
+            color: #fff;
+        }
+        .essentials-strip .compact-list li .num {
+            font-weight: 900;
+            color: var(--accent);
+            margin-right: 4px;
+            text-shadow: 0 0 8px var(--accent);
+        }
+
+        /* ========== 扩展阅读补充 ========== */
+        .extended-section {
+            position: relative;
+            z-index: 1;
+            padding: 40px 0 60px;
+        }
+        .extended-card {
+            background: var(--glass-1);
+            backdrop-filter: blur(var(--blur-1));
+            -webkit-backdrop-filter: blur(var(--blur-1));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg);
+            padding: 28px 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            transition: all var(--transition);
+        }
+        .extended-card:hover {
+            background: var(--glass-2);
+            border-color: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 28px rgba(123, 77, 255, 0.2);
+        }
+        .extended-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px var(--secondary);
+        }
+        .extended-card ul {
+            list-style: none;
+            padding: 0;
+            columns: 2;
+            column-gap: 20px;
+        }
+        @media (max-width: 600px) {
+            .extended-card ul {
+                columns: 1;
+            }
+        }
+        .extended-card ul li {
+            padding: 4px 0 4px 16px;
+            position: relative;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            break-inside: avoid;
+            line-height: 1.5;
+        }
+        .extended-card ul li::before {
+            content: '◦';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 0.7rem;
+            top: 5px;
+        }
+
+        /* ========== FOOTER ========== */
+        .page-footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 0.04em;
+            opacity: 0.7;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .journey-card {
+                flex-direction: column;
+                padding: 24px 18px 20px;
+                gap: 10px;
+            }
+            .journey-card .chapter-num {
+                font-size: 3.5rem;
+                min-width: auto;
+                text-align: left;
+            }
+            .journey-card::before {
+                width: 3px;
+            }
+            .star-map {
+                height: 400px;
+                max-width: 100%;
+            }
+            .star-node {
+                width: 50px;
+                height: 50px;
+                font-size: 0.65rem;
+            }
+            .star-center {
+                width: 70px;
+                height: 70px;
+                font-size: 0.7rem;
+            }
+            .orbit-ring-1 {
+                width: 220px;
+                height: 220px;
+            }
+            .orbit-ring-2 {
+                width: 320px;
+                height: 320px;
+            }
+            .poster-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 12px;
+            }
+            .legacy-card {
+                min-width: 150px;
+                font-size: 0.95rem;
+                padding: 14px 18px;
+                margin-left: 0 !important;
+            }
+            .hero-mask {
+                width: 300px;
+                height: 300px;
+            }
+        }
+        @media (max-width: 480px) {
+            .poster-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .journey-card .chapter-num {
+                font-size: 2.5rem;
+            }
+            .journey-card .chapter-title {
+                font-size: 1.2rem;
+            }
+            .star-map {
+                height: 320px;
+            }
+            .star-node {
+                width: 40px;
+                height: 40px;
+                font-size: 0.55rem;
+            }
+            .star-center {
+                width: 55px;
+                height: 55px;
+                font-size: 0.6rem;
+            }
+            .orbit-ring-1 {
+                width: 160px;
+                height: 160px;
+            }
+            .orbit-ring-2 {
+                width: 240px;
+                height: 240px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 星空背景 -->
+    <div class="stars-container" id="starsContainer"></div>
+
+    <!-- 光粒 -->
+    <div id="particlesContainer"></div>
+
+    <!-- 流星 -->
+    <div id="meteorsContainer"></div>
+
+    <!-- 紫色光晕 -->
+    <div class="aurora aurora-1"></div>
+    <div class="aurora aurora-2"></div>
+    <div class="aurora aurora-3"></div>
+
+    <!-- ==================== HERO ==================== -->
+    <section class="hero" id="hero">
+        <div class="hero-mask">
+            <div class="mask-outline"></div>
+            <div class="mask-inner"></div>
+            <div class="mask-core"></div>
+        </div>
+        <h1 class="hero-title">
+            STEPHANIE <span class="highlight">BROWN</span>
+        </h1>
+        <p class="hero-subtitle">The Girl Who Always Gets Back Up</p>
+        <p class="hero-tagline">Spoiler · Robin · Batgirl · Batgirls</p>
+        <div class="hero-scroll" onclick="document.getElementById('journey').scrollIntoView({behavior:'smooth'})">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- ==================== JOURNEY PATH ==================== -->
+    <section class="journey-section" id="journey">
+        <div class="main-container">
+            <h2 class="section-title">Journey Path</h2>
+
+            <!-- Chapter I: THE SPOILER 1992–2003 -->
+            <div class="journey-card">
+                <div class="chapter-num">01</div>
+                <div class="chapter-content">
+                    <div class="chapter-title">THE SPOILER</div>
+                    <div class="chapter-years">1992 – 2003</div>
+                    <p class="chapter-desc">斯蒂芬妮以Spoiler身份登场，从对抗父亲Cluemaster到逐步获得蝙蝠家族认可。这一时期奠定了她与Tim Drake的深厚关系、与Cassandra Cain的经典闺蜜线，以及她坚韧乐观的底色。包含怀孕剧情、No Man's Land大事件参与、Bruce Wayne: Murderer?/Fugitive等关键节点。</p>
+                    <div class="sub-section-label">◆ 核心必读</div>
+                    <ul class="publication-list">
+                        <li><strong>Detective Comics #647-649</strong> <span class="tag tag-core">起源</span> — 首次登场，对抗Cluemaster，Spoiler诞生</li>
+                        <li><strong>Robin (vol. 4) #3-5</strong> — 早期Tim线，建立Steph × Tim关系</li>
+                        <li><strong>Robin (vol. 4) #15-16</strong></li>
+                        <li><strong>Showcase '95 #5</strong>（第二故事）</li>
+                        <li><strong>Robin (vol. 4) #25-26</strong></li>
+                        <li><strong>Robin (vol. 4) #35</strong>（及周边）</li>
+                        <li><strong>Robin (vol. 4) #50-100+</strong> <span class="tag tag-core">主线</span> — 持续客串，包括怀孕剧情（#56-65左右）、与Cass初遇等</li>
+                        <li><strong>Batman: Cataclysm</strong>（含 <em>Batman: Huntress/Spoiler #1</em>）</li>
+                        <li><strong>Batman: No Man's Land</strong>（Robin #68-72等）</li>
+                        <li><strong>Batgirl (2000) #1-37左右</strong> <span class="tag tag-core">闺蜜线</span> — Steph大量客串（尤其是#20+），Steph & Cass友情奠基</li>
+                        <li><strong>Bruce Wayne: Murderer? / Fugitive</strong> — 阅读相关 <em>Robin</em>、<em>Birds of Prey</em>、<em>Batgirl</em> 客串</li>
+                    </ul>
+                    <div class="sub-section-label">◆ 扩展阅读（1990s–2000s初）</div>
+                    <ul class="publication-list">
+                        <li><strong>Robin (vol. 4) #36-45</strong>（尤其是#40-45）— 更多日常互动和英雄成长</li>
+                        <li><strong>Robin #54-65</strong> — 怀孕主线延续（#56-65标志性剧情），情感深度强</li>
+                        <li><strong>Batman: Huntress/Spoiler: Blunt Trauma #1</strong>（Cataclysm相关）</li>
+                        <li><strong>Robin 80-Page Giant</strong>（2000）</li>
+                        <li><strong>Young Justice #30</strong> — 与Secret互动</li>
+                        <li><strong>Green Arrow (vol. 3) #5</strong>（Quiver贸易本）</li>
+                        <li><strong>Joker: Last Laugh</strong> 相关客串（#3、#6；Batgirl #21等）— Steph在事件中发挥作用</li>
+                        <li><strong>Birds of Prey #39-40、#43</strong> — Steph短暂与Birds合作</li>
+                        <li><strong>Batman: Gotham Knights #37</strong> 等客串</li>
+                        <li><strong>Robin #98-113</strong> — Jon Lewis时期，Steph接近co-lead</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Chapter II: THE ROBIN 2004 -->
+            <div class="journey-card">
+                <div class="chapter-num">02</div>
+                <div class="chapter-content">
+                    <div class="chapter-title">THE ROBIN</div>
+                    <div class="chapter-years">2004</div>
+                    <p class="chapter-desc">Tim暂时退出后，Steph接任Robin——仅约71天叙事时间，却是她角色弧线中至关重要的转折点。短暂但意义深远。</p>
+                    <div class="sub-section-label">◆ 铺垫</div>
+                    <ul class="publication-list">
+                        <li><strong>Robin #121-125</strong>（<em>Robin: Unmasked!</em> 贸易本）</li>
+                    </ul>
+                    <div class="sub-section-label">◆ Stephanie as Robin 核心</div>
+                    <ul class="publication-list">
+                        <li><strong>Robin #126-128</strong> <span class="tag tag-core">Robin时期核心</span></li>
+                        <li><strong>Batgirl (2000) #53</strong></li>
+                        <li><strong>Detective Comics #796</strong></li>
+                        <li><strong>Solo #10</strong></li>
+                    </ul>
+                    <div class="sub-section-label">◆ 扩展补充</div>
+                    <ul class="publication-list">
+                        <li><strong>Robin/Batgirl: Fresh Blood</strong>（Robin #132-133 + Batgirl #58-59）— War Games后Tim/Cass处理grief的交叉</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Chapter III: WAR GAMES 2004 -->
+            <div class="journey-card">
+                <div class="chapter-num">03</div>
+                <div class="chapter-content">
+                    <div class="chapter-title">WAR GAMES</div>
+                    <div class="chapter-years">2004</div>
+                    <p class="chapter-desc">高争议大事件。Steph在此遭受重大创伤——死亡争议长期存在。联动 <em>Batman</em>、<em>Detective Comics</em>、<em>Robin</em>、<em>Nightwing</em>、<em>Batgirl</em>、<em>Gotham Knights</em>、<em>Catwoman</em> 等。</p>
+                    <ul class="publication-list">
+                        <li><strong>Batman: War Games</strong> 大事件全联动 <span class="tag">高争议</span></li>
+                        <li>含 <em>Batman</em>、<em>Detective Comics</em>、<em>Robin</em>、<em>Nightwing</em>、<em>Batgirl</em>、<em>Gotham Knights</em>、<em>Catwoman</em> 等联动刊</li>
+                    </ul>
+                    <p style="font-size:0.85rem;color:var(--accent);margin-top:8px;text-shadow:0 0 8px var(--accent);">※ 粉丝提醒：可以读，但做好心理准备。</p>
+                </div>
+            </div>
+
+            <!-- Chapter IV: RETURN 2008 -->
+            <div class="journey-card">
+                <div class="chapter-num">04</div>
+                <div class="chapter-content">
+                    <div class="chapter-title">RETURN</div>
+                    <div class="chapter-years">2007 – 2008</div>
+                    <p class="chapter-desc">Steph正式以Spoiler身份回归，重建生活。经历死亡后的重生，展现了她"再倒霉也要爬起来继续笑"的生命力。</p>
+                    <div class="sub-section-label">◆ 必读</div>
+                    <ul class="publication-list">
+                        <li><strong>Robin #174-178</strong> <span class="tag tag-core">回归核心</span></li>
+                        <li><strong>Robin/Spoiler Special #1</strong> <span class="tag tag-core">回归核心</span></li>
+                    </ul>
+                    <div class="sub-section-label">◆ 扩展补充</div>
+                    <ul class="publication-list">
+                        <li><strong>Gotham Underground #1-9</strong>（尤其是#2-6）— Steph回归铺垫</li>
+                        <li><strong>Robin: Search for a Hero</strong>（#175-183）— 回归后更多故事</li>
+                        <li><strong>Batgirl (2000) #62、#72-73</strong> — Steph作为"幽灵"般客串（Cass接近死亡时出现，情感冲击强）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Chapter V: BATGIRL 2009–2011 -->
+            <div class="journey-card">
+                <div class="chapter-num">05</div>
+                <div class="chapter-content">
+                    <div class="chapter-title">BATGIRL</div>
+                    <div class="chapter-years">2009 – 2011</div>
+                    <p class="chapter-desc">巅峰个人刊。许多读者认为这是她最好的个人故事。Stephanie Brown正式接过Batgirl衣钵，书写属于自己的传奇。</p>
+                    <div class="sub-section-label">◆ 核心个人刊</div>
+                    <ul class="publication-list">
+                        <li><strong>Batgirl Rising</strong>：<em>Batgirl (vol. 3)</em> #1-7/8 <span class="tag tag-core">巅峰</span>（贸易本 <em>Batgirl: Batgirl Rising</em> 或 <em>Stephanie Brown Vol. 1</em> 至#12）</li>
+                        <li><strong>The Flood</strong>：<em>#9-14</em>（<em>Batgirl: The Flood</em>）</li>
+                        <li><strong>The Lesson</strong>：<em>#15-24</em>（<em>Batgirl: The Lesson</em>，<em>Stephanie Brown Vol. 2</em>）</li>
+                    </ul>
+                    <div class="sub-section-label">◆ 相关联动</div>
+                    <ul class="publication-list">
+                        <li><strong>World's Finest #1-4</strong></li>
+                        <li><strong>Red Robin #8-12</strong>（#6-12贸易本含Batgirl #8）— Tim视角下的Steph互动</li>
+                        <li><strong>Bruce Wayne: The Road Home – Batgirl</strong></li>
+                        <li><strong>Batman Incorporated: Leviathan Strikes!</strong></li>
+                    </ul>
+                    <div class="sub-section-label">◆ 旧宇宙收尾</div>
+                    <ul class="publication-list">
+                        <li><strong>Convergence: Batgirl</strong> 及相关刊（可选，旧连续性结束）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Chapter VI: REBIRTH 2016– -->
+            <div class="journey-card">
+                <div class="chapter-num">06</div>
+                <div class="chapter-content">
+                    <div class="chapter-title">REBIRTH</div>
+                    <div class="chapter-years">2011 – 2020</div>
+                    <p class="chapter-desc">New 52抹除了Robin/Batgirl历史，Steph从Spoiler重新开始。在Batman Eternal中主要回归，随后成为Detective Comics Rebirth固定成员。</p>
+                    <div class="sub-section-label">◆ New 52回归</div>
+                    <ul class="publication-list">
+                        <li><strong>Batman Eternal #1-52</strong> <span class="tag tag-core">主要回归</span> — 优秀入门点</li>
+                        <li><strong>Batman & Robin Eternal #1-26</strong> — 蝙蝠家戏份（含#2-4、#23-26等更多客串）</li>
+                    </ul>
+                    <div class="sub-section-label">◆ Detective Comics Rebirth（2016）</div>
+                    <ul class="publication-list">
+                        <li><strong>Rise of the Batmen</strong></li>
+                        <li><strong>Victim Syndicate</strong></li>
+                        <li><strong>League of Shadows</strong></li>
+                        <li><strong>Fall of the Batmen</strong></li>
+                    </ul>
+                    <div class="sub-section-label">◆ 扩展客串</div>
+                    <ul class="publication-list">
+                        <li><strong>Catwoman (vol. 4) #42-46</strong> — Steph与Catwoman互动</li>
+                        <li><strong>Batgirl (vol. 4) Annual #3</strong> 等Rebirth期小故事</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Chapter VII: BATGIRLS 2021– -->
+            <div class="journey-card">
+                <div class="chapter-num">07</div>
+                <div class="chapter-content">
+                    <div class="chapter-title">BATGIRLS</div>
+                    <div class="chapter-years">2021 – 至今</div>
+                    <p class="chapter-desc">当前最新主线，Steph与Cass双主角。现代蝙蝠家故事，延续闺蜜线传统，展现新一代Batgirls的活力。</p>
+                    <div class="sub-section-label">◆ 前导</div>
+                    <ul class="publication-list">
+                        <li><strong>Young Justice (2019)</strong>（Bendis时期，客串较多）</li>
+                        <li><strong>Batman: Fear State</strong>（Batgirls前导）</li>
+                    </ul>
+                    <div class="sub-section-label">◆ Batgirls 主刊</div>
+                    <ul class="publication-list">
+                        <li><strong>Batgirls Vol. 1</strong>：#1-6</li>
+                        <li><strong>Batgirls Vol. 2</strong>：#7-12</li>
+                        <li><strong>Batgirls Vol. 3</strong>：#13-19 + <strong>Batgirls Annual 2022</strong></li>
+                    </ul>
+                    <div class="sub-section-label">◆ 现代扩展</div>
+                    <ul class="publication-list">
+                        <li><strong>Wayne Family Adventures</strong>（Webtoon/数字）— 轻松日常向，Steph性格很亮眼（粉丝向推荐）</li>
+                        <li><strong>Secret Origins 80-Page Giant</strong> — Steph backstory闪回</li>
+                        <li><strong>各种Secret Files / 80-Page Giant</strong> — 如Batman Secret Files、Robin 80-Page Giant，提供背景或短故事</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== LEGACY IDENTITY ==================== -->
+    <section class="legacy-section" id="legacy">
+        <div class="main-container">
+            <h2 class="section-title">Legacy Identity</h2>
+            <div class="legacy-track">
+                <div class="legacy-line"></div>
+                <div class="legacy-card" style="color:#c9b0ff;box-shadow:0 0 25px rgba(123,77,255,0.5);border-color:rgba(123,77,255,0.5);">Spoiler</div>
+                <div class="legacy-arrow">↓</div>
+                <div class="legacy-card" style="color:#e0b8ff;box-shadow:0 0 28px rgba(160,90,255,0.55);border-color:rgba(160,90,255,0.5);">Robin</div>
+                <div class="legacy-arrow">↓</div>
+                <div class="legacy-card" style="color:#c8b8ff;box-shadow:0 0 30px rgba(130,95,245,0.6);border-color:rgba(130,95,245,0.5);">Batgirl</div>
+                <div class="legacy-arrow">↓</div>
+                <div class="legacy-card" style="color:#ffe0c0;box-shadow:0 0 35px rgba(200,150,100,0.55);border-color:rgba(200,150,100,0.5);text-shadow:0 0 16px rgba(255,180,100,0.6);">Batgirls</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ESSENTIAL READING ==================== -->
+    <section class="reading-section" id="reading">
+        <div class="main-container">
+            <h2 class="section-title">Essential Reading</h2>
+            <div class="poster-grid">
+                <!-- 1 -->
+                <div class="poster-card">
+                    <div class="cover-placeholder" style="background:linear-gradient(135deg,#3b1f6e,#7B4DFF,#2a1050);">
+                        <span class="cover-inner-text">Detective<br>Comics<br>#647-649</span>
+                    </div>
+                    <div class="poster-title">Spoiler诞生</div>
+                    <div class="poster-meta">1992 · 起源</div>
+                    <span class="poster-rating">★ ★ ★ ★ ☆</span>
+                    <span class="poster-importance">必读</span>
+                </div>
+                <!-- 2 -->
+                <div class="poster-card">
+                    <div class="cover-placeholder" style="background:linear-gradient(135deg,#1e1050,#5a2da0,#1a0e3a);">
+                        <span class="cover-inner-text">Robin<br>#126-128</span>
+                    </div>
+                    <div class="poster-title">Robin时期</div>
+                    <div class="poster-meta">2004 · 核心</div>
+                    <span class="poster-rating">★ ★ ★ ★ ☆</span>
+                    <span class="poster-importance">必读</span>
+                </div>
+                <!-- 3 -->
+                <div class="poster-card">
+                    <div class="cover-placeholder" style="background:linear-gradient(135deg,#2a1045,#8b1a4a,#1a0a20);">
+                        <span class="cover-inner-text">Batman:<br>War Games</span>
+                    </div>
+                    <div class="poster-title">War Games</div>
+                    <div class="poster-meta">2004 · 高争议</div>
+                    <span class="poster-rating">★ ★ ★ ☆ ☆</span>
+                    <span class="poster-importance">了解即可</span>
+                </div>
+                <!-- 4 -->
+                <div class="poster-card">
+                    <div class="cover-placeholder" style="background:linear-gradient(135deg,#1a1240,#6b3fc0,#1a0e30);">
+                        <span class="cover-inner-text">Robin<br>#174-178</span>
+                    </div>
+                    <div class="poster-title">Spoiler回归</div>
+                    <div class="poster-meta">2007-2008 · 重生</div>
+                    <span class="poster-rating">★ ★ ★ ★ ★</span>
+                    <span class="poster-importance">必读</span>
+                </div>
+                <!-- 5 -->
+                <div class="poster-card">
+                    <div class="cover-placeholder" style="background:linear-gradient(135deg,#281860,#7B4DFF,#1a1050);">
+                        <span class="cover-inner-text">Batgirl<br>(2009)<br>#1-24</span>
+                    </div>
+                    <div class="poster-title">巅峰Batgirl</div>
+                    <div class="poster-meta">2009-2011 · 巅峰</div>
+                    <span class="poster-rating">★ ★ ★ ★ ★</span>
+                    <span class="poster-importance">强烈推荐</span>
+                </div>
+                <!-- 6 -->
+                <div class="poster-card">
+                    <div class="cover-placeholder" style="background:linear-gradient(135deg,#1a1035,#4a2590,#0e0820);">
+                        <span class="cover-inner-text">Batman<br>Eternal<br>#1-52</span>
+                    </div>
+                    <div class="poster-title">New 52回归</div>
+                    <div class="poster-meta">2014-2015 · 入门</div>
+                    <span class="poster-rating">★ ★ ★ ★ ☆</span>
+                    <span class="poster-importance">推荐</span>
+                </div>
+                <!-- 7 -->
+                <div class="poster-card">
+                    <div class="cover-placeholder" style="background:linear-gradient(135deg,#1a1030,#5a30b0,#0e0820);">
+                        <span class="cover-inner-text">Detective<br>Comics<br>Rebirth</span>
+                    </div>
+                    <div class="poster-title">Rebirth固定成员</div>
+                    <div class="poster-meta">2016 · 核心弧</div>
+                    <span class="poster-rating">★ ★ ★ ★ ☆</span>
+                    <span class="poster-importance">推荐</span>
+                </div>
+                <!-- 8 -->
+                <div class="poster-card">
+                    <div class="cover-placeholder" style="background:linear-gradient(135deg,#1a0e28,#d4a040,#1a0e18);">
+                        <span class="cover-inner-text">Batgirls<br>#1-19</span>
+                    </div>
+                    <div class="poster-title">现代Batgirls</div>
+                    <div class="poster-meta">2021- · 双主角</div>
+                    <span class="poster-rating">★ ★ ★ ★ ★</span>
+                    <span class="poster-importance">必读</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 究极精简版 ==================== -->
+    <section class="essentials-strip" id="essentials">
+        <div class="main-container">
+            <h2 class="section-title">究极精简版 · 核心体验</h2>
+            <p style="text-align:center;color:var(--text-muted);margin-bottom:28px;font-size:0.9rem;letter-spacing:0.03em;">读完这些，你就掌握了 Spoiler → Robin → Batgirl → Batgirls 的完整弧线</p>
+            <ol class="compact-list">
+                <li><span class="num">01</span> Detective Comics #647-649（起源）</li>
+                <li><span class="num">02</span> Robin #3-5（早期Tim线）</li>
+                <li><span class="num">03</span> Robin #126-128（Robin时期）</li>
+                <li><span class="num">04</span> Batman: War Games（死亡争议）</li>
+                <li><span class="num">05</span> Robin #174-178 + Robin/Spoiler Special（回归）</li>
+                <li><span class="num">06</span> Batgirl (2009) #1-24（巅峰Batgirl）</li>
+                <li><span class="num">07</span> Batman Eternal（New 52回归）</li>
+                <li><span class="num">08</span> Detective Comics (2016) Rebirth 关键弧</li>
+                <li><span class="num">09</span> Batgirls #1-19（现代Batgirls）</li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- ==================== CHARACTER NETWORK ==================== -->
+    <section class="network-section" id="network">
+        <div class="main-container">
+            <h2 class="section-title">Character Network</h2>
+            <div class="star-map">
+                <div class="orbit-ring orbit-ring-1"></div>
+                <div class="orbit-ring orbit-ring-2"></div>
+                <div class="star-center">Stephanie</div>
+                <div class="star-node star-node-1" style="top:8%;left:50%;transform:translate(-50%,-50%);">Tim<br>Drake</div>
+                <div class="star-node star-node-2" style="top:28%;right:5%;">Cassandra<br>Cain</div>
+                <div class="star-node star-node-3" style="bottom:18%;right:8%;">Barbara<br>Gordon</div>
+                <div class="star-node star-node-4" style="bottom:6%;left:50%;transform:translate(-50%,50%);">Bruce<br>Wayne</div>
+                <div class="star-node star-node-5" style="top:28%;left:5%;">Arthur<br>Brown</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 扩展阅读补充完整列表 ==================== -->
+    <section class="extended-section" id="extended">
+        <div class="main-container">
+            <h2 class="section-title">扩展阅读完整补充</h2>
+            <p style="text-align:center;color:var(--text-muted);margin-bottom:30px;font-size:0.9rem;letter-spacing:0.03em;">以下条目确保文本中所有刊物均被完整收录，可按需查阅</p>
+
+            <div class="extended-card">
+                <h4>早期Spoiler扩展（1990s–2000s初）</h4>
+                <ul>
+                    <li>Robin (vol. 4) #36-45（尤其是#40-45）</li>
+                    <li>Robin #54-65（怀孕主线延续，标志性剧情）</li>
+                    <li>Batman: Huntress/Spoiler: Blunt Trauma #1</li>
+                    <li>Robin 80-Page Giant（2000）</li>
+                    <li>Young Justice #30（与Secret互动）</li>
+                    <li>Green Arrow (vol. 3) #5（Quiver贸易本）</li>
+                    <li>Joker: Last Laugh #3、#6；Batgirl #21等</li>
+                    <li>Birds of Prey #39-40、#43</li>
+                    <li>Batman: Gotham Knights #37</li>
+                    <li>Robin #98-113（Jon Lewis时期）</li>
+                </ul>
+            </div>
+
+            <div class="extended-card">
+                <h4>Robin时期前后 & 回归扩展</h4>
+                <ul>
+                    <li>Robin/Batgirl: Fresh Blood（Robin #132-133 + Batgirl #58-59）</li>
+                    <li>Batgirl (2000) #62、#72-73（Cass接近死亡时出现）</li>
+                    <li>Gotham Underground #1-9（尤其是#2-6）</li>
+                    <li>Robin: Search for a Hero（#175-183）</li>
+                    <li>World's Finest #1-4（Steph戏份值得强调）</li>
+                    <li>Batman Incorporated: Leviathan Strikes!</li>
+                    <li>Red Robin #2、#6-12（Tim视角）</li>
+                </ul>
+            </div>
+
+            <div class="extended-card">
+                <h4>New 52 / Rebirth 额外客串 & 现代</h4>
+                <ul>
+                    <li>Catwoman (vol. 4) #42-46</li>
+                    <li>Batgirl (vol. 4) Annual #3</li>
+                    <li>Batman & Robin Eternal #2-4、#23-26等</li>
+                    <li>Young Justice (2019) 更多客串（Bendis时期）</li>
+                    <li>Wayne Family Adventures（Webtoon/数字）</li>
+                    <li>Secret Origins 80-Page Giant</li>
+                    <li>Batman Secret Files / Robin 80-Page Giant 等短故事合集</li>
+                    <li>Convergence: Batgirl 及相关刊</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="page-footer">
+        <div class="main-container">
+            <p>Stephanie Brown · Spoiler → Robin → Batgirl → Batgirls</p>
+            <p style="margin-top:4px;">The Girl Who Always Gets Back Up · 阅读指南</p>
+        </div>
+    </footer>
+
+    <script>
+        // 生成星空
+        const starsContainer = document.getElementById('starsContainer');
+        for (let i = 0; i < 120; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            const size = Math.random() * 3 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.setProperty('--dur', (Math.random() * 5 + 3) + 's');
+            star.style.setProperty('--delay', Math.random() * 8 + 's');
+            starsContainer.appendChild(star);
+        }
+
+        // 生成光粒
+        const particlesContainer = document.getElementById('particlesContainer');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            const size = Math.random() * 4 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.setProperty('--float-dur', (Math.random() * 15 + 10) + 's');
+            particle.style.setProperty('--float-delay', Math.random() * 15 + 's');
+            particle.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
+            particlesContainer.appendChild(particle);
+        }
+
+        // 生成流星
+        const meteorsContainer = document.getElementById('meteorsContainer');
+        for (let i = 0; i < 6; i++) {
+            const meteor = document.createElement('div');
+            meteor.classList.add('meteor');
+            meteor.style.left = Math.random() * 70 + '%';
+            meteor.style.top = Math.random() * 40 + '%';
+            meteor.style.setProperty('--meteor-dur', (Math.random() * 6 + 8) + 's');
+            meteor.style.setProperty('--meteor-delay', (Math.random() * 20 + i * 5) + 's');
+            meteorsContainer.appendChild(meteor);
+        }
+    </script>
+</body>
+</html>
