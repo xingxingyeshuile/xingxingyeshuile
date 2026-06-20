@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡珊德拉·该隐 (Cassandra Cain) — 究极全刊阅读指南</title>
+
+    <!-- Google Fonts: Noto Serif SC & Noto Sans SC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'serif-sc': ['"Noto Serif SC"', '"Noto Serif"', 'Georgia', 'serif'],
+                        'sans-sc': ['"Noto Sans SC"', '"Noto Sans"', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        'void': '#0a0a1f',
+                        'void-light': '#111133',
+                        'neon-purple': '#a855f7',
+                        'neon-cyan': '#22d3ee',
+                        'glass-border': 'rgba(255,255,255,0.15)',
+                        'glass-bg': 'rgba(255,255,255,0.06)',
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --void: #0a0a1f;
+            --void-light: #111133;
+            --neon-purple: #a855f7;
+            --neon-cyan: #22d3ee;
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --text-primary: #e8e6f0;
+            --text-secondary: #b8b5c9;
+            --nav-width: 260px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 2rem;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', 'Noto Serif', Georgia, serif;
+            background: var(--void);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-image:
+                radial-gradient(ellipse at 15% 20%, rgba(168, 85, 247, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 75% 60%, rgba(34, 211, 238, 0.05) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 85%, rgba(168, 85, 247, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 30% 70%, rgba(34, 211, 238, 0.03) 0%, transparent 45%);
+            background-attachment: fixed;
+        }
+
+        /* === 粒子背景层 === */
+        .particles-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+            opacity: 0;
+            background: white;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(105vh) scale(0);
+                opacity: 0;
+            }
+            5% {
+                opacity: 0.7;
+            }
+            15% {
+                opacity: 0.4;
+            }
+            40% {
+                opacity: 0.15;
+            }
+            80% {
+                opacity: 0.03;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        /* === 玻璃拟态核心样式 === */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.055);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            border: 1px solid transparent;
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            z-index: 1;
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.075);
+            border-color: rgba(255, 255, 255, 0.22);
+            box-shadow: 0 0 28px rgba(168, 85, 247, 0.18), 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            transform: translateY(-2px) scale(1.008);
+        }
+        .glass-card:hover::before {
+            border-color: rgba(168, 85, 247, 0.35);
+            box-shadow: 0 0 18px rgba(168, 85, 247, 0.12) inset;
+        }
+
+        /* 更透明的次级玻璃卡片 */
+        .glass-card-subtle {
+            background: rgba(255, 255, 255, 0.035);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+            transition: all 0.3s ease;
+        }
+        .glass-card-subtle:hover {
+            background: rgba(255, 255, 255, 0.055);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 18px rgba(34, 211, 238, 0.1), 0 6px 24px rgba(0, 0, 0, 0.45);
+        }
+
+        /* === 导航栏 === */
+        .side-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--nav-width);
+            height: 100vh;
+            z-index: 50;
+            background: rgba(10, 10, 35, 0.75);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+            padding: 1.5rem 1rem 2rem;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
+        }
+        .side-nav::-webkit-scrollbar {
+            width: 4px;
+        }
+        .side-nav::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.6rem 0.85rem;
+            margin: 0.2rem 0;
+            border-radius: 0.6rem;
+            color: #b8b5c9;
+            text-decoration: none;
+            font-family: 'Noto Sans SC', 'Noto Sans', system-ui, sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            transition: all 0.25s ease;
+            border: 1px solid transparent;
+            cursor: pointer;
+            position: relative;
+        }
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.07);
+            color: #e8e6f0;
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+        .nav-link.active {
+            background: rgba(168, 85, 247, 0.18);
+            color: #d4bfff;
+            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow: 0 0 14px rgba(168, 85, 247, 0.2);
+            font-weight: 600;
+        }
+        .nav-link .nav-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            background: rgba(168, 85, 247, 0.5);
+            color: #fff;
+            padding: 0.15em 0.5em;
+            border-radius: 999px;
+            margin-left: 0.4em;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            vertical-align: middle;
+        }
+
+        /* === 主内容区 === */
+        .main-content {
+            margin-left: var(--nav-width);
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+            padding-bottom: 4rem;
+        }
+
+        /* === Hero Banner === */
+        .hero-banner {
+            position: relative;
+            min-height: 55vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background:
+                radial-gradient(ellipse at 30% 30%, rgba(168, 85, 247, 0.2) 0%, transparent 55%),
+                radial-gradient(ellipse at 65% 50%, rgba(34, 211, 238, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 70%, rgba(168, 85, 247, 0.12) 0%, transparent 45%),
+                linear-gradient(180deg, #0a0a1f 0%, #0d0d2b 30%, #0f1035 60%, #0a0a1f 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.004) 2px, rgba(255, 255, 255, 0.004) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255, 255, 255, 0.003) 2px, rgba(255, 255, 255, 0.003) 4px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+        .hero-bat-symbol {
+            width: 90px;
+            height: 110px;
+            margin: 0 auto 1.5rem;
+            opacity: 0.7;
+            filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.5));
+            animation: batPulse 4s ease-in-out infinite;
+        }
+        @keyframes batPulse {
+            0%,
+            100% {
+                filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.5));
+            }
+            50% {
+                filter: drop-shadow(0 0 50px rgba(168, 85, 247, 0.75));
+            }
+        }
+        .hero-title {
+            font-family: 'Noto Serif SC', 'Noto Serif', Georgia, serif;
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            background: linear-gradient(135deg, #e8e6f0 0%, #c4b5e8 30%, #a8d8f0 60%, #d4bfff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            filter: drop-shadow(0 0 18px rgba(168, 85, 247, 0.4));
+            margin-bottom: 0.5rem;
+        }
+        .hero-subtitle {
+            font-family: 'Noto Sans SC', 'Noto Sans', system-ui, sans-serif;
+            font-size: clamp(0.95rem, 1.5vw, 1.25rem);
+            font-weight: 300;
+            letter-spacing: 0.08em;
+            color: #a0b8d0;
+        }
+
+        /* === 必读徽章 === */
+        .badge-mustread {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25em;
+            background: rgba(168, 85, 247, 0.55);
+            border: 1px solid rgba(168, 85, 247, 0.7);
+            color: #fff;
+            font-family: 'Noto Sans SC', 'Noto Sans', system-ui, sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2em 0.7em;
+            border-radius: 999px;
+            letter-spacing: 0.04em;
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+            white-space: nowrap;
+        }
+        .badge-mustread::before {
+            content: '★';
+            font-size: 0.7em;
+            margin-right: 0.15em;
+        }
+
+        /* === 返回顶部按钮 === */
+        .btn-back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 60;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #e8e6f0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        }
+        .btn-back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .btn-back-to-top:hover {
+            background: rgba(168, 85, 247, 0.25);
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 0 22px rgba(168, 85, 247, 0.35);
+            color: #fff;
+        }
+
+        /* === 汉堡菜单按钮 === */
+        .hamburger-btn {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 70;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(10, 10, 35, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+        .hamburger-btn span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #e8e6f0;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        .hamburger-btn.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger-btn.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .hamburger-btn.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* 移动端遮罩 */
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 45;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+        }
+        .nav-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* === 响应式 === */
+        @media (max-width: 1023px) {
+            .side-nav {
+                transform: translateX(-100%);
+                width: 280px;
+                border-radius: 0 1rem 1rem 0;
+                box-shadow: 8px 0 40px rgba(0, 0, 0, 0.7);
+            }
+            .side-nav.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .hamburger-btn {
+                display: flex;
+            }
+            .nav-overlay {
+                display: block;
+            }
+            .hero-banner {
+                min-height: 40vh;
+            }
+            .btn-back-to-top {
+                bottom: 1.25rem;
+                right: 1.25rem;
+                width: 38px;
+                height: 38px;
+            }
+        }
+        @media (min-width: 1024px) {
+            .side-nav {
+                transform: translateX(0) !important;
+            }
+            .nav-overlay {
+                display: none !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+            }
+            .hamburger-btn {
+                display: none !important;
+            }
+        }
+        @media (max-width: 640px) {
+            .hero-banner {
+                min-height: 32vh;
+            }
+            .hero-title {
+                font-size: 1.6rem;
+            }
+            .hero-subtitle {
+                font-size: 0.8rem;
+            }
+            .glass-card {
+                border-radius: 0.7rem;
+                padding: 1rem !important;
+            }
+            .side-nav {
+                width: 85vw;
+                max-width: 300px;
+            }
+        }
+
+        /* === 分割线发光 === */
+        .glow-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.4), rgba(34, 211, 238, 0.3), transparent);
+            border: none;
+            margin: 1.5rem 0;
+        }
+
+        /* 列表样式 */
+        .comic-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .comic-list li {
+            padding: 0.35em 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+            color: #c8c5d9;
+            transition: color 0.2s;
+        }
+        .comic-list li:hover {
+            color: #e8e6f0;
+        }
+        .comic-list li .issue-num {
+            font-weight: 600;
+            color: #d4bfff;
+            font-family: 'Noto Sans SC', 'Noto Sans', system-ui, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 粒子背景 -->
+    <div class="particles-layer" id="particlesLayer" aria-hidden="true"></div>
+
+    <!-- 移动端遮罩 -->
+    <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+    <!-- 汉堡菜单按钮 -->
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="菜单" aria-expanded="false">
+        <span></span><span></span><span></span>
+    </button>
+
+    <!-- 左侧固定导航栏 -->
+    <nav class="side-nav" id="sideNav" aria-label="目录导航">
+        <div style="text-align:center;margin-bottom:1.5rem;">
+            <svg width="44" height="52" viewBox="0 0 44 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.75;filter:drop-shadow(0 0 12px rgba(168,85,247,0.5));" aria-hidden="true">
+                <path d="M22 2 L2 14 L2 38 L22 50 L42 38 L42 14 Z" stroke="rgba(168,85,247,0.7)" stroke-width="1.5" fill="none"/>
+                <path d="M22 14 L10 21 L10 34 L22 41 L34 34 L34 21 Z" stroke="rgba(168,85,247,0.5)" stroke-width="1" fill="none"/>
+                <path d="M22 24 L15 28 L15 34 L22 38 L29 34 L29 28 Z" stroke="rgba(34,211,238,0.4)" stroke-width="0.8" fill="none"/>
+            </svg>
+            <p style="font-family:'Noto Sans SC','Noto Sans',system-ui,sans-serif;font-size:0.8rem;color:#b8b5c9;margin-top:0.3rem;letter-spacing:0.05em;">阅读指南目录</p>
+        </div>
+        <a href="#hero" class="nav-link active" data-nav="hero">🏠 首页概览</a>
+        <a href="#part1" class="nav-link" data-nav="part1">第一部分：起源时代</a>
+        <a href="#part2" class="nav-link" data-nav="part2">第二部分：Batgirl Vol.1</a>
+        <a href="#part5" class="nav-link" data-nav="part5">第五部分：团队时代</a>
+        <a href="#part6" class="nav-link" data-nav="part6">第六部分：Outsiders / Black Bat</a>
+        <a href="#part52" class="nav-link" data-nav="part52">新52 / Eternal 时期</a>
+        <a href="#part11" class="nav-link" data-nav="part11">Infinite Frontier / 现代</a>
+        <a href="#extra" class="nav-link" data-nav="extra">📋 额外推荐与提示</a>
+        <hr class="glow-divider" style="margin:1rem 0;">
+        <p style="font-size:0.7rem;color:#6b6880;text-align:center;font-family:'Noto Sans SC',system-ui,sans-serif;">更新：2026年6月</p>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="main-content" id="mainContent">
+
+        <!-- Hero Banner -->
+        <section class="hero-banner" id="hero">
+            <div class="hero-content">
+                <svg class="hero-bat-symbol" viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M45 2 C20 20 2 40 2 58 C2 76 15 84 25 78 C30 75 32 68 35 60 C38 68 42 78 45 82 C48 78 52 68 55 60 C58 68 60 75 65 78 C75 84 88 76 88 58 C88 40 70 20 45 2Z"
+                    stroke="rgba(168,85,247,0.6)" stroke-width="1.8" fill="none"/>
+                    <ellipse cx="45" cy="58" rx="16" ry="8" fill="rgba(168,85,247,0.15)" stroke="rgba(168,85,247,0.35)" stroke-width="1"/>
+                </svg>
+                <h1 class="hero-title">卡珊德拉·该隐</h1>
+                <p class="hero-subtitle">CASSANDRA CAIN · 究极全刊阅读指南</p>
+                <p style="color:#8a87a0;font-size:0.85rem;margin-top:0.8rem;font-family:'Noto Sans SC',system-ui,sans-serif;letter-spacing:0.04em;">
+                    从 No Man's Land 到 Batgirls 时代 · 完整阅读路径
+                </p>
+                <div style="margin-top:1.5rem;">
+                    <span class="badge-mustread">必读精选</span>
+                    <span style="display:inline-block;margin-left:0.6rem;font-size:0.8rem;color:#8a87a0;font-family:'Noto Sans SC',system-ui,sans-serif;">覆盖全时期核心刊物</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 内容容器 -->
+        <div style="max-width:900px;margin:0 auto;padding:2rem 1.5rem;">
+
+            <!-- ==================== 第一部分 ==================== -->
+            <section id="part1" class="glass-card" style="padding:1.8rem 2rem;margin-bottom:2.5rem;">
+                <span class="badge-mustread" style="margin-bottom:0.6rem;display:inline-block;">核心起源</span>
+                <h2 style="font-family:'Noto Serif SC','Noto Serif',Georgia,serif;font-size:1.6rem;font-weight:700;margin:0.5rem 0 0.3rem;color:#e8e6f0;">
+                    第一部分：起源时代（1999）—— No Man's Land
+                </h2>
+                <p style="color:#b8b5c9;font-size:0.9rem;margin-bottom:1rem;">这是卡珊德拉的诞生阶段，在哥谭大地震后的废墟中崛起。</p>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:1rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#d4bfff;margin:0 0 0.6rem;">
+                        ★ 必读主线（Mark of Cain / 首次登场）
+                    </h3>
+                    <ul class="comic-list">
+                        <li><span class="issue-num">Batman #567</span> — 核心起源篇章</li>
+                        <li><span class="issue-num">Detective Comics #734</span> — 起源弧关键</li>
+                        <li><span class="issue-num">Legends of the Dark Knight #120</span> — 首次作为 Batgirl 登场</li>
+                    </ul>
+                    <p style="font-size:0.8rem;color:#8a87a0;margin-top:0.5rem;">三本构成完整起源弧：David Cain训练的完美战士、首次与布鲁斯接触、成为新Batgirl。</p>
+                </div>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.5rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#b8c8e0;margin:0 0 0.6rem;">
+                        早期活动补充（No Man's Land 相关散出）
+                    </h3>
+                    <ul class="comic-list">
+                        <li>Azrael #57 · The Batman Chronicles #18 · Batman #569</li>
+                        <li>Detective Comics #738-739 · Legends of the Dark Knight #124</li>
+                        <li>Shadow of the Bat #93 · Azrael #60-61 · Gotham Knights #2</li>
+                        <li>Robin #73（早期与Tim互动）· Young Justice #21（团队早期露面）</li>
+                        <li>Batman: Shadow of the Bat #88 等（Omnibus可覆盖大部分）</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ==================== 第二部分 ==================== -->
+            <section id="part2" class="glass-card" style="padding:1.8rem 2rem;margin-bottom:2.5rem;">
+                <span class="badge-mustread" style="margin-bottom:0.6rem;display:inline-block;">核心个人刊</span>
+                <h2 style="font-family:'Noto Serif SC','Noto Serif',Georgia,serif;font-size:1.6rem;font-weight:700;margin:0.5rem 0 0.3rem;color:#e8e6f0;">
+                    第二部分：Batgirl Vol. 1 时代（2000-2006）
+                </h2>
+                <p style="color:#b8b5c9;font-size:0.9rem;margin-bottom:1rem;">卡珊作为Batgirl的最经典时期，Kelley Puckett / Damion Scott 主创，全73期+年刊。</p>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.8rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#d4bfff;margin:0 0 0.6rem;">主要弧线（推荐TPB收集）</h3>
+                    <ul class="comic-list">
+                        <li><span class="issue-num">Silent Running</span>（#1-6）：起步与适应英雄生活</li>
+                        <li><span class="issue-num">A Knight Alone / To the Death</span>（#7-25）：成长、与Barbara的师徒关系</li>
+                        <li><span class="issue-num">Point Blank / Death Wish</span>（#26-37）：涉及 Bruce Wayne: Murderer? / Fugitive 交叉</li>
+                        <li><span class="issue-num">Robin/Batgirl: Fresh Blood</span>（#58-59 + Robin #132-133）</li>
+                        <li><span class="issue-num">War Games</span> 关键弧：Batgirl #53, #55-57</li>
+                        <li><span class="issue-num">Kicking Assassins</span>（#60-64）</li>
+                        <li><span class="issue-num">Destruction's Daughter</span>（#65-73）：与母亲 Lady Shiva 相关，情感深度高</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.5rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#b8c8e0;margin:0 0 0.6rem;">补充单刊 / 年刊 / 交叉</h3>
+                    <ul class="comic-list">
+                        <li>Batgirl Annual #1 · Batgirl: Secret Files and Origins #1</li>
+                        <li>DC First: Batgirl/Joker #1（Cass vs Joker，值得一看）</li>
+                        <li>Batgirl/Ghost: The Resurrection Machine #1-4（可选交叉）</li>
+                        <li>Superboy Vol.4 #85（与Conner Kent合作）· Harley Quinn #10-11</li>
+                        <li>Nightwing Vol.2 #81（首次遇Deathstroke，战斗精彩）</li>
+                        <li>Detective Comics #790（War Games前传，与Bruce反思）</li>
+                        <li>Batgirl #27, #29, #33（交叉事件）</li>
+                    </ul>
+                </div>
+                <p style="font-size:0.75rem;color:#6b6880;margin-top:0.5rem;">
+                    ⚠ Robin #148-151（Cass"邪化"弧，争议性大，许多粉丝选择跳过）· Infinite Crisis / One Year Later 相关散出
+                </p>
+            </section>
+
+            <!-- ==================== 第五部分 ==================== -->
+            <section id="part5" class="glass-card" style="padding:1.8rem 2rem;margin-bottom:2.5rem;">
+                <span class="badge-mustread" style="margin-bottom:0.6rem;display:inline-block;">团队关键期</span>
+                <h2 style="font-family:'Noto Serif SC','Noto Serif',Georgia,serif;font-size:1.6rem;font-weight:700;margin:0.5rem 0 0.3rem;color:#e8e6f0;">
+                    第五部分：团队时代
+                </h2>
+                <p style="color:#b8b5c9;font-size:0.9rem;margin-bottom:1rem;">卡珊首次长期脱离哥谭，探索独立身份的重要时期。</p>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.8rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#d4bfff;margin:0 0 0.6rem;">
+                        ★ Justice League Elite（2004-2005，全12期）
+                    </h3>
+                    <p style="font-size:0.85rem;color:#b8b5c9;">以化名 <strong>Kasumi</strong>（刺客身份）卧底，监视团队并执行黑任务。这是她探索独立身份的重要时期。<strong>必读：全12期。</strong></p>
+                </div>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.5rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#b8c8e0;margin:0 0 0.6rem;">其他团队出场</h3>
+                    <ul class="comic-list">
+                        <li>Titans East（有限出场，可选补充）</li>
+                        <li>Amazons Attack（有限，但属这一时期团队活动）</li>
+                        <li>Batman: War Games / War Crimes 事件（Batgirl #53, #55-57 等，重要过渡）</li>
+                        <li>Battle for the Cowl: The Network #1（2009，过渡到Redemption）</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ==================== 第六部分 ==================== -->
+            <section id="part6" class="glass-card" style="padding:1.8rem 2rem;margin-bottom:2.5rem;">
+                <span class="badge-mustread" style="margin-bottom:0.6rem;display:inline-block;">粉丝最爱时期</span>
+                <h2 style="font-family:'Noto Serif SC','Noto Serif',Georgia,serif;font-size:1.6rem;font-weight:700;margin:0.5rem 0 0.3rem;color:#e8e6f0;">
+                    第六部分：Outsiders时代 / 过渡期（2007-2011）
+                </h2>
+                <p style="color:#b8b5c9;font-size:0.9rem;margin-bottom:1rem;">重新穿上Batgirl制服加入团队，Black Bat身份诞生。</p>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.8rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#d4bfff;margin:0 0 0.6rem;">
+                        ★ Batman and the Outsiders Vol.2（2007-）
+                    </h3>
+                    <p style="font-size:0.85rem;color:#b8b5c9;">Chuck Dixon主笔，核心：#1-14。许多老粉最爱的时期。</p>
+                </div>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.8rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#d4bfff;margin:0 0 0.6rem;">
+                        ★ Batgirl: Redemption（2008）
+                    </h3>
+                    <p style="font-size:0.85rem;color:#b8b5c9;">Batgirl Vol.3 #1-6（全6期）：卡珊追寻父亲David Cain的故事，俗称<strong>Redemption弧</strong>。</p>
+                </div>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.8rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#d4bfff;margin:0 0 0.6rem;">
+                        ★ Black Bat 时期
+                    </h3>
+                    <ul class="comic-list">
+                        <li><span class="issue-num">Batman Incorporated</span>（#6左右重点）：首次正式使用 <strong>Black Bat</strong> 身份，前往香港等地活动</li>
+                        <li><span class="issue-num">Gates of Gotham</span>（全5期，2011）：经典团队故事，卡珊重要戏份</li>
+                        <li>Red Robin #17 & #25（Black Bat时期重要，与Tim关系）</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#b8c8e0;margin:0 0 0.6rem;">其他过渡</h3>
+                    <ul class="comic-list">
+                        <li>Battle for the Cowl: The Network</li>
+                        <li>Batman: City of Lights（可选 mini）</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ==================== 新52 / Eternal 时期 ==================== -->
+            <section id="part52" class="glass-card" style="padding:1.8rem 2rem;margin-bottom:2.5rem;">
+                <span class="badge-mustread" style="margin-bottom:0.6rem;display:inline-block;">起源重述</span>
+                <h2 style="font-family:'Noto Serif SC','Noto Serif',Georgia,serif;font-size:1.6rem;font-weight:700;margin:0.5rem 0 0.3rem;color:#e8e6f0;">
+                    新52 / Batman & Robin Eternal 时期（2011-2016）
+                </h2>
+                <p style="color:#b8b5c9;font-size:0.9rem;margin-bottom:1rem;">新52重启后卡珊起源重述，以 Orphan 身份回归。</p>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.8rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#d4bfff;margin:0 0 0.6rem;">
+                        ★ Batman & Robin Eternal（全26期）
+                    </h3>
+                    <p style="font-size:0.85rem;color:#b8b5c9;">新52卡珊起源重述，揭示更多家族秘密。她以 <strong>Orphan</strong> 身份回归。<br>重点：#1-8, #10-14, #18-26（尤其是起源相关）。</p>
+                </div>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#b8c8e0;margin:0 0 0.6rem;">Rebirth 早期补充</h3>
+                    <ul class="comic-list">
+                        <li>Detective Comics (Rebirth) #934-940 — Rise of the Batmen，加入Batwoman/Clayface团队</li>
+                        <li>Detective Comics #943-949 — Victim Syndicate</li>
+                        <li>Detective Comics #950-956 — League of Shadows，与Shiva深化</li>
+                        <li>Detective Comics #969-981 — Fall of the Batmen等，团队高光</li>
+                        <li>Batgirl and the Birds of Prey #15-17（有限但有戏份）</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ==================== 第十一部分：Infinite Frontier ==================== -->
+            <section id="part11" class="glass-card" style="padding:1.8rem 2rem;margin-bottom:2.5rem;">
+                <span class="badge-mustread" style="margin-bottom:0.6rem;display:inline-block;">现代核心</span>
+                <h2 style="font-family:'Noto Serif SC','Noto Serif',Georgia,serif;font-size:1.6rem;font-weight:700;margin:0.5rem 0 0.3rem;color:#e8e6f0;">
+                    Infinite Frontier / 现代 Batgirls 时代
+                </h2>
+                <p style="color:#b8b5c9;font-size:0.9rem;margin-bottom:1rem;">Rebirth后期至今，卡珊迎来全新solo与团队高光。</p>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.8rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#d4bfff;margin:0 0 0.6rem;">
+                        ★ Batman and the Outsiders（2019）Vol.3
+                    </h3>
+                    <p style="font-size:0.85rem;color:#b8b5c9;">全17期左右：卡珊核心戏份，与Duke Thomas、Lady Shiva关系深化。很多粉丝最爱的现代团队故事之一。</p>
+                </div>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.8rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#d4bfff;margin:0 0 0.6rem;">
+                        ★ Batgirls 时代（2021-2023）
+                    </h3>
+                    <p style="font-size:0.85rem;color:#b8b5c9;">Batgirls #1-18 + Annual：卡珊与Stephanie Brown共享主角，Barbara导师。重点弧：Tutor、Hill Ripper、身体交换等。<strong>Cass shines heavily。</strong></p>
+                </div>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.8rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#d4bfff;margin:0 0 0.6rem;">
+                        ★ Batgirl Vol.6（2025新刊）
+                    </h3>
+                    <p style="font-size:0.85rem;color:#b8b5c9;">#1-16+：新solo，重点与Shiva母女线，<strong>强烈推荐近期粉丝</strong>。</p>
+                </div>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.8rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#b8c8e0;margin:0 0 0.6rem;">其他关键出场</h3>
+                    <ul class="comic-list">
+                        <li>DC Festival of Heroes：亚洲英雄特刊，卡珊重点出场</li>
+                        <li>Shadow of the Batgirl（2020 GN）：另类/Elseworlds起源重述，独立故事，新读者强推</li>
+                        <li>Wayne Family Adventures（Webtoon）：现代蝙蝠家日常宇宙，卡珊戏份极多，轻松可爱风格（Ep 32-33、90-91等弧重点）</li>
+                        <li>Birds of Prey Vol.5（2023+多期出场，团队核心）</li>
+                        <li>Batman: Urban Legends #2-3 & #7 "Hunter or Hunted"（高质量单故事战斗）</li>
+                        <li>Fear State 相关（Detective Comics等事件）</li>
+                        <li>Spirit World Vol.2 #1-6（2023，重要客串）</li>
+                        <li>Detective Comics #1047-1058（Shadows of the Bat: The Tower弧）</li>
+                        <li>Detective Comics #1069+（Ram V跑，Cass支持角色，遗产主题强）</li>
+                        <li>Convergence: Batgirl（可选Elseworlds）· DCeased相关（有限出场）</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ==================== 额外推荐与提示 ==================== -->
+            <section id="extra" class="glass-card" style="padding:1.8rem 2rem;margin-bottom:2.5rem;">
+                <h2 style="font-family:'Noto Serif SC','Noto Serif',Georgia,serif;font-size:1.5rem;font-weight:700;margin:0 0 1rem;color:#e8e6f0;">
+                    📋 额外推荐与提示
+                </h2>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.8rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#d4bfff;margin:0 0 0.6rem;">📚 TPB / Omnibus 收集建议</h3>
+                    <ul class="comic-list">
+                        <li><strong>Batman: No Man's Land Omnibus</strong> — 覆盖起源</li>
+                        <li><strong>Batgirl Vol.1 TPBs</strong> — 核心个人刊</li>
+                        <li><strong>Batman: War Games Omnibus</strong> — War Games关键</li>
+                        <li><strong>Batman: The Rise and Fall of the Batmen Omnibus</strong> — Rebirth团队</li>
+                        <li><strong>Batgirls Vol.1-3</strong> — 完整Batgirls时代</li>
+                        <li><strong>DC Finest Batgirl</strong> 系列（正在出版中，覆盖Vol.1早期）</li>
+                        <li><strong>Batman & Robin Eternal</strong> · <strong>Batman and the Outsiders</strong> 等</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.8rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#b8c8e0;margin:0 0 0.6rem;">🎯 核心主题</h3>
+                    <p style="font-size:0.85rem;color:#b8b5c9;line-height:1.7;">
+                        卡珊的<strong>"身体阅读"能力</strong>、与家族（David Cain、Lady Shiva）的和解、<strong>沉默/沟通障碍的成长</strong>、非语言英雄主义。这些主题贯穿她的整个出版历史。
+                    </p>
+                </div>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;margin-bottom:0.8rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#b8c8e0;margin:0 0 0.6rem;">⚠️ 遗漏避免</h3>
+                    <p style="font-size:0.85rem;color:#b8b5c9;line-height:1.7;">
+                        War Games、Officer Down、Bruce Wayne: Fugitive 等Batman大事件中她的戏份不可忽略。建议配合事件Omnibus阅读。
+                    </p>
+                </div>
+
+                <div class="glass-card-subtle" style="padding:1.2rem 1.5rem;">
+                    <h3 style="font-family:'Noto Sans SC',system-ui,sans-serif;font-size:1rem;font-weight:600;color:#d4bfff;margin:0 0 0.6rem;">🗺️ 推荐阅读顺序</h3>
+                    <p style="font-size:0.85rem;color:#b8b5c9;line-height:1.7;">
+                        <strong>起源</strong> → <strong>Batgirl Vol.1 主线</strong> → <strong>团队/Outsiders</strong> → <strong>Eternal</strong> → <strong>现代Rebirth/IF</strong>
+                    </p>
+                </div>
+            </section>
+
+            <!-- 页脚 -->
+            <footer style="text-align:center;padding:2rem 1rem;color:#6b6880;font-size:0.8rem;font-family:'Noto Sans SC',system-ui,sans-serif;">
+                <hr class="glow-divider" style="margin-bottom:1.5rem;">
+                <p>卡珊德拉·该隐 究极全刊阅读指南 · 持续更新中</p>
+                <p style="font-size:0.7rem;">更新日期：2026年6月 · 玻璃拟态设计 · 暗黑主题优先</p>
+                <p style="font-size:0.7rem;margin-top:0.5rem;opacity:0.6;">本指南力求完整准确，如有遗漏欢迎补充。Cassandra Cain is the best Batgirl. 🦇</p>
+            </footer>
+
+        </div>
+    </main>
+
+    <!-- 返回顶部按钮 -->
+    <button class="btn-back-to-top" id="btnBackToTop" aria-label="返回顶部" title="返回顶部">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+
+    <script>
+        (function() {
+            // === 粒子背景生成 ===
+            const particlesLayer = document.getElementById('particlesLayer');
+            const particleCount = 50;
+            const colors = ['#a855f7', '#22d3ee', '#c4b5e8', '#ffffff', '#8bb8e0', '#d4bfff'];
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 3 + 1;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDuration = (Math.random() * 20 + 14) + 's';
+                particle.style.animationDelay = (Math.random() * 18) + 's';
+                particle.style.boxShadow = '0 0 ' + (size * 3) + 'px ' + particle.style.background;
+                particlesLayer.appendChild(particle);
+            }
+
+            // === DOM 元素 ===
+            const sideNav = document.getElementById('sideNav');
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const navOverlay = document.getElementById('navOverlay');
+            const btnBackToTop = document.getElementById('btnBackToTop');
+            const mainContent = document.getElementById('mainContent');
+            const navLinks = document.querySelectorAll('.nav-link[data-nav]');
+
+            // === 移动端导航开关 ===
+            function openNav() {
+                sideNav.classList.add('open');
+                hamburgerBtn.classList.add('open');
+                navOverlay.classList.add('active');
+                hamburgerBtn.setAttribute('aria-expanded', 'true');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeNav() {
+                sideNav.classList.remove('open');
+                hamburgerBtn.classList.remove('open');
+                navOverlay.classList.remove('active');
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            }
+
+            hamburgerBtn.addEventListener('click', () => {
+                if (sideNav.classList.contains('open')) {
+                    closeNav();
+                } else {
+                    openNav();
+                }
+            });
+
+            navOverlay.addEventListener('click', closeNav);
+
+            // 点击导航链接后关闭移动端导航
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 1024) {
+                        closeNav();
+                    }
+                });
+            });
+
+            // 窗口大小变化时，桌面端自动关闭移动导航状态
+            window.addEventListener('resize', () => {
+                if (window.innerWidth >= 1024) {
+                    closeNav();
+                }
+            });
+
+            // === Intersection Observer: 目录高亮 ===
+            const sectionIds = ['hero', 'part1', 'part2', 'part5', 'part6', 'part52', 'part11', 'extra'];
+            const sectionElements = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '-15% 0px -70% 0px',
+                threshold: 0,
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                let activeId = null;
+                // 找到所有当前可见的section
+                const visibleEntries = entries.filter(e => e.isIntersecting);
+                if (visibleEntries.length > 0) {
+                    // 取第一个（最靠上的）可见section
+                    activeId = visibleEntries[0].target.id;
+                }
+                if (activeId) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('data-nav') === activeId) {
+                            link.classList.add('active');
+                        }
+                    });
+                    // 如果active的导航链接在侧边栏中不可见，滚动到可见位置
+                    const activeLink = document.querySelector('.nav-link[data-nav="' + activeId + '"]');
+                    if (activeLink && sideNav.classList.contains('open') === false && window.innerWidth >= 1024) {
+                        // 桌面端确保导航项可见
+                        const navRect = sideNav.getBoundingClientRect();
+                        const linkRect = activeLink.getBoundingClientRect();
+                        if (linkRect.bottom > navRect.bottom - 20 || linkRect.top < navRect.top + 20) {
+                            activeLink.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
+                }
+            }, observerOptions);
+
+            sectionElements.forEach(el => observer.observe(el));
+
+            // === 返回顶部按钮 ===
+            function updateBackToTop() {
+                const scrollY = mainContent.scrollTop || window.scrollY;
+                if (scrollY > 500) {
+                    btnBackToTop.classList.add('visible');
+                } else {
+                    btnBackToTop.classList.remove('visible');
+                }
+            }
+
+            // 监听主内容区滚动和window滚动
+            mainContent.addEventListener('scroll', updateBackToTop, { passive: true });
+            window.addEventListener('scroll', updateBackToTop, { passive: true });
+
+            btnBackToTop.addEventListener('click', () => {
+                if (mainContent.scrollTop > 0) {
+                    mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // === 键盘导航：ESC关闭移动导航 ===
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && sideNav.classList.contains('open')) {
+                    closeNav();
+                    hamburgerBtn.focus();
+                }
+            });
+
+            // === 初始状态检查 ===
+            updateBackToTop();
+
+            // === 处理主内容区滚动（桌面端body不滚动，main-content滚动） ===
+            // 在桌面端，body的overflow由CSS控制，main-content是滚动容器
+            // 在移动端导航打开时，body overflow hidden
+            function adjustScrollBehavior() {
+                if (window.innerWidth >= 1024) {
+                    document.body.style.overflow = '';
+                    document.body.style.height = '100vh';
+                    document.body.style.overflowY = 'hidden';
+                    mainContent.style.height = '100vh';
+                    mainContent.style.overflowY = 'auto';
+                } else {
+                    document.body.style.height = '';
+                    document.body.style.overflowY = '';
+                    mainContent.style.height = '';
+                    mainContent.style.overflowY = '';
+                }
+            }
+
+            adjustScrollBehavior();
+            window.addEventListener('resize', adjustScrollBehavior);
+
+            console.log('🦇 卡珊德拉·该隐 阅读指南已就绪 | Glassmorphism 玻璃拟态设计');
+            console.log('   Cassandra Cain — The Ultimate Reading Guide');
+        })();
+    </script>
+</body>
+</html>
