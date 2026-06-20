@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dick Grayson 阅读指南 · 究极版</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #06060f;
+            --bg-surface: #0c0c1d;
+            --glass-bg: rgba(18, 18, 40, 0.55);
+            --glass-bg-light: rgba(25, 25, 55, 0.45);
+            --glass-bg-heavy: rgba(14, 14, 35, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-border-active: rgba(255, 255, 255, 0.18);
+            --text-primary: #e6e3f0;
+            --text-secondary: #b8b5cc;
+            --text-muted: #7a7799;
+            --text-accent: #c4b5fd;
+            --accent-blue: #5b7fff;
+            --accent-violet: #8b7cf0;
+            --accent-gold: #c9a96e;
+            --accent-rose: #d4789b;
+            --accent-cyan: #5ec4c9;
+            --glow-blue: rgba(91, 127, 255, 0.25);
+            --glow-violet: rgba(139, 124, 240, 0.2);
+            --glow-gold: rgba(201, 169, 110, 0.2);
+            --shadow-deep: 0 4px 32px rgba(0, 0, 0, 0.5);
+            --shadow-glass: 0 8px 40px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-elevated: 0 16px 56px rgba(0, 0, 0, 0.55), 0 4px 16px rgba(0, 0, 0, 0.35);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --font-display: 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', 'STSong', serif;
+            --font-body: 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', 'STSong', serif;
+            --transition-smooth: 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            cursor: default;
+            min-height: 100vh;
+        }
+
+        /* 全局星空粒子背景 */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.7;
+        }
+
+        /* 浮动目录 TOC */
+        .floating-toc {
+            position: fixed;
+            left: 28px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: var(--glass-bg-heavy);
+            backdrop-filter: blur(28px) saturate(160%);
+            -webkit-backdrop-filter: blur(28px) saturate(160%);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 16px 10px;
+            box-shadow: var(--shadow-glass);
+            transition: all var(--transition-smooth);
+        }
+        .floating-toc:hover {
+            border-color: var(--glass-border-active);
+            box-shadow: var(--shadow-elevated), 0 0 40px var(--glow-violet);
+        }
+        .toc-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            transition: all var(--transition-bounce);
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .toc-dot:hover,
+        .toc-dot.active {
+            background: var(--accent-blue);
+            box-shadow: 0 0 14px var(--glow-blue);
+            transform: scale(1.5);
+        }
+        .toc-dot::after {
+            content: attr(data-label);
+            position: absolute;
+            left: 22px;
+            top: 50%;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            background: var(--glass-bg-heavy);
+            padding: 4px 12px;
+            border-radius: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            letter-spacing: 0.04em;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+        }
+        .toc-dot:hover::after {
+            opacity: 1;
+        }
+
+        /* 主容器 */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        /* ========== HERO 第一屏 ========== */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+            z-index: 2;
+        }
+        .hero-bg-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(91, 127, 255, 0.12) 0%, rgba(139, 124, 240, 0.06) 35%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: heroPulse 8s ease-in-out infinite;
+        }
+        @keyframes heroPulse {
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+        }
+        .hero-silhouette {
+            width: 140px;
+            height: 200px;
+            margin-bottom: 20px;
+            position: relative;
+            opacity: 0.85;
+            filter: drop-shadow(0 0 30px rgba(91, 127, 255, 0.5));
+        }
+        .hero-silhouette svg {
+            width: 100%;
+            height: 100%;
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 6vw, 5.5rem);
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            color: #f0ecff;
+            text-shadow: 0 0 80px rgba(139, 124, 240, 0.5), 0 0 20px rgba(200, 180, 255, 0.3);
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+        .hero-subtitle {
+            font-family: var(--font-display);
+            font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+            font-weight: 400;
+            letter-spacing: 0.18em;
+            color: var(--text-accent);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        .hero-years {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+        .hero-nav-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .hero-nav-btn {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            letter-spacing: 0.08em;
+            color: var(--text-primary);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(140%);
+            -webkit-backdrop-filter: blur(20px) saturate(140%);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 14px 28px;
+            cursor: pointer;
+            transition: all var(--transition-smooth);
+            text-decoration: none;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .hero-nav-btn:hover {
+            border-color: var(--glass-border-active);
+            box-shadow: var(--shadow-elevated), 0 0 30px var(--glow-blue);
+            transform: translateY(-3px);
+            color: #fff;
+            background: rgba(30, 30, 60, 0.65);
+        }
+        .hero-nav-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .hero-nav-btn:hover::before {
+            opacity: 1;
+        }
+        .hero-scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounceDown 2s ease-in-out infinite;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+        }
+        @keyframes bounceDown {
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(12px);
+            }
+        }
+
+        /* ========== 第二部分：时间轴 ========== */
+        .timeline-section {
+            padding: 60px 0 40px;
+            z-index: 2;
+            position: relative;
+        }
+        .section-label {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            letter-spacing: 0.22em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .timeline-track {
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+            padding: 20px 0 30px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+            position: relative;
+            align-items: flex-start;
+            -webkit-overflow-scrolling: touch;
+        }
+        .timeline-track::-webkit-scrollbar {
+            height: 4px;
+        }
+        .timeline-track::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .timeline-track::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+        .timeline-item {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 18px;
+            position: relative;
+            transition: all var(--transition-smooth);
+            min-width: 100px;
+            text-align: center;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 28px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.12);
+            z-index: 0;
+            transition: background 0.4s;
+        }
+        .timeline-item:hover::before {
+            background: rgba(139, 124, 240, 0.5);
+        }
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+            transition: all var(--transition-bounce);
+            flex-shrink: 0;
+            margin-bottom: 10px;
+        }
+        .timeline-item:hover .timeline-dot {
+            background: var(--accent-blue);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 24px var(--glow-blue);
+            transform: scale(1.4);
+        }
+        .timeline-label {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            transition: color 0.3s;
+            z-index: 1;
+        }
+        .timeline-item:hover .timeline-label {
+            color: #fff;
+        }
+        .timeline-detail {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: var(--glass-bg-heavy);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border: 1px solid var(--glass-border-active);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            white-space: nowrap;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            opacity: 0;
+            pointer-events: none;
+            transition: all var(--transition-smooth);
+            z-index: 10;
+            box-shadow: var(--shadow-elevated);
+            letter-spacing: 0.03em;
+        }
+        .timeline-item:hover .timeline-detail {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .timeline-arrow {
+            display: inline-block;
+            margin: 0 4px;
+            color: var(--accent-violet);
+            font-weight: bold;
+        }
+
+        /* ========== 第三部分：核心阅读路线 ========== */
+        .reading-core-section {
+            padding: 40px 0;
+            z-index: 2;
+            position: relative;
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #f0ecff;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+        .section-subtitle {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 36px;
+            text-transform: uppercase;
+        }
+        .chronicle-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            border-left: 2px solid rgba(255, 255, 255, 0.1);
+            margin-left: 20px;
+            padding-left: 0;
+        }
+        .chronicle-entry {
+            display: flex;
+            gap: 24px;
+            padding: 16px 0 16px 28px;
+            position: relative;
+            transition: all var(--transition-smooth);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            cursor: default;
+            align-items: flex-start;
+        }
+        .chronicle-entry:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .chronicle-entry::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 22px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            transition: all var(--transition-bounce);
+            z-index: 1;
+        }
+        .chronicle-entry:hover::before {
+            background: var(--accent-blue);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 16px var(--glow-blue);
+            transform: scale(1.3);
+        }
+        .chronicle-entry.landmark::before {
+            background: var(--accent-gold);
+            border-color: rgba(201, 169, 110, 0.7);
+            box-shadow: 0 0 14px var(--glow-gold);
+            width: 12px;
+            height: 12px;
+            left: -7px;
+        }
+        .chronicle-year {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-violet);
+            min-width: 60px;
+            letter-spacing: 0.06em;
+            flex-shrink: 0;
+            padding-top: 2px;
+        }
+        .chronicle-year.landmark-year {
+            color: var(--accent-gold);
+        }
+        .chronicle-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .chronicle-title {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: 0.03em;
+            margin-bottom: 2px;
+            line-height: 1.4;
+        }
+        .chronicle-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            line-height: 1.5;
+        }
+        .chronicle-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            letter-spacing: 0.08em;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-left: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            vertical-align: middle;
+        }
+        .badge-essential {
+            background: rgba(201, 169, 110, 0.2);
+            color: var(--accent-gold);
+            border: 1px solid rgba(201, 169, 110, 0.3);
+        }
+        .badge-recommended {
+            background: rgba(91, 127, 255, 0.18);
+            color: var(--accent-blue);
+            border: 1px solid rgba(91, 127, 255, 0.3);
+        }
+        .badge-optional {
+            background: rgba(180, 180, 200, 0.12);
+            color: var(--text-muted);
+            border: 1px solid rgba(180, 180, 200, 0.2);
+        }
+
+        /* ========== 第四部分：时代分卷 ========== */
+        .eras-section {
+            padding: 40px 0;
+            z-index: 2;
+            position: relative;
+        }
+        .eras-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        .era-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 24px 26px;
+            transition: all var(--transition-smooth);
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+        }
+        .era-panel:hover {
+            border-color: var(--glass-border-active);
+            box-shadow: var(--shadow-elevated), 0 0 40px var(--glow-violet);
+            transform: translateY(-4px);
+        }
+        .era-panel::after {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(139, 124, 240, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .era-number {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.04);
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            pointer-events: none;
+            letter-spacing: -0.02em;
+        }
+        .era-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: #f0ecff;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+        .era-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            letter-spacing: 0.03em;
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+        .era-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+        }
+        .era-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .era-stars {
+            color: var(--accent-gold);
+            letter-spacing: 2px;
+        }
+        .era-keyworks {
+            margin-top: 10px;
+            font-size: 0.7rem;
+            color: var(--accent-cyan);
+            letter-spacing: 0.04em;
+            position: relative;
+            z-index: 1;
+            line-height: 1.6;
+        }
+
+        /* ========== 第五部分：关系网络 ========== */
+        .network-section {
+            padding: 40px 0;
+            z-index: 2;
+            position: relative;
+            text-align: center;
+        }
+        #network-canvas {
+            display: block;
+            margin: 0 auto;
+            border-radius: var(--radius-xl);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px) saturate(120%);
+            -webkit-backdrop-filter: blur(10px) saturate(120%);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-glass);
+            cursor: pointer;
+            max-width: 100%;
+            height: auto;
+            transition: box-shadow 0.5s;
+        }
+        #network-canvas:hover {
+            box-shadow: var(--shadow-elevated), 0 0 50px var(--glow-violet);
+        }
+        .network-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+        .network-legend span {
+            cursor: pointer;
+            transition: color 0.3s;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .network-legend span:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        /* ========== 第六部分：收藏家专题 ========== */
+        .collections-section {
+            padding: 40px 0;
+            z-index: 2;
+            position: relative;
+        }
+        .collections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .collection-card {
+            background: var(--glass-bg-light);
+            backdrop-filter: blur(14px) saturate(130%);
+            -webkit-backdrop-filter: blur(14px) saturate(130%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 20px 22px;
+            transition: all var(--transition-smooth);
+            cursor: default;
+            position: relative;
+            box-shadow: 0 3px 18px rgba(0, 0, 0, 0.25);
+        }
+        .collection-card:hover {
+            border-color: var(--glass-border-active);
+            box-shadow: var(--shadow-elevated);
+            transform: translateY(-3px);
+        }
+        .collection-card h4 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: #f0ecff;
+            margin-bottom: 10px;
+        }
+        .collection-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .collection-card li {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.03em;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            line-height: 1.5;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        .collection-card li:hover {
+            color: #fff;
+        }
+        .collection-card .col-icon {
+            font-size: 1.4rem;
+            margin-bottom: 6px;
+            display: block;
+            opacity: 0.7;
+        }
+
+        /* ========== 第七部分：全刊索引 ========== */
+        .index-section {
+            padding: 40px 0 80px;
+            z-index: 2;
+            position: relative;
+        }
+        .index-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .index-era-block {
+            background: var(--glass-bg-light);
+            backdrop-filter: blur(12px) saturate(120%);
+            -webkit-backdrop-filter: blur(12px) saturate(120%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all var(--transition-smooth);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+        }
+        .index-era-block:hover {
+            border-color: var(--glass-border-active);
+        }
+        .index-era-header {
+            padding: 16px 22px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-display);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: var(--text-primary);
+            transition: background 0.3s;
+            user-select: none;
+        }
+        .index-era-header:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .index-era-header .arrow-icon {
+            transition: transform 0.4s;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .index-era-block.open .index-era-header .arrow-icon {
+            transform: rotate(180deg);
+        }
+        .index-era-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.5s ease;
+            padding: 0 22px;
+        }
+        .index-era-block.open .index-era-content {
+            max-height: 800px;
+            padding: 8px 22px 18px;
+        }
+        .index-era-content ul {
+            list-style: none;
+            padding: 0;
+        }
+        .index-era-content li {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.03em;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            line-height: 1.5;
+        }
+        .index-era-content li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 768px) {
+            .floating-toc {
+                left: 8px;
+                padding: 10px 6px;
+                gap: 4px;
+                border-radius: 30px;
+            }
+            .toc-dot {
+                width: 7px;
+                height: 7px;
+            }
+            .toc-dot::after {
+                display: none;
+            }
+            .main-container {
+                padding: 0 14px;
+            }
+            .hero-nav-buttons {
+                gap: 8px;
+            }
+            .hero-nav-btn {
+                padding: 10px 16px;
+                font-size: 0.75rem;
+                border-radius: 30px;
+            }
+            .chronicle-layout {
+                margin-left: 8px;
+            }
+            .chronicle-entry {
+                padding-left: 16px;
+                gap: 12px;
+            }
+            .chronicle-year {
+                min-width: 44px;
+                font-size: 0.9rem;
+            }
+            .eras-grid {
+                grid-template-columns: 1fr;
+            }
+            .collections-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .timeline-item {
+                min-width: 70px;
+                padding: 8px 10px;
+            }
+            .timeline-label {
+                font-size: 0.65rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .collections-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+            .chronicle-year {
+                min-width: 36px;
+                font-size: 0.75rem;
+            }
+            .chronicle-title {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 星空粒子背景 -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- 浮动目录 -->
+    <nav class="floating-toc" aria-label="页面导航">
+        <span class="toc-dot active" data-label="封面" data-target="hero"></span>
+        <span class="toc-dot" data-label="时间轴" data-target="timeline"></span>
+        <span class="toc-dot" data-label="核心路线" data-target="reading-core"></span>
+        <span class="toc-dot" data-label="时代分卷" data-target="eras"></span>
+        <span class="toc-dot" data-label="关系网络" data-target="network"></span>
+        <span class="toc-dot" data-label="收藏专题" data-target="collections"></span>
+        <span class="toc-dot" data-label="全刊索引" data-target="index"></span>
+    </nav>
+
+    <div class="main-container">
+
+        <!-- ==================== HERO 封面 ==================== -->
+        <section class="hero-section" id="hero">
+            <div class="hero-bg-glow"></div>
+            <!-- 已删除顶部人物极简标识（hero-silhouette） -->
+            <h1 class="hero-title">DICK GRAYSON</h1>
+            <p class="hero-subtitle">ROBIN • NIGHTWING • BATMAN • AGENT 37</p>
+            <p class="hero-years">1940 — PRESENT</p>
+            <div class="hero-nav-buttons">
+                <a href="#reading-core" class="hero-nav-btn">阅读路线</a>
+                <a href="#eras" class="hero-nav-btn">泰坦专区</a>
+                <a href="#eras" class="hero-nav-btn">蝙蝠侠时期</a>
+                <a href="#index" class="hero-nav-btn">全刊索引</a>
+            </div>
+            <div class="hero-scroll-hint">▼ 向下探索</div>
+        </section>
+
+        <!-- ==================== 身份演化时间轴 ==================== -->
+        <section class="timeline-section" id="timeline">
+            <p class="section-label">身份演化时间轴 · 悬停展开</p>
+            <div class="timeline-track">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-label">Robin</span>
+                    <div class="timeline-detail">Detective Comics #38<br>1940 初登场</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-label">Teen Titans</span>
+                    <div class="timeline-detail">The New Teen Titans<br>人格形成关键期</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-label">Nightwing</span>
+                    <div class="timeline-detail">Tales of the Teen Titans #44<br>正式成为夜翼</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-label">Batman</span>
+                    <div class="timeline-detail">Battle for the Cowl<br>Dick接棒蝙蝠侠</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-label">Agent 37</span>
+                    <div class="timeline-detail">Grayson #1-20<br>特工时代</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-label">Rebirth</span>
+                    <div class="timeline-detail">Nightwing Vol.4<br>回归基础</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-label">All-In</span>
+                    <div class="timeline-detail">#119—现行<br>新黑暗方向</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 核心阅读路线（主体） ==================== -->
+        <section class="reading-core-section" id="reading-core">
+            <h2 class="section-title">核心阅读路线</h2>
+            <p class="section-subtitle">编年史档案 · 博物馆级梳理</p>
+            <div class="chronicle-layout">
+
+                <!-- 1940 -->
+                <div class="chronicle-entry landmark">
+                    <span class="chronicle-year landmark-year">1940</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">Detective Comics #38 <span class="chronicle-badge badge-essential">必读</span></span>
+                        <p class="chronicle-desc">Dick Grayson 初登场。黄金时代起源，DC历史上最重要的配角 debut 之一。</p>
+                    </div>
+                </div>
+
+                <!-- Robin Year One -->
+                <div class="chronicle-entry landmark">
+                    <span class="chronicle-year">现代</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">Robin: Year One <span class="chronicle-badge badge-essential">必读</span></span>
+                        <p class="chronicle-desc">现代最友好的Dick起源故事，新读者入门首选。</p>
+                    </div>
+                </div>
+
+                <!-- Dark Victory -->
+                <div class="chronicle-entry">
+                    <span class="chronicle-year">经典</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">Dark Victory <span class="chronicle-badge badge-recommended">推荐</span></span>
+                        <p class="chronicle-desc">Long Halloween续篇，后危机时代经典Robin起源重述。</p>
+                    </div>
+                </div>
+
+                <!-- New Teen Titans -->
+                <div class="chronicle-entry landmark">
+                    <span class="chronicle-year">1980</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">The New Teen Titans <span class="chronicle-badge badge-essential">神级必读</span></span>
+                        <p class="chronicle-desc">Marv Wolfman & George Pérez 联手打造，Dick人格形成最关键时期。泰坦团队远超单纯蝙蝠家族。</p>
+                    </div>
+                </div>
+
+                <!-- Judas Contract -->
+                <div class="chronicle-entry landmark">
+                    <span class="chronicle-year">1984</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">The Judas Contract <span class="chronicle-badge badge-essential">神作</span></span>
+                        <p class="chronicle-desc">Dick成长关键节点。泰坦历史最伟大篇章之一，叙事结构影响深远。</p>
+                    </div>
+                </div>
+
+                <!-- Nightwing诞生 -->
+                <div class="chronicle-entry landmark">
+                    <span class="chronicle-year">1984</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">Tales of the Teen Titans #44 <span class="chronicle-badge badge-essential">历史时刻</span></span>
+                        <p class="chronicle-desc">Dick正式放弃Robin身份，成为Nightwing。角色独立的历史性转折点。</p>
+                    </div>
+                </div>
+
+                <!-- Dixon时期 -->
+                <div class="chronicle-entry landmark">
+                    <span class="chronicle-year">1996–2006</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">Nightwing Vol.2 #1-70 · Chuck Dixon Run <span class="chronicle-badge badge-essential">必读</span></span>
+                        <p class="chronicle-desc">建立Blüdhaven、独立英雄身份。现代夜翼大部分设定的基石。Compendium合集已出版。</p>
+                    </div>
+                </div>
+
+                <!-- Year One -->
+                <div class="chronicle-entry">
+                    <span class="chronicle-year">2005</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">Nightwing: Year One (Vol.2 #101-106) <span class="chronicle-badge badge-recommended">强烈推荐</span></span>
+                        <p class="chronicle-desc">现代版夜翼起源，对理解角色独立之路至关重要。</p>
+                    </div>
+                </div>
+
+                <!-- Black Mirror -->
+                <div class="chronicle-entry landmark">
+                    <span class="chronicle-year">2011</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">Batman: The Black Mirror <span class="chronicle-badge badge-essential">巅峰之作</span></span>
+                        <p class="chronicle-desc">Dick Batman时代巅峰，蝙蝠侠历史最佳单篇之一。Scott Snyder执笔，氛围绝佳。</p>
+                    </div>
+                </div>
+
+                <!-- Grayson -->
+                <div class="chronicle-entry landmark">
+                    <span class="chronicle-year">2014–2016</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">Grayson #1-20 <span class="chronicle-badge badge-essential">神级特工故事</span></span>
+                        <p class="chronicle-desc">Tim Seeley & Tom King。几乎独立于蝙蝠系，特工风格独树一帜。</p>
+                    </div>
+                </div>
+
+                <!-- Tom Taylor -->
+                <div class="chronicle-entry landmark">
+                    <span class="chronicle-year">2021–2024</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">Nightwing #78-118 · Tom Taylor & Bruno Redondo <span class="chronicle-badge badge-essential">现代巅峰</span></span>
+                        <p class="chronicle-desc">大量奖项，夜翼历史最佳连载之一。"Leaping into the Light"等弧被誉为经典。</p>
+                    </div>
+                </div>
+
+                <!-- All-In -->
+                <div class="chronicle-entry">
+                    <span class="chronicle-year">2024–现行</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">Nightwing #119—现行 · Dan Watters <span class="chronicle-badge badge-recommended">连载中</span></span>
+                        <p class="chronicle-desc">新黑暗/帮派战争方向，Blüdhaven权力真空。值得跟进。</p>
+                    </div>
+                </div>
+
+                <!-- Tomasi -->
+                <div class="chronicle-entry">
+                    <span class="chronicle-year">2008–2009</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">Peter Tomasi时期 (Nightwing Vol.2 #140-153) <span class="chronicle-badge badge-recommended">推荐</span></span>
+                        <p class="chronicle-desc">Freefall等弧，高质量补充。老粉强烈推荐。</p>
+                    </div>
+                </div>
+
+                <!-- New 52 -->
+                <div class="chronicle-entry">
+                    <span class="chronicle-year">2011–2014</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">Nightwing Vol.3 #1-30 · Kyle Higgins <span class="chronicle-badge badge-recommended">推荐</span></span>
+                        <p class="chronicle-desc">红衣夜翼，New 52主刊核心。猫头鹰法庭联动（#8-9）为家族历史重大补充。</p>
+                    </div>
+                </div>
+
+                <!-- Ric Grayson -->
+                <div class="chronicle-entry">
+                    <span class="chronicle-year">2018–2020</span>
+                    <div class="chronicle-info">
+                        <span class="chronicle-title">Ric Grayson时期 (Nightwing Vol.4 #50-77) <span class="chronicle-badge badge-optional">可选</span></span>
+                        <p class="chronicle-desc">争议章节。补完党建议阅读；普通读者可快速略过或查看总结。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 时代分卷导航 ==================== -->
+        <section class="eras-section" id="eras">
+            <h2 class="section-title">时代分卷</h2>
+            <p class="section-subtitle">九个时代 · 逐一展开</p>
+            <div class="eras-grid">
+                <!-- Era 1 -->
+                <div class="era-panel">
+                    <span class="era-number">01</span>
+                    <h3 class="era-title">Robin Era · 罗宾时代</h3>
+                    <p class="era-desc">黄金/经典起源。从Detective Comics #38到现代重述，奠定角色根基。</p>
+                    <div class="era-meta">
+                        <span>&#x2B50;&#xFE0E;<span class="era-stars">★★★★</span></span>
+                        <span>&#x1F550;&#xFE0E; 1-2周</span>
+                    </div>
+                    <p class="era-keyworks">核心：Robin: Year One · Dark Victory · Robin & Batman</p>
+                </div>
+                <!-- Era 2 -->
+                <div class="era-panel">
+                    <span class="era-number">02</span>
+                    <h3 class="era-title">Titans Era · 泰坦时代</h3>
+                    <p class="era-desc">人格形成最关键时期。New Teen Titans是远超蝙蝠家族的独立传奇。</p>
+                    <div class="era-meta">
+                        <span>&#x2B50;&#xFE0E;<span class="era-stars">★★★★★</span></span>
+                        <span>&#x1F550;&#xFE0E; 3-4周</span>
+                    </div>
+                    <p class="era-keyworks">核心：New Teen Titans · Judas Contract · Tales #44</p>
+                </div>
+                <!-- Era 3 -->
+                <div class="era-panel">
+                    <span class="era-number">03</span>
+                    <h3 class="era-title">Nightwing Era · 夜翼传奇</h3>
+                    <p class="era-desc">Blüdhaven传奇。Dixon Run建立现代夜翼独立宇宙，巅峰时期。</p>
+                    <div class="era-meta">
+                        <span>&#x2B50;&#xFE0E;<span class="era-stars">★★★★★</span></span>
+                        <span>&#x1F550;&#xFE0E; 6-8周</span>
+                    </div>
+                    <p class="era-keyworks">核心：Dixon Run · Year One · Tomasi弧</p>
+                </div>
+                <!-- Era 4 -->
+                <div class="era-panel">
+                    <span class="era-number">04</span>
+                    <h3 class="era-title">Batman Era · 蝙蝠侠时期</h3>
+                    <p class="era-desc">Dick接棒蝙蝠侠。与Damian搭档成为最有趣组合之一。</p>
+                    <div class="era-meta">
+                        <span>&#x2B50;&#xFE0E;<span class="era-stars">★★★★★</span></span>
+                        <span>&#x1F550;&#xFE0E; 2-3周</span>
+                    </div>
+                    <p class="era-keyworks">核心：Black Mirror · Batman and Robin · Prodigal</p>
+                </div>
+                <!-- Era 5 -->
+                <div class="era-panel">
+                    <span class="era-number">05</span>
+                    <h3 class="era-title">New 52 Era · 新52</h3>
+                    <p class="era-desc">红衣夜翼时代。猫头鹰法庭联动为家族历史重大补充。</p>
+                    <div class="era-meta">
+                        <span>&#x2B50;&#xFE0E;<span class="era-stars">★★★½</span></span>
+                        <span>&#x1F550;&#xFE0E; 2-3周</span>
+                    </div>
+                    <p class="era-keyworks">核心：Nightwing Vol.3 · Court of Owls联动</p>
+                </div>
+                <!-- Era 6 -->
+                <div class="era-panel">
+                    <span class="era-number">06</span>
+                    <h3 class="era-title">Agent 37 · 特工时代</h3>
+                    <p class="era-desc">最特殊独立阶段。Grayson系列几乎独立于蝙蝠系，神级特工故事。</p>
+                    <div class="era-meta">
+                        <span>&#x2B50;&#xFE0E;<span class="era-stars">★★★★★</span></span>
+                        <span>&#x1F550;&#xFE0E; 2周</span>
+                    </div>
+                    <p class="era-keyworks">核心：Grayson #1-20 · Robin War</p>
+                </div>
+                <!-- Era 7 -->
+                <div class="era-panel">
+                    <span class="era-number">07</span>
+                    <h3 class="era-title">Rebirth Era · 重生</h3>
+                    <p class="era-desc">回归基础。Seeley主笔重建Blüdhaven，后接Ric争议章节。</p>
+                    <div class="era-meta">
+                        <span>&#x2B50;&#xFE0E;<span class="era-stars">★★★½</span></span>
+                        <span>&#x1F550;&#xFE0E; 4-5周</span>
+                    </div>
+                    <p class="era-keyworks">核心：Nightwing Vol.4 #1-49 · Rebirth</p>
+                </div>
+                <!-- Era 8 -->
+                <div class="era-panel">
+                    <span class="era-number">08</span>
+                    <h3 class="era-title">Taylor Era · 现代巅峰</h3>
+                    <p class="era-desc">Tom Taylor & Bruno Redondo联手，夜翼历史最佳连载之一。</p>
+                    <div class="era-meta">
+                        <span>&#x2B50;&#xFE0E;<span class="era-stars">★★★★★</span></span>
+                        <span>&#x1F550;&#xFE0E; 3-4周</span>
+                    </div>
+                    <p class="era-keyworks">核心：Nightwing #78-118 · Beast World</p>
+                </div>
+                <!-- Era 9 -->
+                <div class="era-panel">
+                    <span class="era-number">09</span>
+                    <h3 class="era-title">All-In Era · 当前时代</h3>
+                    <p class="era-desc">Dan Watters新方向。帮派战争、Blüdhaven权力真空，连载中。</p>
+                    <div class="era-meta">
+                        <span>&#x2B50;&#xFE0E;<span class="era-stars">★★★★</span></span>
+                        <span>&#x1F550;&#xFE0E; 持续更新</span>
+                    </div>
+                    <p class="era-keyworks">核心：Nightwing #119—现行</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 关系网络图 ==================== -->
+        <section class="network-section" id="network">
+            <h2 class="section-title">关系网络</h2>
+            <p class="section-subtitle">动态星图 · 点击角色展开对应刊物</p>
+            <canvas id="network-canvas" width="800" height="550" aria-label="Dick Grayson角色关系星图"></canvas>
+            <div class="network-legend">
+                <span data-char="bruce">Bruce</span>
+                <span data-char="barbara">Barbara</span>
+                <span data-char="jason">Jason</span>
+                <span data-char="tim">Tim</span>
+                <span data-char="damian">Damian</span>
+                <span data-char="wally">Wally</span>
+                <span data-char="donna">Donna</span>
+                <span data-char="kory">Kory</span>
+                <span data-char="roy">Roy</span>
+            </div>
+            <div id="network-tooltip" style="
+            position: fixed;
+            pointer-events: none;
+            background: var(--glass-bg-heavy);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border-active);
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-size: 0.75rem;
+            color: #fff;
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.25s;
+            letter-spacing: 0.03em;
+            box-shadow: var(--shadow-elevated);
+            white-space: nowrap;
+            "></div>
+        </section>
+
+        <!-- ==================== 收藏家专题 ==================== -->
+        <section class="collections-section" id="collections">
+            <h2 class="section-title">收藏家专题阅读</h2>
+            <p class="section-subtitle">兼顾普通读者 · 角色厨 · CP厨 · 收藏党</p>
+            <div class="collections-grid">
+                <div class="collection-card">
+                    <span class="col-icon">&#x1F426;&#xFE0E;</span>
+                    <h4>Robin 专题</h4>
+                    <ul>
+                        <li>Robin: Year One</li>
+                        <li>Robin & Batman</li>
+                        <li>Batman and Robin: Year One</li>
+                        <li>Dark Victory</li>
+                        <li>Robin: The Bronze Age Omnibus</li>
+                    </ul>
+                </div>
+                <div class="collection-card">
+                    <span class="col-icon">&#x2694;&#xFE0E;</span>
+                    <h4>Titans 专题</h4>
+                    <ul>
+                        <li>New Teen Titans</li>
+                        <li>The Judas Contract</li>
+                        <li>Titans Hunt (2016)</li>
+                        <li>Titans Rebirth / 2023</li>
+                        <li>Teen Titans: Year One</li>
+                    </ul>
+                </div>
+                <div class="collection-card">
+                    <span class="col-icon">&#x1F987;&#xFE0E;</span>
+                    <h4>Batman 专题</h4>
+                    <ul>
+                        <li>Prodigal</li>
+                        <li>Battle for the Cowl</li>
+                        <li>Batman and Robin (Morrison)</li>
+                        <li>The Black Mirror</li>
+                        <li>Gates of Gotham</li>
+                    </ul>
+                </div>
+                <div class="collection-card">
+                    <span class="col-icon">&#x1F576;&#xFE0E;</span>
+                    <h4>Agent 37 专题</h4>
+                    <ul>
+                        <li>Grayson #1-20</li>
+                        <li>Grayson Annuals</li>
+                        <li>Forever Evil (前置)</li>
+                        <li>Robin War</li>
+                    </ul>
+                </div>
+                <div class="collection-card">
+                    <span class="col-icon">&#x1F98B;&#xFE0E;</span>
+                    <h4>Barbara 专题</h4>
+                    <ul>
+                        <li>Hunt for Oracle (#41-47)</li>
+                        <li>Batgirl相关联动</li>
+                        <li>Oracle时期互动</li>
+                        <li>Nightwing & Batgirl 现代篇</li>
+                    </ul>
+                </div>
+                <div class="collection-card">
+                    <span class="col-icon">&#x2B50;&#xFE0E;</span>
+                    <h4>Kory 专题</h4>
+                    <ul>
+                        <li>New Teen Titans 经典浪漫</li>
+                        <li>Titans (2016/2023)</li>
+                        <li>Kory & Dick 关键篇章</li>
+                    </ul>
+                </div>
+                <div class="collection-card">
+                    <span class="col-icon">&#x26A1;&#xFE0E;</span>
+                    <h4>Wally 专题</h4>
+                    <ul>
+                        <li>Titans时期深厚友情</li>
+                        <li>Teen Titans经典互动</li>
+                        <li>Rebirth泰坦重组</li>
+                        <li>Beast World联动</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 全刊索引 ==================== -->
+        <section class="index-section" id="index">
+            <h2 class="section-title">全刊索引</h2>
+            <p class="section-subtitle">完整刊物清单 · 按阶段展开</p>
+            <div class="index-accordion">
+                <!-- 阶段1 -->
+                <div class="index-era-block">
+                    <div class="index-era-header" onclick="toggleAccordion(this)">
+                        第一阶段：起源与罗宾时代
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="index-era-content">
+                        <ul>
+                            <li><strong>Detective Comics #38</strong> — 初登场，1940年</li>
+                            <li><strong>Robin: Year One</strong> — 现代最友好Dick起源</li>
+                            <li><strong>Batman Chronicles: The Gauntlet</strong> — 可选早期补充</li>
+                            <li><strong>Dark Victory</strong> — 后危机经典起源重述</li>
+                            <li><strong>Robin & Batman</strong> — Jeff Lemire现代重述</li>
+                            <li><strong>Batman and Robin: Year One</strong> — Mark Waid现代早期</li>
+                            <li><strong>Batman/Superman: World's Finest</strong> + <strong>World's Finest: Teen Titans</strong></li>
+                            <li><strong>Batman: Year Three</strong> (#436-439) — 孤儿院背景补充</li>
+                            <li><strong>Robin Annual vol.2 #4</strong> — 另一版起源</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 阶段2 -->
+                <div class="index-era-block">
+                    <div class="index-era-header" onclick="toggleAccordion(this)">
+                        第二阶段：少年泰坦时代
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="index-era-content">
+                        <ul>
+                            <li><strong>The New Teen Titans</strong> — Wolfman & Pérez神级团队作</li>
+                            <li><strong>The Judas Contract</strong> — Dick成长关键节点，神作</li>
+                            <li><strong>Tales of the Teen Titans #44</strong> — 正式成为Nightwing</li>
+                            <li><strong>Teen Titans: Year One</strong> — 现代轻松重述</li>
+                            <li><strong>Who is Donna Troy?</strong> (Annual #3等) — Donna起源</li>
+                            <li><strong>New Titans</strong> 后续弧</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 阶段3 -->
+                <div class="index-era-block">
+                    <div class="index-era-header" onclick="toggleAccordion(this)">
+                        第三阶段：早期夜翼 & Blüdhaven传奇
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="index-era-content">
+                        <ul>
+                            <li><strong>Nightwing (1995) #1-4</strong> — 现代夜翼个人刊起点</li>
+                            <li><strong>Nightwing Vol.2 #1-70</strong> — Chuck Dixon Run（神级必读）</li>
+                            <li><strong>Nightwing Vol.2 #41-47</strong> — Hunt for Oracle（与Barbara互动）</li>
+                            <li><strong>Nightwing & Huntress</strong> 迷你系列</li>
+                            <li><strong>Nightwing: Year One</strong> (Vol.2 #101-106)</li>
+                            <li><strong>Nightwing Vol.2 #140-153</strong> — Peter Tomasi时期（Freefall等）</li>
+                            <li><strong>Nightwing: The Great Leap</strong> (Vol.2 #147-153)</li>
+                            <li><strong>No Man's Land</strong> 相关</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 阶段4 -->
+                <div class="index-era-block">
+                    <div class="index-era-header" onclick="toggleAccordion(this)">
+                        第四阶段：第一次成为蝙蝠侠
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="index-era-content">
+                        <ul>
+                            <li><strong>Batman: Prodigal</strong> — 早期暂代Batman</li>
+                            <li><strong>Battle for the Cowl</strong> — Dick接棒前置</li>
+                            <li><strong>Batman and Robin</strong> (Morrison) — Dick Batman + Damian Robin</li>
+                            <li><strong>Batman: The Black Mirror</strong> — Dick Batman时代巅峰</li>
+                            <li><strong>Gates of Gotham</strong> — 家族故事</li>
+                            <li><strong>Batman Incorporated</strong> 相关</li>
+                            <li><strong>Batman & Robin Eternal</strong> — 兄弟姐妹互动</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 阶段5 -->
+                <div class="index-era-block">
+                    <div class="index-era-header" onclick="toggleAccordion(this)">
+                        第五阶段：New 52
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="index-era-content">
+                        <ul>
+                            <li><strong>Nightwing Vol.3 #1-30</strong> — Kyle Higgins主笔</li>
+                            <li><strong>Batman: Court of Owls</strong> + Nightwing Vol.3 #8-9</li>
+                            <li><strong>Forever Evil</strong> — Grayson前置</li>
+                            <li><strong>Batman: Death of the Family</strong> / Night of the Owls联动</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 阶段6 -->
+                <div class="index-era-block">
+                    <div class="index-era-header" onclick="toggleAccordion(this)">
+                        第六阶段：Agent 37（最特殊独立阶段）
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="index-era-content">
+                        <ul>
+                            <li><strong>Grayson #1-20</strong> — Tim Seeley & Tom King神级特工故事</li>
+                            <li><strong>Grayson Annuals</strong></li>
+                            <li><strong>Robin War</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 阶段7 -->
+                <div class="index-era-block">
+                    <div class="index-era-header" onclick="toggleAccordion(this)">
+                        第七阶段：DC Rebirth & 现代
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="index-era-content">
+                        <ul>
+                            <li><strong>Nightwing: Rebirth #1</strong></li>
+                            <li><strong>Nightwing Vol.4 #1-49</strong> — Tim Seeley等，回归基础</li>
+                            <li><strong>Nightwing Vol.4 #50-77</strong> — Ric Grayson时期（争议章节）</li>
+                            <li><strong>Titans (2016)</strong> — Rebirth泰坦</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 阶段8 -->
+                <div class="index-era-block">
+                    <div class="index-era-header" onclick="toggleAccordion(this)">
+                        第八阶段：Tom Taylor时代（现代巅峰）
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="index-era-content">
+                        <ul>
+                            <li><strong>Nightwing #78-118</strong> — Taylor & Redondo神级连载</li>
+                            <li><strong>Titans (2023)</strong></li>
+                            <li><strong>Dark Crisis on Infinite Earths</strong></li>
+                            <li><strong>Titans: Beast World</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 阶段9 -->
+                <div class="index-era-block">
+                    <div class="index-era-header" onclick="toggleAccordion(this)">
+                        第九阶段：All-In时代（当前主线）
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="index-era-content">
+                        <ul>
+                            <li><strong>Nightwing #119—现行</strong> — Dan Watters & Dexter Soy</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 合集推荐 -->
+                <div class="index-era-block">
+                    <div class="index-era-header" onclick="toggleAccordion(this)">
+                        &#x1F4DA;&#xFE0E; 合集/Omnibus推荐（方便入手）
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="index-era-content">
+                        <ul>
+                            <li><strong>Nightwing Compendium Vol.1-2</strong> — Dixon早期合集</li>
+                            <li><strong>Nightwing by Peter Tomasi TPB</strong></li>
+                            <li><strong>Robin: The Bronze Age Omnibus</strong> — 究极收藏</li>
+                            <li><strong>Taylor Run Omnibus</strong></li>
+                            <li><strong>Rebirth Omnibus</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div><!-- .main-container end -->
+
+    <script>
+        // ============ 星空粒子背景 ============
+        (function() {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let animationId;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', () => {
+                resize();
+                initParticles();
+            });
+
+            function initParticles() {
+                const count = Math.floor((canvas.width * canvas.height) / 18000);
+                particles = [];
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        r: Math.random() * 1.2 + 0.3,
+                        speedX: (Math.random() - 0.5) * 0.3,
+                        speedY: (Math.random() - 0.5) * 0.3,
+                        opacity: Math.random() * 0.5 + 0.15,
+                        pulse: Math.random() * Math.PI * 2,
+                        pulseSpeed: Math.random() * 0.01 + 0.005,
+                    });
+                }
+            }
+            initParticles();
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    p.pulse += p.pulseSpeed;
+                    if (p.x < 0) p.x = canvas.width;
+                    if (p.x > canvas.width) p.x = 0;
+                    if (p.y < 0) p.y = canvas.height;
+                    if (p.y > canvas.height) p.y = 0;
+                    const alpha = p.opacity + Math.sin(p.pulse) * 0.2;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(180,175,220,${Math.max(0.05, alpha)})`;
+                    ctx.fill();
+                });
+                animationId = requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        // ============ 浮动目录交互 ============
+        (function() {
+            const dots = document.querySelectorAll('.toc-dot');
+            const sections = {};
+            dots.forEach(d => {
+                const targetId = d.getAttribute('data-target');
+                const el = document.getElementById(targetId);
+                if (el) sections[targetId] = el;
+            });
+
+            function updateActiveDot() {
+                let current = 'hero';
+                const scrollY = window.scrollY + window.innerHeight / 3;
+                Object.entries(sections).forEach(([id, el]) => {
+                    if (el && el.offsetTop <= scrollY) {
+                        current = id;
+                    }
+                });
+                dots.forEach(d => {
+                    d.classList.toggle('active', d.getAttribute('data-target') === current);
+                });
+            }
+
+            dots.forEach(d => {
+                d.addEventListener('click', () => {
+                    const targetId = d.getAttribute('data-target');
+                    const el = document.getElementById(targetId);
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+
+            window.addEventListener('scroll', updateActiveDot, { passive: true });
+            updateActiveDot();
+        })();
+
+        // ============ 全刊索引手风琴 ============
+        function toggleAccordion(header) {
+            const block = header.parentElement;
+            block.classList.toggle('open');
+        }
+        // 默认展开第一个
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstBlock = document.querySelector('.index-era-block');
+            if (firstBlock) firstBlock.classList.add('open');
+        });
+
+        // ============ 关系网络星图 Canvas ============
+        (function() {
+            const canvas = document.getElementById('network-canvas');
+            const ctx = canvas.getContext('2d');
+            const tooltip = document.getElementById('network-tooltip');
+
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            const displayWidth = Math.min(800, window.innerWidth - 40);
+            const displayHeight = 550;
+            canvas.width = displayWidth * dpr;
+            canvas.height = displayHeight * dpr;
+            canvas.style.width = displayWidth + 'px';
+            canvas.style.height = displayHeight + 'px';
+            ctx.scale(dpr, dpr);
+
+            const cx = displayWidth / 2;
+            const cy = displayHeight / 2;
+
+            const characters = [
+                { id: 'dick', label: 'Dick Grayson', x: cx, y: cy, r: 22, color: '#8b7cf0',
+                    glow: 'rgba(139,124,240,0.7)', isCenter: true },
+                { id: 'bruce', label: 'Bruce Wayne', x: cx - 180, y: cy - 100, r: 14, color: '#5b7fff',
+                    glow: 'rgba(91,127,255,0.5)', comics: 'Battle for the Cowl · Batman and Robin · Black Mirror · Prodigal' },
+                { id: 'barbara', label: 'Barbara Gordon', x: cx - 60, y: cy - 170, r: 13, color: '#d4789b',
+                    glow: 'rgba(212,120,155,0.5)', comics: 'Hunt for Oracle · Batgirl联动 · Oracle时期' },
+                { id: 'jason', label: 'Jason Todd', x: cx + 200, y: cy - 90, r: 12, color: '#c95555',
+                    glow: 'rgba(201,85,85,0.4)', comics: 'Batman & Robin Eternal · Robin War' },
+                { id: 'tim', label: 'Tim Drake', x: cx + 160, y: cy + 130, r: 11, color: '#5ec4c9',
+                    glow: 'rgba(94,196,201,0.4)', comics: 'Batman & Robin Eternal · Titans联动' },
+                { id: 'damian', label: 'Damian Wayne', x: cx - 200, y: cy + 60, r: 11, color: '#7eb87e',
+                    glow: 'rgba(126,184,126,0.4)', comics: 'Batman and Robin (Morrison) · Robin War' },
+                { id: 'wally', label: 'Wally West', x: cx + 40, y: cy + 190, r: 13, color: '#e8b44b',
+                    glow: 'rgba(232,180,75,0.5)', comics: 'Titans · Beast World · 经典友情篇章' },
+                { id: 'donna', label: 'Donna Troy', x: cx - 150, y: cy + 170, r: 12, color: '#b8a0d8',
+                    glow: 'rgba(184,160,216,0.4)', comics: 'Who is Donna Troy? · New Teen Titans' },
+                { id: 'kory', label: 'Kory (Starfire)', x: cx + 200, y: cy - 30, r: 13, color: '#f08050',
+                    glow: 'rgba(240,128,80,0.5)', comics: 'New Teen Titans经典浪漫 · Titans 2023' },
+                { id: 'roy', label: 'Roy Harper', x: cx - 100, y: cy + 200, r: 11, color: '#d49040',
+                    glow: 'rgba(212,144,64,0.4)', comics: 'Titans · Outsiders · 深厚战友情' },
+            ];
+
+            let hoveredChar = null;
+            let mouseX = -100;
+            let mouseY = -100;
+            let particlesNet = [];
+            for (let i = 0; i < 30; i++) {
+                particlesNet.push({
+                    x: Math.random() * displayWidth,
+                    y: Math.random() * displayHeight,
+                    r: Math.random() * 1 + 0.3,
+                    speedX: (Math.random() - 0.5) * 0.2,
+                    speedY: (Math.random() - 0.5) * 0.2,
+                    opacity: Math.random() * 0.4 + 0.1,
+                });
+            }
+
+            function drawNetwork() {
+                ctx.clearRect(0, 0, displayWidth, displayHeight);
+
+                // 背景微光
+                const bgGrad = ctx.createRadialGradient(cx, cy, 40, cx, cy, 350);
+                bgGrad.addColorStop(0, 'rgba(139,124,240,0.06)');
+                bgGrad.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = bgGrad;
+                ctx.fillRect(0, 0, displayWidth, displayHeight);
+
+                // 微小粒子
+                particlesNet.forEach(p => {
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    if (p.x < 0) p.x = displayWidth;
+                    if (p.x > displayWidth) p.x = 0;
+                    if (p.y < 0) p.y = displayHeight;
+                    if (p.y > displayHeight) p.y = 0;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(200,195,230,${p.opacity})`;
+                    ctx.fill();
+                });
+
+                // 连线
+                const center = characters[0];
+                characters.slice(1).forEach(c => {
+                    const dx = c.x - center.x;
+                    const dy = c.y - center.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const isHovered = hoveredChar && (hoveredChar.id === c.id || hoveredChar.id ===
+                        'dick');
+                    const alpha = isHovered ? 0.6 : 0.15;
+                    const lineWidth = isHovered ? 1.5 : 0.6;
+
+                    ctx.beginPath();
+                    ctx.moveTo(center.x, center.y);
+                    ctx.lineTo(c.x, c.y);
+                    ctx.strokeStyle = `rgba(180,175,215,${alpha})`;
+                    ctx.lineWidth = lineWidth;
+                    ctx.setLineDash([4, 8]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+
+                    // 光点沿线移动
+                    const t = (Date.now() / 3000 + dist / 400) % 1;
+                    const lx = center.x + dx * t;
+                    const ly = center.y + dy * t;
+                    ctx.beginPath();
+                    ctx.arc(lx, ly, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(200,190,240,${0.5 + Math.sin(Date.now()/800) * 0.3})`;
+                    ctx.fill();
+                });
+
+                // 绘制节点
+                characters.forEach(c => {
+                    const isHovered = hoveredChar && hoveredChar.id === c.id;
+                    const r = isHovered ? c.r * 1.5 : c.r;
+
+                    // 光晕
+                    const glowGrad = ctx.createRadialGradient(c.x, c.y, r * 0.3, c.x, c.y, r * 2.5);
+                    glowGrad.addColorStop(0, c.glow);
+                    glowGrad.addColorStop(1, 'rgba(0,0,0,0)');
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, r * 2.5, 0, Math.PI * 2);
+                    ctx.fillStyle = glowGrad;
+                    ctx.fill();
+
+                    // 主体
+                    const nodeGrad = ctx.createRadialGradient(c.x - r * 0.25, c.y - r * 0.25, r * 0.1, c.x, c
+                        .y, r);
+                    nodeGrad.addColorStop(0, 'rgba(255,255,255,0.7)');
+                    nodeGrad.addColorStop(0.5, c.color);
+                    nodeGrad.addColorStop(1, 'rgba(0,0,0,0.4)');
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
+                    ctx.fillStyle = nodeGrad;
+                    ctx.fill();
+                    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+                    ctx.lineWidth = 1.2;
+                    ctx.stroke();
+
+                    // 标签
+                    ctx.fillStyle = isHovered ? '#fff' : 'rgba(220,215,240,0.8)';
+                    ctx.font = `${isHovered ? '11px' : '9px'} "Noto Serif SC", serif`;
+                    ctx.textAlign = 'center';
+                    ctx.fillText(c.label, c.x, c.y + r + 16);
+                });
+            }
+
+            function getMousePos(e) {
+                const rect = canvas.getBoundingClientRect();
+                return {
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top,
+                };
+            }
+
+            canvas.addEventListener('mousemove', (e) => {
+                const pos = getMousePos(e);
+                mouseX = pos.x;
+                mouseY = pos.y;
+                hoveredChar = null;
+                for (let i = characters.length - 1; i >= 0; i--) {
+                    const c = characters[i];
+                    const dx = pos.x - c.x;
+                    const dy = pos.y - c.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < c.r + 10) {
+                        hoveredChar = c;
+                        break;
+                    }
+                }
+                if (hoveredChar && hoveredChar.comics) {
+                    tooltip.style.opacity = '1';
+                    tooltip.style.left = (e.clientX + 18) + 'px';
+                    tooltip.style.top = (e.clientY - 30) + 'px';
+                    tooltip.innerHTML =
+                        `<strong>${hoveredChar.label}</strong><br><span style="color:#b8b5cc;font-size:0.7rem;">${hoveredChar.comics}</span>`;
+                } else if (hoveredChar && hoveredChar.isCenter) {
+                    tooltip.style.opacity = '1';
+                    tooltip.style.left = (e.clientX + 18) + 'px';
+                    tooltip.style.top = (e.clientY - 30) + 'px';
+                    tooltip.innerHTML =
+                        '<strong>Dick Grayson</strong><br><span style="color:#b8b5cc;font-size:0.7rem;">核心人物 · 点击周边角色查看刊物</span>';
+                } else {
+                    tooltip.style.opacity = '0';
+                }
+                canvas.style.cursor = hoveredChar ? 'pointer' : 'default';
+            });
+
+            canvas.addEventListener('click', (e) => {
+                if (hoveredChar && hoveredChar.comics) {
+                    tooltip.style.opacity = '1';
+                    tooltip.innerHTML =
+                        `<strong>${hoveredChar.label} 相关刊物</strong><br><span style="color:#c4b5fd;font-size:0.7rem;">${hoveredChar.comics}</span>`;
+                    setTimeout(() => { tooltip.style.opacity = '0'; }, 3000);
+                }
+            });
+
+            canvas.addEventListener('mouseleave', () => {
+                hoveredChar = null;
+                tooltip.style.opacity = '0';
+            });
+
+            // 图例点击
+            document.querySelectorAll('.network-legend span').forEach(span => {
+                span.addEventListener('click', () => {
+                    const charId = span.getAttribute('data-char');
+                    const found = characters.find(c => c.id === charId);
+                    if (found && found.comics) {
+                        tooltip.style.opacity = '1';
+                        tooltip.style.left = (canvas.getBoundingClientRect().left + found.x + 20) +
+                            'px';
+                        tooltip.style.top = (canvas.getBoundingClientRect().top + found.y - 30) + 'px';
+                        tooltip.innerHTML =
+                            `<strong>${found.label} 相关刊物</strong><br><span style="color:#c4b5fd;font-size:0.7rem;">${found.comics}</span>`;
+                        setTimeout(() => { tooltip.style.opacity = '0'; }, 3500);
+                    }
+                });
+            });
+
+            function animateNetwork() {
+                drawNetwork();
+                requestAnimationFrame(animateNetwork);
+            }
+            animateNetwork();
+
+            window.addEventListener('resize', () => {
+                const newW = Math.min(800, window.innerWidth - 40);
+                canvas.style.width = newW + 'px';
+            });
+        })();
+    </script>
+</body>
+</html>
