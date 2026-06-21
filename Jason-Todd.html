@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jason Todd 阅读指南 | 蝙蝠洞档案库</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #090909;
+            --primary: #B32025;
+            --secondary: #D94B52;
+            --highlight: #F5F5F5;
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-border-strong: rgba(255, 255, 255, 0.18);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-bg-strong: rgba(255, 255, 255, 0.12);
+            --glass-bg-light: rgba(255, 255, 255, 0.04);
+            --text-primary: #E8E4E1;
+            --text-secondary: #B8B2AC;
+            --text-muted: #7A726A;
+            --accent-gold: #C8A96E;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --spacing-3xl: 64px;
+            --spacing-4xl: 96px;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --transition-slow: 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+            --transition-medium: 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+            --font-serif: 'Noto Serif SC', 'STSong', 'Songti SC', 'SimSun', 'NSimSun', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: var(--font-serif);
+            line-height: 1.75;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* ============ BACKGROUND LAYER ============ */
+        .bg-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at 15% 10%, rgba(179, 32, 37, 0.09) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 25%, rgba(217, 75, 82, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 60%, rgba(200, 169, 110, 0.04) 0%, transparent 45%),
+                radial-gradient(ellipse at 65% 80%, rgba(179, 32, 37, 0.07) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 75%, rgba(245, 245, 245, 0.02) 0%, transparent 40%),
+                #090909;
+            background-size: 100% 100%;
+        }
+
+        .bg-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image:
+                repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.015) 2px,
+                    rgba(255, 255, 255, 0.015) 3px),
+                repeating-linear-gradient(90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.01) 2px,
+                    rgba(255, 255, 255, 0.01) 3px);
+        }
+
+        /* Large gradient orbs */
+        .gradient-orb {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            filter: blur(120px);
+            opacity: 0.35;
+            will-change: transform;
+        }
+        .gradient-orb-1 {
+            width: 700px;
+            height: 700px;
+            top: -250px;
+            left: -150px;
+            background: radial-gradient(circle, rgba(179, 32, 37, 0.25) 0%, transparent 70%);
+            animation: orbDrift1 28s ease-in-out infinite;
+        }
+        .gradient-orb-2 {
+            width: 600px;
+            height: 600px;
+            top: 40%;
+            right: -200px;
+            background: radial-gradient(circle, rgba(217, 75, 82, 0.2) 0%, transparent 70%);
+            animation: orbDrift2 32s ease-in-out infinite;
+        }
+        .gradient-orb-3 {
+            width: 500px;
+            height: 500px;
+            bottom: -180px;
+            left: 30%;
+            background: radial-gradient(circle, rgba(200, 169, 110, 0.15) 0%, transparent 70%);
+            animation: orbDrift3 35s ease-in-out infinite;
+        }
+        @keyframes orbDrift1 {
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(40px, -30px);
+            }
+            50% {
+                transform: translate(-20px, 25px);
+            }
+            75% {
+                transform: translate(30px, 15px);
+            }
+        }
+        @keyframes orbDrift2 {
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(-35px, 25px);
+            }
+            50% {
+                transform: translate(20px, -30px);
+            }
+            75% {
+                transform: translate(-25px, -15px);
+            }
+        }
+        @keyframes orbDrift3 {
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+            33% {
+                transform: translate(30px, -20px);
+            }
+            66% {
+                transform: translate(-25px, 15px);
+            }
+        }
+
+        /* ============ MAIN CONTAINER ============ */
+        .main-container {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+        }
+
+        /* ============ GLASS NAVIGATION ============ */
+        .glass-nav {
+            position: sticky;
+            top: 16px;
+            z-index: 100;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            background: rgba(9, 9, 9, 0.55);
+            border: 1px solid var(--glass-border-strong);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-md) var(--spacing-xl);
+            margin-bottom: var(--spacing-3xl);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+            transition: all var(--transition-slow);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+        .glass-nav:hover {
+            border-color: rgba(255, 255, 255, 0.28);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+        .nav-brand {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.06em;
+            color: var(--highlight);
+            text-transform: uppercase;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        .nav-brand-icon {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--secondary), 0 0 24px rgba(179, 32, 37, 0.5);
+            animation: pulseDot 2.5s ease-in-out infinite;
+        }
+        @keyframes pulseDot {
+            0%,
+            100% {
+                box-shadow: 0 0 8px var(--secondary), 0 0 18px rgba(179, 32, 37, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 18px var(--secondary), 0 0 36px rgba(179, 32, 37, 0.7);
+            }
+        }
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+            list-style: none;
+        }
+        .nav-links a {
+            font-family: var(--font-serif);
+            font-size: 0.8rem;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            transition: all var(--transition-medium);
+            white-space: nowrap;
+            border: 1px solid transparent;
+            font-weight: 400;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--highlight);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .nav-links a.active {
+            background: rgba(179, 32, 37, 0.15);
+            border-color: rgba(179, 32, 37, 0.4);
+        }
+
+        /* ============ HERO BANNER ============ */
+        .hero-section {
+            position: relative;
+            padding: var(--spacing-4xl) 0 var(--spacing-3xl);
+            text-align: center;
+            z-index: 20;
+        }
+        .hero-classification {
+            display: inline-block;
+            font-family: var(--font-serif);
+            font-size: 0.7rem;
+            letter-spacing: 0.14em;
+            color: var(--secondary);
+            text-transform: uppercase;
+            border: 1px solid rgba(217, 75, 82, 0.35);
+            padding: 6px 18px;
+            border-radius: 30px;
+            margin-bottom: var(--spacing-lg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            background: rgba(179, 32, 37, 0.08);
+        }
+        .hero-title {
+            font-family: var(--font-serif);
+            font-weight: 900;
+            font-size: clamp(2.4rem, 5vw, 3.6rem);
+            letter-spacing: 0.03em;
+            color: var(--highlight);
+            line-height: 1.15;
+            margin-bottom: var(--spacing-md);
+            text-shadow: 0 0 80px rgba(179, 32, 37, 0.3);
+        }
+        .hero-title .accent {
+            color: var(--secondary);
+            display: inline-block;
+        }
+        .hero-subtitle {
+            font-family: var(--font-serif);
+            font-weight: 300;
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+            max-width: 600px;
+            margin: 0 auto var(--spacing-lg);
+            line-height: 1.6;
+        }
+        .hero-divider {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--secondary), transparent);
+            margin: 0 auto var(--spacing-lg);
+            opacity: 0.7;
+        }
+        .hero-tags {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .hero-tag {
+            font-family: var(--font-serif);
+            font-size: 0.7rem;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            padding: 5px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: all var(--transition-medium);
+        }
+        .hero-tag:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* ============ GLASS CARD BASE ============ */
+        .glass-card {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-slow);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -80%;
+            width: 60%;
+            height: 200%;
+            background: linear-gradient(105deg,
+                    transparent 35%,
+                    rgba(255, 255, 255, 0.025) 40%,
+                    rgba(255, 255, 255, 0.06) 43%,
+                    rgba(255, 255, 255, 0.025) 46%,
+                    transparent 52%);
+            z-index: 2;
+            pointer-events: none;
+            animation: glassSweep 7s ease-in-out infinite;
+        }
+        @keyframes glassSweep {
+            0%,
+            100% {
+                left: -80%;
+                opacity: 0;
+            }
+            8% {
+                opacity: 1;
+            }
+            25% {
+                left: 120%;
+                opacity: 1;
+            }
+            30% {
+                left: 120%;
+                opacity: 0;
+            }
+        }
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.28);
+            box-shadow: 0 8px 36px rgba(0, 0, 0, 0.45);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .glass-card-inner {
+            position: relative;
+            z-index: 3;
+            padding: var(--spacing-xl) var(--spacing-2xl);
+        }
+
+        /* Section cards - larger padding */
+        .section-card .glass-card-inner {
+            padding: var(--spacing-2xl) var(--spacing-2xl);
+        }
+        @media (max-width: 640px) {
+            .section-card .glass-card-inner {
+                padding: var(--spacing-xl) var(--spacing-lg);
+            }
+            .glass-card-inner {
+                padding: var(--spacing-lg);
+            }
+        }
+
+        /* ============ SECTION HEADERS ============ */
+        .section-label {
+            font-family: var(--font-serif);
+            font-size: 0.65rem;
+            letter-spacing: 0.16em;
+            color: var(--secondary);
+            text-transform: uppercase;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 500;
+        }
+        .section-title {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 1.6rem;
+            letter-spacing: 0.03em;
+            color: var(--highlight);
+            margin-bottom: var(--spacing-sm);
+            line-height: 1.3;
+        }
+        .section-subtitle {
+            font-family: var(--font-serif);
+            font-weight: 300;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.03em;
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.5;
+        }
+        .section-number {
+            font-family: var(--font-serif);
+            font-weight: 900;
+            font-size: 3.5rem;
+            color: rgba(179, 32, 37, 0.25);
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin-bottom: -10px;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* ============ STAR RATING ============ */
+        .star-rating {
+            display: inline-flex;
+            gap: 3px;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            color: var(--accent-gold);
+        }
+        .star-rating .star-empty {
+            color: rgba(200, 169, 110, 0.3);
+        }
+
+        /* ============ PUBLICATION ITEM ============ */
+        .pub-item {
+            display: flex;
+            gap: var(--spacing-lg);
+            align-items: flex-start;
+            padding: var(--spacing-lg) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all var(--transition-medium);
+            position: relative;
+        }
+        .pub-item:last-child {
+            border-bottom: none;
+        }
+        .pub-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+            margin: 0 -12px;
+            padding-left: 12px;
+            padding-right: 12px;
+            border-radius: var(--radius-sm);
+        }
+        .pub-number {
+            font-family: var(--font-serif);
+            font-weight: 900;
+            font-size: 2.5rem;
+            color: rgba(179, 32, 37, 0.3);
+            min-width: 50px;
+            text-align: center;
+            line-height: 1;
+            user-select: none;
+            flex-shrink: 0;
+        }
+        .pub-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .pub-title {
+            font-family: var(--font-serif);
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: var(--highlight);
+            letter-spacing: 0.02em;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+        .pub-title-eng {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            font-style: italic;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            margin-bottom: var(--spacing-sm);
+        }
+        .pub-meta {
+            font-family: var(--font-serif);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            margin-bottom: var(--spacing-sm);
+        }
+        .pub-desc {
+            font-family: var(--font-serif);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            letter-spacing: 0.02em;
+        }
+        .pub-desc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .pub-desc ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 4px;
+        }
+        .pub-desc ul li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            opacity: 0.6;
+        }
+        .pub-badge {
+            display: inline-block;
+            font-family: var(--font-serif);
+            font-size: 0.68rem;
+            letter-spacing: 0.05em;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-right: 6px;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+        .badge-essential {
+            background: rgba(179, 32, 37, 0.2);
+            color: #E07075;
+            border: 1px solid rgba(179, 32, 37, 0.3);
+        }
+        .badge-recommended {
+            background: rgba(200, 169, 110, 0.15);
+            color: #D4B87A;
+            border: 1px solid rgba(200, 169, 110, 0.25);
+        }
+        .badge-caution {
+            background: rgba(150, 130, 100, 0.12);
+            color: #A09580;
+            border: 1px solid rgba(150, 130, 100, 0.2);
+        }
+        .badge-supplement {
+            background: rgba(255, 255, 255, 0.04);
+            color: #9E9A94;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        /* ============ QUOTE BLOCK ============ */
+        .quote-block {
+            position: relative;
+            padding: var(--spacing-xl) var(--spacing-2xl);
+            margin: var(--spacing-lg) 0;
+            border-left: 3px solid var(--secondary);
+            background: rgba(179, 32, 37, 0.06);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            font-style: italic;
+            color: var(--text-primary);
+            letter-spacing: 0.03em;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+        .quote-block::before {
+            content: '"';
+            position: absolute;
+            top: -8px;
+            left: 16px;
+            font-size: 4rem;
+            color: rgba(179, 32, 37, 0.2);
+            font-family: var(--font-serif);
+            line-height: 1;
+            pointer-events: none;
+        }
+        .quote-attribution {
+            margin-top: var(--spacing-sm);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-style: normal;
+            letter-spacing: 0.05em;
+        }
+
+        /* ============ TIMELINE ============ */
+        .timeline-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: var(--secondary);
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 8px rgba(217, 75, 82, 0.4);
+            flex-shrink: 0;
+        }
+        .timeline-item {
+            display: flex;
+            align-items: baseline;
+            gap: var(--spacing-sm);
+            padding: 6px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            letter-spacing: 0.03em;
+        }
+
+        /* ============ ROUTE CARD ============ */
+        .route-card {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            position: relative;
+            overflow: hidden;
+            transition: all var(--transition-slow);
+        }
+        .route-card:hover {
+            border-color: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+        .route-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(179, 32, 37, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .route-card>* {
+            position: relative;
+            z-index: 2;
+        }
+        .route-step {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            padding: var(--spacing-sm) 0;
+        }
+        .route-step-num {
+            font-family: var(--font-serif);
+            font-weight: 900;
+            font-size: 1.6rem;
+            color: var(--secondary);
+            min-width: 36px;
+            text-align: center;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .route-step-text {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            letter-spacing: 0.03em;
+            line-height: 1.6;
+        }
+        .route-step-text strong {
+            color: var(--highlight);
+            font-weight: 600;
+        }
+
+        /* ============ HIGHLIGHT BOX ============ */
+        .highlight-box {
+            background: rgba(179, 32, 37, 0.08);
+            border: 1px solid rgba(179, 32, 37, 0.25);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            letter-spacing: 0.03em;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+        .highlight-box strong {
+            color: #E07075;
+        }
+
+        /* ============ PARALLAX CONTAINER ============ */
+        .parallax-wrapper {
+            position: relative;
+            will-change: transform;
+            transition: transform 0.1s linear;
+        }
+
+        /* ============ SECTION SPACING ============ */
+        .section-spacer {
+            height: var(--spacing-3xl);
+        }
+        .section-spacer-lg {
+            height: var(--spacing-4xl);
+        }
+
+        /* ============ FOOTER ============ */
+        .page-footer {
+            text-align: center;
+            padding: var(--spacing-3xl) var(--spacing-lg);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: var(--spacing-4xl);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 0.06em;
+            font-family: var(--font-serif);
+        }
+        .footer-sigil {
+            display: inline-block;
+            width: 40px;
+            height: 2px;
+            background: var(--secondary);
+            margin-bottom: var(--spacing-md);
+            opacity: 0.5;
+        }
+
+        /* ============ SCROLL TO TOP ============ */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 200;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(9, 9, 9, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: all var(--transition-medium);
+            opacity: 0;
+            pointer-events: none;
+            font-family: var(--font-serif);
+        }
+        .scroll-top-btn.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .scroll-top-btn:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 0 20px rgba(179, 32, 37, 0.3);
+            color: var(--highlight);
+        }
+
+        /* ============ FADE IN ON SCROLL ============ */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.9s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.9s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        .fade-in-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .glass-nav {
+                padding: var(--spacing-sm) var(--spacing-md);
+                gap: var(--spacing-sm);
+                border-radius: var(--radius-lg);
+            }
+            .nav-links a {
+                font-size: 0.7rem;
+                padding: 4px 10px;
+            }
+            .nav-brand {
+                font-size: 0.85rem;
+            }
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            .section-title {
+                font-size: 1.3rem;
+            }
+            .pub-number {
+                font-size: 1.8rem;
+                min-width: 36px;
+            }
+            .pub-item {
+                gap: var(--spacing-md);
+            }
+            .quote-block {
+                padding: var(--spacing-md) var(--spacing-lg);
+                font-size: 0.9rem;
+            }
+            .glass-card-inner {
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+            .section-card .glass-card-inner {
+                padding: var(--spacing-lg);
+            }
+            .route-step-num {
+                font-size: 1.3rem;
+                min-width: 28px;
+            }
+            .scroll-top-btn {
+                bottom: 20px;
+                right: 16px;
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.5rem;
+            }
+            .section-title {
+                font-size: 1.15rem;
+            }
+            .pub-title {
+                font-size: 1rem;
+            }
+            .pub-number {
+                font-size: 1.4rem;
+                min-width: 28px;
+            }
+            .glass-nav {
+                top: 8px;
+                border-radius: var(--radius-md);
+            }
+            .nav-links {
+                gap: 2px;
+            }
+            .nav-links a {
+                padding: 3px 7px;
+                font-size: 0.65rem;
+                border-radius: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BACKGROUND LAYER -->
+    <div class="bg-layer"></div>
+    <div class="bg-texture"></div>
+
+    <!-- GRADIENT ORBS -->
+    <div class="gradient-orb gradient-orb-1"></div>
+    <div class="gradient-orb gradient-orb-2"></div>
+    <div class="gradient-orb gradient-orb-3"></div>
+
+    <!-- SCROLL TO TOP -->
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="返回顶部">↑</button>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-container">
+
+        <!-- ============ GLASS NAVIGATION ============ -->
+        <nav class="glass-nav" id="mainNav">
+            <span class="nav-brand">
+                <span class="nav-brand-icon"></span>
+                蝙蝠洞档案库
+            </span>
+            <div class="nav-links">
+                <a href="#hero" class="active">总览</a>
+                <a href="#robin-era">罗宾时期</a>
+                <a href="#redhood-era">红头罩</a>
+                <a href="#outlaws-era">Outlaws</a>
+                <a href="#route">阅读路线</a>
+                <a href="#supplement">补充</a>
+            </div>
+        </nav>
+
+        <!-- ============ HERO BANNER ============ -->
+        <section class="hero-section fade-in-section" id="hero">
+            <div class="hero-classification">档案编号 · BAT-ARCHIVE-JT-001 · 机密等级：最高</div>
+            <h1 class="hero-title">
+                杰森·陶德<br><span class="accent">阅读指南</span>
+            </h1>
+            <div class="hero-divider"></div>
+            <p class="hero-subtitle">
+                从被谋杀的罗宾到归来的亡魂，从红头罩到蝙蝠家的叛逆之子。<br>这是一份关于愤怒、悲伤、孤独、反抗、成长与救赎的完整档案。
+            </p>
+            <div class="hero-tags">
+                <span class="hero-tag">Premium Glassmorphism</span>
+                <span class="hero-tag">DC Black Label</span>
+                <span class="hero-tag">Collector Edition</span>
+                <span class="hero-tag">Neo Gotham</span>
+                <span class="hero-tag">Dark Academia</span>
+                <span class="hero-tag">Comic Archive</span>
+            </div>
+        </section>
+
+        <!-- ============ 核心说明：三档分类 ============ -->
+        <div class="section-spacer"></div>
+        <div class="glass-card section-card fade-in-section" id="classification">
+            <div class="glass-card-inner">
+                <div class="section-label">阅读前置说明</div>
+                <div class="section-title">刊物三档分类体系</div>
+                <p class="section-subtitle">如果你的要求是：<strong style="color:#F5F5F5;">"我要看杰森，但不想看到为了捧杰森而把布鲁斯写得特别离谱。"</strong>——那么请参照以下分类：</p>
+                <div style="display:flex;flex-wrap:wrap;gap:var(--spacing-md);margin-top:var(--spacing-lg);">
+                    <div style="flex:1;min-width:200px;padding:var(--spacing-lg);background:rgba(179,32,37,0.06);border-radius:var(--radius-md);border:1px solid rgba(179,32,37,0.2);">
+                        <div style="font-size:1.4rem;margin-bottom:8px;">🌟</div>
+                        <div style="font-weight:700;color:#F5F5F5;letter-spacing:0.04em;margin-bottom:4px;">必读神作</div>
+                        <div style="font-size:0.8rem;color:var(--text-secondary);letter-spacing:0.03em;">杰森和布鲁斯都在线</div>
+                    </div>
+                    <div style="flex:1;min-width:200px;padding:var(--spacing-lg);background:rgba(200,169,110,0.05);border-radius:var(--radius-md);border:1px solid rgba(200,169,110,0.18);">
+                        <div style="font-size:1.4rem;margin-bottom:8px;">👍</div>
+                        <div style="font-weight:700;color:#F5F5F5;letter-spacing:0.04em;margin-bottom:4px;">推荐阅读</div>
+                        <div style="font-size:0.8rem;color:var(--text-secondary);letter-spacing:0.03em;">整体不错，偶有争议</div>
+                    </div>
+                    <div style="flex:1;min-width:200px;padding:var(--spacing-lg);background:rgba(150,130,100,0.04);border-radius:var(--radius-md);border:1px solid rgba(150,130,100,0.15);">
+                        <div style="font-size:1.4rem;margin-bottom:8px;">⚠️</div>
+                        <div style="font-weight:700;color:#F5F5F5;letter-spacing:0.04em;margin-bottom:4px;">谨慎阅读</div>
+                        <div style="font-size:0.8rem;color:var(--text-secondary);letter-spacing:0.03em;">容易出现人物崩坏争议</div>
+                    </div>
+                </div>
+                <div class="quote-block" style="margin-top:var(--spacing-xl);">
+                    杰森最精彩的时候，不是他赢了布鲁斯，而是他与布鲁斯谁也说服不了谁。《红头罩之下》之所以经典，就是因为这一点。
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ 第一阶段：作为罗宾的杰森 ============ -->
+        <div class="section-spacer-lg"></div>
+        <div class="fade-in-section" id="robin-era">
+            <div class="section-number">01</div>
+            <div class="section-label">第一阶段</div>
+            <div class="section-title">作为罗宾的杰森</div>
+            <p class="section-subtitle">理解杰森最重要的起点。这里的他不是后来同人里的暴躁小疯狗，而是聪明、勇敢、很重感情的孩子。</p>
+        </div>
+
+        <!-- 刊物1 -->
+        <div class="glass-card section-card fade-in-section">
+            <div class="glass-card-inner">
+                <div class="pub-item">
+                    <div class="pub-number">1</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-essential">🌟 必读神作</span>
+                        <div class="pub-title">Batman: Second Chances</div>
+                        <div class="pub-title-eng">后危机重启起源 · 杰森正式成为二代罗宾</div>
+                        <div class="pub-desc">
+                            杰森正式成为二代罗宾（后危机重启起源）。特点：
+                            <ul>
+                                <li>不是后来同人里的暴躁小疯狗</li>
+                                <li>实际上是聪明、勇敢、很重感情的孩子</li>
+                                <li>布鲁斯也是真正把他当儿子养</li>
+                            </ul>
+                            这是理解杰森最重要的起点之一。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 刊物2 -->
+        <div class="glass-card section-card fade-in-section" style="margin-top:var(--spacing-md);">
+            <div class="glass-card-inner">
+                <div class="pub-item">
+                    <div class="pub-number">2</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-recommended">👍 推荐阅读</span>
+                        <div class="pub-title">Batman: The Cult</div>
+                        <div class="pub-title-eng">杰森时期优秀罗宾故事之一</div>
+                        <div class="pub-desc">
+                            这里的杰森：
+                            <ul>
+                                <li>能独当一面</li>
+                                <li>会照顾布鲁斯</li>
+                                <li>不是累赘</li>
+                            </ul>
+                            布鲁斯对杰森的信任表现明显。故事氛围黑暗，杰森表现突出。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 刊物3 -->
+        <div class="glass-card section-card fade-in-section" style="margin-top:var(--spacing-md);">
+            <div class="glass-card-inner">
+                <div class="pub-item">
+                    <div class="pub-number">3</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-essential">🌟 必读神作</span>
+                        <div class="pub-title">Batman: A Death in the Family</div>
+                        <div class="pub-title-eng">杰森死亡事件</div>
+                        <div class="pub-desc">
+                            虽然现在因为各种梗出圈，但实际阅读时会发现：杰森远比网络刻板印象复杂——他的死亡源于善良而非单纯受害。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ 第二阶段：红头罩诞生 ============ -->
+        <div class="section-spacer-lg"></div>
+        <div class="fade-in-section" id="redhood-era">
+            <div class="section-number">02</div>
+            <div class="section-label">第二阶段 · 必读核心</div>
+            <div class="section-title">红头罩诞生</div>
+            <p class="section-subtitle">现代红头罩的起点。DC官方至今视其为理解杰森的核心作品。</p>
+        </div>
+
+        <!-- 刊物4 -->
+        <div class="glass-card section-card fade-in-section">
+            <div class="glass-card-inner">
+                <div class="pub-item">
+                    <div class="pub-number">4</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-essential">🌟 必读神作</span>
+                        <div class="star-rating">★★★★★</div>
+                        <div class="pub-title">Batman: Under the Red Hood</div>
+                        <div class="pub-title-eng">收录 Batman #635-641, #645-650, Annual #25</div>
+                        <div class="pub-meta">这是杰森最重要的一本，也是最推荐的。</div>
+                        <div class="pub-desc">
+                            <strong style="color:#F5F5F5;">杰森没崩：</strong>他愤怒，但愤怒有逻辑。<br>
+                            <strong style="color:#F5F5F5;">布鲁斯也没崩：</strong>他爱杰森，无法接受杀人，无法跨越自己的底线。<br>
+                            两个人都对，也都错。这才是经典。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 刊物5 -->
+        <div class="glass-card section-card fade-in-section" style="margin-top:var(--spacing-md);">
+            <div class="glass-card-inner">
+                <div class="pub-item">
+                    <div class="pub-number">5</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-essential">🌟 必读神作</span>
+                        <div class="star-rating">★★★★★</div>
+                        <div class="pub-title">Red Hood: The Lost Days</div>
+                        <div class="pub-title-eng">《红头罩之下》最佳补充</div>
+                        <div class="pub-desc">
+                            讲述杰森如何复活、如何接受训练（包括塔利亚等）、如何变成红头罩。出版时就是作为补完故事。<br>
+                            <strong style="color:#E07075;">建议阅读顺序：</strong>《红头罩之下》→《失落岁月》
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ 第三阶段：后续最佳时期 ============ -->
+        <div class="section-spacer-lg"></div>
+        <div class="fade-in-section" id="outlaws-era">
+            <div class="section-number">03</div>
+            <div class="section-label">第三阶段</div>
+            <div class="section-title">后续最佳时期</div>
+            <p class="section-subtitle">现代杰森长篇的巅峰。杰森成长明显，有自己的团队和价值观。</p>
+        </div>
+
+        <!-- 刊物6 -->
+        <div class="glass-card section-card fade-in-section">
+            <div class="glass-card-inner">
+                <div class="pub-item">
+                    <div class="pub-number">6</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-essential">🌟 必读神作</span>
+                        <div class="star-rating">★★★★★</div>
+                        <div class="pub-title">Red Hood and the Outlaws (Rebirth)</div>
+                        <div class="pub-title-eng">尤其推荐前25期 · 杰森个人刊巅峰之一</div>
+                        <div class="pub-desc">
+                            黑暗三位一体：杰森、阿耳忒弥斯、比扎罗。杰森成长明显，有自己的团队和价值观，不再天天和蝙蝠家撕逼。布鲁斯基本保持正常。如果只能选一部现代杰森长篇，许多粉丝选这个。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 刊物7 -->
+        <div class="glass-card section-card fade-in-section" style="margin-top:var(--spacing-md);">
+            <div class="glass-card-inner">
+                <div class="pub-item">
+                    <div class="pub-number">7</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-recommended">👍 推荐阅读</span>
+                        <div class="star-rating">★★★★☆</div>
+                        <div class="pub-title">Task Force Z</div>
+                        <div class="pub-title-eng">近年评价不错</div>
+                        <div class="pub-desc">
+                            主角杰森，风格偏黑色幽默+团队行动，很多杰森粉喜欢。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ 谨慎阅读区 ============ -->
+        <div class="section-spacer-lg"></div>
+        <div class="fade-in-section">
+            <div class="section-number" style="color:rgba(150,130,100,0.25);">⚠</div>
+            <div class="section-label">谨慎阅读区</div>
+            <div class="section-title">争议较大的作品</div>
+            <p class="section-subtitle">这些刊物存在不同程度的人物塑造争议，建议在了解核心作品后再选择性阅读。</p>
+        </div>
+
+        <!-- 刊物8 -->
+        <div class="glass-card section-card fade-in-section">
+            <div class="glass-card-inner">
+                <div class="pub-item">
+                    <div class="pub-number" style="color:rgba(150,130,100,0.3);">8</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-caution">⚠️ 谨慎阅读</span>
+                        <div class="star-rating">★★★<span style="color:rgba(200,169,110,0.3);">★★</span></div>
+                        <div class="pub-title">Red Hood and the Outlaws (New 52)</div>
+                        <div class="pub-title-eng">争议非常大</div>
+                        <div class="pub-desc">
+                            原因主要不是杰森，而是：星火的塑造争议（性化处理、性格变化）、罗伊早期争议。很多读者觉得人物塑造有问题。不过后期（如League of Assassins部分）有所改善，可以挑着读。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 刊物9 -->
+        <div class="glass-card section-card fade-in-section" style="margin-top:var(--spacing-md);">
+            <div class="glass-card-inner">
+                <div class="pub-item">
+                    <div class="pub-number" style="color:rgba(150,130,100,0.3);">9</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-caution">⚠️ 不推荐作为入门</span>
+                        <div class="pub-title">Battle for the Cowl</div>
+                        <div class="pub-title-eng">不推荐作为杰森主刊入门</div>
+                        <div class="pub-desc">
+                            这里的杰森比较接近"反派工具人"时期，行为激进（戴蝙蝠头罩等），很多杰森粉自己都不喜欢。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ 最佳阅读路线 ============ -->
+        <div class="section-spacer-lg"></div>
+        <div class="fade-in-section" id="route">
+            <div class="section-number">→</div>
+            <div class="section-label">推荐阅读路线</div>
+            <div class="section-title">蝙蝠家粉的最佳路线</div>
+            <p class="section-subtitle">按照你对布鲁斯和迪克的喜好，这条路线最平衡。你会看到一个完整的杰森——从被爱着的孩子，到死去的孩子，再到无法原谅却仍然爱着父亲的大人。</p>
+        </div>
+
+        <div class="route-card fade-in-section">
+            <div class="route-step">
+                <div class="route-step-num">01</div>
+                <div class="route-step-text"><strong>Batman: Second Chances</strong> —— 杰森正式成为二代罗宾，理解起点</div>
+            </div>
+            <div class="route-step">
+                <div class="route-step-num">02</div>
+                <div class="route-step-text"><strong>Batman: The Cult</strong> —— 杰森独当一面，照顾布鲁斯</div>
+            </div>
+            <div class="route-step">
+                <div class="route-step-num">03</div>
+                <div class="route-step-text"><strong>Batman: A Death in the Family</strong> —— 杰森死亡事件，远比刻板印象复杂</div>
+            </div>
+            <div class="route-step">
+                <div class="route-step-num">04</div>
+                <div class="route-step-text"><strong>Batman: Under the Red Hood</strong> —— 红头罩核心，两个人都对也都错</div>
+            </div>
+            <div class="route-step">
+                <div class="route-step-num">05</div>
+                <div class="route-step-text"><strong>Red Hood: The Lost Days</strong> —— 补完故事，建议接在红头罩之下后阅读</div>
+            </div>
+            <div class="route-step">
+                <div class="route-step-num">06</div>
+                <div class="route-step-text"><strong>Red Hood and the Outlaws (Rebirth)</strong> —— 至少读到25期，现代杰森巅峰</div>
+            </div>
+            <div class="highlight-box" style="margin-top:var(--spacing-lg);">
+                《红头罩之下》的布鲁斯，是杰森相关故事里最接近"蝙蝠侠本色"的版本之一：<strong>不是冷血混蛋，也不是圣母，而是一个拼命想留住儿子却不知道该怎么办的父亲。</strong>
+            </div>
+        </div>
+
+        <!-- ============ 额外补充刊物 ============ -->
+        <div class="section-spacer-lg"></div>
+        <div class="fade-in-section" id="supplement">
+            <div class="section-number">+</div>
+            <div class="section-label">原列表之外的补充</div>
+            <div class="section-title">杰森（红头罩）额外刊物推荐</div>
+            <p class="section-subtitle">继续优先选择杰森塑造较好、布鲁斯相对在线（或冲突合理）的作品，避免严重OOC捧一踩一的情况。</p>
+        </div>
+
+        <!-- 罗宾时期额外补充 -->
+        <div class="glass-card section-card fade-in-section">
+            <div class="glass-card-inner">
+                <div class="section-label" style="font-size:0.6rem;">罗宾时期 · 额外补充</div>
+                <div class="pub-item">
+                    <div class="pub-number" style="font-size:1.8rem;">+</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-supplement">📖 深化早期杰森</span>
+                        <div class="star-rating">★★★★<span class="star-empty">★</span></div>
+                        <div class="pub-title">Robin & Batman: Jason Todd</div>
+                        <div class="pub-title-eng">2025 miniseries · Jeff Lemire & Dustin Nguyen</div>
+                        <div class="pub-desc">
+                            近期杰森早期故事新作，聚焦布鲁斯与杰森的师徒关系早期动态。杰森被描绘成冲动但有潜力的孩子，情感深度不错，适合喜欢原版罗宾弧的读者。布鲁斯也保持导师形象。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 红头罩核心后续高评价 -->
+        <div class="glass-card section-card fade-in-section" style="margin-top:var(--spacing-md);">
+            <div class="glass-card-inner">
+                <div class="section-label" style="font-size:0.6rem;">红头罩核心 · 后续高评价故事</div>
+                <div class="pub-item">
+                    <div class="pub-number" style="font-size:1.8rem;">★</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-essential">🌟 强烈推荐</span>
+                        <div class="star-rating">★★★★★</div>
+                        <div class="pub-title">Batman: Urban Legends #1-6（"Cheer"弧）</div>
+                        <div class="pub-title-eng">Chip Zdarsky执笔 · 杰森主线故事</div>
+                        <div class="pub-desc">
+                            杰森与布鲁斯合作调查新型毒品，杰森面对自身愤怒、愧疚与家庭关系。杰森成长明显，布鲁斯也在线（父子冲突合理而非离谱）。许多粉丝认为是近年最佳杰森情感故事之一，探讨"愤怒是否必要"。
+                        </div>
+                    </div>
+                </div>
+                <div class="pub-item" style="border-bottom:none;">
+                    <div class="pub-number" style="font-size:1.8rem;">★</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-recommended">👍 评价正面</span>
+                        <div class="star-rating">★★★★<span class="star-empty">★</span></div>
+                        <div class="pub-title">Red Hood: The Hill</div>
+                        <div class="pub-title-eng">2024 limited series · #0-6</div>
+                        <div class="pub-desc">
+                            杰森在哥谭一个社区（The Hill）展开的独立故事，聚焦社区自救、地方犯罪与他的正义方式。杰森更像成熟的反英雄，有成长与反思，布鲁斯出场少（避免冲突崩坏）。适合想看杰森"独当一面"的读者。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 其他值得一提 -->
+        <div class="glass-card section-card fade-in-section" style="margin-top:var(--spacing-md);">
+            <div class="glass-card-inner">
+                <div class="section-label" style="font-size:0.6rem;">其他值得一提 · 视喜好选择</div>
+                <div class="pub-item">
+                    <div class="pub-number" style="font-size:1.8rem;">·</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-supplement">📖 视喜好选择</span>
+                        <div class="pub-title">Red Hood: Outlaw</div>
+                        <div class="pub-title-eng">Rebirth Outlaws后期 · 约#27后改名</div>
+                        <div class="pub-desc">如果喜欢Rebirth前25期，可以继续读下去。杰森solo部分有个人成长，但质量波动较大，布鲁斯相关弧需谨慎（部分时期会有些争议）。</div>
+                    </div>
+                </div>
+                <div class="pub-item">
+                    <div class="pub-number" style="font-size:1.8rem;">·</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-supplement">📖 事件性质</span>
+                        <div class="pub-title">Future State: Gotham / Gotham War: Red Hood tie-in</div>
+                        <div class="pub-desc">部分杰森主场，但事件性质强，布鲁斯/家族互动有时激烈。适合已读主流故事后补充。</div>
+                    </div>
+                </div>
+                <div class="pub-item" style="border-bottom:none;">
+                    <div class="pub-number" style="font-size:1.8rem;">·</div>
+                    <div class="pub-content">
+                        <span class="pub-badge badge-supplement">📖 客串补充</span>
+                        <div class="pub-title">Beast World Tour: Gotham</div>
+                        <div class="pub-desc">Task Force Z之后可看杰森在更大事件中的客串，但非核心solo。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ 阅读建议 & 收藏建议 ============ -->
+        <div class="section-spacer-lg"></div>
+        <div class="glass-card section-card fade-in-section" id="reading-advice">
+            <div class="glass-card-inner">
+                <div class="section-label">阅读建议 & 收藏建议</div>
+                <div class="section-title">最终阅读指南</div>
+                <div class="highlight-box">
+                    <strong>优先顺序（接原最佳路线）：</strong><br>
+                    Urban Legends "Cheer" → Red Hood: The Hill → Robin & Batman: Jason Todd（如果想补早期）
+                </div>
+                <div class="pub-desc" style="margin-top:var(--spacing-md);">
+                    <ul>
+                        <li>这些补充保持了"杰森愤怒有逻辑、与布鲁斯谁也说服不了谁"的核心张力，同时避免了部分争议期（如New 52早期或某些事件里过度工具人化）。</li>
+                        <li><strong style="color:#F5F5F5;">阅读平台：</strong>DC Universe Infinite最方便，很多有合集TPB。优先用DC Universe Infinite或实体TPB。</li>
+                        <li><strong style="color:#F5F5F5;">顺序很重要：</strong>尤其是第二阶段，建议严格按照推荐路线阅读。</li>
+                        <li>如果想深入特定时期，再补充其他如Urban Legends等。原指南已很不错，补充内容主要是为精确性和完整性。</li>
+                    </ul>
+                </div>
+                <div class="quote-block" style="margin-top:var(--spacing-xl);">
+                    优先用DC Universe Infinite或实体TPB。顺序很重要，尤其是第二阶段。享受阅读！如果想深入特定时期，再补充其他如Urban Legends等。
+                    <div class="quote-attribution">—— 蝙蝠洞档案库 · 杰森·陶德卷宗</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ FOOTER ============ -->
+        <footer class="page-footer fade-in-section">
+            <div class="footer-sigil"></div>
+            <p>蝙蝠洞档案库 · 杰森·陶德阅读指南</p>
+            <p style="margin-top:4px;font-size:0.7rem;color:rgba(255,255,255,0.25);">档案编号 BAT-ARCHIVE-JT-001 · 数字典藏馆 · Collector Edition</p>
+            <p style="margin-top:4px;font-size:0.65rem;color:rgba(255,255,255,0.18);">Premium Glassmorphism · DC Black Label · Neo Gotham · Dark Academia</p>
+        </footer>
+
+    </div><!-- END MAIN CONTAINER -->
+
+    <script>
+        // ============ FADE IN ON SCROLL ============
+        const fadeInSections = document.querySelectorAll('.fade-in-section');
+
+        const fadeInObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Keep visible after first reveal
+                    fadeInObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.12,
+            rootMargin: '0px 0px -30px 0px'
+        });
+
+        fadeInSections.forEach(section => {
+            fadeInObserver.observe(section);
+        });
+
+        // ============ SCROLL TO TOP BUTTON ============
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+        function updateScrollTopBtn() {
+            if (window.scrollY > 500) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        }
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        window.addEventListener('scroll', updateScrollTopBtn, { passive: true });
+
+        // ============ NAV ACTIVE STATE ON SCROLL ============
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const sections = [];
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                const target = document.getElementById(href.substring(1));
+                if (target) {
+                    sections.push({ link, target });
+                }
+            }
+        });
+
+        function updateActiveNav() {
+            let currentId = null;
+            const scrollPos = window.scrollY + 200;
+
+            for (let i = sections.length - 1; i >= 0; i--) {
+                if (sections[i].target.offsetTop <= scrollPos) {
+                    currentId = sections[i].link.getAttribute('href').substring(1);
+                    break;
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentId) {
+                    link.classList.add('active');
+                }
+            });
+
+            // If at very top, activate first
+            if (window.scrollY < 200) {
+                navLinks.forEach(l => l.classList.remove('active'));
+                const firstLink = document.querySelector('.nav-links a[href="#hero"]');
+                if (firstLink) firstLink.classList.add('active');
+            }
+        }
+
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+
+        // ============ PARALLAX FOR GRADIENT ORBS ============
+        const orb1 = document.querySelector('.gradient-orb-1');
+        const orb2 = document.querySelector('.gradient-orb-2');
+        const orb3 = document.querySelector('.gradient-orb-3');
+
+        function updateParallax() {
+            const scrollY = window.scrollY;
+            const vh = window.innerHeight;
+
+            if (orb1) {
+                orb1.style.transform = `translate(${Math.sin(scrollY * 0.0004) * 40}px, ${-250 + scrollY * 0.03 + Math.cos(scrollY * 0.0005) * 25}px)`;
+            }
+            if (orb2) {
+                orb2.style.transform = `translate(${Math.cos(scrollY * 0.0005) * 35}px, ${scrollY * -0.02 + Math.sin(scrollY * 0.0004) * 20}px)`;
+            }
+            if (orb3) {
+                orb3.style.transform = `translate(${Math.sin(scrollY * 0.0006) * 30}px, ${scrollY * -0.025 + Math.cos(scrollY * 0.0005) * 22}px)`;
+            }
+        }
+
+        window.addEventListener('scroll', updateParallax, { passive: true });
+
+        // ============ INITIAL SETUP ============
+        updateScrollTopBtn();
+        updateActiveNav();
+        updateParallax();
+
+        // Make first hero section visible immediately
+        const heroSection = document.querySelector('.hero-section');
+        if (heroSection) {
+            heroSection.classList.add('visible');
+        }
+
+        // ============ SMOOTH SCROLL FOR NAV LINKS ============
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    const navHeight = document.getElementById('mainNav')?.offsetHeight || 60;
+                    const offset = target.offsetTop - navHeight - 20;
+                    window.scrollTo({
+                        top: offset,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
