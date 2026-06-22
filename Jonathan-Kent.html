@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jonathan Kent 全刊阅读指南 | 超人之子档案馆</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3D78FF;
+            --secondary: #FF3B30;
+            --accent: #A8D8FF;
+            --bg-deep: #060A14;
+            --bg-mid: #0D1324;
+            --bg-light: #131D35;
+            --glass-08: rgba(255, 255, 255, 0.08);
+            --glass-12: rgba(255, 255, 255, 0.12);
+            --border-glass: rgba(255, 255, 255, 0.15);
+            --border-glow-blue: rgba(61, 120, 255, 0.5);
+            --border-glow-silver: rgba(200, 210, 230, 0.5);
+            --border-glow-gray: rgba(140, 155, 180, 0.4);
+            --text-primary: rgba(255, 255, 255, 0.92);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(61, 120, 255, 0.4) transparent;
+        }
+        html::-webkit-scrollbar {
+            width: 6px;
+        }
+        html::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        html::-webkit-scrollbar-thumb {
+            background: rgba(61, 120, 255, 0.4);
+            border-radius: 3px;
+        }
+
+        body {
+            font-family: "Source Han Serif SC", "Noto Serif SC", "思源宋体", serif;
+            font-weight: 400;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.75;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glass card base */
+        .glass-card {
+            background: var(--glass-08);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            opacity: 0.6;
+        }
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 40px rgba(61, 120, 255, 0.25), 0 20px 50px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .glass-card-deep {
+            background: var(--glass-12);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card-deep:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0 50px rgba(61, 120, 255, 0.3), 0 15px 40px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.28);
+        }
+
+        /* Section title */
+        .section-title {
+            font-weight: 700;
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            letter-spacing: 0.04em;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            border-radius: 1px;
+        }
+        .section-subtitle {
+            font-weight: 400;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Tag */
+        .tag {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            border: 1px solid;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .tag-blue {
+            background: rgba(61, 120, 255, 0.2);
+            border-color: rgba(61, 120, 255, 0.4);
+            color: #A8D8FF;
+        }
+        .tag-red {
+            background: rgba(255, 59, 48, 0.2);
+            border-color: rgba(255, 59, 48, 0.4);
+            color: #FF8A80;
+        }
+        .tag-gold {
+            background: rgba(220, 180, 60, 0.2);
+            border-color: rgba(220, 180, 60, 0.4);
+            color: #FFD54F;
+        }
+        .tag-purple {
+            background: rgba(160, 120, 255, 0.2);
+            border-color: rgba(160, 120, 255, 0.4);
+            color: #CEB8FF;
+        }
+
+        /* ============ HERO ============ */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            text-align: center;
+        }
+        .hero-inner {
+            position: relative;
+            z-index: 3;
+        }
+        .hero-crystal {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+        .hero-crystal .crystal-shape {
+            width: 60px;
+            height: 80px;
+            background: linear-gradient(180deg, rgba(168, 216, 255, 0.5) 0%, rgba(61, 120, 255, 0.25) 40%, rgba(61, 120, 255, 0.08) 100%);
+            clip-path: polygon(50% 0%, 100% 35%, 85% 100%, 15% 100%, 0% 35%);
+            margin: 0 auto;
+            animation: crystalFloat 6s ease-in-out infinite;
+            box-shadow: 0 0 60px rgba(61, 120, 255, 0.4), 0 0 120px rgba(168, 216, 255, 0.2);
+        }
+        @keyframes crystalFloat {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+        .hero-title {
+            font-weight: 700;
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            letter-spacing: 0.08em;
+            color: #fff;
+            text-shadow: 0 0 80px rgba(61, 120, 255, 0.5), 0 0 20px rgba(168, 216, 255, 0.3);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+        .hero-subtitle-main {
+            font-weight: 400;
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.3rem;
+        }
+        .hero-year {
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+        }
+        .hero-tagline {
+            margin-top: 2rem;
+            font-weight: 400;
+            font-size: 0.85rem;
+            color: var(--accent);
+            letter-spacing: 0.12em;
+            opacity: 0.8;
+        }
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 3;
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+        .hero-scroll-indicator::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 2px;
+            animation: scrollDot 2s ease-in-out infinite;
+        }
+        @keyframes scrollPulse {
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        @keyframes scrollDot {
+            0%,
+            100% {
+                top: 8px;
+                opacity: 0.4;
+            }
+            50% {
+                top: 22px;
+                opacity: 0.9;
+            }
+        }
+
+        /* ============ DASHBOARD ============ */
+        .dashboard-section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .dash-card {
+            padding: 2rem 1.8rem;
+            cursor: pointer;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .dash-card .dash-number {
+            font-weight: 700;
+            font-size: 3rem;
+            color: rgba(61, 120, 255, 0.3);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        .dash-card .dash-title {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 0.4rem;
+        }
+        .dash-card .dash-desc {
+            font-weight: 400;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .dash-card .dash-expand {
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 0.08em;
+            margin-top: 1rem;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        .dash-card:hover .dash-expand {
+            opacity: 1;
+        }
+
+        /* Expandable detail */
+        .dash-detail {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .dash-detail.open {
+            display: block;
+            animation: fadeInDown 0.3s ease-in-out;
+        }
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============ TIMELINE ============ */
+        .timeline-section {
+            padding: 3rem 2rem 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        .timeline-horizontal {
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+            padding: 2rem 1rem;
+            scroll-snap-type: x proximity;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(61, 120, 255, 0.3) transparent;
+        }
+        .timeline-horizontal::-webkit-scrollbar {
+            height: 4px;
+        }
+        .timeline-horizontal::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .timeline-horizontal::-webkit-scrollbar-thumb {
+            background: rgba(61, 120, 255, 0.3);
+            border-radius: 2px;
+        }
+        .timeline-node-wrapper {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            scroll-snap-align: center;
+        }
+        .timeline-node {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 20px rgba(61, 120, 255, 0.7), 0 0 40px rgba(61, 120, 255, 0.3);
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .timeline-node:hover {
+            box-shadow: 0 0 35px rgba(61, 120, 255, 1), 0 0 70px rgba(168, 216, 255, 0.6);
+            transform: scale(1.5);
+        }
+        .timeline-node.special {
+            background: var(--secondary);
+            box-shadow: 0 0 20px rgba(255, 59, 48, 0.7), 0 0 40px rgba(255, 59, 48, 0.3);
+        }
+        .timeline-line {
+            width: 60px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+        .timeline-label {
+            position: absolute;
+            top: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        /* ============ CORE READING SECTIONS ============ */
+        .core-reading {
+            padding: 2rem 2rem 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        .era-section {
+            margin-bottom: 3rem;
+            padding: 2rem 2rem;
+            border-left: 3px solid rgba(61, 120, 255, 0.4);
+            transition: border-color 0.3s;
+            position: relative;
+        }
+        .era-section:hover {
+            border-left-color: var(--primary);
+        }
+        .era-section::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 2.2rem;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 15px rgba(61, 120, 255, 0.6);
+        }
+        .era-section.special-era::before {
+            background: var(--secondary);
+            box-shadow: 0 0 15px rgba(255, 59, 48, 0.6);
+        }
+        .era-header {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.04em;
+        }
+        .era-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            margin-bottom: 1.2rem;
+        }
+        .era-content {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        .era-content .comic-entry {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            cursor: default;
+            transition: background 0.3s;
+            padding-left: 0.8rem;
+            border-radius: 4px;
+        }
+        .era-content .comic-entry:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .era-content .comic-entry strong {
+            color: #fff;
+            font-weight: 700;
+        }
+        .era-content .comic-entry .entry-value {
+            color: var(--accent);
+            font-size: 0.8rem;
+            margin-top: 0.15rem;
+        }
+        .highlight-box {
+            background: rgba(61, 120, 255, 0.08);
+            border: 1px solid rgba(61, 120, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin: 0.8rem 0;
+            font-size: 0.82rem;
+            color: var(--accent);
+        }
+
+        /* ============ GRADE BADGES ============ */
+        .grade-section {
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        .grade-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        .grade-card {
+            padding: 1.8rem;
+            position: relative;
+        }
+        .grade-card.s-grade {
+            border-color: rgba(61, 120, 255, 0.5);
+            box-shadow: 0 0 30px rgba(61, 120, 255, 0.2), inset 0 0 30px rgba(61, 120, 255, 0.04);
+        }
+        .grade-card.a-grade {
+            border-color: rgba(200, 210, 230, 0.45);
+            box-shadow: 0 0 25px rgba(200, 210, 230, 0.15), inset 0 0 25px rgba(200, 210, 230, 0.03);
+        }
+        .grade-card.b-grade {
+            border-color: rgba(140, 155, 180, 0.35);
+            box-shadow: 0 0 20px rgba(140, 155, 180, 0.1), inset 0 0 20px rgba(140, 155, 180, 0.02);
+        }
+        .grade-badge {
+            display: inline-block;
+            font-weight: 700;
+            font-size: 2.5rem;
+            line-height: 1;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.8rem;
+        }
+        .grade-badge.s {
+            color: #fff;
+            text-shadow: 0 0 30px rgba(61, 120, 255, 0.8), 0 0 60px rgba(61, 120, 255, 0.4);
+        }
+        .grade-badge.a {
+            color: #E8ECF2;
+            text-shadow: 0 0 25px rgba(200, 210, 230, 0.6), 0 0 50px rgba(200, 210, 230, 0.3);
+        }
+        .grade-badge.b {
+            color: #B0BCC8;
+            text-shadow: 0 0 20px rgba(140, 155, 180, 0.5), 0 0 40px rgba(140, 155, 180, 0.2);
+        }
+        .grade-list {
+            list-style: none;
+            padding: 0;
+        }
+        .grade-list li {
+            padding: 0.4rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            letter-spacing: 0.03em;
+        }
+
+        /* ============ RELATIONSHIP GRAPH ============ */
+        .relation-section {
+            padding: 3rem 2rem 5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        .relation-svg-container {
+            width: 100%;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+        }
+        .relation-svg-container svg {
+            max-width: 100%;
+            height: auto;
+        }
+        .graph-node-text {
+            fill: #fff;
+            font-family: "Source Han Serif SC", "Noto Serif SC", "思源宋体", serif;
+            font-weight: 700;
+            font-size: 12px;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+        .graph-subtext {
+            fill: rgba(255, 255, 255, 0.6);
+            font-family: "Source Han Serif SC", "Noto Serif SC", "思源宋体", serif;
+            font-weight: 400;
+            font-size: 9px;
+            text-anchor: middle;
+            pointer-events: none;
+        }
+
+        /* ============ ARCHIVE INDEX ============ */
+        .archive-section {
+            padding: 3rem 2rem 5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        .archive-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .archive-table th {
+            text-align: left;
+            padding: 0.8rem 1rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: var(--accent);
+            border-bottom: 2px solid rgba(61, 120, 255, 0.3);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+        .archive-table td {
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text-secondary);
+            letter-spacing: 0.03em;
+            vertical-align: top;
+        }
+        .archive-table tr {
+            transition: background 0.3s;
+        }
+        .archive-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .archive-table .year-cell {
+            font-weight: 700;
+            color: #fff;
+            white-space: nowrap;
+            letter-spacing: 0.06em;
+        }
+
+        /* ============ BEST ROUTE ============ */
+        .route-section {
+            padding: 3rem 2rem 5rem;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        .route-steps {
+            list-style: none;
+            padding: 0;
+            counter-reset: step;
+        }
+        .route-steps li {
+            counter-increment: step;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 0.8rem;
+            border-radius: 12px;
+            background: var(--glass-08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            position: relative;
+            padding-left: 3.5rem;
+            transition: all 0.3s;
+            cursor: default;
+        }
+        .route-steps li:hover {
+            border-color: rgba(61, 120, 255, 0.4);
+            box-shadow: 0 0 25px rgba(61, 120, 255, 0.15);
+            transform: translateX(4px);
+        }
+        .route-steps li::before {
+            content: '0' counter(step);
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+            letter-spacing: 0.04em;
+            text-shadow: 0 0 15px rgba(61, 120, 255, 0.5);
+        }
+        .route-arrow {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1rem;
+            letter-spacing: 0.2em;
+            padding: 0.2rem 0;
+        }
+
+        /* ============ FOOTER NOTE ============ */
+        .footer-note {
+            text-align: center;
+            padding: 3rem 2rem 4rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 2;
+        }
+        .footer-note span {
+            color: var(--accent);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.8rem;
+            }
+            .dash-card {
+                padding: 1.2rem 1rem;
+                min-height: 150px;
+            }
+            .dash-card .dash-number {
+                font-size: 2rem;
+            }
+            .dash-card .dash-title {
+                font-size: 1rem;
+            }
+            .era-section {
+                padding: 1.5rem 1.2rem;
+            }
+            .grade-grid {
+                grid-template-columns: 1fr;
+            }
+            .timeline-horizontal {
+                gap: 0;
+            }
+            .timeline-line {
+                width: 30px;
+            }
+            .archive-table {
+                font-size: 0.7rem;
+            }
+            .archive-table th,
+            .archive-table td {
+                padding: 0.5rem 0.4rem;
+            }
+            .route-steps li {
+                padding-left: 2.8rem;
+                font-size: 0.82rem;
+            }
+            .route-steps li::before {
+                font-size: 1rem;
+                left: 0.6rem;
+            }
+            .hero-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .timeline-line {
+                width: 16px;
+            }
+            .timeline-node {
+                width: 12px;
+                height: 12px;
+            }
+            .timeline-label {
+                font-size: 0.6rem;
+                top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Starfield Canvas -->
+    <canvas id="starfield"></canvas>
+
+    <!-- Main Container -->
+    <div class="main-container">
+
+        <!-- ==================== HERO ==================== -->
+        <section class="hero-section" id="hero">
+            <div class="hero-inner">
+                <div class="hero-crystal">
+                    <div class="crystal-shape"></div>
+                </div>
+                <h1 class="hero-title">JONATHAN KENT</h1>
+                <p class="hero-subtitle-main">超人之子全刊阅读指南</p>
+                <p class="hero-year">2015 – Present</p>
+                <p class="hero-tagline">From Superboy to Superman</p>
+            </div>
+            <div class="hero-scroll-indicator" onclick="document.getElementById('dashboard').scrollIntoView({behavior:'smooth'})"></div>
+        </section>
+
+        <!-- ==================== 阅读路线总览 DASHBOARD ==================== -->
+        <section class="dashboard-section" id="dashboard">
+            <h2 class="section-title">阅读路线总览</h2>
+            <p class="section-subtitle">Glass Dashboard · 四大核心阶段</p>
+            <div class="dashboard-grid">
+                <!-- 诞生篇 -->
+                <div class="glass-card dash-card" onclick="toggleDashDetail(this)">
+                    <div class="dash-number">Ⅰ</div>
+                    <div class="dash-title">诞生篇</div>
+                    <div class="dash-desc">Convergence · Lois and Clark<br>Jon婴儿出生与童年起源</div>
+                    <div class="dash-expand">点击展开详情 ▾</div>
+                    <div class="dash-detail">
+                        <strong>Convergence: Superman</strong> #1-2 — Jon首次登场（婴儿出生），新52与经典超人融合的铺垫。<br><br>
+                        <strong>Convergence</strong> #8 — 可选补充收尾。<br><br>
+                        <strong>Superman: Lois and Clark</strong> #1-8（全刊必读）— 真正意义上的Jon童年起源故事。Jon早期生活、克拉克与露易丝隐居、超能力初步觉醒。这是理解Jon性格的最重要起点。
+                    </div>
+                </div>
+                <!-- Superboy篇 -->
+                <div class="glass-card dash-card" onclick="toggleDashDetail(this)">
+                    <div class="dash-number">Ⅱ</div>
+                    <div class="dash-title">Superboy篇</div>
+                    <div class="dash-desc">Superman Rebirth · Super Sons<br>Tomasi & Gleason黄金时代</div>
+                    <div class="dash-expand">点击展开详情 ▾</div>
+                    <div class="dash-detail">
+                        <strong>Superman: Rebirth</strong> #1（one-shot过渡）<br>
+                        <strong>Superman (2016) Vol.4</strong> #1-45 — Jon正式成为Superboy；父子关系深度塑造；超人家族黄金时代；Damian Wayne互动；Krypto戏份丰富。<br>
+                        重点弧线：Son of Superman (#1-6)、Multiplicity (#14-17)、Black Dawn (#20-26)、Imperius Lex (#33-36)、Bizarroverse (#37-45)。<br><br>
+                        <strong>Super Sons</strong> #1-16 + Annual #1 — Jon+Damian"超级儿子"组合正式成立，人气巅峰。
+                    </div>
+                </div>
+                <!-- 年龄跃迁篇 -->
+                <div class="glass-card dash-card" onclick="toggleDashDetail(this)">
+                    <div class="dash-number">Ⅲ</div>
+                    <div class="dash-title">年龄跃迁篇</div>
+                    <div class="dash-desc">Bendis Era · Legion<br>从童年到少年的关键转折</div>
+                    <div class="dash-expand">点击展开详情 ▾</div>
+                    <div class="dash-detail">
+                        <strong>The Man of Steel (2018)</strong> #1-6 — 过渡，必读。<br>
+                        <strong>Superman (2018) Vol.5</strong> #1-16 — 年龄跃迁事件（从约10-12岁快速成长为17岁左右）。Jon从少年Superboy向独立英雄转变的关键。<br>
+                        <strong>Action Comics (2018)</strong> #1001-1018 — 选择性阅读。<br><br>
+                        <strong>Legion of Super-Heroes (2019)</strong> #1-12 — Jon加入31世纪军团，独立英雄意识觉醒。
+                    </div>
+                </div>
+                <!-- Superman篇 -->
+                <div class="glass-card dash-card" onclick="toggleDashDetail(this)">
+                    <div class="dash-number">Ⅳ</div>
+                    <div class="dash-title">Superman篇</div>
+                    <div class="dash-desc">Son of Kal-El · Adventures<br>成年Jon正式接班</div>
+                    <div class="dash-expand">点击展开详情 ▾</div>
+                    <div class="dash-detail">
+                        <strong>Superman: Son of Kal-El</strong> #1-18 + Annual #1 — 必读全刊。Jon担任Superman；独立领导力成长；Jay Nakamura登场；建立个人英雄理念。<br><br>
+                        <strong>Adventures of Superman: Jon Kent</strong> #1-6 — 必读miniseries。多元宇宙冒险；对抗Ultraman；Injustice宇宙联动；与Damian再次合作。<br><br>
+                        <strong>Kal-El Returns</strong> 联动 — Son of Kal-El #16-18 + Action Comics #1047-1049 + Kal-El Returns Special #1。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 成长时间轴 TIMELINE ==================== -->
+        <section class="timeline-section" id="timeline">
+            <h2 class="section-title">成长时间轴</h2>
+            <p class="section-subtitle">Chronological Timeline · 横向滑动探索</p>
+            <div class="timeline-horizontal">
+                <span class="timeline-label" style="position:relative;top:auto;left:auto;transform:none;margin-right:0.3rem;font-size:0.7rem;color:var(--text-muted);">2015</span>
+                <div class="timeline-node-wrapper"><div class="timeline-node" title="Convergence - Jon出生"></div></div>
+                <div class="timeline-line"></div>
+                <div class="timeline-node-wrapper"><div class="timeline-node" title="Lois and Clark"></div></div>
+                <div class="timeline-line"></div>
+                <span style="font-size:0.65rem;color:var(--text-muted);margin:0 0.3rem;">2016</span>
+                <div class="timeline-node-wrapper"><div class="timeline-node" title="Superman Rebirth"></div></div>
+                <div class="timeline-line"></div>
+                <div class="timeline-node-wrapper"><div class="timeline-node" title="Super Sons"></div></div>
+                <div class="timeline-line"></div>
+                <span style="font-size:0.65rem;color:var(--text-muted);margin:0 0.3rem;">2018</span>
+                <div class="timeline-node-wrapper"><div class="timeline-node special" title="Bendis年龄跃迁"></div></div>
+                <div class="timeline-line"></div>
+                <div class="timeline-node-wrapper"><div class="timeline-node" title="Legion"></div></div>
+                <div class="timeline-line"></div>
+                <span style="font-size:0.65rem;color:var(--text-muted);margin:0 0.3rem;">2021</span>
+                <div class="timeline-node-wrapper"><div class="timeline-node" title="Son of Kal-El"></div></div>
+                <div class="timeline-line"></div>
+                <div class="timeline-node-wrapper"><div class="timeline-node" title="Adventures of Superman"></div></div>
+                <div class="timeline-line"></div>
+                <span style="font-size:0.65rem;color:var(--text-muted);margin:0 0.3rem;">2025</span>
+                <div class="timeline-node-wrapper"><div class="timeline-node" title="Secret Six"></div></div>
+                <div class="timeline-line"></div>
+                <div class="timeline-node-wrapper"><div class="timeline-node" title="Superman Unlimited"></div></div>
+                <div class="timeline-line"></div>
+                <span style="font-size:0.65rem;color:var(--text-muted);margin:0 0.3rem;">2026</span>
+                <div class="timeline-node-wrapper"><div class="timeline-node special" title="Reign of the Superboys"></div></div>
+            </div>
+        </section>
+
+        <!-- ==================== 核心阅读区 CORE READING ==================== -->
+        <div class="core-reading" id="core-reading">
+            <h2 class="section-title">核心阅读区</h2>
+            <p class="section-subtitle">Complete Archive · 完整时代路线</p>
+
+            <!-- 一、诞生篇 -->
+            <div class="era-section" id="era-birth">
+                <div class="era-header">Ⅰ Birth of Jon Kent</div>
+                <div class="era-meta">2015–2016 · 诞生篇</div>
+                <div class="era-content">
+                    <div class="comic-entry">
+                        <strong>Convergence: Superman</strong> #1-2（尤其是#2）<br>
+                        <span class="entry-value">阅读价值：Jon首次登场（婴儿出生），新52与经典超人融合的铺垫。这是其起源起点。</span>
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Convergence</strong> #8<br>
+                        <span class="entry-value">可选补充收尾。</span>
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Superman: Lois and Clark</strong> #1-8（全刊，必读）<br>
+                        <span class="entry-value">阅读价值：真正意义上的Jon童年起源故事。Jon早期生活、克拉克与露易丝隐居、超能力初步觉醒。这是理解Jon性格的最重要起点。</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 二、Superboy成长篇 -->
+            <div class="era-section" id="era-superboy">
+                <div class="era-header">Ⅱ Superboy成长篇</div>
+                <div class="era-meta">Tomasi/Gleason时代 · Rebirth黄金期</div>
+                <div class="era-content">
+                    <div class="comic-entry">
+                        <strong>Superman: Rebirth</strong> #1（one-shot，过渡）
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Superman (2016) Vol.4</strong> #1-45（Tomasi & Gleason主笔，强烈推荐全读）<br>
+                        <span class="entry-value">阅读价值：Jon正式成为Superboy；父子关系深度塑造；超人家族黄金时代；Damian Wayne互动；Krypto戏份丰富。被视为Jon最佳时期之一。</span>
+                    </div>
+                    <div class="highlight-box">
+                        <strong>重点弧线（可优先）：</strong><br>
+                        · Son of Superman (#1-6)<br>
+                        · Multiplicity (#14-17)<br>
+                        · Black Dawn (#20-26)<br>
+                        · Imperius Lex (#33-36)<br>
+                        · Bizarroverse (#37-45)
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Action Comics (Rebirth)</strong> — 部分Jurgens篇章有Jon家庭戏份（可选补充）。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 三、Super Sons时代 -->
+            <div class="era-section" id="era-supersons">
+                <div class="era-header">Ⅲ Super Sons时代</div>
+                <div class="era-meta">人气巅峰 · Jon与Damian的经典组合</div>
+                <div class="era-content">
+                    <div class="comic-entry">
+                        <strong>Super Sons</strong> #1-16 + Annual #1（必读）<br>
+                        <span class="entry-value">Jon + Damian Wayne"超级儿子"组合正式成立，大量友情名场面。许多读者心中的最佳Jon故事。</span>
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Super Sons/Dynomutt Special</strong> #1（可选衍生）
+                    </div>
+                    <div class="highlight-box">
+                        <strong>Supersons of Tomorrow 联动阅读顺序：</strong><br>
+                        · Super Sons #11-12<br>
+                        · Superman (2016) #37-38<br>
+                        · Teen Titans (2016) #15
+                    </div>
+                </div>
+            </div>
+
+            <!-- 四、Oz Effect与祖父篇 -->
+            <div class="era-section" id="era-oz">
+                <div class="era-header">Ⅳ Oz Effect与祖父篇</div>
+                <div class="era-meta">过渡期 · Jor-El回归</div>
+                <div class="era-content">
+                    <div class="comic-entry">
+                        <strong>Action Comics (Rebirth)</strong> — Oz Effect: #985-992（重点）<br>
+                        <span class="entry-value">阅读价值：Jor-El回归；Jon命运转折铺垫。</span>
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Action Comics (Rebirth)</strong> — Booster Shot: #993-999（继续承接，可选）。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 五、Bendis时代 -->
+            <div class="era-section special-era" id="era-bendis">
+                <div class="era-header">Ⅴ Bendis时代</div>
+                <div class="era-meta">争议期 · 年龄跃迁 · 2018</div>
+                <div class="era-content">
+                    <div class="comic-entry">
+                        <strong>The Man of Steel (2018)</strong> #1-6（过渡，必读）
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Superman (2018) Vol.5</strong> #1-16（重点，尤其是年龄跃迁相关弧线）<br>
+                        <span class="entry-value">阅读价值：Jon随Jor-El宇宙旅行；年龄跃迁事件（从约10-12岁快速成长为17岁左右）。这是Jon从少年Superboy向独立英雄转变的关键。</span>
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Action Comics (2018)</strong> #1001-1018（选择性阅读，作为家庭/背景补充）。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 六、少年军团时期 -->
+            <div class="era-section" id="era-legion">
+                <div class="era-header">Ⅵ 少年军团时期</div>
+                <div class="era-meta">Legion of Super-Heroes · 2019</div>
+                <div class="era-content">
+                    <div class="comic-entry">
+                        <strong>Legion of Super-Heroes (2019)</strong> #1-12（推荐）<br>
+                        <span class="entry-value">阅读价值：Jon加入31世纪军团；未来时间线探索；独立英雄意识觉醒。</span>
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Legion of Super-Heroes: Millennium</strong> #1-2（可选补充）。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 七、Future State -->
+            <div class="era-section" id="era-futurestate">
+                <div class="era-header">Ⅶ Future State</div>
+                <div class="era-meta">未来可能性故事</div>
+                <div class="era-content">
+                    <div class="comic-entry">
+                        <strong>Future State: Superman of Metropolis</strong> #1-2（必读）
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Future State: House of El</strong> #1（必读）
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Future State: Worlds of War</strong> #1-2（或相关Jon篇章）
+                    </div>
+                </div>
+            </div>
+
+            <!-- 八、Superman: Son of Kal-El -->
+            <div class="era-section" id="era-sonofkalel">
+                <div class="era-header">Ⅷ Superman: Son of Kal-El</div>
+                <div class="era-meta">Tom Taylor时期 · 成年Jon核心</div>
+                <div class="era-content">
+                    <div class="comic-entry">
+                        <strong>Superman: Son of Kal-El</strong> #1-18 + Annual #1（必读全刊）<br>
+                        <span class="entry-value">阅读价值：Jon担任Superman；独立领导力成长；Jay Nakamura登场；建立个人英雄理念。这是成年Jon最核心的个人刊。</span>
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Nightwing</strong> #89-90（Tom Taylor联动，可选）
+                    </div>
+                    <div class="highlight-box">
+                        <strong>Kal-El Returns 联动阅读顺序：</strong><br>
+                        · Superman: Son of Kal-El #16-18<br>
+                        · Action Comics #1047-1049（相关部分）<br>
+                        · Superman: Kal-El Returns Special #1
+                    </div>
+                </div>
+            </div>
+
+            <!-- 九、Adventures of Superman: Jon Kent -->
+            <div class="era-section" id="era-adventures">
+                <div class="era-header">Ⅸ Adventures of Superman: Jon Kent</div>
+                <div class="era-meta">Miniseries · 必读</div>
+                <div class="era-content">
+                    <div class="comic-entry">
+                        <strong>Adventures of Superman: Jon Kent</strong> #1-6（miniseries，必读）<br>
+                        <span class="entry-value">阅读价值：Jon个人佳作；多元宇宙冒险；对抗Ultraman；Injustice宇宙联动；与Damian再次合作。官方独立故事线。</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 十、Absolute Power -->
+            <div class="era-section special-era" id="era-absolutepower">
+                <div class="era-header">Ⅹ Absolute Power时期</div>
+                <div class="era-meta">大事件 · Jon戏份重要</div>
+                <div class="era-content">
+                    <div class="comic-entry">
+                        <strong>Absolute Power</strong> 主刊 #1-4（Jon戏份重要）
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Absolute Power: Super Son</strong> #1（Jon个人支线，推荐）。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 十一、2025至今 -->
+            <div class="era-section" id="era-current">
+                <div class="era-header">Ⅺ 2025至今 · 当前时期</div>
+                <div class="era-meta">Secret Six · Superman Unlimited</div>
+                <div class="era-content">
+                    <div class="comic-entry">
+                        <strong>Secret Six (2025)</strong> — 全刊（Jon为核心成员之一，与Jay Nakamura、Dreamer等合作，曾用"Super Son"代号）。
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Superman Unlimited</strong>（2025-至今，多期重点Jon戏份）<br>
+                        <span class="entry-value">尤其是#4-5（Kryptonite相关）、#7（记者Jon）、#11+（Reign of the Superboys相关，Jon成为<strong>Tomorrow Man</strong>的新身份探索）。当前Jon故事的重要平台。</span>
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Reign of the Superboys</strong> (2026跨刊事件) — 涉及Superman Unlimited、Action Comics、Supergirl、Superman等多刊。Jon（及年轻版Jon）与Conner Kent、年轻Clark、Superboy-Prime等互动，探索"Superboy"身份危机与新方向（包括Tomorrow Man转变）。当前热点。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 十二、Super Sons补完区 -->
+            <div class="era-section" id="era-supersons-complete">
+                <div class="era-header">Ⅻ Super Sons补完区</div>
+                <div class="era-meta">Damian & Jon粉丝必备</div>
+                <div class="era-content">
+                    <div class="comic-entry"><strong>Adventures of the Super Sons</strong> #1-12（Tomasi执笔，童年补完）。</div>
+                    <div class="comic-entry"><strong>Challenge of the Super Sons</strong> #1-7（童年Jon时期补完）。</div>
+                    <div class="comic-entry"><strong>Superman & Robin Special</strong> #1（超级儿子粉丝必读）。</div>
+                    <div class="comic-entry"><strong>Robin 80th Anniversary</strong>（Tomasi短篇，Damian与Jon经典故事）。</div>
+                </div>
+            </div>
+
+            <!-- 十三、Elseworlds -->
+            <div class="era-section" id="era-elseworlds">
+                <div class="era-header">ⅩⅢ Elseworlds与平行宇宙</div>
+                <div class="era-meta">可选扩展 · DCeased宇宙</div>
+                <div class="era-content">
+                    <div class="comic-entry"><strong>DCeased</strong> #2, #3, #5</div>
+                    <div class="comic-entry"><strong>DCeased: Hope at World's End</strong></div>
+                    <div class="comic-entry"><strong>DCeased: Dead Planet</strong> #1-7</div>
+                    <div class="comic-entry"><strong>DCeased: War of the Undead Gods</strong>（Jon为核心角色之一）。</div>
+                </div>
+            </div>
+
+            <!-- 额外推荐 -->
+            <div class="era-section" id="era-extra">
+                <div class="era-header">ⅩⅣ 额外推荐</div>
+                <div class="era-meta">支线 · 短篇 · 近期连载补充（截至2026中期）</div>
+                <div class="era-content">
+                    <div class="comic-entry">
+                        <strong>Superboy: Man of Tomorrow</strong> (2023 miniseries) — Jon与Conner Kent（Kon-El）等Superboy家族互动，探索身份与归属感。Dawn of DC时期作品。
+                    </div>
+                    <div class="comic-entry">
+                        <strong>Jon Kent: This Internship Is My Kryptonite</strong> (2025-2026, DC GO! Webcomic) — Jon在Daily Planet实习的轻松喜剧故事，平衡英雄生活与普通人身份。
+                    </div>
+                    <div class="comic-entry">
+                        <strong>DC Pride系列短篇</strong>（尤其是2022 "Super Pride"、2024相关故事）— 重点展现Jon的性向（双性恋）与Jay Nakamura的关系，以及与Damian的友情。
+                    </div>
+                    <div class="comic-entry"><strong>Nightwing</strong> 额外联动（如#109-110，Beast World事件）— Jon与Damian的友情补充。</div>
+                    <div class="comic-entry"><strong>Shazam! #20</strong>（2025）— 元叙事讨论Jon年龄与角色定位。</div>
+                    <div class="comic-entry"><strong>Picture Book: Who Is Superboy?</strong>（2024）— 面向年轻读者的绘本，适合入门或收藏。</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 收藏级推荐分级 ==================== -->
+        <section class="grade-section" id="grades">
+            <h2 class="section-title">收藏级推荐分级</h2>
+            <p class="section-subtitle">Glass Badge System · 发光徽章等级</p>
+            <div class="grade-grid">
+                <!-- S级 -->
+                <div class="glass-card-deep grade-card s-grade">
+                    <div class="grade-badge s">S 级</div>
+                    <p style="color:var(--accent);font-size:0.8rem;letter-spacing:0.06em;margin-bottom:1rem;">蓝色发光 · 必读核心成长史</p>
+                    <ul class="grade-list">
+                        <li>Superman: Lois and Clark</li>
+                        <li>Superman (2016) #1-45</li>
+                        <li>Super Sons</li>
+                        <li>Adventures of the Super Sons</li>
+                        <li>Superman: Son of Kal-El</li>
+                        <li>Adventures of Superman: Jon Kent</li>
+                    </ul>
+                </div>
+                <!-- A级 -->
+                <div class="glass-card-deep grade-card a-grade">
+                    <div class="grade-badge a">A 级</div>
+                    <p style="color:#D0D8E2;font-size:0.8rem;letter-spacing:0.06em;margin-bottom:1rem;">银色发光 · 强烈推荐</p>
+                    <ul class="grade-list">
+                        <li>Action Comics (Oz Effect等)</li>
+                        <li>Challenge of the Super Sons</li>
+                        <li>Legion of Super-Heroes (2019)</li>
+                        <li>Kal-El Returns</li>
+                        <li>Absolute Power: Super Son</li>
+                        <li>Secret Six (2025)</li>
+                    </ul>
+                </div>
+                <!-- B级 -->
+                <div class="glass-card-deep grade-card b-grade">
+                    <div class="grade-badge b">B 级</div>
+                    <p style="color:#A8B5C2;font-size:0.8rem;letter-spacing:0.06em;margin-bottom:1rem;">灰蓝发光 · 补充/支线</p>
+                    <ul class="grade-list">
+                        <li>Convergence系列</li>
+                        <li>Future State</li>
+                        <li>Superman Unlimited</li>
+                        <li>其他联动/Elseworlds</li>
+                        <li>DCeased系列</li>
+                        <li>Superboy: Man of Tomorrow</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 角色关系图谱 ==================== -->
+        <section class="relation-section" id="relations">
+            <h2 class="section-title">角色关系图谱</h2>
+            <p class="section-subtitle">Neural Network Graph · 神经网络风格</p>
+            <div class="relation-svg-container">
+                <svg viewBox="0 0 800 550" xmlns="http://www.w3.org/2000/svg" style="min-width:600px;">
+                    <defs>
+                        <filter id="glowBlue"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                        <filter id="glowRed"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                        <filter id="glowGold"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                        <filter id="glowPurple"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                        <radialGradient id="centerGlow"><stop offset="0%" stop-color="rgba(61,120,255,0.6)"/><stop offset="100%" stop-color="rgba(61,120,255,0)"/></radialGradient>
+                    </defs>
+                    <!-- 背景光晕 -->
+                    <circle cx="400" cy="260" r="140" fill="url(#centerGlow)" opacity="0.5"/>
+                    <!-- 连线 - 蓝色家人 -->
+                    <line x1="400" y1="260" x2="220" y2="100" stroke="rgba(61,120,255,0.5)" stroke-width="1.5" stroke-dasharray="8,4" filter="url(#glowBlue)"/>
+                    <line x1="400" y1="260" x2="580" y2="100" stroke="rgba(61,120,255,0.5)" stroke-width="1.5" stroke-dasharray="8,4" filter="url(#glowBlue)"/>
+                    <line x1="400" y1="260" x2="400" y2="70" stroke="rgba(61,120,255,0.5)" stroke-width="1.5" stroke-dasharray="8,4" filter="url(#glowBlue)"/>
+                    <!-- 连线 - 红色搭档 -->
+                    <line x1="400" y1="260" x2="640" y2="230" stroke="rgba(255,59,48,0.5)" stroke-width="1.5" stroke-dasharray="6,3" filter="url(#glowRed)"/>
+                    <line x1="400" y1="260" x2="160" y2="230" stroke="rgba(255,59,48,0.5)" stroke-width="1.5" stroke-dasharray="6,3" filter="url(#glowRed)"/>
+                    <!-- 连线 - 金色导师 -->
+                    <line x1="400" y1="260" x2="300" y2="160" stroke="rgba(220,180,60,0.45)" stroke-width="1.2" stroke-dasharray="5,5" filter="url(#glowGold)"/>
+                    <!-- 连线 - 紫色未来军团 -->
+                    <line x1="400" y1="260" x2="560" y2="400" stroke="rgba(160,120,255,0.5)" stroke-width="1.5" stroke-dasharray="8,4" filter="url(#glowPurple)"/>
+                    <line x1="400" y1="260" x2="240" y2="400" stroke="rgba(160,120,255,0.5)" stroke-width="1.5" stroke-dasharray="8,4" filter="url(#glowPurple)"/>
+                    <!-- 中心节点 Jon Kent -->
+                    <circle cx="400" cy="260" r="32" fill="rgba(61,120,255,0.25)" stroke="rgba(168,216,255,0.8)" stroke-width="2.5" filter="url(#glowBlue)"/>
+                    <text x="400" y="256" class="graph-node-text" font-size="13" fill="#fff">JON</text>
+                    <text x="400" y="272" class="graph-subtext" font-size="9" fill="rgba(255,255,255,0.7)">KENT</text>
+                    <!-- Clark Kent -->
+                    <circle cx="220" cy="100" r="24" fill="rgba(61,120,255,0.18)" stroke="rgba(61,120,255,0.6)" stroke-width="2" filter="url(#glowBlue)"/>
+                    <text x="220" y="97" class="graph-node-text" font-size="10">Clark</text><text x="220" y="111" class="graph-subtext">Kent</text>
+                    <!-- Lois Lane -->
+                    <circle cx="580" cy="100" r="24" fill="rgba(61,120,255,0.18)" stroke="rgba(61,120,255,0.6)" stroke-width="2" filter="url(#glowBlue)"/>
+                    <text x="580" y="97" class="graph-node-text" font-size="10">Lois</text><text x="580" y="111" class="graph-subtext">Lane</text>
+                    <!-- Jor-El -->
+                    <circle cx="400" cy="70" r="20" fill="rgba(61,120,255,0.15)" stroke="rgba(61,120,255,0.5)" stroke-width="1.8" filter="url(#glowBlue)"/>
+                    <text x="400" y="68" class="graph-node-text" font-size="9">Jor-El</text><text x="400" y="80" class="graph-subtext">祖父</text>
+                    <!-- Damian Wayne -->
+                    <circle cx="640" cy="230" r="24" fill="rgba(255,59,48,0.18)" stroke="rgba(255,59,48,0.6)" stroke-width="2" filter="url(#glowRed)"/>
+                    <text x="640" y="227" class="graph-node-text" font-size="10">Damian</text><text x="640" y="241" class="graph-subtext">Wayne</text>
+                    <!-- Krypto -->
+                    <circle cx="160" cy="230" r="22" fill="rgba(255,59,48,0.16)" stroke="rgba(255,59,48,0.55)" stroke-width="1.8" filter="url(#glowRed)"/>
+                    <text x="160" y="228" class="graph-node-text" font-size="10">Krypto</text>
+                    <!-- Clark导师线 -->
+                    <circle cx="300" cy="160" r="18" fill="rgba(220,180,60,0.14)" stroke="rgba(220,180,60,0.5)" stroke-width="1.5" filter="url(#glowGold)"/>
+                    <text x="300" y="158" class="graph-node-text" font-size="9" fill="#FFD54F">导师</text>
+                    <!-- Jay Nakamura -->
+                    <circle cx="560" cy="400" r="22" fill="rgba(160,120,255,0.18)" stroke="rgba(160,120,255,0.6)" stroke-width="2" filter="url(#glowPurple)"/>
+                    <text x="560" y="397" class="graph-node-text" font-size="10">Jay</text><text x="560" y="411" class="graph-subtext">Nakamura</text>
+                    <!-- Legion -->
+                    <circle cx="240" cy="400" r="22" fill="rgba(160,120,255,0.18)" stroke="rgba(160,120,255,0.6)" stroke-width="2" filter="url(#glowPurple)"/>
+                    <text x="240" y="395" class="graph-node-text" font-size="9">Legion</text><text x="240" y="409" class="graph-subtext">31世纪</text>
+                    <!-- 图例 -->
+                    <rect x="620" y="470" width="10" height="10" rx="2" fill="rgba(61,120,255,0.6)"/><text x="635" y="479" class="graph-subtext" font-size="8" fill="rgba(255,255,255,0.6)">家人</text>
+                    <rect x="680" y="470" width="10" height="10" rx="2" fill="rgba(220,180,60,0.5)"/><text x="695" y="479" class="graph-subtext" font-size="8" fill="rgba(255,255,255,0.6)">导师</text>
+                    <rect x="740" y="470" width="10" height="10" rx="2" fill="rgba(255,59,48,0.6)"/><text x="755" y="479" class="graph-subtext" font-size="8" fill="rgba(255,255,255,0.6)">搭档</text>
+                    <rect x="620" y="490" width="10" height="10" rx="2" fill="rgba(160,120,255,0.6)"/><text x="635" y="499" class="graph-subtext" font-size="8" fill="rgba(255,255,255,0.6)">未来军团</text>
+                </svg>
+            </div>
+        </section>
+
+        <!-- ==================== 年代索引 ==================== -->
+        <section class="archive-section" id="archive">
+            <h2 class="section-title">出版年代索引</h2>
+            <p class="section-subtitle">Archive Database · 档案数据库风格</p>
+            <div style="overflow-x:auto;">
+                <table class="archive-table">
+                    <thead>
+                        <tr><th>年份</th><th>刊物</th><th>期数/备注</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="year-cell">2015</td><td>Convergence: Superman</td><td>#1-2 · Jon首次登场（婴儿出生）</td></tr>
+                        <tr><td class="year-cell">2015</td><td>Convergence</td><td>#8 · 可选补充收尾</td></tr>
+                        <tr><td class="year-cell">2015–2016</td><td>Superman: Lois and Clark</td><td>#1-8 · 全刊必读 · Jon童年起源</td></tr>
+                        <tr><td class="year-cell">2016</td><td>Superman: Rebirth</td><td>#1 · one-shot过渡</td></tr>
+                        <tr><td class="year-cell">2016–2018</td><td>Superman (2016) Vol.4</td><td>#1-45 · Tomasi & Gleason黄金时代</td></tr>
+                        <tr><td class="year-cell">2016–2018</td><td>Action Comics (Rebirth)</td><td>Jurgens篇章 · 家庭戏份补充</td></tr>
+                        <tr><td class="year-cell">2017–2018</td><td>Super Sons</td><td>#1-16 + Annual #1 · 必读</td></tr>
+                        <tr><td class="year-cell">2017</td><td>Supersons of Tomorrow 联动</td><td>Super Sons #11-12 / Superman #37-38 / Teen Titans #15</td></tr>
+                        <tr><td class="year-cell">2017</td><td>Action Comics · Oz Effect</td><td>#985-992 · Jor-El回归</td></tr>
+                        <tr><td class="year-cell">2017–2018</td><td>Action Comics · Booster Shot</td><td>#993-999 · 可选</td></tr>
+                        <tr><td class="year-cell">2018</td><td>The Man of Steel (2018)</td><td>#1-6 · 过渡必读</td></tr>
+                        <tr><td class="year-cell">2018–2019</td><td>Superman (2018) Vol.5</td><td>#1-16 · Bendis时代年龄跃迁</td></tr>
+                        <tr><td class="year-cell">2018–2019</td><td>Action Comics (2018)</td><td>#1001-1018 · 选择性阅读</td></tr>
+                        <tr><td class="year-cell">2019</td><td>Legion of Super-Heroes</td><td>#1-12 · 31世纪军团</td></tr>
+                        <tr><td class="year-cell">2019</td><td>Legion of Super-Heroes: Millennium</td><td>#1-2 · 可选补充</td></tr>
+                        <tr><td class="year-cell">2020</td><td>Adventures of the Super Sons</td><td>#1-12 · 童年补完</td></tr>
+                        <tr><td class="year-cell">2020</td><td>Challenge of the Super Sons</td><td>#1-7 · 童年Jon时期补完</td></tr>
+                        <tr><td class="year-cell">2021</td><td>Future State: Superman of Metropolis</td><td>#1-2 · 必读</td></tr>
+                        <tr><td class="year-cell">2021</td><td>Future State: House of El</td><td>#1 · 必读</td></tr>
+                        <tr><td class="year-cell">2021</td><td>Future State: Worlds of War</td><td>#1-2 · Jon相关篇章</td></tr>
+                        <tr><td class="year-cell">2021–2022</td><td>Superman: Son of Kal-El</td><td>#1-18 + Annual #1 · 成年Jon核心</td></tr>
+                        <tr><td class="year-cell">2022</td><td>Kal-El Returns 联动</td><td>Son of Kal-El #16-18 / Action Comics #1047-1049 / Special #1</td></tr>
+                        <tr><td class="year-cell">2022</td><td>Nightwing 联动</td><td>#89-90 · Tom Taylor联动</td></tr>
+                        <tr><td class="year-cell">2023</td><td>Adventures of Superman: Jon Kent</td><td>#1-6 · miniseries必读</td></tr>
+                        <tr><td class="year-cell">2023</td><td>Superboy: Man of Tomorrow</td><td>Miniseries · Superboy家族互动</td></tr>
+                        <tr><td class="year-cell">2024</td><td>Absolute Power</td><td>主刊 #1-4 · Jon戏份重要</td></tr>
+                        <tr><td class="year-cell">2024</td><td>Absolute Power: Super Son</td><td>#1 · Jon个人支线</td></tr>
+                        <tr><td class="year-cell">2024</td><td>Picture Book: Who Is Superboy?</td><td>年轻读者绘本</td></tr>
+                        <tr><td class="year-cell">2025</td><td>Secret Six (2025)</td><td>全刊 · Jon核心成员</td></tr>
+                        <tr><td class="year-cell">2025</td><td>Superman Unlimited</td><td>多期 · Tomorrow Man新身份</td></tr>
+                        <tr><td class="year-cell">2025</td><td>Jon Kent: This Internship Is My Kryptonite</td><td>DC GO! Webcomic · 实习喜剧</td></tr>
+                        <tr><td class="year-cell">2025</td><td>Shazam! #20</td><td>元叙事讨论Jon年龄与角色定位</td></tr>
+                        <tr><td class="year-cell">2025</td><td>Nightwing 额外联动</td><td>#109-110 · Beast World事件</td></tr>
+                        <tr><td class="year-cell">2026</td><td>Reign of the Superboys</td><td>跨刊事件 · Tomorrow Man转变</td></tr>
+                        <tr><td class="year-cell">2026</td><td>Superman Unlimited 持续</td><td>#11+ · Reign of the Superboys相关</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==================== 最佳精简路线 ==================== -->
+        <section class="route-section" id="best-route">
+            <h2 class="section-title">最佳精简路线</h2>
+            <p class="section-subtitle">覆盖Jon完整成长弧线 · 从出生到独立英雄</p>
+            <ol class="route-steps">
+                <li>Superman: Lois and Clark (#1-8)</li>
+                <div class="route-arrow">↓</div>
+                <li>Superman (2016) #1-45（Tomasi时代）</li>
+                <div class="route-arrow">↓</div>
+                <li>Super Sons (#1-16) + Adventures of the Super Sons</li>
+                <div class="route-arrow">↓</div>
+                <li>Superman (2018) 年龄跃迁部分（Bendis过渡）</li>
+                <div class="route-arrow">↓</div>
+                <li>Legion of Super-Heroes（可选过渡）</li>
+                <div class="route-arrow">↓</div>
+                <li>Superman: Son of Kal-El (#1-18) + Kal-El Returns</li>
+                <div class="route-arrow">↓</div>
+                <li>Adventures of Superman: Jon Kent (#1-6)</li>
+                <div class="route-arrow">↓</div>
+                <li>Absolute Power: Super Son + Secret Six (2025)</li>
+            </ol>
+            <div class="highlight-box" style="margin-top:1.5rem;">
+                <strong>阅读建议：</strong>优先收集Trade Paperback (TPB)或Omnibus以获得更好体验。部分故事有交叉，建议结合DC Infinite或阅读顺序工具确认最新连载。这条路线覆盖Jon从出生、童年Superboy、Super Sons友情、年龄跃迁、继承Superman称号到独立英雄的完整历程，同时突出情感核心（家庭与友情）。
+            </div>
+            <div style="margin-top:1rem;padding:1rem;background:rgba(255,255,255,0.04);border-radius:10px;font-size:0.82rem;color:var(--text-secondary);">
+                <strong style="color:var(--accent);">补充建议：</strong><br>
+                · 喜欢Super Sons友情 → 优先DC Pride短篇 + Nightwing联动<br>
+                · 想跟最新动态 → Superman Unlimited + Reign of the Superboys事件<br>
+                · 轻松向 → Webcomic实习故事（Jon Kent: This Internship Is My Kryptonite）
+            </div>
+        </section>
+
+        <!-- ==================== FOOTER ==================== -->
+        <div class="footer-note">
+            <p>《The Son of Superman Archive》 · 超人之子档案馆</p>
+            <p style="margin-top:0.3rem;">Kryptonian Legacy · Future Superman · Young Hero · Modern Epic · <span>Glass Archive</span></p>
+            <p style="margin-top:1rem;font-size:0.7rem;opacity:0.5;">数据截至2026年中期 · 建议结合DC Database或阅读顺序工具实时确认最新连载</p>
+        </div>
+
+    </div>
+
+    <script>
+        // ============ STARFIELD CANVAS ============
+        (function() {
+            const canvas = document.getElementById('starfield');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+            let nebulaParticles = [];
+            let w, h;
+            const starCount = 350;
+            const nebulaCount = 25;
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = document.documentElement.scrollHeight;
+            }
+
+            function createStars() {
+                stars = [];
+                for (let i = 0; i < starCount; i++) {
+                    stars.push({
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        r: Math.random() * 1.6 + 0.3,
+                        twinkleSpeed: Math.random() * 0.015 + 0.005,
+                        twinkleOffset: Math.random() * Math.PI * 2,
+                        baseAlpha: Math.random() * 0.7 + 0.3,
+                        driftX: (Math.random() - 0.5) * 0.15,
+                        driftY: (Math.random() - 0.5) * 0.08,
+                    });
+                }
+                nebulaParticles = [];
+                for (let i = 0; i < nebulaCount; i++) {
+                    nebulaParticles.push({
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        r: Math.random() * 120 + 40,
+                        alpha: Math.random() * 0.06 + 0.02,
+                        hue: Math.random() < 0.6 ? 215 + Math.random() * 25 : 0 + Math.random() * 10,
+                        driftX: (Math.random() - 0.5) * 0.3,
+                        driftY: (Math.random() - 0.5) * 0.2,
+                    });
+                }
+            }
+
+            function draw(timestamp) {
+                ctx.clearRect(0, 0, w, h);
+                const t = timestamp * 0.001;
+
+                // Nebula blobs
+                nebulaParticles.forEach(np => {
+                    const nx = np.x + Math.sin(t * 0.08 + np.driftX * 10) * 40;
+                    const ny = np.y + Math.cos(t * 0.06 + np.driftY * 10) * 30;
+                    const grad = ctx.createRadialGradient(nx, ny, 0, nx, ny, np.r);
+                    const hueStr = np.hue < 20 ?
+                        `rgba(61,120,255,${np.alpha})` :
+                        `rgba(255,59,48,${np.alpha * 0.7})`;
+                    grad.addColorStop(0, hueStr);
+                    grad.addColorStop(0.5, `rgba(168,216,255,${np.alpha * 0.4})`);
+                    grad.addColorStop(1, 'rgba(6,10,20,0)');
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(nx, ny, np.r, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                // Stars
+                stars.forEach(s => {
+                    const alpha = s.baseAlpha + Math.sin(t * s.twinkleSpeed * 20 + s.twinkleOffset) * 0.25;
+                    const clampedAlpha = Math.max(0.15, Math.min(1, alpha));
+                    ctx.fillStyle = `rgba(255,255,255,${clampedAlpha})`;
+                    ctx.beginPath();
+                    const sx = s.x + Math.sin(t * 0.04 + s.driftX * 5) * 12;
+                    const sy = s.y + Math.cos(t * 0.03 + s.driftY * 5) * 8;
+                    ctx.arc(sx % w, sy % h, s.r, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                // Slowly drift stars
+                stars.forEach(s => {
+                    s.x += s.driftX;
+                    s.y += s.driftY;
+                    if (s.x < -10) s.x = w + 10;
+                    if (s.x > w + 10) s.x = -10;
+                    if (s.y < -10) s.y = h + 10;
+                    if (s.y > h + 10) s.y = -10;
+                });
+                nebulaParticles.forEach(np => {
+                    np.x += np.driftX;
+                    np.y += np.driftY;
+                    if (np.x < -150) np.x = w + 150;
+                    if (np.x > w + 150) np.x = -150;
+                    if (np.y < -150) np.y = h + 150;
+                    if (np.y > h + 150) np.y = -150;
+                });
+
+                requestAnimationFrame(draw);
+            }
+
+            function handleResize() {
+                resize();
+                createStars();
+            }
+
+            resize();
+            createStars();
+            requestAnimationFrame(draw);
+
+            window.addEventListener('resize', () => {
+                handleResize();
+            });
+
+            // Update canvas height on scroll (for dynamic content)
+            let lastH = h;
+            setInterval(() => {
+                const newH = document.documentElement.scrollHeight;
+                if (Math.abs(newH - lastH) > 100) {
+                    h = canvas.height = newH;
+                    lastH = newH;
+                    createStars();
+                }
+            }, 2000);
+        })();
+
+        // ============ DASHBOARD EXPAND ============
+        function toggleDashDetail(card) {
+            const detail = card.querySelector('.dash-detail');
+            const allDetails = document.querySelectorAll('.dash-detail');
+            allDetails.forEach(d => {
+                if (d !== detail && d.classList.contains('open')) {
+                    d.classList.remove('open');
+                }
+            });
+            detail.classList.toggle('open');
+            // Update height
+            setTimeout(() => {
+                document.getElementById('starfield').height = document.documentElement.scrollHeight;
+            }, 350);
+        }
+
+        // ============ SMOOTH SCROLL FOR ALL ANCHORS ============
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ============ PARALLAX ON HERO SCROLL ============
+        const heroSection = document.querySelector('.hero-section');
+        const crystalShape = document.querySelector('.crystal-shape');
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.pageYOffset;
+                    if (scrollY < window.innerHeight) {
+                        const parallax = scrollY * 0.3;
+                        if (crystalShape) {
+                            crystalShape.style.transform = `translateY(${-parallax * 0.5}px)`;
+                        }
+                        const heroInner = document.querySelector('.hero-inner');
+                        if (heroInner) {
+                            heroInner.style.transform = `translateY(${parallax * 0.2}px)`;
+                            heroInner.style.opacity = 1 - scrollY / (window.innerHeight * 0.8);
+                        }
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        console.log('%c《The Son of Superman Archive》%c 已就绪',
+            'color:#A8D8FF;font-size:1.2rem;font-weight:700;',
+            'color:rgba(255,255,255,0.7);');
+        console.log('%cKryptonian Legacy · Future Superman · Glass Archive',
+            'color:rgba(255,255,255,0.5);font-style:italic;');
+        console.log('%c设计定位：未来超人的成长档案库 — 介于孤独堡垒数据库与未来科技档案馆之间',
+            'color:rgba(168,216,255,0.7);font-size:0.8rem;');
+    </script>
+</body>
+</html>
