@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>康纳·肯特阅读指南 | Smallville Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0F172A;
+            --red: #C62828;
+            --blue: #1E88E5;
+            --gold: #D4AF37;
+            --text: #F8FAFC;
+            --text-secondary: #cbd5e1;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.14);
+            --glass-bg-hover: rgba(255, 255, 255, 0.10);
+            --glass-border-hover: rgba(255, 255, 255, 0.22);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --font-serif: "Source Han Serif SC", "思源宋体", "Noto Serif SC", serif;
+            --shadow-gold: 0 0 40px rgba(212, 175, 55, 0.15);
+            --shadow-red: 0 0 30px rgba(198, 40, 40, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-serif);
+            background-color: var(--bg-deep);
+            color: var(--text);
+            line-height: 1.9;
+            font-weight: 400;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            background-image:
+                radial-gradient(ellipse 80% 60% at 50% 8%, rgba(30, 136, 229, 0.10) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 30% 35%, rgba(198, 40, 40, 0.06) 0%, transparent 55%),
+                radial-gradient(ellipse 50% 40% at 70% 55%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.7), transparent),
+                radial-gradient(1px 1px at 22% 32%, rgba(255, 255, 255, 0.55), transparent),
+                radial-gradient(1.5px 1.5px at 35% 8%, rgba(200, 215, 255, 0.65), transparent),
+                radial-gradient(1px 1px at 48% 25%, rgba(255, 255, 255, 0.5), transparent),
+                radial-gradient(1px 1px at 55% 12%, rgba(255, 255, 255, 0.6), transparent),
+                radial-gradient(1.5px 1.5px at 62% 30%, rgba(200, 220, 255, 0.55), transparent),
+                radial-gradient(1px 1px at 70% 20%, rgba(255, 255, 255, 0.45), transparent),
+                radial-gradient(1px 1px at 78% 35%, rgba(255, 255, 255, 0.5), transparent),
+                radial-gradient(1px 1px at 85% 15%, rgba(255, 255, 255, 0.55), transparent),
+                radial-gradient(2px 2px at 40% 6%, rgba(212, 175, 55, 0.5), transparent),
+                radial-gradient(1.5px 1.5px at 18% 40%, rgba(200, 220, 255, 0.5), transparent),
+                radial-gradient(1px 1px at 28% 48%, rgba(255, 255, 255, 0.4), transparent),
+                radial-gradient(1px 1px at 52% 38%, rgba(255, 255, 255, 0.5), transparent),
+                radial-gradient(1.5px 1.5px at 68% 42%, rgba(200, 215, 255, 0.5), transparent),
+                radial-gradient(1px 1px at 80% 28%, rgba(255, 255, 255, 0.45), transparent),
+                radial-gradient(2px 2px at 15% 55%, rgba(212, 175, 55, 0.4), transparent),
+                radial-gradient(1px 1px at 33% 58%, rgba(255, 255, 255, 0.4), transparent),
+                radial-gradient(1px 1px at 58% 52%, rgba(255, 255, 255, 0.4), transparent),
+                radial-gradient(1.5px 1.5px at 75% 48%, rgba(200, 220, 255, 0.45), transparent),
+                radial-gradient(1px 1px at 88% 55%, rgba(255, 255, 255, 0.4), transparent),
+                radial-gradient(1px 1px at 20% 65%, rgba(255, 255, 255, 0.35), transparent),
+                radial-gradient(1px 1px at 45% 68%, rgba(255, 255, 255, 0.35), transparent),
+                radial-gradient(1px 1px at 65% 62%, rgba(255, 255, 255, 0.35), transparent),
+                radial-gradient(2px 2px at 50% 22%, rgba(180, 200, 240, 0.5), transparent),
+                radial-gradient(1px 1px at 90% 10%, rgba(255, 255, 255, 0.5), transparent),
+                radial-gradient(1px 1px at 5% 72%, rgba(255, 255, 255, 0.3), transparent),
+                radial-gradient(1px 1px at 92% 68%, rgba(255, 255, 255, 0.3), transparent);
+            background-attachment: fixed;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                /* Smallville地平线剪影 */
+                linear-gradient(to bottom, transparent 0%, rgba(15, 23, 42, 0.4) 30%, rgba(15, 23, 42, 0.8) 60%, #0F172A 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 40%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 40%);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 180px;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                /* 谷仓剪影 */
+                polygon(8% 100%, 8% 55%, 10% 55%, 10% 40%, 12% 40%, 12% 35%, 13.5% 30%, 15% 35%, 15% 40%, 17% 40%, 17% 55%, 19% 55%, 19% 100%) at 8% 100%,
+                /* 树木剪影 */
+                polygon(25% 100%, 23% 65%, 24.5% 50%, 25.5% 42%, 27% 50%, 28% 65%, 27% 100%) at 25% 100%,
+                polygon(28% 100%, 26.5% 70%, 27.5% 55%, 28.5% 48%, 29.5% 55%, 30.5% 70%, 30% 100%) at 28% 100%,
+                /* 风车 */
+                polygon(60% 100%, 58% 60%, 59.5% 35%, 61% 35%, 62.5% 60%, 61% 100%) at 60% 100%,
+                /* 更多树 */
+                polygon(75% 100%, 73.5% 60%, 75% 45%, 76.5% 60%, 77% 100%) at 75% 100%,
+                polygon(78% 100%, 77% 65%, 78.5% 50%, 80% 65%, 80.5% 100%) at 78% 100%,
+                /* 栅栏 */
+                polygon(40% 100%, 40.3% 85%, 40.5% 85%, 40.8% 100%) at 40% 100%,
+                polygon(43% 100%, 43.3% 85%, 43.5% 85%, 43.8% 100%) at 43% 100%,
+                polygon(46% 100%, 46.3% 85%, 46.5% 85%, 46.8% 100%) at 46% 100%;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            opacity: 0.25;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 10%, rgba(0, 0, 0, 0.6) 40%, black 100%);
+            mask-image: linear-gradient(to bottom, transparent 10%, rgba(0, 0, 0, 0.6) 40%, black 100%);
+        }
+
+        /* ============ SCROLL FADE-IN ============ */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.75s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.75s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .fade-in-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============ HERO ============ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8%;
+            position: relative;
+            z-index: 1;
+            gap: 4rem;
+        }
+        .hero-left {
+            flex: 1;
+            max-width: 620px;
+            z-index: 2;
+        }
+        .hero-left .hero-label {
+            font-size: 0.9rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+            opacity: 0.85;
+        }
+        .hero-left h1 {
+            font-size: clamp(2.8rem, 5.5vw, 4.6rem);
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--text);
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.01em;
+        }
+        .hero-left h1 .subtitle {
+            display: block;
+            font-size: clamp(1.4rem, 2.8vw, 2rem);
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+            letter-spacing: 0.04em;
+        }
+        .hero-left .hero-years {
+            font-size: 1.1rem;
+            color: var(--gold);
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            margin-top: 1.2rem;
+            opacity: 0.8;
+        }
+        .hero-right {
+            flex: 0 0 auto;
+            z-index: 2;
+            position: relative;
+        }
+        .hero-shield {
+            width: clamp(200px, 28vw, 380px);
+            height: auto;
+            opacity: 0.22;
+            filter: blur(1px);
+            animation: shieldPulse 8s ease-in-out infinite;
+        }
+        @keyframes shieldPulse {
+            0%,
+            100% {
+                opacity: 0.20;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.28;
+                transform: scale(1.03);
+            }
+        }
+        .hero-shield svg {
+            width: 100%;
+            height: 100%;
+        }
+        .hero-shield .shield-fill {
+            fill: rgba(255, 255, 255, 0.35);
+        }
+        .hero-shield .shield-stroke {
+            stroke: rgba(212, 175, 55, 0.5);
+            stroke-width: 2;
+            fill: none;
+        }
+        .hero-shield .shield-s {
+            fill: rgba(255, 255, 255, 0.25);
+        }
+
+        /* ============ LAYOUT ============ */
+        .main-container {
+            display: flex;
+            position: relative;
+            z-index: 1;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .timeline-nav {
+            flex: 0 0 220px;
+            position: sticky;
+            top: 40px;
+            align-self: flex-start;
+            height: fit-content;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 1.5rem 0;
+            z-index: 10;
+            margin-right: 2rem;
+        }
+        .timeline-nav-inner {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid rgba(212, 175, 55, 0.3);
+        }
+        .timeline-nav a {
+            display: block;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: color 0.3s, transform 0.3s;
+            font-weight: 400;
+            letter-spacing: 0.03em;
+            line-height: 1.4;
+        }
+        .timeline-nav a::before {
+            content: '';
+            position: absolute;
+            left: -2.45rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+        .timeline-nav a:hover,
+        .timeline-nav a.active {
+            color: var(--gold);
+            transform: translateX(3px);
+        }
+        .timeline-nav a:hover::before,
+        .timeline-nav a.active::before {
+            background: var(--gold);
+            box-shadow: 0 0 14px rgba(212, 175, 55, 0.6);
+        }
+        .timeline-nav a.nav-major {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+        }
+        .content-area {
+            flex: 1;
+            min-width: 0;
+            padding: 2rem 0;
+        }
+
+        /* ============ SECTION ============ */
+        .section-block {
+            margin-bottom: 3.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .section-block .section-year {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.08);
+            letter-spacing: -0.02em;
+            line-height: 1;
+            margin-bottom: -1.2rem;
+            pointer-events: none;
+            user-select: none;
+        }
+        .section-block .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.02em;
+            position: relative;
+            z-index: 2;
+        }
+        .section-block .section-subtitle {
+            font-size: 0.95rem;
+            color: var(--gold);
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            margin-bottom: 1.8rem;
+            opacity: 0.8;
+        }
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem 2.2rem;
+            transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.35s, background 0.35s, box-shadow 0.35s;
+            position: relative;
+        }
+        .glass-card:hover {
+            transform: translateY(-4px);
+            background: var(--glass-bg-hover);
+            border-color: var(--glass-border-hover);
+            box-shadow: var(--shadow-gold);
+        }
+        .glass-card.highlight-card {
+            border-color: rgba(212, 175, 55, 0.35);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: var(--shadow-red);
+        }
+        .glass-card.wide-card {
+            grid-column: 1 / -1;
+        }
+
+        /* ============ TIER TAGS ============ */
+        .tier {
+            display: inline-block;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 0.25em 0.7em;
+            border-radius: 6px;
+            letter-spacing: 0.06em;
+            margin-right: 0.4rem;
+            vertical-align: middle;
+            font-family: var(--font-serif);
+        }
+        .tier-splus {
+            background: rgba(212, 175, 55, 0.2);
+            color: #e8c84a;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+        }
+        .tier-s {
+            background: rgba(198, 40, 40, 0.2);
+            color: #ef5350;
+            border: 1px solid rgba(198, 40, 40, 0.4);
+        }
+        .tier-a {
+            background: rgba(30, 136, 229, 0.2);
+            color: #64b5f6;
+            border: 1px solid rgba(30, 136, 229, 0.4);
+        }
+        .tier-b {
+            background: rgba(255, 255, 255, 0.08);
+            color: #b0b8c4;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* ============ READING LIST ============ */
+        .reading-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+        @media (max-width: 900px) {
+            .reading-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .reading-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .reading-item:last-child {
+            border-bottom: none;
+        }
+        .reading-item .item-title {
+            font-weight: 500;
+            color: var(--text);
+        }
+        .reading-item .item-note {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: block;
+            margin-top: 0.15rem;
+            font-style: italic;
+        }
+
+        /* ============ EVENT MEGA CARD ============ */
+        .event-mega {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 20px;
+            padding: 2.5rem 3rem;
+            margin: 2.5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.4s;
+        }
+        .event-mega:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px rgba(198, 40, 40, 0.25), 0 0 80px rgba(212, 175, 55, 0.1);
+        }
+        .event-mega::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(198, 40, 40, 0.25) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .event-mega .event-label {
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .event-mega .event-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.4rem;
+        }
+        .event-mega .event-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .event-mega .event-tag {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.4em 1.2em;
+            background: rgba(198, 40, 40, 0.3);
+            color: #ef9a9a;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* ============ RELATIONSHIP MAP ============ */
+        .rel-map-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 500px;
+            margin: 3rem auto;
+        }
+        .rel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            text-align: center;
+            background: var(--bg-deep);
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--gold);
+            letter-spacing: 0.04em;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            background: rgba(15, 23, 42, 0.75);
+        }
+        .rel-node {
+            position: absolute;
+            z-index: 2;
+            text-align: center;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.35s;
+            letter-spacing: 0.03em;
+        }
+        .rel-node:hover {
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.35);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        .rel-node.n1 {
+            top: 12%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .rel-node.n2 {
+            top: 25%;
+            left: 82%;
+            transform: translate(-50%, -50%);
+        }
+        .rel-node.n3 {
+            top: 58%;
+            left: 88%;
+            transform: translate(-50%, -50%);
+        }
+        .rel-node.n4 {
+            top: 82%;
+            left: 60%;
+            transform: translate(-50%, -50%);
+        }
+        .rel-node.n5 {
+            top: 78%;
+            left: 25%;
+            transform: translate(-50%, -50%);
+        }
+        .rel-node.n6 {
+            top: 40%;
+            left: 10%;
+            transform: translate(-50%, -50%);
+        }
+        .rel-map-container svg.rel-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .rel-lines line {
+            stroke: rgba(212, 175, 55, 0.4);
+            stroke-width: 1.5;
+            stroke-dasharray: 6 3;
+            transition: stroke 0.35s;
+        }
+        .rel-map-container:hover .rel-lines line {
+            stroke: rgba(212, 175, 55, 0.7);
+            stroke-dasharray: 8 2;
+        }
+
+        /* ============ MOBILE NAV ============ */
+        .mobile-nav-toggle {
+            display: none;
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(198, 40, 40, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+            font-size: 1.4rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(198, 40, 40, 0.4);
+        }
+        @media (max-width: 860px) {
+            .main-container {
+                flex-direction: column;
+                padding: 0 1rem;
+            }
+            .timeline-nav {
+                display: none;
+                flex: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                z-index: 99;
+                background: rgba(15, 23, 42, 0.95);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                padding: 3rem 2rem;
+                margin: 0;
+                overflow-y: auto;
+                border-left: none;
+            }
+            .timeline-nav.open {
+                display: block;
+            }
+            .timeline-nav-inner {
+                border-left: 2px solid rgba(212, 175, 55, 0.4);
+                padding-left: 1.5rem;
+            }
+            .mobile-nav-toggle {
+                display: flex;
+            }
+            .hero {
+                flex-direction: column;
+                padding: 4rem 1.5rem 2rem;
+                text-align: center;
+                gap: 2rem;
+                min-height: auto;
+            }
+            .hero-left {
+                max-width: 100%;
+            }
+            .hero-shield {
+                width: 160px;
+            }
+            .section-block .section-year {
+                font-size: 2.5rem;
+            }
+            .section-block .section-title {
+                font-size: 1.4rem;
+            }
+            .event-mega {
+                padding: 1.8rem 1.5rem;
+            }
+            .event-mega .event-title {
+                font-size: 1.5rem;
+            }
+            .rel-map-container {
+                height: 380px;
+                max-width: 100%;
+            }
+            .rel-center {
+                width: 80px;
+                height: 80px;
+                font-size: 0.75rem;
+            }
+            .rel-node {
+                width: 55px;
+                height: 55px;
+                font-size: 0.7rem;
+            }
+            .reading-grid {
+                grid-template-columns: 1fr;
+            }
+            .glass-card {
+                padding: 1.4rem 1.2rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .rel-map-container {
+                height: 300px;
+            }
+            .rel-center {
+                width: 60px;
+                height: 60px;
+                font-size: 0.65rem;
+            }
+            .rel-node {
+                width: 44px;
+                height: 44px;
+                font-size: 0.6rem;
+            }
+            .hero-left h1 {
+                font-size: 2rem;
+            }
+            .hero-left h1 .subtitle {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* ============ SCROLLBAR ============ */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* ============ MISC ============ */
+        .divider-gold {
+            width: 60px;
+            height: 2px;
+            background: var(--gold);
+            opacity: 0.5;
+            margin: 1.5rem 0;
+            border-radius: 1px;
+        }
+        .text-gold {
+            color: var(--gold);
+        }
+        .text-red {
+            color: #ef5350;
+        }
+        .text-blue {
+            color: #64b5f6;
+        }
+        .fw-700 {
+            font-weight: 700;
+        }
+        .mt-2 {
+            margin-top: 2rem;
+        }
+        .mb-1 {
+            margin-bottom: 1rem;
+        }
+        .mb-2 {
+            margin-bottom: 2rem;
+        }
+        .tag-inline {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 0.2em 0.6em;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-secondary);
+            margin: 0 0.2rem;
+            letter-spacing: 0.03em;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== HERO ==================== -->
+    <section class="hero fade-in-section" id="top">
+        <div class="hero-left">
+            <p class="hero-label">氪星遗产档案馆 · Smallville Archive</p>
+            <h1>CONNER KENT<span class="subtitle">超级小子阅读指南</span></h1>
+            <p class="hero-years">1993 — 2026</p>
+            <div class="divider-gold"></div>
+            <p style="color:var(--text-secondary);font-size:0.95rem;max-width:480px;line-height:1.8;">
+                从叛逆克隆少年到真正的超级小子，一段关于<span class="text-gold">身份认同</span>、<span class="text-blue">友情</span>与<span class="text-red">家庭</span>的成长旅程。
+            </p>
+        </div>
+        <div class="hero-right">
+            <div class="hero-shield">
+                <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="100,8 188,40 188,120 100,232 12,120 12,40" class="shield-stroke"/>
+                    <polygon points="100,8 188,40 188,120 100,232 12,120 12,40" class="shield-fill"/>
+                    <text x="100" y="155" text-anchor="middle" font-size="130" font-weight="900" font-family="serif" fill="rgba(255,255,255,0.22)" letter-spacing="-5">S</text>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== MAIN LAYOUT ==================== -->
+    <div class="main-container">
+        <!-- Timeline Navigation -->
+        <nav class="timeline-nav" id="timelineNav">
+            <div class="timeline-nav-inner">
+                <a href="#route" class="nav-major">入坑路线</a>
+                <a href="#birth">诞生 1993</a>
+                <a href="#superboy-90s">Superboy 1994–2002</a>
+                <a href="#young-justice">Young Justice 1998–2003</a>
+                <a href="#graduation-day">毕业日 2003</a>
+                <a href="#teen-titans">Teen Titans 2003–2006</a>
+                <a href="#infinite-crisis" class="nav-major">Infinite Crisis</a>
+                <a href="#resurrection">复活 2008–2009</a>
+                <a href="#smallville">Smallville 2009–2011</a>
+                <a href="#lemire">Lemire时期 2010–2011</a>
+                <a href="#new52">New 52 2011–2016</a>
+                <a href="#rebirth">重生 2019+</a>
+                <a href="#dawn-of-dc">Man of Tomorrow 2023</a>
+                <a href="#extras">额外支线 & 补完</a>
+                <a href="#non-comics">非漫画推荐</a>
+                <a href="#relation-map">关系网络</a>
+                <a href="#tips">阅读Tips</a>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <main class="content-area">
+
+            <!-- ============ 一、入坑路线 ============ -->
+            <section class="section-block fade-in-section" id="route">
+                <div class="section-year">路线</div>
+                <h2 class="section-title">入坑路线推荐</h2>
+                <p class="section-subtitle">从"诞生"到"现代"的完整弧线</p>
+                <div class="glass-card">
+                    <p style="font-weight:700;margin-bottom:1rem;color:var(--gold);">推荐阅读顺序（新手友好）</p>
+                    <ol style="padding-left:1.5rem;line-height:2.2;color:var(--text-secondary);">
+                        <li>《The Death of Superman》+《Reign of the Supermen》（含 <em>Adventures of Superman #500</em> 正式登场）</li>
+                        <li>《Superboy Vol.4》精选（前10–20期 + 关键弧）</li>
+                        <li>《Young Justice》（Peter David）</li>
+                        <li>《Titans / Young Justice: Graduation Day》</li>
+                        <li>《Teen Titans Vol.3》（Geoff Johns，前期重点）</li>
+                        <li>《Infinite Crisis》</li>
+                        <li>《Final Crisis: Legion of 3 Worlds》</li>
+                        <li>《Adventure Comics》（Boy of Steel 时期）</li>
+                        <li>《Superboy Vol.5》（Jeff Lemire）</li>
+                        <li>《Young Justice (2019)》</li>
+                        <li>《Superboy: The Man of Tomorrow》</li>
+                    </ol>
+                </div>
+                <div class="reading-grid mt-2">
+                    <div class="glass-card">
+                        <p style="font-weight:700;color:var(--blue);margin-bottom:0.5rem;">入门版（10–15本以内）</p>
+                        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;">
+                            Reign of the Supermen → Young Justice → Graduation Day → Teen Titans Vol.3（核心）→ Infinite Crisis → Legion of 3 Worlds → Adventure Comics → Superboy Vol.5 → Young Justice (2019) → Man of Tomorrow
+                        </p>
+                    </div>
+                    <div class="glass-card">
+                        <p style="font-weight:700;color:var(--gold);margin-bottom:0.5rem;">究极版（全收集）</p>
+                        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;">
+                            按时间/阶段补充所有支线、Annuals、Specials 和 New 52，参考 DCU Guide 完整年表。
+                        </p>
+                    </div>
+                </div>
+                <div class="glass-card mt-2">
+                    <p style="font-weight:700;margin-bottom:0.5rem;">个人魅力排序（主观参考）</p>
+                    <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.8;">
+                        <span class="tier tier-s">S</span> Young Justice (Peter David) ＞
+                        <span class="tier tier-s">S</span> Teen Titans (Geoff Johns) ＞
+                        <span class="tier tier-a">A</span> Adventure Comics (Smallville温暖期) ＞
+                        <span class="tier tier-a">A</span> Superboy Vol.4 (性格根基) ＞
+                        <span class="tier tier-s">S</span> Superboy: The Man of Tomorrow ＞
+                        <span class="tier tier-a">A</span> Superboy Vol.5
+                    </p>
+                </div>
+            </section>
+
+            <!-- ============ 二、角色诞生篇 ============ -->
+            <section class="section-block fade-in-section" id="birth">
+                <div class="section-year">1993</div>
+                <h2 class="section-title">角色诞生篇</h2>
+                <p class="section-subtitle">超人之死与超级小子的诞生</p>
+                <div class="reading-grid">
+                    <div class="glass-card">
+                        <p style="font-weight:700;margin-bottom:0.8rem;">S级必读</p>
+                        <div class="reading-item"><span class="tier tier-s">S</span><span><span class="item-title">《The Death of Superman》</span><span class="item-note">超人死亡事件，康纳诞生的直接背景</span></span></div>
+                        <div class="reading-item"><span class="tier tier-a">A</span><span><span class="item-title">《Funeral for a Friend》</span><span class="item-note">葬礼铺垫（可选但推荐）</span></span></div>
+                        <div class="reading-item"><span class="tier tier-s">S</span><span><span class="item-title">《Reign of the Supermen》</span><span class="item-note">多位"超人"登场，康纳正式亮相</span></span></div>
+                    </div>
+                    <div class="glass-card">
+                        <p style="font-weight:700;margin-bottom:0.8rem;">首次正式登场</p>
+                        <div class="reading-item"><span class="tier tier-splus">S+</span><span><span class="item-title">Adventures of Superman #500</span><span class="item-note">经典皮夹克+墨镜造型开始，标志性出场</span></span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ 三、90年代超级小子 ============ -->
+            <section class="section-block fade-in-section" id="superboy-90s">
+                <div class="section-year">1994–2002</div>
+                <h2 class="section-title">90年代超级小子时期</h2>
+                <p class="section-subtitle">最容易被忽视但极其重要的性格塑造期——幽默感、自我认同、与超人关系根基</p>
+                <div class="reading-grid">
+                    <div class="glass-card">
+                        <p style="font-weight:700;margin-bottom:0.8rem;">Superboy Vol.4（主刊）</p>
+                        <div class="reading-item"><span class="tier tier-a">A</span><span><span class="item-title">Superboy Vol.4 #1–100</span><span class="item-note">推荐尽量多读，尤其前半部 Karl Kesel 时期。前10期有实体收集（Superboy Book One: Trouble in Paradise），其余靠数字版</span></span></div>
+                    </div>
+                    <div class="glass-card">
+                        <p style="font-weight:700;margin-bottom:0.8rem;">A级支线</p>
+                        <div class="reading-item"><span class="tier tier-a">A</span><span><span class="item-title">Superboy Annuals & Superboy Plus</span><span class="item-note">全读或精选</span></span></div>
+                        <div class="reading-item"><span class="tier tier-b">B</span><span><span class="item-title">Superboy and the Ravers #1–19</span><span class="item-note">宇宙冒险团队经历，非核心但有趣</span></span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ 四、少年正义 ============ -->
+            <section class="section-block fade-in-section" id="young-justice">
+                <div class="section-year">1998–2003</div>
+                <h2 class="section-title">少年正义时期</h2>
+                <p class="section-subtitle">很多人心中的巅峰——欢乐、友情、成长的黄金时代</p>
+                <div class="glass-card highlight-card">
+                    <p style="font-weight:700;margin-bottom:0.8rem;color:var(--gold);">S级神作</p>
+                    <div class="reading-item"><span class="tier tier-splus">S+</span><span><span class="item-title">Young Justice（Peter David 主笔）#1–55</span><span class="item-note">+ Secret Files、Specials、Annuals（建议全读）。与 Tim Drake (Robin)、Bart Allen (Impulse/Kid Flash)、Cassie Sandsmark (Wonder Girl) 组成核心四人组</span></span></div>
+                </div>
+            </section>
+
+            <!-- ============ 五、毕业日 ============ -->
+            <section class="section-block fade-in-section" id="graduation-day">
+                <div class="section-year">2003</div>
+                <h2 class="section-title">毕业日</h2>
+                <p class="section-subtitle">Young Justice 终结 + 新 Teen Titans 诞生的过渡</p>
+                <div class="glass-card">
+                    <div class="reading-item"><span class="tier tier-s">S</span><span><span class="item-title">Titans / Young Justice: Graduation Day #1–3</span><span class="item-note">必读。连接两个时代的桥梁</span></span></div>
+                </div>
+            </section>
+
+            <!-- ============ 六、少年泰坦 ============ -->
+            <section class="section-block fade-in-section" id="teen-titans">
+                <div class="section-year">2003–2006</div>
+                <h2 class="section-title">Geoff Johns 少年泰坦时期</h2>
+                <p class="section-subtitle">另一大巅峰——身份重构、Luthor DNA 揭秘、感情线、与克隆自我的和解</p>
+                <div class="reading-grid">
+                    <div class="glass-card">
+                        <p style="font-weight:700;margin-bottom:0.8rem;">核心阅读</p>
+                        <div class="reading-item"><span class="tier tier-s">S</span><span><span class="item-title">Teen Titans Vol.3 #1–33</span><span class="item-note">尤其是 #1–19、#20–25、#26–33 + Infinite Crisis 相关</span></span></div>
+                    </div>
+                    <div class="glass-card">
+                        <p style="font-weight:700;margin-bottom:0.8rem;">补充</p>
+                        <div class="reading-item"><span class="tier tier-a">A</span><span><span class="item-title">Teen Titans / Outsiders Secret Files</span><span class="item-note">推荐阅读</span></span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ 七、无限危机 ============ -->
+            <section class="section-block fade-in-section" id="infinite-crisis">
+                <div class="section-year">2005–2006</div>
+                <h2 class="section-title">无限危机时期</h2>
+                <p class="section-subtitle">康纳人生重大转折</p>
+                <div class="event-mega">
+                    <p class="event-label">人生最大转折点</p>
+                    <p class="event-title">Infinite Crisis</p>
+                    <p class="event-subtitle">完整事件 · 康纳之死 · 必须阅读</p>
+                    <span class="event-tag">S+ 必读</span>
+                </div>
+                <div class="glass-card mt-2">
+                    <div class="reading-item"><span class="tier tier-s">S</span><span><span class="item-title">Teen Titans #32–33</span><span class="item-note">无限危机后续，团队面对失去康纳</span></span></div>
+                </div>
+            </section>
+
+            <!-- ============ 八、军团三世界与复活 ============ -->
+            <section class="section-block fade-in-section" id="resurrection">
+                <div class="section-year">2008–2009</div>
+                <h2 class="section-title">军团三世界与复活</h2>
+                <p class="section-subtitle">康纳正式回归，对抗 Superboy-Prime</p>
+                <div class="glass-card highlight-card">
+                    <div class="reading-item"><span class="tier tier-splus">S+</span><span><span class="item-title">Final Crisis: Legion of 3 Worlds #1–5</span><span class="item-note">康纳正式回归，必读。与 Superboy-Prime 的终极对决</span></span></div>
+                </div>
+            </section>
+
+            <!-- ============ 九、Smallville时期 ============ -->
+            <section class="section-block fade-in-section" id="smallville">
+                <div class="section-year">2009–2011</div>
+                <h2 class="section-title">小镇男孩 / Smallville 时期</h2>
+                <p class="section-subtitle">个人认为最温暖的个人成长期——与 Martha Kent 相处、寻找自我</p>
+                <div class="glass-card">
+                    <p style="font-weight:700;margin-bottom:0.8rem;">Adventure Comics（Geoff Johns 塑造）</p>
+                    <div class="reading-item"><span class="tier tier-s">S</span><span><span class="item-title">Adventure Comics #0、#1–6、#8–10、#12、#515–520</span><span class="item-note">收集：《Superboy: The Boy of Steel》。与 Martha Kent 的温暖互动，寻找自我的旅程</span></span></div>
+                </div>
+            </section>
+
+            <!-- ============ 十、Lemire时期 ============ -->
+            <section class="section-block fade-in-section" id="lemire">
+                <div class="section-year">2010–2011</div>
+                <h2 class="section-title">Jeff Lemire 时期</h2>
+                <p class="section-subtitle">康纳成熟成长故事，许多粉丝心中的被低估佳作</p>
+                <div class="glass-card">
+                    <div class="reading-item"><span class="tier tier-s">S</span><span><span class="item-title">Superboy Vol.5 #1–11</span><span class="item-note">收集：《Superboy: Smallville Attacks》。康纳走向成熟的标志性故事</span></span></div>
+                </div>
+            </section>
+
+            <!-- ============ 十一、新52 ============ -->
+            <section class="section-block fade-in-section" id="new52">
+                <div class="section-year">2011–2016</div>
+                <h2 class="section-title">新52康纳（平行/重启版本）</h2>
+                <p class="section-subtitle">注意：这是平行/重启版本，起源和性格有显著差异（非原版 Kon-El 连续性）</p>
+                <div class="reading-grid">
+                    <div class="glass-card">
+                        <div class="reading-item"><span class="tier tier-b">B</span><span><span class="item-title">Superboy Vol.6 #1–34</span><span class="item-note">评价两极。如果喜欢原版 YJ 康纳，可最后补或跳过</span></span></div>
+                    </div>
+                    <div class="glass-card">
+                        <div class="reading-item"><span class="tier tier-b">B</span><span><span class="item-title">Teen Titans Vol.4 #1–30+</span><span class="item-note">团队互动，少数 Superman crossover。有独特起源元素</span></span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ 十二、重生 ============ -->
+            <section class="section-block fade-in-section" id="rebirth">
+                <div class="section-year">2019+</div>
+                <h2 class="section-title">重生后原版康纳回归</h2>
+                <p class="section-subtitle">原版康纳正式回归，核心四人组再次集结</p>
+                <div class="glass-card highlight-card">
+                    <div class="reading-item"><span class="tier tier-s">S</span><span><span class="item-title">Young Justice Vol.3 (2019) #1–20+</span><span class="item-note">原版康纳正式回归，受 Gemworld 等事件影响，未被 Flashpoint 完全重启。核心四人组再次集结</span></span></div>
+                </div>
+            </section>
+
+            <!-- ============ 十三、现行宇宙 ============ -->
+            <section class="section-block fade-in-section" id="dawn-of-dc">
+                <div class="section-year">2023</div>
+                <h2 class="section-title">现行宇宙 / Dawn of DC</h2>
+                <p class="section-subtitle">现代康纳个人故事，回归经典 swagger 风格</p>
+                <div class="reading-grid">
+                    <div class="glass-card">
+                        <div class="reading-item"><span class="tier tier-b">B</span><span><span class="item-title">Dark Crisis: Young Justice</span><span class="item-note">可读可不读，评价一般</span></span></div>
+                        <div class="reading-item"><span class="tier tier-a">A</span><span><span class="item-title">Action Comics 客串</span><span class="item-note">Super Family 线持续出现</span></span></div>
+                    </div>
+                    <div class="glass-card highlight-card">
+                        <div class="reading-item"><span class="tier tier-s">S</span><span><span class="item-title">Superboy: The Man of Tomorrow（2023 mini #1–6）</span><span class="item-note">评价优秀，回归经典 swagger 风格。现代康纳个人故事</span></span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ 额外支线 ============ -->
+            <section class="section-block fade-in-section" id="extras">
+                <div class="section-year">Extra</div>
+                <h2 class="section-title">额外支线与补完</h2>
+                <p class="section-subtitle">被低估的支线、重要客串、事件 tie-in、现代延续——适合死忠粉</p>
+
+                <div class="glass-card mb-2">
+                    <p style="font-weight:700;margin-bottom:1rem;color:var(--gold);">90年代–2000s 被低估故事</p>
+                    <div class="reading-item"><span class="tier tier-s">S</span><span><span class="item-title">Young Justice: Sins of Youth</span><span class="item-note">跨刊事件，年龄交换大事件，展现团队动态和康纳的领导/成长一面，常被粉丝视为 YJ 巅峰之一</span></span></div>
+                    <div class="reading-item"><span class="tier tier-b">B</span><span><span class="item-title">Superboy and the Ravers #1–19</span><span class="item-note">康纳领导的宇宙派对团队冒险，轻松有趣，扩展"叛逆少年"性格。数字版可找，非核心但补完90年代生活</span></span></div>
+                    <div class="reading-item"><span class="tier tier-a">A</span><span><span class="item-title">Teen Titans Annual #1</span><span class="item-note">收录在部分 Geoff Johns Teen Titans vol. 收集（如 Life and Death）。康纳与 Cassie 的温馨农场故事，情感深度强</span></span></div>
+                    <div class="reading-item"><span class="tier tier-b">B</span><span><span class="item-title">Superboy Vol.4 特定弧</span><span class="item-note">Legion of Super-Heroes 未来故事（#21等）、Worlds Collide crossover、Zero Hour tie-ins。丰富早期冒险，可选择性阅读</span></span></div>
+                    <div class="reading-item"><span class="tier tier-b">B</span><span><span class="item-title">Hypertension / The Last Boy on Earth</span><span class="item-note">Superboy Vol.4 后期单期亮点，动作+性格刻画好</span></span></div>
+                </div>
+
+                <div class="glass-card mb-2">
+                    <p style="font-weight:700;margin-bottom:1rem;color:var(--blue);">复活后 & Smallville 时期补充</p>
+                    <div class="reading-item"><span class="tier tier-a">A</span><span><span class="item-title">Teen Titans Vol.3 #79–100</span><span class="item-note">及相关（Hunt for Raven、Team Building、Prime of Life）。Johns 之后的故事，康纳重返团队的延续</span></span></div>
+                    <div class="reading-item"><span class="tier tier-a">A</span><span><span class="item-title">Action Comics — House of Kent 弧（#1022–1023等）</span><span class="item-note">收录在 Superman: Action Comics Vol.5: The House of Kent。康纳与 Clark、Jon Kent、Supergirl 等 Super Family 互动，现代家庭感强</span></span></div>
+                </div>
+
+                <div class="glass-card mb-2">
+                    <p style="font-weight:700;margin-bottom:1rem;color:var(--red);">重生/现行宇宙额外</p>
+                    <div class="reading-item"><span class="tier tier-a">A</span><span><span class="item-title">Young Justice (2019) 完整续刊</span><span class="item-note">除了 #1–20，关注 Gemworld、多宇宙旅行、Skartaris 等弧（涉及 Warlord 客串），深入康纳被 Flashpoint"遗忘"后的身份危机与回归</span></span></div>
+                    <div class="reading-item"><span class="tier tier-b">B</span><span><span class="item-title">其他客串</span><span class="item-note">Infinite Frontier / Suicide Squad 相关、Dark Nights: Death Metal tie-ins（康纳参与大事件）。Action Comics 近期出现，继续 Super Family 线</span></span></div>
+                </div>
+
+                <div class="glass-card mb-2">
+                    <p style="font-weight:700;margin-bottom:1rem;">新52补充（平行版全补）</p>
+                    <div class="reading-item"><span class="tier tier-b">B</span><span><span class="item-title">Superboy Vol.6 主刊 + Teen Titans Vol.4 团队互动</span><span class="item-note">少数 Superman crossover。评价分化，但有独特起源元素</span></span></div>
+                </div>
+            </section>
+
+            <!-- ============ 非漫画推荐 ============ -->
+            <section class="section-block fade-in-section" id="non-comics">
+                <div class="section-year">Media</div>
+                <h2 class="section-title">非漫画推荐</h2>
+                <p class="section-subtitle">真人剧、动画与其他媒体中的康纳</p>
+                <div class="reading-grid">
+                    <div class="glass-card">
+                        <p style="font-weight:700;margin-bottom:0.5rem;">Titans（真人剧）</p>
+                        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;">Joshua Orpin 饰演的 Conner，从 S2 起是主要角色。起源接近漫画（Cadmus 克隆），有原创发展和 Krypto 伴侣。捕捉了"善良叛逆少年"本质。</p>
+                    </div>
+                    <div class="glass-card">
+                        <p style="font-weight:700;margin-bottom:0.5rem;">动画 & 其他</p>
+                        <p style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;">Young Justice 动画（虽主要是 Tim/Bart/Cassie，Conner 有灵感借鉴）；Smallville 最终季客串（Lucas Grabeel 饰演）。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ 关系图 ============ -->
+            <section class="section-block fade-in-section" id="relation-map">
+                <div class="section-year">Network</div>
+                <h2 class="section-title">康纳关系网络</h2>
+                <p class="section-subtitle">氪星遗产与超人家族的核心纽带</p>
+                <div class="rel-map-container">
+                    <svg class="rel-lines" viewBox="0 0 700 500" preserveAspectRatio="xMidYMid meet">
+                        <line x1="350" y1="250" x2="350" y2="60"/>
+                        <line x1="350" y1="250" x2="574" y2="125"/>
+                        <line x1="350" y1="250" x2="616" y2="290"/>
+                        <line x1="350" y1="250" x2="420" y2="410"/>
+                        <line x1="350" y1="250" x2="175" y2="390"/>
+                        <line x1="350" y1="250" x2="70" y2="200"/>
+                    </svg>
+                    <div class="rel-center">Conner<br>Kent</div>
+                    <div class="rel-node n1">克拉克</div>
+                    <div class="rel-node n2">莱克斯</div>
+                    <div class="rel-node n3">提姆</div>
+                    <div class="rel-node n4">巴特</div>
+                    <div class="rel-node n5">卡西</div>
+                    <div class="rel-node n6">乔纳森</div>
+                </div>
+                <p style="text-align:center;color:var(--text-secondary);font-size:0.85rem;margin-top:-1rem;letter-spacing:0.03em;">细金线连接 · 博物馆展板风格 · 超人家族核心纽带</p>
+            </section>
+
+            <!-- ============ 阅读Tips ============ -->
+            <section class="section-block fade-in-section" id="tips">
+                <div class="section-year">Tips</div>
+                <h2 class="section-title">阅读建议</h2>
+                <p class="section-subtitle">让旅程更加顺畅</p>
+                <div class="glass-card">
+                    <div class="reading-item"><span style="color:var(--gold);font-weight:700;">数字平台</span><span><span class="item-title">优先 Comixology 等数字平台</span><span class="item-note">解决实体收集难题，许多早期刊物仅数字版可获取</span></span></div>
+                    <div class="reading-item"><span style="color:var(--blue);font-weight:700;">TPB收集</span><span><span class="item-title">优先 TPB / 数字收集</span><span class="item-note">如 Boy of Steel、Smallville Attacks 等已出版合集</span></span></div>
+                    <div class="reading-item"><span style="color:var(--red);font-weight:700;">完整年表</span><span><span class="item-title">DCU Guide 的 Conner Chronology</span><span class="item-note">列出几乎所有 appearance，适合极致完整收藏</span></span></div>
+                    <div class="reading-item"><span style="color:var(--gold);font-weight:700;">核心主题</span><span><span class="item-title">友情（YJ/TT）+ 家庭（Kent Farm）</span><span class="item-note">康纳的魅力很大部分来自这两条线索——不是完美超人，而是努力成为英雄的克隆少年</span></span></div>
+                </div>
+            </section>
+
+            <!-- 底部留白 -->
+            <div style="height:6rem;"></div>
+
+        </main>
+    </div>
+
+    <!-- Mobile Nav Toggle -->
+    <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="导航菜单">☰</button>
+
+    <script>
+        // ============ SCROLL FADE-IN ============
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -40px 0px',
+            threshold: 0.08
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-section').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ============ ACTIVE NAV LINK ============
+        const navLinks = document.querySelectorAll('.timeline-nav a');
+        const sections = [];
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                const target = document.querySelector(href);
+                if (target) sections.push({ link, target });
+            }
+        });
+
+        function updateActiveNav() {
+            let currentId = null;
+            const scrollPos = window.scrollY + 120;
+            sections.forEach(({ link, target }) => {
+                if (target.offsetTop <= scrollPos) {
+                    currentId = link.getAttribute('href');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+        updateActiveNav();
+
+        // ============ MOBILE NAV ============ 
+        const mobileToggle = document.getElementById('mobileNavToggle');
+        const timelineNav = document.getElementById('timelineNav');
+
+        if (mobileToggle && timelineNav) {
+            mobileToggle.addEventListener('click', () => {
+                timelineNav.classList.toggle('open');
+                mobileToggle.textContent = timelineNav.classList.contains('open') ? '✕' : '☰';
+            });
+
+            // Close nav when clicking a link on mobile
+            timelineNav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 860) {
+                        timelineNav.classList.remove('open');
+                        mobileToggle.textContent = '☰';
+                    }
+                });
+            });
+
+            // Close nav when clicking outside
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 860 &&
+                    !timelineNav.contains(e.target) &&
+                    !mobileToggle.contains(e.target) &&
+                    timelineNav.classList.contains('open')) {
+                    timelineNav.classList.remove('open');
+                    mobileToggle.textContent = '☰';
+                }
+            });
+        }
+
+        // ============ INITIAL HERO VISIBLE ============ 
+        document.querySelector('.hero')?.classList.add('visible');
+    </script>
+</body>
+</html>
