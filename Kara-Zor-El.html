@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kara Zor-El — Supergirl 阅读指南 | 氪星档案馆</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --crystal-blue: #A9D8FF;
+            --krypton-ice: #D9F1FF;
+            --solar-gold: #FFD86B;
+            --cosmic-navy: #081423;
+            --void-blue: #030A13;
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-border-strong: rgba(255, 255, 255, 0.2);
+            --glass-highlight: rgba(255, 255, 255, 0.06);
+            --text-primary: #e8edf3;
+            --text-secondary: #bcc8d6;
+            --text-muted: #7a8ca0;
+            --shadow-crystal: 0 8px 40px rgba(169, 216, 255, 0.08), 0 2px 12px rgba(169, 216, 255, 0.04);
+            --shadow-card: 0 4px 30px rgba(0, 0, 0, 0.4), 0 1px 6px rgba(169, 216, 255, 0.06);
+            --shadow-gold: 0 0 60px rgba(255, 216, 107, 0.15), 0 0 20px rgba(255, 216, 107, 0.06);
+            --font-serif: 'Noto Serif SC', 'Source Han Serif SC', 'STSong', 'Songti SC', 'SimSun', 'KaiTi', serif;
+            --transition-crystal: 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+            --transition-slow: 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(169, 216, 255, 0.25) transparent;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(169, 216, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        body {
+            font-family: var(--font-serif);
+            background: var(--void-blue);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            cursor: default;
+        }
+
+        /* ===== Aurora Canvas ===== */
+        #aurora-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        /* ===== Particle Layer ===== */
+        .particle-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at 20% 15%, rgba(169, 216, 255, 0.04) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 60%, rgba(255, 216, 107, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 80%, rgba(169, 216, 255, 0.03) 0%, transparent 45%),
+                radial-gradient(ellipse at 85% 25%, rgba(217, 241, 255, 0.03) 0%, transparent 50%);
+        }
+
+        /* ===== Main Container ===== */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+
+        /* ===== Timeline Nav ===== */
+        .timeline-nav {
+            position: fixed;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: flex-end;
+        }
+        .timeline-dot-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition-crystal);
+            text-decoration: none;
+        }
+        .timeline-dot-label {
+            font-family: var(--font-serif);
+            font-size: 11px;
+            color: transparent;
+            white-space: nowrap;
+            letter-spacing: 0.08em;
+            transition: var(--transition-crystal);
+            opacity: 0;
+            transform: translateX(10px);
+            text-align: right;
+            font-weight: 400;
+        }
+        .timeline-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(169, 216, 255, 0.3);
+            border: 1px solid rgba(169, 216, 255, 0.4);
+            transition: var(--transition-crystal);
+            flex-shrink: 0;
+            position: relative;
+        }
+        .timeline-dot-wrap:hover .timeline-dot,
+        .timeline-dot-wrap.active .timeline-dot {
+            background: var(--solar-gold);
+            border-color: var(--solar-gold);
+            box-shadow: 0 0 18px rgba(255, 216, 107, 0.6), 0 0 40px rgba(255, 216, 107, 0.25);
+            width: 10px;
+            height: 10px;
+        }
+        .timeline-dot-wrap:hover .timeline-dot-label,
+        .timeline-dot-wrap.active .timeline-dot-label {
+            color: var(--solar-gold);
+            opacity: 1;
+            transform: translateX(0);
+            text-shadow: 0 0 12px rgba(255, 216, 107, 0.5);
+        }
+
+        /* ===== Hero Section ===== */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 80px 20px 60px;
+        }
+        .hero-crystal-structure {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin-bottom: 30px;
+        }
+        .hero-crystal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(169, 216, 255, 0.25) 0%, rgba(217, 241, 255, 0.08) 40%, rgba(255, 255, 255, 0.02) 70%, rgba(169, 216, 255, 0.15) 100%);
+            border: 1.5px solid rgba(169, 216, 255, 0.35);
+            box-shadow:
+                0 0 60px rgba(169, 216, 255, 0.2),
+                0 0 120px rgba(169, 216, 255, 0.08),
+                inset 0 0 30px rgba(255, 255, 255, 0.03);
+            animation: crystalFloat 8s ease-in-out infinite;
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+        }
+        .hero-crystal-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 1px solid rgba(169, 216, 255, 0.15);
+            box-shadow: 0 0 80px rgba(169, 216, 255, 0.1), inset 0 0 40px rgba(169, 216, 255, 0.04);
+            animation: ringPulse 6s ease-in-out infinite;
+        }
+        .hero-crystal-outer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 1px dashed rgba(169, 216, 255, 0.08);
+            animation: ringPulse 10s ease-in-out infinite reverse;
+        }
+        @keyframes crystalFloat {
+            0%,
+            100% {
+                transform: translate(-50%, -50%) rotate(45deg) translateY(0);
+            }
+            25% {
+                transform: translate(-50%, -50%) rotate(47deg) translateY(-8px);
+            }
+            50% {
+                transform: translate(-50%, -50%) rotate(45deg) translateY(0);
+            }
+            75% {
+                transform: translate(-50%, -50%) rotate(43deg) translateY(8px);
+            }
+        }
+        @keyframes ringPulse {
+            0%,
+            100% {
+                opacity: 0.5;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                opacity: 0.9;
+                transform: translate(-50%, -50%) scale(1.06);
+            }
+        }
+        .hero-logo-text {
+            font-family: var(--font-serif);
+            font-size: clamp(2.6rem, 6vw, 5rem);
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            color: var(--crystal-blue);
+            text-shadow: 0 0 80px rgba(169, 216, 255, 0.5), 0 0 160px rgba(169, 216, 255, 0.2), 0 2px 4px rgba(0, 0, 0, 0.6);
+            margin-bottom: 6px;
+            line-height: 1.1;
+        }
+        .hero-name {
+            font-family: var(--font-serif);
+            font-size: clamp(1.4rem, 3vw, 2.2rem);
+            font-weight: 400;
+            letter-spacing: 0.16em;
+            color: var(--krypton-ice);
+            text-shadow: 0 0 40px rgba(217, 241, 255, 0.4);
+            margin-bottom: 10px;
+        }
+        .hero-subtitle {
+            font-family: var(--font-serif);
+            font-size: clamp(0.9rem, 1.6vw, 1.15rem);
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            color: var(--solar-gold);
+            text-shadow: 0 0 30px rgba(255, 216, 107, 0.5);
+            margin-bottom: 20px;
+        }
+        .hero-guide-label {
+            font-family: var(--font-serif);
+            font-size: 0.85rem;
+            letter-spacing: 0.25em;
+            color: var(--text-muted);
+            border: 1px solid rgba(169, 216, 255, 0.2);
+            padding: 10px 28px;
+            border-radius: 2px;
+            background: rgba(8, 20, 35, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-transform: uppercase;
+        }
+        .hero-scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: hintBounce 2.5s ease-in-out infinite;
+            opacity: 0.6;
+        }
+        .hero-scroll-hint span {
+            display: block;
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(169, 216, 255, 0.6), transparent);
+            margin: 0 auto;
+            border-radius: 1px;
+        }
+        @keyframes hintBounce {
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(14px);
+            }
+        }
+
+        /* ===== Section Titles ===== */
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: var(--crystal-blue);
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 0 0 40px rgba(169, 216, 255, 0.3);
+        }
+        .section-subtitle {
+            font-family: var(--font-serif);
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        /* ===== Glass Card ===== */
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: var(--shadow-card);
+            padding: 32px 28px;
+            transition: var(--transition-crystal);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            opacity: 0.6;
+        }
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(ellipse, rgba(169, 216, 255, 0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .glass-card:hover {
+            border-color: var(--glass-border-strong);
+            box-shadow: var(--shadow-crystal), var(--shadow-card);
+            transform: translateY(-2px);
+        }
+        .glass-card.phase-card {
+            margin-bottom: 28px;
+        }
+        .glass-card .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid rgba(169, 216, 255, 0.1);
+            padding-bottom: 16px;
+        }
+        .glass-card .card-phase-name {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: var(--crystal-blue);
+            text-shadow: 0 0 20px rgba(169, 216, 255, 0.25);
+        }
+        .glass-card .card-phase-era {
+            font-family: var(--font-serif);
+            font-size: 0.78rem;
+            letter-spacing: 0.15em;
+            color: var(--solar-gold);
+            font-weight: 400;
+        }
+        .glass-card .card-phase-num {
+            font-family: var(--font-serif);
+            font-size: 3rem;
+            font-weight: 900;
+            color: rgba(169, 216, 255, 0.06);
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            pointer-events: none;
+            letter-spacing: 0;
+            line-height: 1;
+        }
+
+        /* ===== Exhibit Grid (刊物展柜) ===== */
+        .exhibit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+            margin-top: 10px;
+        }
+        .exhibit-item {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(169, 216, 255, 0.1);
+            border-radius: 4px;
+            padding: 16px 18px;
+            transition: var(--transition-crystal);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            user-select: none;
+            min-height: 90px;
+            justify-content: center;
+        }
+        .exhibit-item:hover {
+            border-color: rgba(169, 216, 255, 0.35);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 25px rgba(169, 216, 255, 0.08);
+        }
+        .exhibit-item .exhibit-title {
+            font-family: var(--font-serif);
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            color: var(--krypton-ice);
+            line-height: 1.3;
+        }
+        .exhibit-item .exhibit-note {
+            font-family: var(--font-serif);
+            font-size: 0.72rem;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+        .exhibit-item .exhibit-badge {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            font-family: var(--font-serif);
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            padding: 3px 8px;
+            border-radius: 2px;
+            pointer-events: none;
+        }
+        .badge-sss {
+            background: rgba(255, 216, 107, 0.15);
+            color: #FFD86B;
+            border: 1px solid rgba(255, 216, 107, 0.4);
+            text-shadow: 0 0 10px rgba(255, 216, 107, 0.5);
+            box-shadow: 0 0 14px rgba(255, 216, 107, 0.15);
+        }
+        .badge-ss {
+            background: rgba(169, 216, 255, 0.12);
+            color: #B8D8F0;
+            border: 1px solid rgba(169, 216, 255, 0.35);
+            text-shadow: 0 0 8px rgba(169, 216, 255, 0.3);
+        }
+        .badge-s {
+            background: rgba(255, 255, 255, 0.04);
+            color: #c0ccd8;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .badge-a {
+            background: rgba(255, 255, 255, 0.02);
+            color: #7a8ca0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .exhibit-item.read {
+            border-color: rgba(169, 216, 255, 0.3) !important;
+            background: rgba(169, 216, 255, 0.04) !important;
+        }
+        .exhibit-item.read::after {
+            content: '✓ 已读';
+            position: absolute;
+            bottom: 8px;
+            right: 12px;
+            font-family: var(--font-serif);
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            color: rgba(169, 216, 255, 0.6);
+            pointer-events: none;
+        }
+
+        /* ===== Crisis Section ===== */
+        .crisis-mega-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(169, 216, 255, 0.25);
+            border-radius: 8px;
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            box-shadow: 0 0 80px rgba(169, 216, 255, 0.1), 0 0 200px rgba(169, 216, 255, 0.04), var(--shadow-card);
+            padding: 40px 32px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .crisis-mega-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 216, 107, 0.5), rgba(169, 216, 255, 0.3), transparent);
+        }
+        .crisis-mega-card::after {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: radial-gradient(ellipse at center, rgba(169, 216, 255, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+            animation: crisisGlow 8s ease-in-out infinite;
+        }
+        @keyframes crisisGlow {
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        .crisis-title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.6rem, 3vw, 2.5rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            color: var(--solar-gold);
+            text-shadow: 0 0 60px rgba(255, 216, 107, 0.4);
+            text-align: center;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+        .crisis-fault-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 24px 0;
+            position: relative;
+            z-index: 1;
+        }
+        .crisis-fault-item {
+            font-family: var(--font-serif);
+            font-size: 0.9rem;
+            letter-spacing: 0.12em;
+            color: var(--text-secondary);
+            padding: 10px 20px;
+            border: 1px solid rgba(169, 216, 255, 0.2);
+            border-radius: 3px;
+            background: rgba(8, 20, 35, 0.4);
+        }
+        .crisis-fault-arrow {
+            font-size: 1.5rem;
+            color: var(--solar-gold);
+            text-shadow: 0 0 20px rgba(255, 216, 107, 0.6);
+        }
+
+        /* ===== Woman of Tomorrow Section ===== */
+        .wot-luxury-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(169, 216, 255, 0.3);
+            border-radius: 10px;
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            box-shadow: 0 0 100px rgba(169, 216, 255, 0.12), 0 0 250px rgba(169, 216, 255, 0.05), var(--shadow-gold);
+            padding: 50px 36px;
+            margin: 50px 0;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+        .wot-luxury-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(255, 216, 107, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(169, 216, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(169, 216, 255, 0.04) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        .wot-luxury-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(255, 216, 107, 0.7), rgba(169, 216, 255, 0.5), rgba(255, 216, 107, 0.3), transparent);
+        }
+        .wot-title {
+            font-family: var(--font-serif);
+            font-size: clamp(1.8rem, 3.5vw, 3rem);
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            color: #FFE9A0;
+            text-shadow: 0 0 80px rgba(255, 216, 107, 0.5), 0 0 200px rgba(255, 216, 107, 0.2);
+            position: relative;
+            z-index: 1;
+            margin-bottom: 12px;
+        }
+        .wot-meta {
+            font-family: var(--font-serif);
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            position: relative;
+            z-index: 1;
+            margin-bottom: 18px;
+        }
+        .wot-desc {
+            font-family: var(--font-serif);
+            font-size: 0.95rem;
+            line-height: 1.9;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+            max-width: 750px;
+            letter-spacing: 0.03em;
+        }
+        .wot-badge-lux {
+            display: inline-block;
+            font-family: var(--font-serif);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            padding: 8px 18px;
+            background: rgba(255, 216, 107, 0.1);
+            border: 1px solid rgba(255, 216, 107, 0.5);
+            color: #FFD86B;
+            text-shadow: 0 0 20px rgba(255, 216, 107, 0.6);
+            box-shadow: 0 0 30px rgba(255, 216, 107, 0.2);
+            border-radius: 2px;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== Parallel Universe Shelf ===== */
+        .shelf-scroll {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 8px 30px;
+            scroll-snap-type: x proximity;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(169, 216, 255, 0.2) transparent;
+        }
+        .shelf-scroll::-webkit-scrollbar {
+            height: 4px;
+        }
+        .shelf-scroll::-webkit-scrollbar-thumb {
+            background: rgba(169, 216, 255, 0.2);
+            border-radius: 2px;
+        }
+        .shelf-book {
+            flex: 0 0 200px;
+            scroll-snap-align: start;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(169, 216, 255, 0.15);
+            border-radius: 4px;
+            padding: 22px 18px;
+            text-align: center;
+            transition: var(--transition-crystal);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            justify-content: center;
+            min-height: 140px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .shelf-book:hover {
+            border-color: rgba(169, 216, 255, 0.4);
+            box-shadow: 0 0 30px rgba(169, 216, 255, 0.1);
+            transform: translateY(-6px);
+        }
+        .shelf-book .book-title {
+            font-family: var(--font-serif);
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: var(--krypton-ice);
+            line-height: 1.3;
+        }
+        .shelf-book .book-author {
+            font-family: var(--font-serif);
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* ===== Stats Archive ===== */
+        .archive-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin: 30px 0;
+        }
+        .stat-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(169, 216, 255, 0.12);
+            border-radius: 4px;
+            padding: 20px 18px;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .stat-value {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            color: var(--crystal-blue);
+            text-shadow: 0 0 30px rgba(169, 216, 255, 0.3);
+        }
+        .stat-label {
+            font-family: var(--font-serif);
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+        .stat-bar-wrap {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(169, 216, 255, 0.08);
+            border-radius: 4px;
+            padding: 18px 20px;
+        }
+        .stat-bar-label {
+            font-family: var(--font-serif);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .stat-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .stat-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(169, 216, 255, 0.6), rgba(255, 216, 107, 0.5));
+            border-radius: 3px;
+            transition: width 1s cubic-bezier(0.22, 0.61, 0.36, 1);
+            box-shadow: 0 0 20px rgba(169, 216, 255, 0.3);
+        }
+
+        /* ===== Rating Legend ===== */
+        .rating-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        .rating-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-serif);
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+        }
+        .rating-chip .chip-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+        .chip-sss {
+            background: rgba(255, 216, 107, 0.2);
+            border: 1px solid rgba(255, 216, 107, 0.5);
+            box-shadow: 0 0 12px rgba(255, 216, 107, 0.25);
+        }
+        .chip-ss {
+            background: rgba(169, 216, 255, 0.18);
+            border: 1px solid rgba(169, 216, 255, 0.4);
+            box-shadow: 0 0 10px rgba(169, 216, 255, 0.2);
+        }
+        .chip-s {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .chip-a {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        /* ===== Footer ===== */
+        .site-footer {
+            text-align: center;
+            padding: 50px 20px 40px;
+            border-top: 1px solid rgba(169, 216, 255, 0.08);
+            margin-top: 40px;
+        }
+        .footer-krypton {
+            font-family: var(--font-serif);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .timeline-nav {
+                right: 6px;
+                gap: 3px;
+            }
+            .timeline-dot {
+                width: 5px;
+                height: 5px;
+            }
+            .timeline-dot-label {
+                display: none;
+            }
+            .timeline-dot-wrap:hover .timeline-dot,
+            .timeline-dot-wrap.active .timeline-dot {
+                width: 7px;
+                height: 7px;
+            }
+            .exhibit-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 8px;
+            }
+            .exhibit-item {
+                padding: 12px 14px;
+                min-height: 70px;
+            }
+            .exhibit-item .exhibit-title {
+                font-size: 0.8rem;
+            }
+            .exhibit-item .exhibit-note {
+                font-size: 0.65rem;
+            }
+            .glass-card {
+                padding: 20px 16px;
+            }
+            .crisis-mega-card {
+                padding: 24px 16px;
+            }
+            .wot-luxury-card {
+                padding: 28px 18px;
+            }
+            .shelf-book {
+                flex: 0 0 150px;
+                min-height: 110px;
+                padding: 16px 12px;
+            }
+            .archive-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .stat-value {
+                font-size: 1.5rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .timeline-nav {
+                display: none;
+            }
+            .exhibit-grid {
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+            .hero-logo-text {
+                font-size: 2rem;
+            }
+            .hero-name {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* ===== Utility ===== */
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+        .mb-30 {
+            margin-bottom: 30px;
+        }
+        .mb-40 {
+            margin-bottom: 40px;
+        }
+        .mt-20 {
+            margin-top: 20px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .highlight-gold {
+            color: var(--solar-gold);
+            text-shadow: 0 0 12px rgba(255, 216, 107, 0.3);
+        }
+        .divider-crystal {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(169, 216, 255, 0.25), transparent);
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Aurora Background Canvas -->
+    <canvas id="aurora-canvas"></canvas>
+    <div class="particle-layer"></div>
+
+    <!-- Timeline Navigation -->
+    <nav class="timeline-nav" id="timelineNav" aria-label="阅读时代导航">
+        <a class="timeline-dot-wrap" href="#phase1" data-phase="1"><span class="timeline-dot-label">白银时代</span><span class="timeline-dot"></span></a>
+        <a class="timeline-dot-wrap" href="#phase2" data-phase="2"><span class="timeline-dot-label">铜器时代</span><span class="timeline-dot"></span></a>
+        <a class="timeline-dot-wrap" href="#crisis-section" data-phase="crisis"><span class="timeline-dot-label">无限地球危机</span><span class="timeline-dot"></span></a>
+        <a class="timeline-dot-wrap" href="#phase4" data-phase="4"><span class="timeline-dot-label">Matrix时代</span><span class="timeline-dot"></span></a>
+        <a class="timeline-dot-wrap" href="#phase5" data-phase="5"><span class="timeline-dot-label">现代Kara回归</span><span class="timeline-dot"></span></a>
+        <a class="timeline-dot-wrap" href="#phase6" data-phase="6"><span class="timeline-dot-label">New 52</span><span class="timeline-dot"></span></a>
+        <a class="timeline-dot-wrap" href="#phase7" data-phase="7"><span class="timeline-dot-label">Rebirth</span><span class="timeline-dot"></span></a>
+        <a class="timeline-dot-wrap" href="#wot-section" data-phase="wot"><span class="timeline-dot-label">Woman of Tomorrow</span><span class="timeline-dot"></span></a>
+        <a class="timeline-dot-wrap" href="#phase8" data-phase="8"><span class="timeline-dot-label">Dawn of DC</span><span class="timeline-dot"></span></a>
+        <a class="timeline-dot-wrap" href="#phase9" data-phase="9"><span class="timeline-dot-label">2025新刊</span><span class="timeline-dot"></span></a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-container">
+
+        <!-- ==================== HERO SECTION ==================== -->
+        <section class="hero-section" id="hero">
+            <div class="hero-crystal-structure">
+                <div class="hero-crystal-outer"></div>
+                <div class="hero-crystal-ring"></div>
+                <div class="hero-crystal"></div>
+            </div>
+            <h1 class="hero-logo-text">SUPERGIRL</h1>
+            <p class="hero-name">Kara Zor-El</p>
+            <p class="hero-subtitle">The Last Daughter of Krypton</p>
+            <p class="hero-guide-label">Kryptonian Archive &middot; 阅读指南 &middot; 收藏级导航</p>
+            <div class="hero-scroll-hint"><span></span></div>
+        </section>
+
+        <!-- ==================== 入门推荐 ==================== -->
+        <section class="mb-40">
+            <h2 class="section-title">入门推荐路线</h2>
+            <p class="section-subtitle">新人最佳起点 &middot; S级核心故事</p>
+            <div class="glass-card">
+                <div style="position:relative;z-index:1;">
+                    <p style="font-family:var(--font-serif);font-size:0.9rem;color:var(--text-secondary);letter-spacing:0.04em;line-height:1.9;margin-bottom:16px;">
+                        <span class="highlight-gold">推荐顺序：</span>Superman/Batman: The Supergirl from Krypton → Supergirl Vol.5 #34-67 (Sterling Gates时期) → Supergirl: Rebirth + Vol.7早期 → Supergirl: Woman of Tomorrow
+                    </p>
+                    <div class="exhibit-grid">
+                        <div class="exhibit-item" data-title="Superman/Batman: The Supergirl from Krypton" data-rating="sss">
+                            <span class="exhibit-badge badge-sss">SSS</span>
+                            <span class="exhibit-title">Superman/Batman: The Supergirl from Krypton</span>
+                            <span class="exhibit-note">#8-13 &middot; 现代Kara回归起源 &middot; 神级起点</span>
+                        </div>
+                        <div class="exhibit-item" data-title="Supergirl Vol.5 #34-67" data-rating="sss">
+                            <span class="exhibit-badge badge-sss">SSS</span>
+                            <span class="exhibit-title">Supergirl Vol.5 #34-67</span>
+                            <span class="exhibit-note">Sterling Gates时期 &middot; 现代最佳长篇</span>
+                        </div>
+                        <div class="exhibit-item" data-title="Supergirl: Rebirth #1 + Vol.7" data-rating="ss">
+                            <span class="exhibit-badge badge-ss">SS</span>
+                            <span class="exhibit-title">Supergirl: Rebirth #1 + Vol.7</span>
+                            <span class="exhibit-note">重点前半 &middot; Rebirth时代起点</span>
+                        </div>
+                        <div class="exhibit-item" data-title="Supergirl: Woman of Tomorrow #1-8" data-rating="sss">
+                            <span class="exhibit-badge badge-sss">SSS</span>
+                            <span class="exhibit-title">Supergirl: Woman of Tomorrow #1-8</span>
+                            <span class="exhibit-note">Tom King代表作 &middot; 近年神作</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider-crystal">
+
+        <!-- ==================== 第一阶段：白银时代 ==================== -->
+        <section id="phase1" class="mb-40">
+            <h2 class="section-title">第一阶段：白银时代起源</h2>
+            <p class="section-subtitle">1959 — 1972 &middot; Kara Zor-El首次登场</p>
+            <div class="glass-card phase-card">
+                <div class="card-phase-num">01</div>
+                <div class="card-header">
+                    <div>
+                        <span class="card-phase-name">白银时代</span>
+                        <span class="card-phase-era" style="margin-left:12px;">1959 – 1972</span>
+                    </div>
+                </div>
+                <p style="font-family:var(--font-serif);font-size:0.85rem;color:var(--text-muted);letter-spacing:0.04em;margin-bottom:16px;position:relative;z-index:1;">
+                    起源：Action Comics #252 — Kara Zor-El从氪星来到地球，化名Linda Lee生活。白银时代主线推荐选读。
+                </p>
+                <div class="exhibit-grid">
+                    <div class="exhibit-item" data-title="Action Comics #252" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Action Comics #252</span>
+                        <span class="exhibit-note">Kara Zor-El首次登场 &middot; 起源</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Action Comics #252-376" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Action Comics #252-376</span>
+                        <span class="exhibit-note">Kara相关故事合集</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Adventure Comics #278-424" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Adventure Comics #278-424</span>
+                        <span class="exhibit-note">Legion时期 &middot; Satan Girl &middot; Kandor &middot; Lena Luthor</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Action Comics #276" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Action Comics #276</span>
+                        <span class="exhibit-note">Supergirl's Three Super Girl-Friends &middot; 首次与Legion女孩互动</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Action Comics #285-286" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Action Comics #285-286</span>
+                        <span class="exhibit-note">早期独立故事 &middot; Kara成长为独立英雄</span>
+                    </div>
+                    <div class="exhibit-item" data-title="DC Finest: Supergirl – The Girl of Steel" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">DC Finest: Supergirl – The Girl of Steel</span>
+                        <span class="exhibit-note">收藏合集 &middot; 覆盖早期经典故事</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Silver Age Omnibus" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Silver Age Omnibus</span>
+                        <span class="exhibit-note">白银时代合集收藏版</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 第二阶段：铜器时代 ==================== -->
+        <section id="phase2" class="mb-40">
+            <h2 class="section-title">第二阶段：铜器时代</h2>
+            <p class="section-subtitle">1972 — 1985 &middot; 独立系列与记者生涯</p>
+            <div class="glass-card phase-card">
+                <div class="card-phase-num">02</div>
+                <div class="card-header">
+                    <div>
+                        <span class="card-phase-name">铜器时代</span>
+                        <span class="card-phase-era" style="margin-left:12px;">1972 – 1985</span>
+                    </div>
+                </div>
+                <div class="exhibit-grid">
+                    <div class="exhibit-item" data-title="Supergirl Vol.1 #1-10" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Supergirl Vol.1 #1-10</span>
+                        <span class="exhibit-note">1972系列 &middot; 首个独立连载</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Superman Family #165-222" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Superman Family #165-222</span>
+                        <span class="exhibit-note">当时重要主刊之一</span>
+                    </div>
+                    <div class="exhibit-item" data-title="The Daring New Adventures of Supergirl Vol.2 #1-23" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">The Daring New Adventures of Supergirl Vol.2 #1-23</span>
+                        <span class="exhibit-note">1980s经典 &middot; 记者生涯等</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Paul Kupperberg Run" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Paul Kupperberg Run (Supergirl Vol.2部分)</span>
+                        <span class="exhibit-note">Carmine Infantino作画 &middot; 影响TV版风格</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Superman #376-377" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Superman #376-377</span>
+                        <span class="exhibit-note">Crisis前最终故事线之一</span>
+                    </div>
+                    <div class="exhibit-item" data-title="DC Comics Presents #86" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">DC Comics Presents #86</span>
+                        <span class="exhibit-note">Crisis前最终篇</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 第三阶段：无限地球危机 CRISIS专区 ==================== -->
+        <section id="crisis-section" class="mb-40">
+            <div class="crisis-mega-card">
+                <div class="crisis-title">Crisis on Infinite Earths</div>
+                <p style="text-align:center;font-family:var(--font-serif);font-size:0.85rem;letter-spacing:0.12em;color:var(--text-muted);position:relative;z-index:1;">1985 &middot; DC历史经典 &middot; Kara牺牲（重点#7）</p>
+                <div class="crisis-fault-line">
+                    <span class="crisis-fault-item">Before Crisis</span>
+                    <span class="crisis-fault-arrow">&darr;</span>
+                    <span class="crisis-fault-item" style="border-color:rgba(255,216,107,0.4);color:var(--solar-gold);text-shadow:0 0 16px rgba(255,216,107,0.4);">
+                        Crisis #1-12</span>
+                    <span class="crisis-fault-arrow">&darr;</span>
+                    <span class="crisis-fault-item">After Crisis</span>
+                </div>
+                <p style="font-family:var(--font-serif);font-size:0.9rem;color:var(--text-secondary);letter-spacing:0.04em;line-height:1.8;position:relative;z-index:1;text-align:center;max-width:650px;margin:0 auto;">
+                    无限地球危机彻底改变了DC宇宙。Kara Zor-El在<span class="highlight-gold">Crisis on Infinite Earths #7</span>中英勇牺牲，这一事件标志着白银/铜器时代的终结。
+                    此后近二十年，真正的Kara Zor-El从DC主宇宙中被抹除，进入了Matrix与Linda Danvers的时代。
+                </p>
+                <div class="exhibit-grid mt-20" style="position:relative;z-index:1;">
+                    <div class="exhibit-item" data-title="Crisis on Infinite Earths #1-12" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">Crisis on Infinite Earths #1-12</span>
+                        <span class="exhibit-note">全系列必读 &middot; 重点#7 Kara牺牲</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 第四阶段：后危机时代 ==================== -->
+        <section id="phase4" class="mb-40">
+            <h2 class="section-title">第四阶段：后危机时代</h2>
+            <p class="section-subtitle">1986 — 2004 &middot; Matrix Supergirl &amp; Linda Danvers</p>
+            <div class="glass-card phase-card">
+                <div class="card-phase-num">04</div>
+                <div class="card-header">
+                    <div>
+                        <span class="card-phase-name">后危机时代</span>
+                        <span class="card-phase-era" style="margin-left:12px;">1986 – 2004</span>
+                    </div>
+                </div>
+                <p style="font-family:var(--font-serif);font-size:0.85rem;color:var(--text-muted);letter-spacing:0.04em;margin-bottom:16px;position:relative;z-index:1;">
+                    此时期无真正Kara（被Crisis抹除）。Matrix Supergirl与Linda Danvers融合，非Kara但历史重要。
+                </p>
+                <div class="exhibit-grid">
+                    <div class="exhibit-item" data-title="Superman Vol.2 #16" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Superman Vol.2 #16</span>
+                        <span class="exhibit-note">Matrix Supergirl早期出现</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Adventures of Superman #444+" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Adventures of Superman #444+</span>
+                        <span class="exhibit-note">Matrix时期</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Action Comics #600+" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Action Comics #600+</span>
+                        <span class="exhibit-note">Matrix Supergirl相关</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Supergirl Vol.4 #1-80 + Annuals" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">Supergirl Vol.4 #1-80 + Annuals</span>
+                        <span class="exhibit-note">Peter David时代 &middot; Matrix与Linda Danvers融合 &middot; 历史价值</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Many Happy Returns (Vol.4弧)" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">Many Happy Returns (Vol.4弧)</span>
+                        <span class="exhibit-note">前危机Kara客串 &middot; 重要历史交汇</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 第五阶段：现代Kara回归 ==================== -->
+        <section id="phase5" class="mb-40">
+            <h2 class="section-title">第五阶段：现代Kara回归</h2>
+            <p class="section-subtitle">2004 — 2011 &middot; Supergirl Vol.5 &amp; Sterling Gates神级时期</p>
+            <div class="glass-card phase-card">
+                <div class="card-phase-num">05</div>
+                <div class="card-header">
+                    <div>
+                        <span class="card-phase-name">现代Kara回归</span>
+                        <span class="card-phase-era" style="margin-left:12px;">2004 – 2011</span>
+                    </div>
+                </div>
+                <div class="exhibit-grid">
+                    <div class="exhibit-item" data-title="Superman/Batman #8-13" data-rating="sss">
+                        <span class="exhibit-badge badge-sss">SSS</span>
+                        <span class="exhibit-title">Superman/Batman #8-13</span>
+                        <span class="exhibit-note">The Supergirl from Krypton &middot; 必读回归起源</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Supergirl Vol.5 #1-33" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">Supergirl Vol.5 #1-33</span>
+                        <span class="exhibit-note">Jeph Loeb &middot; Joe Kelly等早期</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Supergirl Vol.5 #34-67" data-rating="sss">
+                        <span class="exhibit-badge badge-sss">SSS</span>
+                        <span class="exhibit-title">Supergirl Vol.5 #34-67</span>
+                        <span class="exhibit-note">Sterling Gates神级时期 &middot; Who Is Superwoman? &middot; Bizarrogirl &middot; Way of the World</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Supergirl Vol.5 #0" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">Supergirl Vol.5 #0</span>
+                        <span class="exhibit-note">补充Vol.5早期背景</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Supergirl Vol.5 Annuals" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">Supergirl Vol.5 Annuals</span>
+                        <span class="exhibit-note">补充故事</span>
+                    </div>
+                    <div class="exhibit-item" data-title="New Krypton事件" data-rating="ss">
+                        <span class="exhibit-badge badge-ss">SS</span>
+                        <span class="exhibit-title">New Krypton (全事件)</span>
+                        <span class="exhibit-note">大事件穿插 &middot; 含World of New Krypton &middot; War of the Supermen</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Amazons Attack" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Amazons Attack (Supergirl相关)</span>
+                        <span class="exhibit-note">大事件交叉</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 第六阶段：New 52 ==================== -->
+        <section id="phase6" class="mb-40">
+            <h2 class="section-title">第六阶段：New 52</h2>
+            <p class="section-subtitle">2011 — 2015 &middot; Supergirl Vol.6 &amp; Red Daughter of Krypton</p>
+            <div class="glass-card phase-card">
+                <div class="card-phase-num">06</div>
+                <div class="card-header">
+                    <div>
+                        <span class="card-phase-name">New 52</span>
+                        <span class="card-phase-era" style="margin-left:12px;">2011 – 2015</span>
+                    </div>
+                </div>
+                <div class="exhibit-grid">
+                    <div class="exhibit-item" data-title="Supergirl Vol.6 #1-40" data-rating="ss">
+                        <span class="exhibit-badge badge-ss">SS</span>
+                        <span class="exhibit-title">Supergirl Vol.6 #1-40</span>
+                        <span class="exhibit-note">完整New 52系列</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Last Daughter of Krypton #1-6" data-rating="ss">
+                        <span class="exhibit-badge badge-ss">SS</span>
+                        <span class="exhibit-title">Last Daughter of Krypton (#1-6)</span>
+                        <span class="exhibit-note">New 52开篇弧</span>
+                    </div>
+                    <div class="exhibit-item" data-title="H'El on Earth" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">H'El on Earth (交叉)</span>
+                        <span class="exhibit-note">与Superman &middot; Superboy交叉</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Krypton Returns" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">Krypton Returns</span>
+                        <span class="exhibit-note">氪星回归事件</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Red Daughter of Krypton" data-rating="ss">
+                        <span class="exhibit-badge badge-ss">SS</span>
+                        <span class="exhibit-title">Red Daughter of Krypton</span>
+                        <span class="exhibit-note">红灯军团弧 &middot; 非常受欢迎</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Supergirl: Crucible #36-40" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">Supergirl: Crucible (#36-40)</span>
+                        <span class="exhibit-note">训练营故事 &middot; 角色发展好</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Futures End #1" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Futures End #1 (Supergirl)</span>
+                        <span class="exhibit-note">未来结局特别篇</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 第七阶段：Rebirth ==================== -->
+        <section id="phase7" class="mb-40">
+            <h2 class="section-title">第七阶段：Rebirth</h2>
+            <p class="section-subtitle">2016 — 2020 &middot; Supergirl Vol.7</p>
+            <div class="glass-card phase-card">
+                <div class="card-phase-num">07</div>
+                <div class="card-header">
+                    <div>
+                        <span class="card-phase-name">Rebirth</span>
+                        <span class="card-phase-era" style="margin-left:12px;">2016 – 2020</span>
+                    </div>
+                </div>
+                <div class="exhibit-grid">
+                    <div class="exhibit-item" data-title="Supergirl: Rebirth #1" data-rating="ss">
+                        <span class="exhibit-badge badge-ss">SS</span>
+                        <span class="exhibit-title">Supergirl: Rebirth #1</span>
+                        <span class="exhibit-note">Rebirth时代起点</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Supergirl Vol.7 #1-42" data-rating="ss">
+                        <span class="exhibit-badge badge-ss">SS</span>
+                        <span class="exhibit-title">Supergirl Vol.7 #1-42</span>
+                        <span class="exhibit-note">完整Rebirth系列</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Reign of the Cyborg Supermen" data-rating="ss">
+                        <span class="exhibit-badge badge-ss">SS</span>
+                        <span class="exhibit-title">Reign of the Cyborg Supermen</span>
+                        <span class="exhibit-note">Rebirth核心弧</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Plain Sight" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">Plain Sight</span>
+                        <span class="exhibit-note">Rebirth弧线</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Killers of Krypton" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">Killers of Krypton</span>
+                        <span class="exhibit-note">Rebirth弧线</span>
+                    </div>
+                    <div class="exhibit-item" data-title="The Infected (后期)" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">The Infected (后期)</span>
+                        <span class="exhibit-note">Rebirth后期弧线</span>
+                    </div>
+                    <div class="exhibit-item" data-title="与Batgirl互动故事" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">与Batgirl互动故事 (Rebirth时期)</span>
+                        <span class="exhibit-note">团队联动</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== WOMAN OF TOMORROW 豪华专区 ==================== -->
+        <section id="wot-section" class="mb-40">
+            <div class="wot-luxury-card">
+                <span class="wot-badge-lux">SSS &middot; 神作级</span>
+                <div class="wot-title">Supergirl: Woman of Tomorrow</div>
+                <p class="wot-meta">#1-8 &middot; Tom King &amp; Bilquis Evely &middot; 2021 – 2022</p>
+                <p class="wot-desc">
+                    这是现代超女漫画的巅峰之作。Tom King以宇宙公路电影般的叙事，将Kara Zor-El置于广袤星海之中，
+                    展开一段关于复仇、正义与自我认知的史诗旅程。Bilquis Evely的华丽线条与Mat Lopes的绚烂色彩
+                    共同构建了一个令人屏息的星际画卷。该作已直接影响DCU电影改编方向，是每一位超女读者书架上的
+                    必备之选。空间冒险、情感深度与视觉震撼在此完美统一。
+                </p>
+                <div class="exhibit-grid mt-20" style="position:relative;z-index:1;">
+                    <div class="exhibit-item" data-title="Supergirl: Woman of Tomorrow #1-8" data-rating="sss" style="border-color:rgba(255,216,107,0.3);">
+                        <span class="exhibit-badge badge-sss">SSS</span>
+                        <span class="exhibit-title">Supergirl: Woman of Tomorrow #1-8</span>
+                        <span class="exhibit-note">全系列 &middot; Tom King代表作 &middot; DCU电影灵感来源</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Woman of Tomorrow 豪华版/Omnibus" data-rating="sss" style="border-color:rgba(255,216,107,0.25);">
+                        <span class="exhibit-badge badge-sss">SSS</span>
+                        <span class="exhibit-title">Woman of Tomorrow 豪华版</span>
+                        <span class="exhibit-note">Absolute / Deluxe Edition &middot; 收藏推荐</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 第八阶段：Infinite Frontier / Dawn of DC ==================== -->
+        <section id="phase8" class="mb-40">
+            <h2 class="section-title">第八阶段：Infinite Frontier / Dawn of DC</h2>
+            <p class="section-subtitle">2021 — 2024 &middot; Warworld时代 &amp; House of Brainiac</p>
+            <div class="glass-card phase-card">
+                <div class="card-phase-num">08</div>
+                <div class="card-header">
+                    <div>
+                        <span class="card-phase-name">Infinite Frontier / Dawn of DC</span>
+                        <span class="card-phase-era" style="margin-left:12px;">2021 – 2024</span>
+                    </div>
+                </div>
+                <div class="exhibit-grid">
+                    <div class="exhibit-item" data-title="Action Comics (Warworld时代)" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">Action Comics (Warworld时代)</span>
+                        <span class="exhibit-note">Supergirl客串 &middot; Backup stories</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Lazarus Planet" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Lazarus Planet (Supergirl相关)</span>
+                        <span class="exhibit-note">大事件联动</span>
+                    </div>
+                    <div class="exhibit-item" data-title="House of Brainiac" data-rating="s">
+                        <span class="exhibit-badge badge-s">S</span>
+                        <span class="exhibit-title">House of Brainiac</span>
+                        <span class="exhibit-note">Dawn of DC联动</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Power Girl相关故事" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Power Girl相关故事</span>
+                        <span class="exhibit-note">超人家族联动</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 第九阶段：2025新刊 ==================== -->
+        <section id="phase9" class="mb-40">
+            <h2 class="section-title">第九阶段：2025至今新刊</h2>
+            <p class="section-subtitle">2025 — 进行中 &middot; Supergirl Vol.8 &middot; DC All In</p>
+            <div class="glass-card phase-card">
+                <div class="card-phase-num">09</div>
+                <div class="card-header">
+                    <div>
+                        <span class="card-phase-name">2025新刊</span>
+                        <span class="card-phase-era" style="margin-left:12px;">2025 – 进行中</span>
+                    </div>
+                </div>
+                <p style="font-family:var(--font-serif);font-size:0.85rem;color:var(--text-muted);letter-spacing:0.04em;margin-bottom:16px;position:relative;z-index:1;">
+                    Sophie Campbell主笔，DC All In时期。聚焦Midvale日常生活、秘密身份与经典元素回归（Linda Danvers机器人、Lesla-Lar等）。
+                    风格更接地气、角色驱动。仍在更新中，建议跟进DC Universe Infinite或新刊。
+                </p>
+                <div class="exhibit-grid">
+                    <div class="exhibit-item" data-title="Supergirl Vol.8 #1-" data-rating="a">
+                        <span class="exhibit-badge badge-a">A</span>
+                        <span class="exhibit-title">Supergirl Vol.8 #1- (进行中)</span>
+                        <span class="exhibit-note">Sophie Campbell主笔 &middot; DC All In &middot; 融入前危机元素</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider-crystal">
+
+        <!-- ==================== 团队刊物 ==================== -->
+        <section class="mb-40">
+            <h2 class="section-title">团队刊物（补完路线）</h2>
+            <p class="section-subtitle">Legion of Super-Heroes &middot; Justice League &middot; 超人家族</p>
+            <div class="glass-card">
+                <div style="position:relative;z-index:1;">
+                    <p style="font-family:var(--font-serif);font-size:0.9rem;color:var(--text-secondary);letter-spacing:0.04em;margin-bottom:14px;font-weight:600;">少年军团（Legion of Super-Heroes）</p>
+                    <div class="exhibit-grid mb-20">
+                        <div class="exhibit-item" data-title="Adventure Comics Legion故事" data-rating="a">
+                            <span class="exhibit-badge badge-a">A</span><span class="exhibit-title">Adventure Comics Legion故事</span><span class="exhibit-note">白银时代</span>
+                        </div>
+                        <div class="exhibit-item" data-title="Supergirl and the Legion of Super-Heroes #16-36" data-rating="s">
+                            <span class="exhibit-badge badge-s">S</span><span class="exhibit-title">Supergirl and the Legion of Super-Heroes #16-36</span><span class="exhibit-note">2005系列 &middot; Mark
+                            Waid时期</span>
+                        </div>
+                        <div class="exhibit-item" data-title="Tales of the Legion #314-315" data-rating="a">
+                            <span class="exhibit-badge badge-a">A</span><span class="exhibit-title">Tales of the Legion #314-315</span><span class="exhibit-note">与Brainiac 5相关</span>
+                        </div>
+                        <div class="exhibit-item" data-title="Justice League vs. Legion of Super-Heroes" data-rating="s">
+                            <span class="exhibit-badge badge-s">S</span><span class="exhibit-title">Justice League vs. Legion of Super-Heroes</span><span class="exhibit-note">近期时间旅行团队战</span>
+                        </div>
+                    </div>
+                    <p style="font-family:var(--font-serif);font-size:0.9rem;color:var(--text-secondary);letter-spacing:0.04em;margin-bottom:14px;font-weight:600;">正义联盟 / 超人家族</p>
+                    <div class="exhibit-grid">
+                        <div class="exhibit-item" data-title="Justice League of America (2006)" data-rating="a">
+                            <span class="exhibit-badge badge-a">A</span><span class="exhibit-title">Justice League of America (2006)</span><span class="exhibit-note">Supergirl客串</span>
+                        </div>
+                        <div class="exhibit-item" data-title="New 52 Justice League" data-rating="a">
+                            <span class="exhibit-badge badge-a">A</span><span class="exhibit-title">New 52 Justice League相关</span><span class="exhibit-note">Supergirl客串</span>
+                        </div>
+                        <div class="exhibit-item" data-title="Batman/Superman: World's Finest #12" data-rating="s">
+                            <span class="exhibit-badge badge-s">S</span><span class="exhibit-title">Batman/Superman: World's Finest #12</span><span class="exhibit-note">Supergirl客串 &middot; 轻松有趣</span>
+                        </div>
+                        <div class="exhibit-item" data-title="超人家族刊 (主线穿插)" data-rating="a">
+                            <span class="exhibit-badge badge-a">A</span><span class="exhibit-title">超人家族刊 (Superman &middot; Action Comics穿插)</span><span class="exhibit-note">Superman &middot; Superboy
+                            联动</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 平行宇宙与独立神作 ==================== -->
+        <section class="mb-40">
+            <h2 class="section-title">平行宇宙与独立神作</h2>
+            <p class="section-subtitle">Elseworlds &middot; 独立佳作 &middot; S级推荐</p>
+            <div class="shelf-scroll" id="parallelShelf">
+                <div class="shelf-book" data-title="Supergirl: Being Super">
+                    <span class="book-title">Supergirl: Being Super</span>
+                    <span class="book-author">Mariko Tamaki &middot; 现实主义成长故事</span>
+                    <span style="font-size:0.65rem;color:var(--solar-gold);letter-spacing:0.1em;">S级推荐</span>
+                </div>
+                <div class="shelf-book" data-title="Supergirl: Cosmic Adventures in the 8th Grade">
+                    <span class="book-title">Supergirl: Cosmic Adventures in the 8th Grade</span>
+                    <span class="book-author">全年龄向 &middot; 幽默致敬Silver Age</span>
+                </div>
+                <div class="shelf-book" data-title="Elseworlds Finest: Supergirl & Batgirl">
+                    <span class="book-title">Elseworlds Finest: Supergirl &amp; Batgirl</span>
+                    <span class="book-author">经典非正史搭档神作</span>
+                    <span style="font-size:0.65rem;color:var(--solar-gold);letter-spacing:0.1em;">S级推荐</span>
+                </div>
+                <div class="shelf-book" data-title="Supergirl: Wings">
+                    <span class="book-title">Supergirl: Wings</span>
+                    <span class="book-author">独立One-Shot佳作</span>
+                </div>
+                <div class="shelf-book" data-title="Adventures of Supergirl">
+                    <span class="book-title">Adventures of Supergirl</span>
+                    <span class="book-author">Sterling Gates &middot; TV宇宙版</span>
+                </div>
+                <div class="shelf-book" data-title="Elseworlds & One-Shots">
+                    <span class="book-title">其他Elseworlds &amp; One-Shots</span>
+                    <span class="book-author">各类平行宇宙故事</span>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider-crystal">
+
+        <!-- ==================== 阅读等级系统 ==================== -->
+        <section class="mb-30">
+            <h2 class="section-title">阅读等级系统</h2>
+            <p class="section-subtitle">评级标准与视觉标识</p>
+            <div class="rating-legend">
+                <div class="rating-chip"><span class="chip-icon chip-sss"></span> SSS &middot; 神作级 &middot; 发光水晶徽章</div>
+                <div class="rating-chip"><span class="chip-icon chip-ss"></span> SS &middot; 核心必读 &middot; 银蓝徽章</div>
+                <div class="rating-chip"><span class="chip-icon chip-s"></span> S &middot; 推荐阅读 &middot; 透明玻璃徽章</div>
+                <div class="rating-chip"><span class="chip-icon chip-a"></span> A &middot; 补完阅读 &middot; 低亮度徽章</div>
+            </div>
+        </section>
+
+        <!-- ==================== 阅读分级总表 ==================== -->
+        <section class="mb-40">
+            <h2 class="section-title">阅读分级总表</h2>
+            <p class="section-subtitle">完整评级一览</p>
+            <div class="glass-card">
+                <div style="position:relative;z-index:1;overflow-x:auto;">
+                    <table style="width:100%;border-collapse:collapse;font-family:var(--font-serif);font-size:0.85rem;letter-spacing:0.03em;min-width:600px;">
+                        <thead>
+                            <tr style="border-bottom:1px solid rgba(169,216,255,0.2);">
+                                <th style="padding:12px 14px;text-align:left;color:var(--solar-gold);font-weight:600;letter-spacing:0.1em;">等级</th>
+                                <th style="padding:12px 14px;text-align:left;color:var(--crystal-blue);font-weight:600;letter-spacing:0.1em;">刊物</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid rgba(169,216,255,0.05);">
+                                <td style="padding:10px 14px;color:#FFD86B;font-weight:700;">SSS</td><td style="padding:10px 14px;color:var(--text-secondary);">Woman of Tomorrow</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid rgba(169,216,255,0.05);">
+                                <td style="padding:10px 14px;color:#FFD86B;font-weight:700;">SSS</td><td style="padding:10px 14px;color:var(--text-secondary);">Supergirl Vol.5 #34-67（Sterling Gates）</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid rgba(169,216,255,0.05);">
+                                <td style="padding:10px 14px;color:#FFD86B;font-weight:700;">SSS</td><td style="padding:10px 14px;color:var(--text-secondary);">Superman/Batman: The Supergirl from Krypton</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid rgba(169,216,255,0.05);">
+                                <td style="padding:10px 14px;color:#B8D8F0;font-weight:700;">SS</td><td style="padding:10px 14px;color:var(--text-secondary);">Supergirl: Rebirth + Vol.7 早期</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid rgba(169,216,255,0.05);">
+                                <td style="padding:10px 14px;color:#B8D8F0;font-weight:700;">SS</td><td style="padding:10px 14px;color:var(--text-secondary);">Red Daughter of Krypton (New 52)</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid rgba(169,216,255,0.05);">
+                                <td style="padding:10px 14px;color:#B8D8F0;font-weight:700;">SS</td><td style="padding:10px 14px;color:var(--text-secondary);">Being Super</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid rgba(169,216,255,0.05);">
+                                <td style="padding:10px 14px;color:#c0ccd8;font-weight:700;">S</td><td style="padding:10px 14px;color:var(--text-secondary);">Crisis on Infinite Earths</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid rgba(169,216,255,0.05);">
+                                <td style="padding:10px 14px;color:#c0ccd8;font-weight:700;">S</td><td style="padding:10px 14px;color:var(--text-secondary);">Daring New Adventures of Supergirl</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid rgba(169,216,255,0.05);">
+                                <td style="padding:10px 14px;color:#c0ccd8;font-weight:700;">S</td><td style="padding:10px 14px;color:var(--text-secondary);">Peter David Supergirl Vol.4（历史价值）</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid rgba(169,216,255,0.05);">
+                                <td style="padding:10px 14px;color:#7a8ca0;font-weight:700;">A</td><td style="padding:10px 14px;color:var(--text-secondary);">白银时代 Action/Adventure Comics</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid rgba(169,216,255,0.05);">
+                                <td style="padding:10px 14px;color:#7a8ca0;font-weight:700;">A</td><td style="padding:10px 14px;color:var(--text-secondary);">Legion 时期</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:10px 14px;color:#7a8ca0;font-weight:700;">A</td><td style="padding:10px 14px;color:var(--text-secondary);">Vol.8（2025-进行中）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 收藏合集建议 ==================== -->
+        <section class="mb-40">
+            <h2 class="section-title">收藏 / 入门合集建议</h2>
+            <p class="section-subtitle">Trade Paperback &middot; Omnibus &middot; DC Finest</p>
+            <div class="glass-card">
+                <div class="exhibit-grid" style="position:relative;z-index:1;">
+                    <div class="exhibit-item" data-title="DC Finest: Supergirl – The Girl of Steel">
+                        <span class="exhibit-title">DC Finest: Supergirl – The Girl of Steel</span>
+                        <span class="exhibit-note">覆盖早期经典故事 &middot; Pre-Crisis入门</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Supergirl by Sterling Gates合集">
+                        <span class="exhibit-title">Supergirl by Sterling Gates</span>
+                        <span class="exhibit-note">Vol.5高光合集</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Peter David Supergirl Vol.4全套">
+                        <span class="exhibit-title">Peter David Supergirl Vol.4全套</span>
+                        <span class="exhibit-note">虽非Kara但历史重要 &middot; 故事独特</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Woman of Tomorrow豪华版">
+                        <span class="exhibit-title">Woman of Tomorrow Omnibus/Absolute</span>
+                        <span class="exhibit-note">豪华版收藏</span>
+                    </div>
+                    <div class="exhibit-item" data-title="Vol.5 / Rebirth合集">
+                        <span class="exhibit-title">Vol.5 / Rebirth合集</span>
+                        <span class="exhibit-note">关注未来出版</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== Kryptonian Archive 统计 ==================== -->
+        <section class="mb-40" id="archiveSection">
+            <h2 class="section-title">Kryptonian Archive</h2>
+            <p class="section-subtitle">超女阅读完成度统计 &middot; 点击刊物标记已读</p>
+            <div class="glass-card">
+                <div style="position:relative;z-index:1;">
+                    <div class="archive-stats" id="archiveStats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="statTotal">0</div>
+                            <div class="stat-label">总刊数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="statRead" style="color:#FFD86B;text-shadow:0 0 20px rgba(255,216,107,0.4);">0</div>
+                            <div class="stat-label">已读</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="statUnread">0</div>
+                            <div class="stat-label">未读</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="statPercent" style="color:#B8D8F0;">0%</div>
+                            <div class="stat-label">完成率</div>
+                        </div>
+                        <div class="stat-bar-wrap">
+                            <div class="stat-bar-label">阅读进度</div>
+                            <div class="stat-bar"><div class="stat-bar-fill" id="statBarFill" style="width:0%;"></div></div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-20">
+                        <button id="resetStatsBtn" style="font-family:var(--font-serif);font-size:0.7rem;letter-spacing:0.12em;color:var(--text-muted);background:rgba(255,255,255,0.03);border:1px solid rgba(169,216,255,0.15);padding:8px 20px;border-radius:2px;cursor:pointer;transition:var(--transition-crystal);">
+                            重置所有阅读记录
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== Footer ==================== -->
+        <footer class="site-footer">
+            <p class="footer-krypton">KRYPTONIAN ARCHIVE &middot; KARA ZOR-EL READING GUIDE</p>
+            <p style="font-family:var(--font-serif);font-size:0.65rem;letter-spacing:0.12em;color:rgba(122,140,160,0.5);margin-top:6px;">
+                氪星档案馆 &middot; 收藏级超女阅读导航 &middot; 内容完整性与视觉设计同等重要
+            </p>
+        </footer>
+
+    </div><!-- /main-container -->
+
+    <script>
+        (function() {
+            // ===== Aurora Canvas =====
+            const canvas = document.getElementById('aurora-canvas');
+            const ctx = canvas.getContext('2d');
+            let auroraTime = 0;
+            let w, h;
+
+            function resizeCanvas() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            function drawAurora(timestamp) {
+                auroraTime = timestamp * 0.0003;
+                ctx.clearRect(0, 0, w, h);
+
+                // Aurora bands
+                for (let band = 0; band < 3; band++) {
+                    const bandOffset = band * 2.2;
+                    const baseY = h * (0.2 + band * 0.2);
+                    ctx.beginPath();
+                    for (let x = 0; x < w; x += 3) {
+                        const nx = x / w;
+                        const wave1 = Math.sin(nx * 5 + auroraTime * 0.7 + bandOffset) * 60;
+                        const wave2 = Math.cos(nx * 3.5 - auroraTime * 0.5 + bandOffset) * 40;
+                        const wave3 = Math.sin(nx * 7 + auroraTime * 1.1 + bandOffset) * 25;
+                        const y = baseY + wave1 + wave2 + wave3;
+                        if (x === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    const grad = ctx.createLinearGradient(0, baseY - 100, 0, baseY + 100);
+                    const alpha = 0.025 + band * 0.01;
+                    if (band === 0) {
+                        grad.addColorStop(0, `rgba(169,216,255,0)`);
+                        grad.addColorStop(0.5, `rgba(169,216,255,${alpha})`);
+                        grad.addColorStop(1, `rgba(169,216,255,0)`);
+                    } else if (band === 1) {
+                        grad.addColorStop(0, `rgba(180,220,255,0)`);
+                        grad.addColorStop(0.5, `rgba(180,220,255,${alpha * 0.8})`);
+                        grad.addColorStop(1, `rgba(180,220,255,0)`);
+                    } else {
+                        grad.addColorStop(0, `rgba(200,230,255,0)`);
+                        grad.addColorStop(0.5, `rgba(200,230,255,${alpha * 0.6})`);
+                        grad.addColorStop(1, `rgba(200,230,255,0)`);
+                    }
+                    ctx.strokeStyle = grad;
+                    ctx.lineWidth = 1.5 + band * 0.8;
+                    ctx.stroke();
+                }
+
+                // Crystal particle glints
+                for (let i = 0; i < 18; i++) {
+                    const px = (Math.sin(i * 2.7 + auroraTime * 0.4) * 0.5 + 0.5) * w;
+                    const py = (Math.cos(i * 3.1 + auroraTime * 0.35) * 0.5 + 0.5) * h;
+                    const size = 1 + Math.abs(Math.sin(i + auroraTime * 1.5)) * 2.5;
+                    const alpha = 0.15 + Math.abs(Math.sin(i * 1.3 + auroraTime)) * 0.3;
+                    ctx.beginPath();
+                    ctx.arc(px, py, size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(200,225,255,${alpha})`;
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(px, py, size * 2.5, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(169,216,255,${alpha * 0.2})`;
+                    ctx.fill();
+                }
+                requestAnimationFrame(drawAurora);
+            }
+            requestAnimationFrame(drawAurora);
+
+            // ===== Timeline Scroll Highlight =====
+            const timelineWraps = document.querySelectorAll('.timeline-dot-wrap');
+            const phaseIds = [];
+            timelineWraps.forEach(w => {
+                const href = w.getAttribute('href');
+                if (href && href.startsWith('#')) phaseIds.push(href.substring(1));
+            });
+
+            function updateTimelineHighlight() {
+                const scrollY = window.scrollY + window.innerHeight * 0.35;
+                let currentId = null;
+                const allSections = phaseIds.map(id => document.getElementById(id)).filter(Boolean);
+                for (const section of allSections) {
+                    if (section.offsetTop <= scrollY) {
+                        currentId = section.id;
+                    }
+                }
+                timelineWraps.forEach(w => {
+                    const href = w.getAttribute('href');
+                    w.classList.remove('active');
+                    if (href === '#' + currentId) w.classList.add('active');
+                });
+                // If scrolled past last phase
+                if (currentId === phaseIds[phaseIds.length - 1]) {
+                    timelineWraps.forEach(w => w.classList.remove('active'));
+                    const last = document.querySelector(`.timeline-dot-wrap[href="#${phaseIds[phaseIds.length-1]}"]`);
+                    if (last) last.classList.add('active');
+                }
+            }
+            window.addEventListener('scroll', updateTimelineHighlight, { passive: true });
+            updateTimelineHighlight();
+
+            // ===== Exhibit Click: Mark as Read =====
+            const allExhibits = document.querySelectorAll('.exhibit-item');
+            const shelfBooks = document.querySelectorAll('.shelf-book');
+            let readSet = new Set();
+
+            // Load from localStorage
+            try {
+                const stored = localStorage.getItem('sg_read_set');
+                if (stored) readSet = new Set(JSON.parse(stored));
+            } catch (e) { /* ignore */ }
+
+            function applyReadState() {
+                allExhibits.forEach(el => {
+                    const title = el.getAttribute('data-title') || el.querySelector('.exhibit-title')
+                        ?.textContent?.trim() || '';
+                    if (readSet.has(title)) el.classList.add('read');
+                    else el.classList.remove('read');
+                });
+                shelfBooks.forEach(el => {
+                    const title = el.getAttribute('data-title') || el.querySelector('.book-title')?.textContent
+                        ?.trim() || '';
+                    if (readSet.has(title)) el.style.borderColor = 'rgba(169,216,255,0.4)';
+                    else el.style.borderColor = '';
+                });
+                updateStats();
+            }
+
+            function toggleRead(title) {
+                if (!title) return;
+                if (readSet.has(title)) readSet.delete(title);
+                else readSet.add(title);
+                try { localStorage.setItem('sg_read_set', JSON.stringify([...readSet])); } catch (e) { /* ignore */ }
+                applyReadState();
+            }
+            allExhibits.forEach(el => {
+                el.addEventListener('click', () => {
+                    const title = el.getAttribute('data-title') || el.querySelector('.exhibit-title')
+                        ?.textContent?.trim() || '';
+                    toggleRead(title);
+                });
+                el.style.cursor = 'pointer';
+            });
+            shelfBooks.forEach(el => {
+                el.addEventListener('click', () => {
+                    const title = el.getAttribute('data-title') || el.querySelector('.book-title')?.textContent
+                        ?.trim() || '';
+                    toggleRead(title);
+                });
+                el.style.cursor = 'pointer';
+            });
+
+            // ===== Stats =====
+            function updateStats() {
+                const totalExhibits = allExhibits.length;
+                const totalBooks = shelfBooks.length;
+                const totalItems = totalExhibits + totalBooks;
+                let readCount = 0;
+                allExhibits.forEach(el => {
+                    const title = el.getAttribute('data-title') || el.querySelector('.exhibit-title')?.textContent
+                        ?.trim() || '';
+                    if (readSet.has(title)) readCount++;
+                });
+                shelfBooks.forEach(el => {
+                    const title = el.getAttribute('data-title') || el.querySelector('.book-title')?.textContent?.trim() ||
+                        '';
+                    if (readSet.has(title)) readCount++;
+                });
+                const unreadCount = totalItems - readCount;
+                const percent = totalItems > 0 ? Math.round((readCount / totalItems) * 100) : 0;
+
+                document.getElementById('statTotal').textContent = totalItems;
+                document.getElementById('statRead').textContent = readCount;
+                document.getElementById('statUnread').textContent = unreadCount;
+                document.getElementById('statPercent').textContent = percent + '%';
+                document.getElementById('statBarFill').style.width = percent + '%';
+            }
+
+            // Reset button
+            document.getElementById('resetStatsBtn').addEventListener('click', () => {
+                if (confirm('确定要重置所有阅读记录吗？此操作不可撤销。')) {
+                    readSet.clear();
+                    try { localStorage.removeItem('sg_read_set'); } catch (e) { /* ignore */ }
+                    applyReadState();
+                }
+            });
+
+            // Initial apply
+            applyReadState();
+
+            // ===== Smooth scroll for timeline nav =====
+            timelineWraps.forEach(w => {
+                w.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        const target = document.getElementById(href.substring(1));
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }
+                });
+            });
+
+            console.log(
+                '%c氪星档案馆 %cKryptonian Archive',
+                'color:#FFD86B;font-size:18px;font-weight:bold;',
+                'color:#A9D8FF;font-size:14px;'
+            );
+            console.log('%cSupergirl Reading Guide — Kara Zor-El', 'color:#bcc8d6;font-size:12px;');
+            console.log('%c点击刊物卡片标记已读 | 右侧时间轴导航 | 阅读进度自动保存',
+            'color:#7a8ca0;font-size:11px;');
+        })();
+    </script>
+</body>
+</html>
