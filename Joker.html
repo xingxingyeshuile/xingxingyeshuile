@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE JOKER - 刊物阅读指南 | 哥谭机密档案</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500;600&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black-abyss: #09090C;
+            --deep-purple: #2A153A;
+            --rot-green: #335A3B;
+            --blood-red: #6E1E2F;
+            --old-gold: #B89A4B;
+            --faded-paper: #D8D1C3;
+            --darker-paper: #b8a98a;
+            --ink-black: #0a0a0d;
+            --noise-gray: #3a3530;
+            --scarlet: #8B1A2B;
+            --bruise: #3D1F3D;
+            --mold: #3d5a3a;
+            --rust: #7a4a2a;
+            --archival-tape: #c4a86a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background: var(--black-abyss);
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', 'STSong', 'SimSun', 'Songti SC', serif;
+            background: var(--black-abyss);
+            color: var(--faded-paper);
+            line-height: 1.7;
+            position: relative;
+            overflow-x: hidden;
+            cursor: default;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 全局噪点层 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            background:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 1px, rgba(255, 255, 255, 0.008) 1px, rgba(255, 255, 255, 0.008) 2px);
+            opacity: 0.7;
+            mix-blend-mode: overlay;
+        }
+
+        /* 扫描线 */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9997;
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 3px,
+                    rgba(0, 0, 0, 0.015) 3px,
+                    rgba(0, 0, 0, 0.015) 6px);
+            animation: scanlineDrift 0.1s linear infinite;
+            opacity: 0.5;
+        }
+        @keyframes scanlineDrift {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(6px);
+            }
+        }
+
+        /* 粒子噪点覆盖层 */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9996;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            background-size: 200px 200px;
+            animation: noiseShift 0.5s steps(3) infinite;
+        }
+        @keyframes noiseShift {
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+            33% {
+                transform: translate(-2px, 1px);
+            }
+            66% {
+                transform: translate(1px, -2px);
+            }
+        }
+
+        /* 主容器 */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ============ HERO SECTION ============ */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            overflow: hidden;
+            border-bottom: 4px dashed var(--blood-red);
+            margin-bottom: 0;
+        }
+        .hero-bg-shape {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-8deg);
+            width: 80vw;
+            height: 80vh;
+            background: radial-gradient(ellipse at center, rgba(106, 30, 47, 0.25) 0%, transparent 70%);
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+            animation: heroPulse 4s ease-in-out infinite;
+        }
+        @keyframes heroPulse {
+            0%,
+            100% {
+                transform: translate(-50%, -50%) rotate(-8deg) scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translate(-50%, -50%) rotate(-6deg) scale(1.15);
+                opacity: 0.4;
+            }
+        }
+        .hero-bg-joker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 38vw;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 900;
+            color: rgba(184, 154, 75, 0.04);
+            pointer-events: none;
+            z-index: 0;
+            letter-spacing: -0.05em;
+            user-select: none;
+            animation: slowDrift 12s ease-in-out infinite;
+        }
+        @keyframes slowDrift {
+            0%,
+            100% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            25% {
+                transform: translate(-48%, -52%) rotate(1.5deg);
+            }
+            50% {
+                transform: translate(-52%, -49%) rotate(-1deg);
+            }
+            75% {
+                transform: translate(-49%, -51%) rotate(2deg);
+            }
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+        }
+        .hero-archival-stamp {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', 'Courier Prime', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.35em;
+            color: var(--old-gold);
+            border: 1px solid rgba(184, 154, 75, 0.5);
+            padding: 6px 18px;
+            margin-bottom: 24px;
+            transform: rotate(-1.5deg);
+            background: rgba(9, 9, 12, 0.7);
+            backdrop-filter: blur(2px);
+            position: relative;
+        }
+        .hero-archival-stamp::after {
+            content: 'DECLASSIFIED // EYES ONLY';
+            position: absolute;
+            top: -8px;
+            right: -20px;
+            font-size: 0.55rem;
+            background: var(--blood-red);
+            color: var(--faded-paper);
+            padding: 2px 8px;
+            transform: rotate(3deg);
+            letter-spacing: 0.2em;
+        }
+        .hero-main-title {
+            font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+            font-size: clamp(3.5rem, 10vw, 8rem);
+            font-weight: 900;
+            letter-spacing: 0.03em;
+            line-height: 0.9;
+            color: var(--faded-paper);
+            position: relative;
+            display: inline-block;
+            text-shadow: 4px 4px 0px rgba(110, 30, 47, 0.6), -3px -2px 0px rgba(42, 21, 58, 0.5),
+                6px -2px 0px rgba(51, 90, 59, 0.4);
+            animation: titleGlitch 8s ease-in-out infinite;
+            user-select: none;
+        }
+        @keyframes titleGlitch {
+            0%,
+            92%,
+            96%,
+            100% {
+                transform: translate(0, 0) skewX(0deg);
+                text-shadow: 4px 4px 0px rgba(110, 30, 47, 0.6), -3px -2px 0px rgba(42, 21, 58, 0.5),
+                    6px -2px 0px rgba(51, 90, 59, 0.4);
+            }
+            93% {
+                transform: translate(-6px, 3px) skewX(-3deg);
+                text-shadow: 8px -3px 0px rgba(200, 30, 50, 0.8), -6px 4px 0px rgba(60, 20, 80, 0.7),
+                    10px 5px 0px rgba(60, 120, 60, 0.5);
+            }
+            94% {
+                transform: translate(5px, -2px) skewX(2deg);
+                text-shadow: -5px 6px 0px rgba(180, 40, 60, 0.7), 4px -5px 0px rgba(50, 30, 70, 0.6),
+                    -8px -3px 0px rgba(80, 140, 70, 0.5);
+            }
+            95% {
+                transform: translate(2px, 1px) skewX(-1deg);
+            }
+        }
+        .hero-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-style: italic;
+            color: var(--old-gold);
+            letter-spacing: 0.15em;
+            margin-top: 16px;
+            position: relative;
+            display: inline-block;
+        }
+        .hero-subtitle::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background: repeating-linear-gradient(90deg,
+                    var(--blood-red) 0px,
+                    var(--blood-red) 20px,
+                    transparent 20px,
+                    transparent 35px,
+                    var(--old-gold) 35px,
+                    var(--old-gold) 45px,
+                    transparent 45px,
+                    transparent 55px);
+        }
+        .hero-tagline {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.5em;
+            color: rgba(216, 209, 195, 0.5);
+            margin-top: 30px;
+            text-transform: uppercase;
+        }
+        .hero-tear {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to bottom,
+                    transparent 0%,
+                    var(--black-abyss) 30%,
+                    var(--black-abyss) 100%);
+            z-index: 5;
+            clip-path: polygon(0% 0%, 8% 35%, 22% 8%, 38% 40%, 55% 5%, 70% 30%, 85% 10%, 100% 38%, 100% 100%, 0% 100%);
+        }
+        .hero-card-suit {
+            position: absolute;
+            font-size: 6rem;
+            opacity: 0.06;
+            pointer-events: none;
+            z-index: 0;
+            color: var(--old-gold);
+            animation: suitFloat 7s ease-in-out infinite;
+        }
+        .hero-card-suit:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+        .hero-card-suit:nth-child(2) {
+            top: 15%;
+            right: 8%;
+            animation-delay: -2s;
+            font-size: 8rem;
+        }
+        .hero-card-suit:nth-child(3) {
+            bottom: 20%;
+            left: 12%;
+            animation-delay: -4s;
+            font-size: 5rem;
+        }
+        @keyframes suitFloat {
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+            66% {
+                transform: translateY(10px) rotate(-3deg);
+            }
+        }
+
+        /* ============ SECTION HEADERS ============ */
+        .section-header {
+            position: relative;
+            margin: 50px 0 30px;
+            padding: 20px 0;
+            border-top: 1px solid rgba(184, 154, 75, 0.3);
+            border-bottom: 1px solid rgba(110, 30, 47, 0.4);
+        }
+        .section-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            color: var(--faded-paper);
+            position: relative;
+            display: inline-block;
+            text-shadow: 2px 2px 0px rgba(110, 30, 47, 0.5);
+        }
+        .section-header .archive-id {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.4em;
+            color: var(--old-gold);
+            position: absolute;
+            top: -10px;
+            right: 0;
+            transform: rotate(-2deg);
+            background: var(--black-abyss);
+            padding: 3px 10px;
+            border: 1px solid rgba(184, 154, 75, 0.3);
+        }
+        .section-header .redacted-bar {
+            display: inline-block;
+            background: var(--blood-red);
+            color: var(--faded-paper);
+            padding: 2px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            margin-left: 10px;
+            transform: rotate(1deg);
+            position: relative;
+            top: -8px;
+        }
+
+        /* ============ PROFILE CARD ============ */
+        .profile-card {
+            position: relative;
+            background: rgba(20, 15, 25, 0.8);
+            border: 2px solid rgba(184, 154, 75, 0.4);
+            padding: 35px 30px;
+            margin: 40px 0;
+            transform: rotate(-0.8deg);
+            box-shadow: 15px 15px 0px rgba(0, 0, 0, 0.5), inset 0 0 80px rgba(110, 30, 47, 0.08);
+            overflow: visible;
+        }
+        .profile-card::before {
+            content: 'GCPD ARCHIVE — CASE FILE #4479-J';
+            position: absolute;
+            top: -13px;
+            left: 25px;
+            background: var(--blood-red);
+            color: var(--faded-paper);
+            padding: 4px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.25em;
+            z-index: 3;
+        }
+        .profile-card::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            right: 15px;
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(184, 154, 75, 0.25);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .profile-field {
+            position: relative;
+            padding: 12px 14px;
+            background: rgba(9, 9, 12, 0.5);
+            border: 1px dashed rgba(184, 154, 75, 0.25);
+            transform: rotate(var(--rot, 0deg));
+            transition: all 0.3s ease;
+        }
+        .profile-field:nth-child(1) {
+            --rot: -1.5deg;
+        }
+        .profile-field:nth-child(2) {
+            --rot: 1deg;
+        }
+        .profile-field:nth-child(3) {
+            --rot: -0.5deg;
+        }
+        .profile-field:nth-child(4) {
+            --rot: 2deg;
+        }
+        .profile-field:nth-child(5) {
+            --rot: -0.8deg;
+        }
+        .profile-field:nth-child(6) {
+            --rot: 1.3deg;
+        }
+        .profile-field:hover {
+            transform: rotate(0deg) translateY(-3px);
+            border-color: var(--old-gold);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+        }
+        .profile-field .field-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.3em;
+            color: var(--old-gold);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .profile-field .field-value {
+            font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--faded-paper);
+            letter-spacing: 0.03em;
+        }
+        .profile-field .field-value.danger {
+            color: var(--blood-red);
+            font-weight: 900;
+            font-size: 1.4rem;
+            text-shadow: 0 0 20px rgba(110, 30, 47, 0.6);
+        }
+        .tape-mark {
+            position: absolute;
+            width: 70px;
+            height: 22px;
+            background: rgba(196, 168, 106, 0.45);
+            transform: rotate(-15deg);
+            pointer-events: none;
+            z-index: 2;
+            border-radius: 2px;
+            opacity: 0.7;
+        }
+        .tape-mark.top-right {
+            top: -8px;
+            right: -15px;
+            transform: rotate(12deg);
+        }
+        .tape-mark.bottom-left {
+            bottom: -10px;
+            left: -10px;
+            transform: rotate(-20deg);
+            width: 55px;
+        }
+
+        /* ============ TIMELINE ============ */
+        .timeline-section {
+            position: relative;
+            padding: 40px 0;
+            margin: 50px 0;
+        }
+        .timeline-line {
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: repeating-linear-gradient(to bottom,
+                    var(--old-gold) 0px,
+                    var(--old-gold) 15px,
+                    transparent 15px,
+                    transparent 30px,
+                    var(--blood-red) 30px,
+                    var(--blood-red) 38px,
+                    transparent 38px,
+                    transparent 50px);
+            z-index: 0;
+            opacity: 0.5;
+        }
+        .timeline-node {
+            position: relative;
+            margin-left: 60px;
+            margin-bottom: 35px;
+            padding: 18px 22px;
+            background: rgba(20, 15, 28, 0.75);
+            border-left: 3px solid var(--old-gold);
+            transform: rotate(var(--tilt, 0deg));
+            transition: all 0.35s ease;
+            cursor: default;
+            z-index: 1;
+        }
+        .timeline-node:nth-child(odd) {
+            --tilt: -1deg;
+        }
+        .timeline-node:nth-child(even) {
+            --tilt: 1.2deg;
+        }
+        .timeline-node:hover {
+            transform: rotate(0deg) translateX(6px);
+            border-left-color: var(--blood-red);
+            background: rgba(30, 18, 22, 0.85);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7);
+        }
+        .timeline-node .node-era {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.35em;
+            color: var(--old-gold);
+            text-transform: uppercase;
+        }
+        .timeline-node .node-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--faded-paper);
+            margin: 4px 0;
+        }
+        .timeline-node .node-desc {
+            font-size: 0.8rem;
+            color: rgba(216, 209, 195, 0.7);
+            font-style: italic;
+        }
+        .timeline-gap {
+            margin-left: 60px;
+            padding: 25px 0;
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: rgba(110, 30, 47, 0.5);
+            letter-spacing: 0.2em;
+            animation: gapFlicker 1.5s ease-in-out infinite;
+            user-select: none;
+        }
+        @keyframes gapFlicker {
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+            50% {
+                opacity: 0.8;
+                text-shadow: 0 0 30px rgba(110, 30, 47, 0.7);
+            }
+        }
+
+        /* ============ COMIC CARDS ============ */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
+            position: relative;
+        }
+        .comic-card {
+            position: relative;
+            background: linear-gradient(160deg, rgba(25, 18, 30, 0.9) 0%, rgba(15, 10, 18, 0.95) 100%);
+            border: 1px solid rgba(184, 154, 75, 0.3);
+            padding: 22px 18px;
+            transform: rotate(var(--card-rot, 0deg));
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            cursor: pointer;
+            overflow: visible;
+            box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.4), inset 0 0 40px rgba(110, 30, 47, 0.05);
+            clip-path: polygon(0% 0%, 100% 0%, 98% 96%, 2% 100%, 0% 98%);
+        }
+        .comic-card:nth-child(1) {
+            --card-rot: -2deg;
+        }
+        .comic-card:nth-child(2) {
+            --card-rot: 1.5deg;
+        }
+        .comic-card:nth-child(3) {
+            --card-rot: -0.8deg;
+        }
+        .comic-card:nth-child(4) {
+            --card-rot: 2.2deg;
+        }
+        .comic-card:nth-child(5) {
+            --card-rot: -1.3deg;
+        }
+        .comic-card:nth-child(6) {
+            --card-rot: 0.6deg;
+        }
+        .comic-card:nth-child(7) {
+            --card-rot: -2.5deg;
+        }
+        .comic-card:nth-child(8) {
+            --card-rot: 1.8deg;
+        }
+        .comic-card:hover {
+            transform: rotate(0deg) translateY(-8px) scale(1.03);
+            border-color: var(--old-gold);
+            box-shadow: 15px 20px 35px rgba(0, 0, 0, 0.7), 0 0 60px rgba(184, 154, 75, 0.15);
+            z-index: 10;
+        }
+        .comic-card .card-tier {
+            position: absolute;
+            top: -14px;
+            right: 15px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.4em;
+            padding: 4px 12px;
+            color: #fff;
+            z-index: 3;
+            font-weight: 700;
+            transform: rotate(2deg);
+        }
+        .tier-s {
+            background: var(--blood-red);
+        }
+        .tier-a {
+            background: #8B3A1A;
+        }
+        .tier-b {
+            background: var(--deep-purple);
+        }
+        .tier-black {
+            background: #1a1a1a;
+            border: 1px solid var(--old-gold);
+            color: var(--old-gold);
+        }
+        .comic-card .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--faded-paper);
+            margin-bottom: 6px;
+            letter-spacing: 0.03em;
+            line-height: 1.2;
+            padding-right: 50px;
+        }
+        .comic-card .card-issue {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--old-gold);
+            letter-spacing: 0.2em;
+            margin-bottom: 10px;
+        }
+        .comic-card .card-desc {
+            font-size: 0.8rem;
+            color: rgba(216, 209, 195, 0.75);
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+        .comic-card .card-meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.15em;
+            color: rgba(184, 154, 75, 0.7);
+        }
+        .chaos-bar-wrap {
+            margin-top: 12px;
+            position: relative;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+            overflow: visible;
+        }
+        .chaos-bar-fill {
+            height: 100%;
+            background: repeating-linear-gradient(90deg,
+                    var(--blood-red) 0px,
+                    var(--blood-red) 8px,
+                    var(--deep-purple) 8px,
+                    var(--deep-purple) 14px,
+                    var(--old-gold) 14px,
+                    var(--old-gold) 18px);
+            border-radius: 2px;
+            position: relative;
+            transition: width 0.6s ease;
+        }
+        .chaos-bar-fill::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: -3px;
+            width: 14px;
+            height: 14px;
+            background: var(--blood-red);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(110, 30, 47, 0.8);
+        }
+        .sanity-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.25em;
+            color: rgba(216, 209, 195, 0.5);
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        /* ============ QUOTE WALL ============ */
+        .quote-wall {
+            position: relative;
+            padding: 50px 20px;
+            margin: 50px 0;
+            overflow: hidden;
+            border-top: 2px solid rgba(110, 30, 47, 0.5);
+            border-bottom: 2px solid rgba(110, 30, 47, 0.5);
+            background: rgba(15, 8, 20, 0.6);
+        }
+        .quote-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        .quote-fragment {
+            position: relative;
+            padding: 18px;
+            background: rgba(20, 15, 25, 0.7);
+            border: 1px dashed rgba(184, 154, 75, 0.2);
+            transform: rotate(var(--q-rot, 0deg));
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            font-style: italic;
+            color: var(--faded-paper);
+            letter-spacing: 0.04em;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .quote-fragment:nth-child(1) {
+            --q-rot: -2deg;
+        }
+        .quote-fragment:nth-child(2) {
+            --q-rot: 1.5deg;
+        }
+        .quote-fragment:nth-child(3) {
+            --q-rot: -0.5deg;
+            font-size: 1.6rem;
+            font-weight: 900;
+        }
+        .quote-fragment:nth-child(4) {
+            --q-rot: 2deg;
+        }
+        .quote-fragment:nth-child(5) {
+            --q-rot: -1.2deg;
+        }
+        .quote-fragment:hover {
+            transform: rotate(0deg) scale(1.06);
+            border-color: var(--old-gold);
+            background: rgba(30, 18, 25, 0.85);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            z-index: 5;
+        }
+        .quote-fragment .redacted {
+            background: #1a1a1a;
+            color: #1a1a1a;
+            padding: 2px 8px;
+            user-select: none;
+            transition: color 0.3s;
+        }
+        .quote-fragment:hover .redacted {
+            color: var(--blood-red);
+            background: transparent;
+            text-decoration: line-through;
+            text-decoration-color: var(--blood-red);
+        }
+        .quote-scribble {
+            position: absolute;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.7rem;
+            color: rgba(184, 154, 75, 0.5);
+            transform: rotate(-25deg);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ============ FOOTER ============ */
+        .footer-section {
+            position: relative;
+            padding: 60px 30px;
+            text-align: center;
+            border-top: 3px solid var(--blood-red);
+            margin-top: 60px;
+            background: rgba(10, 5, 15, 0.8);
+            overflow: hidden;
+        }
+        .footer-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.015) 2px,
+                    rgba(255, 255, 255, 0.015) 4px);
+            pointer-events: none;
+            z-index: 0;
+            animation: staticFlicker 0.3s steps(1) infinite;
+            opacity: 0.4;
+        }
+        @keyframes staticFlicker {
+            0%,
+            100% {
+                opacity: 0.35;
+            }
+            33% {
+                opacity: 0.6;
+            }
+            66% {
+                opacity: 0.2;
+            }
+        }
+        .footer-text {
+            position: relative;
+            z-index: 1;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            color: var(--faded-paper);
+            text-shadow: 3px 3px 0px rgba(110, 30, 47, 0.7);
+            animation: footerGlitch 6s ease-in-out infinite;
+        }
+        @keyframes footerGlitch {
+            0%,
+            94%,
+            100% {
+                transform: translateX(0);
+            }
+            95% {
+                transform: translateX(-10px);
+            }
+            96% {
+                transform: translateX(8px);
+            }
+            97% {
+                transform: translateX(-4px);
+            }
+        }
+        .footer-sub {
+            position: relative;
+            z-index: 1;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.5em;
+            color: rgba(216, 209, 195, 0.4);
+            margin-top: 15px;
+        }
+
+        /* ============ NAV DOTS ============ */
+        .nav-dots {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 9990;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(184, 154, 75, 0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(184, 154, 75, 0.3);
+        }
+        .nav-dot:hover,
+        .nav-dot.active {
+            background: var(--blood-red);
+            box-shadow: 0 0 15px rgba(110, 30, 47, 0.8);
+            transform: scale(1.6);
+        }
+        .nav-dot .dot-label {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.2em;
+            color: var(--old-gold);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .nav-dot:hover .dot-label {
+            opacity: 1;
+        }
+
+        /* ============ GLITCH FLASH OVERLAY ============ */
+        .glitch-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.03);
+            opacity: 0;
+            transition: opacity 0.05s;
+        }
+        .glitch-flash.trigger {
+            opacity: 1;
+            transition: opacity 0s;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .timeline-node {
+                margin-left: 40px;
+                padding: 14px 16px;
+            }
+            .timeline-line {
+                left: 15px;
+            }
+            .hero-main-title {
+                font-size: clamp(2.5rem, 8vw, 5rem);
+            }
+            .nav-dots {
+                right: 8px;
+                gap: 8px;
+            }
+            .nav-dot {
+                width: 5px;
+                height: 5px;
+            }
+            .quote-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .section-header h2 {
+                font-size: 1.6rem;
+            }
+            .hero-bg-joker {
+                font-size: 50vw;
+            }
+        }
+        @media (max-width: 480px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            .quote-grid {
+                grid-template-columns: 1fr;
+            }
+            .comic-card {
+                transform: rotate(0deg) !important;
+            }
+            .profile-field {
+                transform: rotate(0deg) !important;
+            }
+            .hero-section {
+                min-height: 70vh;
+                padding: 30px 10px;
+            }
+        }
+
+        /* ============ PRINT / TYPEWRITER EFFECTS ============ */
+        .typewriter-smudge {
+            display: inline-block;
+            position: relative;
+        }
+        .typewriter-smudge::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(110, 30, 47, 0.4);
+            filter: blur(4px);
+        }
+        .handwritten-note {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            color: var(--blood-red);
+            font-size: 0.75rem;
+            transform: rotate(-8deg);
+            display: inline-block;
+            position: relative;
+            letter-spacing: 0.05em;
+        }
+        .strikethrough-red {
+            text-decoration: line-through;
+            text-decoration-color: rgba(200, 40, 40, 0.7);
+            text-decoration-thickness: 2px;
+            position: relative;
+        }
+
+        /* ============ CHROMATIC ABERRATION TEXT ============ */
+        .chromatic-text {
+            position: relative;
+            display: inline-block;
+        }
+        .chromatic-text::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 2px;
+            left: -3px;
+            color: rgba(255, 60, 80, 0.5);
+            z-index: -1;
+            pointer-events: none;
+            animation: chromaDrift 3s ease-in-out infinite;
+        }
+        .chromatic-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: -2px;
+            left: 3px;
+            color: rgba(80, 180, 200, 0.5);
+            z-index: -1;
+            pointer-events: none;
+            animation: chromaDrift 3s ease-in-out infinite reverse;
+        }
+        @keyframes chromaDrift {
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(1px, -1px);
+            }
+        }
+
+        /* 胶带装饰 */
+        .tape-piece {
+            position: absolute;
+            width: 55px;
+            height: 18px;
+            background: rgba(210, 190, 140, 0.4);
+            transform: rotate(-12deg);
+            pointer-events: none;
+            z-index: 4;
+            border-radius: 1px;
+            opacity: 0.65;
+            backdrop-filter: blur(1px);
+        }
+
+        /* 撕裂边clip-path工具类 */
+        .torn-edge {
+            clip-path: polygon(0% 0%, 100% 0%, 98% 3%, 100% 5%, 97% 8%, 99% 12%, 96% 15%, 100% 20%, 95% 25%, 98% 30%, 100% 35%, 94% 40%, 97% 45%, 100% 50%, 93% 55%, 98% 60%, 100% 65%, 92% 70%, 96% 75%, 100% 80%, 91% 85%, 97% 90%, 100% 95%, 90% 98%, 100% 100%, 0% 100%);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="noise-overlay"></div>
+    <div class="glitch-flash" id="glitchFlash"></div>
+
+    <!-- 导航点 -->
+    <div class="nav-dots" id="navDots">
+        <div class="nav-dot active" data-target="hero"><span class="dot-label">HERO</span></div>
+        <div class="nav-dot" data-target="profile"><span class="dot-label">PROFILE</span></div>
+        <div class="nav-dot" data-target="timeline"><span class="dot-label">TIMELINE</span></div>
+        <div class="nav-dot" data-target="cards"><span class="dot-label">ARCHIVE</span></div>
+        <div class="nav-dot" data-target="quotes"><span class="dot-label">QUOTES</span></div>
+        <div class="nav-dot" data-target="footer"><span class="dot-label">END</span></div>
+    </div>
+
+    <div class="main-container">
+
+        <!-- ==================== HERO ==================== -->
+        <section class="hero-section" id="hero">
+            <div class="hero-bg-shape"></div>
+            <div class="hero-bg-joker">HA</div>
+            <span class="hero-card-suit" style="top:8%;left:4%;">♠</span>
+            <span class="hero-card-suit" style="top:12%;right:6%;">♦</span>
+            <span class="hero-card-suit" style="bottom:18%;left:10%;">♣</span>
+            <span class="hero-card-suit" style="bottom:25%;right:12%;font-size:7rem;">♥</span>
+            <div class="hero-content">
+                <div class="hero-archival-stamp">GOTHAM ARCHIVES — CLASSIFIED</div>
+                <h1 class="hero-main-title chromatic-text" data-text="THE JOKER">THE JOKER</h1>
+                <p class="hero-subtitle">ONE BAD DAY // COMPLETE READING GUIDE</p>
+                <p class="hero-tagline">⚠ ARCHIVE CORRUPTED — PROCEED WITH CAUTION ⚠</p>
+                <p style="font-family:'IBM Plex Mono',monospace;font-size:0.55rem;color:rgba(184,154,75,0.45);margin-top:20px;letter-spacing:0.3em;">
+                    FILE ID: GCPD-4479-J // LAST UPDATED: [REDACTED]
+                </p>
+            </div>
+            <div class="hero-tear"></div>
+            <div class="tape-piece" style="top:12%;left:15%;transform:rotate(-18deg);width:70px;"></div>
+            <div class="tape-piece" style="top:20%;right:10%;transform:rotate(22deg);width:50px;height:16px;"></div>
+        </section>
+
+        <!-- ==================== PROFILE ==================== -->
+        <section class="section-header" id="profile">
+            <span class="archive-id">REF: PROFILE-001</span>
+            <h2>📋 角色机密档案 <span class="redacted-bar">DECLASSIFIED</span></h2>
+        </section>
+        <div class="profile-card">
+            <div class="tape-mark top-right"></div>
+            <div class="tape-mark bottom-left"></div>
+            <div class="profile-grid">
+                <div class="profile-field">
+                    <span class="field-label">Alias / 代号</span>
+                    <span class="field-value">The Joker</span>
+                </div>
+                <div class="profile-field">
+                    <span class="field-label">First Appearance</span>
+                    <span class="field-value">Batman #1 (1940)</span>
+                </div>
+                <div class="profile-field">
+                    <span class="field-label">Main Enemies</span>
+                    <span class="field-value">Batman / Bat-Family / GCPD</span>
+                </div>
+                <div class="profile-field">
+                    <span class="field-label">Status</span>
+                    <span class="field-value" style="color:#B89A4B;">ACTIVE // UNCONTAINED</span>
+                </div>
+                <div class="profile-field">
+                    <span class="field-label">Chaos Level</span>
+                    <span class="field-value danger">MAXIMUM // ∞</span>
+                </div>
+                <div class="profile-field">
+                    <span class="field-label">Sanity Index</span>
+                    <span class="field-value danger">CRITICAL — UNMEASURABLE</span>
+                </div>
+            </div>
+            <div style="margin-top:18px;font-family:'IBM Plex Mono',monospace;font-size:0.5rem;color:rgba(184,154,75,0.5);text-align:right;letter-spacing:0.2em;">
+                ⚠ FILE TAMPERED — MULTIPLE UNAUTHORIZED EDITS DETECTED
+            </div>
+        </div>
+
+        <!-- ==================== TIMELINE ==================== -->
+        <section class="section-header" id="timeline">
+            <span class="archive-id">REF: CHRONO-002</span>
+            <h2>⏳ 断裂时间线 <span class="redacted-bar">RECONSTRUCTED</span></h2>
+        </section>
+        <div class="timeline-section">
+            <div class="timeline-line"></div>
+            <div class="timeline-node">
+                <span class="node-era">● 黄金时代 1940</span>
+                <div class="node-title">Batman #1 — 初登场</div>
+                <div class="node-desc">小丑首次亮相，奠定最早的连环杀手/疯狂罪犯形象。</div>
+            </div>
+            <div class="timeline-node">
+                <span class="node-era">● 青铜时代 1973</span>
+                <div class="node-title">Batman #251 — 现代小丑起点</div>
+                <div class="node-desc">Denny O'Neil & Neal Adams 重塑小丑，回归残忍杀人狂。</div>
+            </div>
+            <div class="timeline-gap">— HAHAHA — [SIGNAL LOST] —</div>
+            <div class="timeline-node">
+                <span class="node-era">● 后危机时代 1988-1989</span>
+                <div class="node-title">The Killing Joke + A Death in the Family</div>
+                <div class="node-desc">芭芭拉中枪 & 杰森之死，深刻影响后续所有改编。</div>
+            </div>
+            <div class="timeline-node">
+                <span class="node-era">● New 52 2012-2014</span>
+                <div class="node-title">Death of the Family + Endgame</div>
+                <div class="node-desc">Scott Snyder 时代，21世纪最令人不安的小丑故事。</div>
+            </div>
+            <div class="timeline-gap">— HA — [ARCHIVE GAP] — HAHA —</div>
+            <div class="timeline-node">
+                <span class="node-era">● Rebirth / Infinite Frontier 2020-2024</span>
+                <div class="node-title">Joker War → The Joker (2021) → Year One</div>
+                <div class="node-desc">James Tynion IV 重大事件 + 戈登追捕 + 最新起源揭秘。</div>
+            </div>
+        </div>
+
+        <!-- ==================== COMIC CARDS ==================== -->
+        <section class="section-header" id="cards">
+            <span class="archive-id">REF: ARCHIVE-003</span>
+            <h2>🃏 刊物档案卡片 <span class="redacted-bar">EVIDENCE LOCKER</span></h2>
+        </section>
+
+        <!-- S级 -->
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--blood-red);margin:30px 0 10px;letter-spacing:0.05em;text-shadow:2px 2px 0 rgba(0,0,0,0.6);">
+            ◆ S级 — 核心必读</h3>
+        <div class="cards-grid">
+            <!-- Card 1 -->
+            <div class="comic-card">
+                <span class="card-tier tier-s">S-TIER</span>
+                <div class="card-title">Batman #1</div>
+                <div class="card-issue">1940 · 黄金时代</div>
+                <div class="card-desc">小丑首次登场，奠定最早的连环杀手/疯狂罪犯形象。历史的开端。</div>
+                <div class="card-meta"><span>📖 Batman #1</span><span>🎭 初登场</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:85%;"></div></div>
+                <div class="sanity-label">SANITY DAMAGE: ████████░░ 85%</div>
+            </div>
+            <!-- Card 2 -->
+            <div class="comic-card">
+                <span class="card-tier tier-s">S-TIER</span>
+                <div class="card-title">The Joker's Five-Way Revenge!</div>
+                <div class="card-issue">1973 · Batman #251</div>
+                <div class="card-desc">O'Neil & Adams 重塑小丑，从搞笑罪犯回归残忍杀人狂。现代小丑起点。</div>
+                <div class="card-meta"><span>📖 Batman #251</span><span>🔄 重塑经典</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:90%;"></div></div>
+                <div class="sanity-label">SANITY DAMAGE: █████████░ 90%</div>
+            </div>
+            <!-- Card 3 -->
+            <div class="comic-card">
+                <span class="card-tier tier-s">S-TIER</span>
+                <div class="card-title">The Killing Joke</div>
+                <div class="card-issue">1988 · Graphic Novel</div>
+                <div class="card-desc">Alan Moore & Brian Bolland。芭芭拉中枪、"一个糟糕的日子"理论、红头罩起源。</div>
+                <div class="card-meta"><span>📖 GN</span><span>✍️ Moore/Bolland</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:95%;"></div></div>
+                <div class="sanity-label">SANITY DAMAGE: ██████████ 95%</div>
+            </div>
+            <!-- Card 4 -->
+            <div class="comic-card">
+                <span class="card-tier tier-s">S-TIER</span>
+                <div class="card-title">A Death in the Family</div>
+                <div class="card-issue">1988 · Batman #426–429</div>
+                <div class="card-desc">杰森·托德之死，小丑走向国际恐怖犯罪。经典情感冲击故事。</div>
+                <div class="card-meta"><span>📖 #426-429</span><span>💀 杰森之死</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:88%;"></div></div>
+                <div class="sanity-label">SANITY DAMAGE: ████████░░ 88%</div>
+            </div>
+            <!-- Card 5 -->
+            <div class="comic-card">
+                <span class="card-tier tier-s">S-TIER</span>
+                <div class="card-title">Arkham Asylum</div>
+                <div class="card-issue">1989 · Graphic Novel</div>
+                <div class="card-desc">Grant Morrison 最文学化、心理最深的小丑诠释。大量影视作品借鉴。</div>
+                <div class="card-meta"><span>📖 GN</span><span>🧠 Morrison</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:93%;"></div></div>
+                <div class="sanity-label">SANITY DAMAGE: █████████░ 93%</div>
+            </div>
+            <!-- Card 6 -->
+            <div class="comic-card">
+                <span class="card-tier tier-s">S-TIER</span>
+                <div class="card-title">The Man Who Laughs</div>
+                <div class="card-issue">2005 · Graphic Novel</div>
+                <div class="card-desc">现代版首次重大交锋，常被视为《Year One》直接续篇与最佳入门之一。</div>
+                <div class="card-meta"><span>📖 GN</span><span>🚪 最佳入门</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:82%;"></div></div>
+                <div class="sanity-label">SANITY DAMAGE: ████████░░ 82%</div>
+            </div>
+        </div>
+
+        <!-- A级 -->
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#B89A4B;margin:40px 0 10px;letter-spacing:0.05em;text-shadow:2px 2px 0 rgba(0,0,0,0.6);">
+            ◆ A级 — 重要剧情</h3>
+        <div class="cards-grid">
+            <div class="comic-card">
+                <span class="card-tier tier-a">A-TIER</span>
+                <div class="card-title">Joker: Devil's Advocate</div>
+                <div class="card-issue">1996</div>
+                <div class="card-desc">小丑被判死刑，蝙蝠侠被迫为其辩护证明清白。经典角色深度研究。</div>
+                <div class="card-meta"><span>📖 Oneshot</span><span>⚖️ 法庭剧</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:75%;"></div></div>
+                <div class="sanity-label">CHAOS IMPACT: ███████░░░ 75%</div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-a">A-TIER</span>
+                <div class="card-title">Joker: Last Laugh</div>
+                <div class="card-issue">2001 · Miniseries</div>
+                <div class="card-desc">小丑自以为将死，引发DC宇宙大规模混乱，影响后续杰森与提姆剧情。</div>
+                <div class="card-meta"><span>📖 迷你系列</span><span>🌍 大事件</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:80%;"></div></div>
+                <div class="sanity-label">CHAOS IMPACT: ████████░░ 80%</div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-a">A-TIER</span>
+                <div class="card-title">Emperor Joker</div>
+                <div class="card-issue">2000 · Crossover</div>
+                <div class="card-desc">小丑获得近乎神级力量，史上最疯狂的小丑故事之一。超人线完整阅读。</div>
+                <div class="card-meta"><span>📖 多刊联动</span><span>👑 神级小丑</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:97%;"></div></div>
+                <div class="sanity-label">CHAOS IMPACT: ██████████ 97%</div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-a">A-TIER</span>
+                <div class="card-title">Death of the Family</div>
+                <div class="card-issue">2012 · Batman Vol.2 #13-17</div>
+                <div class="card-desc">New 52代表作，小丑回归并带来极致恐怖。21世纪最令人不安的故事之一。</div>
+                <div class="card-meta"><span>📖 #13-17</span><span>🔪 极致恐怖</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:91%;"></div></div>
+                <div class="sanity-label">CHAOS IMPACT: █████████░ 91%</div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-a">A-TIER</span>
+                <div class="card-title">Endgame</div>
+                <div class="card-issue">2014 · Batman Vol.2 #35-40</div>
+                <div class="card-desc">Scott Snyder时代高潮，小丑与蝙蝠侠的"终局之战"。</div>
+                <div class="card-meta"><span>📖 #35-40</span><span>🏁 终局之战</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:94%;"></div></div>
+                <div class="sanity-label">CHAOS IMPACT: █████████░ 94%</div>
+            </div>
+        </div>
+
+        <!-- A+级 -->
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--rot-green);margin:40px 0 10px;letter-spacing:0.05em;text-shadow:2px 2px 0 rgba(0,0,0,0.6);">
+            ◆ A+级 — 现代连续剧情</h3>
+        <div class="cards-grid">
+            <div class="comic-card">
+                <span class="card-tier tier-a">A+</span>
+                <div class="card-title">Joker War</div>
+                <div class="card-issue">2020 · Batman Vol.3 #95-100</div>
+                <div class="card-desc">James Tynion IV时代重大事件，小丑对Gotham的全面战争。</div>
+                <div class="card-meta"><span>📖 #95-100</span><span>⚔️ 全面战争</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:89%;"></div></div>
+                <div class="sanity-label">CHAOS IMPACT: ████████░░ 89%</div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-a">A+</span>
+                <div class="card-title">The Joker (2021)</div>
+                <div class="card-issue">2021 · #1-15 + Annual</div>
+                <div class="card-desc">以詹姆斯·戈登为主视角追捕小丑，主线延续Joker War余波。</div>
+                <div class="card-meta"><span>📖 #1-15</span><span>🔍 戈登视角</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:83%;"></div></div>
+                <div class="sanity-label">CHAOS IMPACT: ████████░░ 83%</div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-a">A+</span>
+                <div class="card-title">The Man Who Stopped Laughing</div>
+                <div class="card-issue">2022-2024 · #1-12</div>
+                <div class="card-desc">2021系列直接后续，小丑离开Gotham并引发更大范围混乱。</div>
+                <div class="card-meta"><span>📖 #1-12</span><span>🌐 全球混乱</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:86%;"></div></div>
+                <div class="sanity-label">CHAOS IMPACT: ████████░░ 86%</div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-a">A+</span>
+                <div class="card-title">Joker: Year One</div>
+                <div class="card-issue">2024 · Batman #142-144</div>
+                <div class="card-desc">Dawn of DC时期新起源/揭秘故事，解决部分长期谜团（Three Jokers相关）。</div>
+                <div class="card-meta"><span>📖 #142-144</span><span>🔓 起源揭秘</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:88%;"></div></div>
+                <div class="sanity-label">CHAOS IMPACT: ████████░░ 88%</div>
+            </div>
+        </div>
+
+        <!-- B级 -->
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--deep-purple);margin:40px 0 10px;letter-spacing:0.05em;text-shadow:2px 2px 0 rgba(0,0,0,0.6);">
+            ◆ B级 — 经典单篇与支线</h3>
+        <div class="cards-grid">
+            <div class="comic-card">
+                <span class="card-tier tier-b">B-TIER</span>
+                <div class="card-title">Detective Comics #168</div>
+                <div class="card-issue">1951</div>
+                <div class="card-desc">《红头罩之谜》——最早的小丑起源故事。</div>
+                <div class="card-meta"><span>📖 Tec #168</span><span>🎭 最早起源</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:60%;"></div></div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-b">B-TIER</span>
+                <div class="card-title">The Laughing Fish</div>
+                <div class="card-issue">1978 · Tec #475-476</div>
+                <div class="card-desc">Joker用毒药让鱼长出自己的笑脸，试图"商标"Gotham。幽默+恐怖结合极佳。</div>
+                <div class="card-meta"><span>📖 Tec #475-476</span><span>🐟 经典</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:68%;"></div></div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-b">B-TIER</span>
+                <div class="card-title">Gotham Central: Soft Targets</div>
+                <div class="card-issue">2003 · #12-15</div>
+                <div class="card-desc">从Gotham警察视角看Joker的恐怖袭击，极具现实感和压迫力。</div>
+                <div class="card-meta"><span>📖 #12-15</span><span>👮 警察视角</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:72%;"></div></div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-b">B-TIER</span>
+                <div class="card-title">Detective Comics #826</div>
+                <div class="card-issue">2006 · "Slayride"</div>
+                <div class="card-desc">圣诞节恐怖故事，Paul Dini执笔。节日与恐惧的完美结合。</div>
+                <div class="card-meta"><span>📖 Tec #826</span><span>🎄 圣诞恐怖</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:65%;"></div></div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-b">B-TIER</span>
+                <div class="card-title">Batman: Lovers & Madmen</div>
+                <div class="card-issue">Batman Confidential #7-12</div>
+                <div class="card-desc">早期现代Batman与Joker相遇的另一版本，心理深度不错。</div>
+                <div class="card-meta"><span>📖 #7-12</span><span>🧠 心理深度</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:62%;"></div></div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-b">B-TIER</span>
+                <div class="card-title">War of Jokes and Riddles</div>
+                <div class="card-issue">Batman Vol.3 #25-32</div>
+                <div class="card-desc">Tom King时代。Joker与Riddler争夺"最危险罪犯"地位。</div>
+                <div class="card-meta"><span>📖 #25-32</span><span>🃏 vs ❓</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:78%;"></div></div>
+            </div>
+        </div>
+
+        <!-- 黑标 -->
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--old-gold);margin:40px 0 10px;letter-spacing:0.05em;text-shadow:2px 2px 0 rgba(0,0,0,0.6);">
+            ◆ 黑标 / Elseworlds — 独立宇宙精品</h3>
+        <div class="cards-grid">
+            <div class="comic-card">
+                <span class="card-tier tier-black">BLACK LABEL</span>
+                <div class="card-title">Joker (2008)</div>
+                <div class="card-issue">Azzarello & Bermejo</div>
+                <div class="card-desc">犯罪电影风格，最写实残酷的小丑。Lee Bermejo画风震撼。</div>
+                <div class="card-meta"><span>📖 GN</span><span>🎬 写实犯罪</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:92%;"></div></div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-black">BLACK LABEL</span>
+                <div class="card-title">Joker: Killer Smile</div>
+                <div class="card-issue">Lemire & Sorrentino</div>
+                <div class="card-desc">心理惊悚，聚焦Arkham医生视角。层层深入的心理恐怖。</div>
+                <div class="card-meta"><span>📖 GN</span><span>🩺 医生视角</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:84%;"></div></div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-black">BLACK LABEL</span>
+                <div class="card-title">Batman: Three Jokers</div>
+                <div class="card-issue">Geoff Johns 等</div>
+                <div class="card-desc">三个小丑理论的官方化处理。蝙蝠家族三人面对三个小丑。</div>
+                <div class="card-meta"><span>📖 迷你系列</span><span>🃏🃏🃏</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:87%;"></div></div>
+            </div>
+            <div class="comic-card">
+                <span class="card-tier tier-black">BLACK LABEL</span>
+                <div class="card-title">Batman: The Damned</div>
+                <div class="card-issue">Azzarello & Bermejo</div>
+                <div class="card-desc">超自然/黑暗版Joker，与Batman的宿命对抗。氛围极强。</div>
+                <div class="card-meta"><span>📖 GN</span><span>🌑 超自然</span></div>
+                <div class="chaos-bar-wrap"><div class="chaos-bar-fill" style="width:79%;"></div></div>
+            </div>
+        </div>
+
+        <!-- ==================== QUOTE WALL ==================== -->
+        <section class="section-header" id="quotes">
+            <span class="archive-id">REF: FRAGMENTS-004</span>
+            <h2>💬 名场面碎片 <span class="redacted-bar">RECOVERED</span></h2>
+        </section>
+        <div class="quote-wall">
+            <div class="quote-scribble" style="top:5%;left:8%;">(illegible)</div>
+            <div class="quote-scribble" style="bottom:10%;right:6%;transform:rotate(15deg);">[REDACTED]</div>
+            <div class="quote-grid">
+                <div class="quote-fragment">
+                    "All it takes is <span class="redacted">one bad day</span>."
+                </div>
+                <div class="quote-fragment">
+                    "If I'm going to have a past, I prefer it to be <span class="redacted">multiple choice</span>."
+                </div>
+                <div class="quote-fragment" style="font-size:1.8rem;font-weight:900;">
+                    "Why so serious?"
+                </div>
+                <div class="quote-fragment">
+                    "Madness is the <span class="redacted">emergency exit</span>."
+                </div>
+                <div class="quote-fragment">
+                    "I'm not a monster. I'm just <span class="redacted">ahead of the curve</span>."
+                </div>
+                <div class="quote-fragment" style="font-size:1rem;">
+                    "Smile, because it <span class="redacted">confuses people</span>."
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== READING ROUTE SUMMARY ==================== -->
+        <section class="section-header">
+            <span class="archive-id">REF: ROUTE-005</span>
+            <h2>🗺️ 完整推荐阅读路线 <span class="redacted-bar">APPROVED</span></h2>
+        </section>
+        <div style="background:rgba(15,8,20,0.7);border:1px dashed rgba(184,154,75,0.3);padding:30px;margin:20px 0;position:relative;transform:rotate(-1deg);">
+            <div class="tape-piece" style="top:-8px;left:20%;transform:rotate(-8deg);width:65px;"></div>
+            <ol style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;color:var(--faded-paper);line-height:2.2;list-style-position:inside;counter-reset:route;padding-left:0;">
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[01]</span> Batman #1 <span style="color:rgba(216,209,195,0.5);">— 1940初登场</span></li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[02]</span> Batman #251 <span style="color:rgba(216,209,195,0.5);">— 现代小丑起点</span></li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[03]</span> Detective Comics #168 <span style="color:rgba(216,209,195,0.5);">— 最早起源</span></li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[04]</span> The Killing Joke</li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[05]</span> A Death in the Family</li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[06]</span> Arkham Asylum</li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[07]</span> The Man Who Laughs <span style="color:rgba(216,209,195,0.5);">— 现代入门</span></li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[08]</span> Joker: Devil's Advocate</li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[09]</span> Joker: Last Laugh</li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[10]</span> Emperor Joker</li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[11]</span> Death of the Family <span style="color:rgba(216,209,195,0.5);">— New 52</span></li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[12]</span> Endgame</li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[13]</span> Joker War</li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[14]</span> The Joker (2021)</li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[15]</span> The Joker: The Man Who Stopped Laughing</li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[16]</span> Batman: Three Jokers</li>
+                <li style="counter-increment:route;"><span style="color:var(--old-gold);">[17]</span> Joker: Year One <span style="color:rgba(216,209,195,0.5);">— 最新起源揭秘</span></li>
+            </ol>
+            <p style="font-family:'IBM Plex Mono',monospace;font-size:0.55rem;color:rgba(184,154,75,0.5);margin-top:18px;text-align:right;letter-spacing:0.2em;">
+                按黄金时代 → 青铜/后危机 → New 52 → Rebirth/Infinite Frontier → Dawn of DC 时间轴排列
+            </p>
+        </div>
+
+        <!-- ==================== FOOTER ==================== -->
+        <section class="footer-section" id="footer">
+            <p class="footer-text">THE JOKE NEVER ENDS.</p>
+            <p class="footer-sub">ARCHIVE CLOSED. LAUGHTER CONTINUES.</p>
+            <p style="font-family:'IBM Plex Mono',monospace;font-size:0.5rem;color:rgba(216,209,195,0.3);margin-top:25px;letter-spacing:0.3em;">
+                GCPD FILE #4479-J // UNAUTHORIZED ACCESS WILL BE... <span style="color:var(--blood-red);">HAHAHA</span>
+            </p>
+            <p style="font-family:'Cormorant Garamond',serif;font-size:0.7rem;color:rgba(184,154,75,0.35);margin-top:10px;font-style:italic;">
+                — "All it takes is one bad day." —
+            </p>
+        </section>
+
+    </div>
+
+    <script>
+        (function() {
+            // Glitch flash effect
+            const glitchFlash = document.getElementById('glitchFlash');
+
+            function triggerGlitchFlash() {
+                glitchFlash.classList.add('trigger');
+                setTimeout(() => glitchFlash.classList.remove('trigger'), 60 + Math.random() * 80);
+            }
+            // Random glitch flashes
+            setInterval(() => {
+                if (Math.random() < 0.25) {
+                    triggerGlitchFlash();
+                }
+            }, 3000 + Math.random() * 5000);
+
+            // Card hover chromatic shift
+            document.querySelectorAll('.comic-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    const titleEl = this.querySelector('.card-title');
+                    if (titleEl && !titleEl.classList.contains('chromatic-text')) {
+                        titleEl.classList.add('chromatic-text');
+                        titleEl.setAttribute('data-text', titleEl.textContent.trim());
+                    }
+                });
+                card.addEventListener('mouseleave', function() {
+                    const titleEl = this.querySelector('.card-title');
+                    if (titleEl) {
+                        titleEl.classList.remove('chromatic-text');
+                    }
+                });
+            });
+
+            // Scroll-based nav dot activation
+            const sections = ['hero', 'profile', 'timeline', 'cards', 'quotes', 'footer'];
+            const navDots = document.querySelectorAll('.nav-dot');
+
+            function updateNavDots() {
+                const scrollY = window.scrollY + window.innerHeight / 2;
+                let activeSection = 'hero';
+                sections.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el && el.offsetTop <= scrollY) {
+                        activeSection = id;
+                    }
+                });
+                navDots.forEach(dot => {
+                    dot.classList.toggle('active', dot.dataset.target === activeSection);
+                });
+            }
+            window.addEventListener('scroll', updateNavDots, { passive: true });
+
+            // Nav dot click smooth scroll
+            navDots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const target = document.getElementById(dot.dataset.target);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        triggerGlitchFlash();
+                    }
+                });
+            });
+
+            // Random subtle card shake on page load
+            setTimeout(() => {
+                document.querySelectorAll('.comic-card').forEach((card, i) => {
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.25s ease';
+                        const origRot = card.style.transform || '';
+                        card.style.transform = origRot +
+                            ' translateX(' + (Math.random() - 0.5) * 4 + 'px) translateY(' + (Math
+                                .random() - 0.5) * 3 + 'px)';
+                        setTimeout(() => {
+                            card.style.transform = origRot;
+                        }, 250);
+                    }, i * 60);
+                });
+            }, 1500);
+
+            // Periodic subtle glitch on hero title
+            const heroTitle = document.querySelector('.hero-main-title');
+            if (heroTitle) {
+                setInterval(() => {
+                    if (Math.random() < 0.2) {
+                        heroTitle.style.animation = 'none';
+                        heroTitle.offsetHeight;
+                        heroTitle.style.animation = 'titleGlitch 8s ease-in-out infinite';
+                        heroTitle.style.animationDelay = (Math.random() * 2) + 's';
+                    }
+                }, 6000);
+            }
+
+            // Quote fragment hover interaction
+            document.querySelectorAll('.quote-fragment').forEach(frag => {
+                frag.addEventListener('mouseenter', function() {
+                    const redacted = this.querySelector('.redacted');
+                    if (redacted) {
+                        redacted.style.color = 'var(--blood-red)';
+                        redacted.style.background = 'transparent';
+                    }
+                });
+                frag.addEventListener('mouseleave', function() {
+                    const redacted = this.querySelector('.redacted');
+                    if (redacted) {
+                        redacted.style.color = '#1a1a1a';
+                        redacted.style.background = '#1a1a1a';
+                    }
+                });
+            });
+
+            // Initial nav dot state
+            updateNavDots();
+
+            console.log(
+                '%c🃏 ARCHIVE LOADED %c— %cTHE JOKE NEVER ENDS %c🃏',
+                'color:#B89A4B;font-size:1.2em;',
+                'color:#6E1E2F;',
+                'color:#D8D1C3;font-style:italic;',
+                'color:#B89A4B;'
+            );
+            console.log('%cGCPD FILE #4479-J // UNAUTHORIZED ACCESS LOGGED', 'color:rgba(184,154,75,0.5);font-size:0.7em;');
+            console.log('%c"All it takes is one bad day."', 'color:#6E1E2F;font-size:0.8em;font-style:italic;');
+        })();
+    </script>
+</body>
+</html>

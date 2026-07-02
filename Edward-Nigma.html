@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE RIDDLER ARCHIVE — Edward Nygma Reading Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0B1411;
+            --bg-moss: #163128;
+            --accent-purple: #5B3D7A;
+            --highlight-brass: #B39A62;
+            --text-paper: #F3F0E8;
+            --text-dim: #9a9790;
+            --card-bg: rgba(22, 49, 40, 0.45);
+            --card-border: rgba(243, 240, 232, 0.08);
+            --glass-blur: blur(18px);
+            --glass-blur-strong: blur(30px);
+            --font-main: 'Noto Serif SC', 'Source Han Serif SC', 'STSong', 'Songti SC', 'SimSun', serif;
+            --shadow-card: 0 4px 32px rgba(0, 0, 0, 0.45);
+            --shadow-glow: 0 0 60px rgba(91, 61, 122, 0.25);
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --transition-smooth: 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+            --transition-slow: 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-deep);
+            color: var(--text-paper);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.7;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ============ BACKGROUND LAYERS ============ */
+        .bg-archive {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(22, 49, 40, 0.9) 0%, rgba(11, 20, 17, 0.95) 40%, rgba(5, 10, 8, 0.98) 70%, #060d0a 100%),
+                radial-gradient(ellipse at 70% 60%, rgba(91, 61, 122, 0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 20% 75%, rgba(179, 154, 98, 0.05) 0%, transparent 50%);
+        }
+
+        .bg-question-matrix {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.022;
+            font-family: var(--font-main);
+            font-weight: 700;
+            font-size: 28px;
+            color: #F3F0E8;
+            white-space: pre;
+            line-height: 2.2;
+            letter-spacing: 0.3em;
+            user-select: none;
+            transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+            padding: 4% 6%;
+            text-align: left;
+        }
+
+        /* ============ MAIN CONTENT WRAPPER ============ */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* ============ TOP NAVIGATION ============ */
+        .nav-glass {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(22, 49, 40, 0.55);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: 50px;
+            padding: 10px 28px;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+            transition: all var(--transition-smooth);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        .nav-glass.scrolled {
+            background: rgba(11, 20, 17, 0.75);
+            border-color: rgba(179, 154, 98, 0.2);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+        }
+        .nav-glass a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            transition: color var(--transition-smooth);
+            white-space: nowrap;
+            position: relative;
+            padding: 2px 0;
+        }
+        .nav-glass a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--highlight-brass);
+            transition: width var(--transition-smooth);
+        }
+        .nav-glass a:hover,
+        .nav-glass a.active {
+            color: var(--highlight-brass);
+        }
+        .nav-glass a:hover::after,
+        .nav-glass a.active::after {
+            width: 100%;
+        }
+
+        /* ============ HERO SECTION ============ */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 120px 0 60px;
+            gap: 60px;
+            position: relative;
+        }
+        .hero-left {
+            flex: 1;
+            max-width: 620px;
+        }
+        .hero-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.22em;
+            color: var(--highlight-brass);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+        .hero-title {
+            font-size: clamp(2.8rem, 5.5vw, 5rem);
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            line-height: 1.05;
+            color: var(--text-paper);
+            margin-bottom: 8px;
+            text-shadow: 0 0 80px rgba(91, 61, 122, 0.3);
+        }
+        .hero-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            color: var(--text-dim);
+            margin-bottom: 32px;
+            border-left: 2px solid var(--highlight-brass);
+            padding-left: 18px;
+        }
+        .hero-quote {
+            font-size: 0.95rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: rgba(243, 240, 232, 0.7);
+            line-height: 1.8;
+            font-style: italic;
+        }
+        .hero-quote span {
+            color: var(--highlight-brass);
+            font-weight: 500;
+            font-style: normal;
+        }
+        .hero-right {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-question-mark {
+            width: 280px;
+            height: 380px;
+            position: relative;
+            opacity: 0.7;
+        }
+        .hero-question-mark svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 60px rgba(91, 61, 122, 0.35));
+        }
+
+        /* ============ SECTION TITLES ============ */
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--text-paper);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .section-title .line {
+            flex: 0 0 40px;
+            height: 2px;
+            background: var(--highlight-brass);
+            border-radius: 1px;
+        }
+        .section-number {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: var(--highlight-brass);
+            font-weight: 500;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .section-block {
+            margin: 80px 0;
+            position: relative;
+        }
+
+        /* ============ PROFILE CARD ============ */
+        .profile-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 40px 44px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px 40px;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 30px;
+            right: 30px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--highlight-brass), transparent);
+            opacity: 0.6;
+        }
+        .profile-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .profile-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            color: var(--highlight-brass);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .profile-value {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-paper);
+            letter-spacing: 0.03em;
+        }
+        .profile-themes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .theme-tag {
+            font-size: 0.7rem;
+            padding: 5px 14px;
+            border-radius: 20px;
+            background: rgba(91, 61, 122, 0.25);
+            border: 1px solid rgba(179, 154, 98, 0.25);
+            color: var(--text-paper);
+            letter-spacing: 0.05em;
+            font-weight: 400;
+        }
+
+        /* ============ ROADMAP / TIMELINE ============ */
+        .roadmap-container {
+            position: relative;
+            padding-left: 44px;
+        }
+        .roadmap-line {
+            position: absolute;
+            left: 16px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--highlight-brass) 0%, rgba(179, 154, 98, 0.3) 40%, rgba(179, 154, 98, 0.3) 60%, var(--highlight-brass) 100%);
+            border-radius: 1px;
+        }
+        .roadmap-node {
+            position: relative;
+            margin-bottom: 32px;
+            cursor: pointer;
+        }
+        .roadmap-dot {
+            position: absolute;
+            left: -36px;
+            top: 22px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--bg-deep);
+            border: 2px solid var(--highlight-brass);
+            z-index: 2;
+            transition: all var(--transition-smooth);
+            box-shadow: 0 0 12px rgba(179, 154, 98, 0.3);
+        }
+        .roadmap-node:hover .roadmap-dot {
+            background: var(--highlight-brass);
+            box-shadow: 0 0 24px rgba(179, 154, 98, 0.6);
+            transform: scale(1.3);
+        }
+
+        /* ============ GLASS CARDS ============ */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 28px 30px;
+            transition: all var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+        .glass-card:hover {
+            border-color: var(--highlight-brass);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(179, 154, 98, 0.15) inset;
+            transform: translateY(-2px);
+        }
+        .card-case-number {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            color: var(--highlight-brass);
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--text-paper);
+            margin-bottom: 4px;
+        }
+        .card-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            letter-spacing: 0.04em;
+            margin-bottom: 14px;
+        }
+        .card-meta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+        .card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .card-status {
+            display: inline-block;
+            font-size: 0.6rem;
+            letter-spacing: 0.12em;
+            padding: 4px 12px;
+            border-radius: 3px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-essential {
+            background: rgba(179, 154, 98, 0.2);
+            color: #c9b478;
+            border: 1px solid rgba(179, 154, 98, 0.4);
+        }
+        .status-important {
+            background: rgba(91, 61, 122, 0.25);
+            color: #b89dd1;
+            border: 1px solid rgba(91, 61, 122, 0.4);
+        }
+        .status-supplement {
+            background: rgba(243, 240, 232, 0.06);
+            color: #bbb;
+            border: 1px solid rgba(243, 240, 232, 0.15);
+        }
+        .card-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 10px 0;
+        }
+        .keyword-tag {
+            font-size: 0.6rem;
+            letter-spacing: 0.06em;
+            padding: 3px 10px;
+            border-radius: 2px;
+            background: rgba(243, 240, 232, 0.04);
+            border: 1px solid rgba(243, 240, 232, 0.1);
+            color: var(--text-dim);
+        }
+        .card-summary {
+            font-size: 0.85rem;
+            color: rgba(243, 240, 232, 0.7);
+            line-height: 1.6;
+            margin-top: 10px;
+            letter-spacing: 0.02em;
+        }
+        .card-expanded {
+            clip-path: inset(0 0 100% 0);
+            transition: clip-path var(--transition-slow);
+            overflow: hidden;
+        }
+        .card-expanded.open {
+            clip-path: inset(0 0 0 0);
+        }
+        .card-expand-inner {
+            padding-top: 16px;
+            border-top: 1px solid rgba(179, 154, 98, 0.25);
+            margin-top: 12px;
+            font-size: 0.82rem;
+            color: rgba(243, 240, 232, 0.65);
+            line-height: 1.7;
+            letter-spacing: 0.02em;
+        }
+
+        /* ============ HUSH SPECIAL CARD ============ */
+        .card-hush {
+            grid-column: span 2;
+            border-color: rgba(179, 154, 98, 0.35);
+            background: rgba(22, 49, 40, 0.55);
+            box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5), var(--shadow-glow);
+            position: relative;
+        }
+        .card-hush::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: var(--radius-md);
+            border: 1px solid transparent;
+            background: linear-gradient(135deg, rgba(179, 154, 98, 0.4), transparent 40%, transparent 60%, rgba(91, 61, 122, 0.3)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .known-secret {
+            font-family: 'Courier New', 'Noto Serif SC', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            color: var(--highlight-brass);
+            background: rgba(0, 0, 0, 0.4);
+            padding: 18px 22px;
+            border-radius: 6px;
+            border: 1px dashed rgba(179, 154, 98, 0.5);
+            margin-top: 16px;
+            text-align: center;
+            line-height: 2;
+            position: relative;
+            z-index: 1;
+        }
+        .known-secret .cursor-blink {
+            display: inline-block;
+            width: 8px;
+            height: 1em;
+            background: var(--highlight-brass);
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+            margin-left: 2px;
+        }
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* ============ ZERO YEAR SECTION ============ */
+        .zero-year-zone {
+            border-radius: var(--radius-lg);
+            padding: 50px 40px;
+            margin: 60px 0;
+            transition: all var(--transition-slow);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(22, 49, 40, 0.6);
+            background: rgba(11, 20, 17, 0.5);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+        }
+        .zero-year-zone.activated {
+            background: rgba(5, 15, 10, 0.85);
+            border-color: rgba(34, 180, 80, 0.35);
+            box-shadow: 0 0 80px rgba(22, 49, 40, 0.6), 0 0 0 1px rgba(34, 180, 80, 0.15) inset;
+        }
+        .zero-year-zone.activated .section-title {
+            color: #4ade80;
+        }
+        .zero-year-toggle {
+            display: inline-block;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            color: var(--highlight-brass);
+            cursor: pointer;
+            padding: 8px 18px;
+            border: 1px solid rgba(179, 154, 98, 0.4);
+            border-radius: 20px;
+            transition: all var(--transition-smooth);
+            background: transparent;
+            font-family: var(--font-main);
+            margin-bottom: 20px;
+        }
+        .zero-year-toggle:hover {
+            background: rgba(179, 154, 98, 0.1);
+            border-color: var(--highlight-brass);
+            color: #fff;
+        }
+        .zero-year-toggle.active-toggle {
+            background: rgba(34, 180, 80, 0.15);
+            border-color: #4ade80;
+            color: #4ade80;
+        }
+
+        /* ============ ONE BAD DAY - INTERROGATION ROOM ============ */
+        .interrogation-room {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 40px;
+            background: rgba(11, 20, 17, 0.6);
+            backdrop-filter: var(--glass-blur-strong);
+            -webkit-backdrop-filter: var(--glass-blur-strong);
+            border: 1px solid rgba(243, 240, 232, 0.06);
+            border-radius: var(--radius-lg);
+            padding: 44px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+        .interrogation-room::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 40px,
+                    rgba(243, 240, 232, 0.008) 40px,
+                    rgba(243, 240, 232, 0.008) 41px);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .psych-left {
+            position: relative;
+            z-index: 2;
+        }
+        .psych-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            color: var(--highlight-brass);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .psych-structure {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .psych-layer {
+            padding: 12px 16px;
+            border-left: 2px solid rgba(179, 154, 98, 0.5);
+            background: rgba(243, 240, 232, 0.02);
+            border-radius: 0 6px 6px 0;
+            font-size: 0.78rem;
+            letter-spacing: 0.03em;
+            color: rgba(243, 240, 232, 0.75);
+            transition: all var(--transition-smooth);
+        }
+        .psych-layer:hover {
+            border-left-color: var(--highlight-brass);
+            background: rgba(243, 240, 232, 0.04);
+            color: #fff;
+        }
+        .psych-layer strong {
+            color: var(--text-paper);
+            font-weight: 600;
+        }
+        .psych-right {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ============ ESSENTIAL READS GRID ============ */
+        .reads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .reads-grid .glass-card {
+            padding: 22px 24px;
+        }
+
+        /* ============ COLLECTIONS SHELF ============ */
+        .shelf-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .shelf-item {
+            flex: 1 1 180px;
+            min-width: 140px;
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-sm);
+            padding: 22px 18px;
+            text-align: center;
+            transition: all var(--transition-smooth);
+            cursor: pointer;
+            position: relative;
+        }
+        .shelf-item:hover {
+            border-color: var(--highlight-brass);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+        }
+        .shelf-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            opacity: 0.7;
+        }
+        .shelf-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: var(--text-paper);
+        }
+        .shelf-desc {
+            font-size: 0.6rem;
+            letter-spacing: 0.05em;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        /* ============ FOOTER ============ */
+        .archive-footer {
+            text-align: center;
+            padding: 50px 20px;
+            border-top: 1px solid rgba(243, 240, 232, 0.06);
+            margin-top: 60px;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            color: var(--text-dim);
+        }
+        .archive-footer .footer-question {
+            font-size: 2rem;
+            font-weight: 900;
+            color: rgba(243, 240, 232, 0.06);
+            margin-bottom: 12px;
+            letter-spacing: 0.2em;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1024px) {
+            .hero-section {
+                flex-direction: column;
+                padding: 100px 20px 40px;
+                gap: 30px;
+                text-align: center;
+            }
+            .hero-left {
+                max-width: 100%;
+            }
+            .hero-subtitle {
+                border-left: none;
+                padding-left: 0;
+                border-bottom: 1px solid var(--highlight-brass);
+                padding-bottom: 12px;
+                display: inline-block;
+            }
+            .hero-question-mark {
+                width: 160px;
+                height: 220px;
+            }
+            .interrogation-room {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding: 28px;
+            }
+            .card-hush {
+                grid-column: span 1;
+            }
+            .roadmap-container {
+                padding-left: 32px;
+            }
+            .roadmap-dot {
+                left: -28px;
+                top: 18px;
+                width: 11px;
+                height: 11px;
+            }
+            .nav-glass {
+                gap: 12px;
+                padding: 8px 16px;
+                border-radius: 30px;
+            }
+            .nav-glass a {
+                font-size: 0.7rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .main-content {
+                padding: 0 16px;
+            }
+            .profile-card {
+                padding: 24px 20px;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px 16px;
+            }
+            .reads-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+            .nav-glass {
+                gap: 6px;
+                padding: 6px 10px;
+                border-radius: 24px;
+                top: 8px;
+            }
+            .nav-glass a {
+                font-size: 0.6rem;
+                letter-spacing: 0.03em;
+            }
+            .glass-card {
+                padding: 18px 16px;
+            }
+            .section-title {
+                font-size: 1.2rem;
+            }
+            .zero-year-zone {
+                padding: 28px 18px;
+            }
+        }
+
+        /* ============ UTILITY ============ */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== BACKGROUND ==================== -->
+    <div class="bg-archive" aria-hidden="true"></div>
+    <div class="bg-question-matrix" id="questionMatrix" aria-hidden="true"></div>
+
+    <!-- ==================== NAVIGATION ==================== -->
+    <nav class="nav-glass" id="topNav" role="navigation" aria-label="主导航">
+        <a href="#origin">Origin</a>
+        <a href="#classic">Classic Era</a>
+        <a href="#modern">Modern Era</a>
+        <a href="#hush">Hush</a>
+        <a href="#zeroyear">Zero Year</a>
+        <a href="#onebadday">One Bad Day</a>
+        <a href="#essential">Essential Reads</a>
+        <a href="#collections">Collections</a>
+    </nav>
+
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <div class="main-content">
+
+        <!-- ========== HERO ========== -->
+        <section class="hero-section fade-in" aria-labelledby="hero-heading">
+            <div class="hero-left">
+                <p class="hero-label">Case File · Gotham Archive</p>
+                <h1 class="hero-title" id="hero-heading">THE<br>RIDDLER</h1>
+                <p class="hero-subtitle">Edward Nygma</p>
+                <p class="hero-quote">
+                    The question is not<br>
+                    <span>whether you can solve it.</span><br>
+                    The question is<br>
+                    <span>whether you deserve the answer.</span>
+                </p>
+            </div>
+            <div class="hero-right" aria-hidden="true">
+                <div class="hero-question-mark">
+                    <svg viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M100 20 C40 20 10 55 10 100 C10 138 35 160 65 175 L65 210" stroke="#F3F0E8" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.85"/>
+                        <circle cx="65" cy="262" r="12" fill="#F3F0E8" opacity="0.85"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== CHARACTER PROFILE ========== -->
+        <section class="section-block fade-in" id="origin" aria-labelledby="profile-heading">
+            <p class="section-number">Section 01</p>
+            <h2 class="section-title" id="profile-heading"><span class="line"></span>Character Profile</h2>
+            <div class="profile-card" style="margin-top:20px;">
+                <div class="profile-item">
+                    <span class="profile-label">Alias</span>
+                    <span class="profile-value">The Riddler</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Real Name</span>
+                    <span class="profile-value">Edward Nygma</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">First Appearance</span>
+                    <span class="profile-value">Detective Comics #140 (1948)</span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Core Themes</span>
+                    <div class="profile-themes">
+                        <span class="theme-tag">Obsession</span>
+                        <span class="theme-tag">Control</span>
+                        <span class="theme-tag">Recognition</span>
+                        <span class="theme-tag">Intellect</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== READING ROADMAP ========== -->
+        <section class="section-block fade-in" id="classic" aria-labelledby="roadmap-heading">
+            <p class="section-number">Section 02</p>
+            <h2 class="section-title" id="roadmap-heading"><span class="line"></span>Reading Roadmap</h2>
+            <p style="color:var(--text-dim);font-size:0.8rem;letter-spacing:0.04em;margin-bottom:24px;">谜题路径 · 点击卡片展开详情</p>
+            <div class="roadmap-container">
+                <div class="roadmap-line" aria-hidden="true"></div>
+
+                <!-- Node 1: Origin -->
+                <div class="roadmap-node" id="roadmap-origin">
+                    <div class="roadmap-dot" aria-hidden="true"></div>
+                    <div class="glass-card" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="false" aria-label="展开Detective Comics #140详情">
+                        <p class="card-case-number">Case File 01 · 起源</p>
+                        <h3 class="card-title">Detective Comics #140</h3>
+                        <p class="card-subtitle">1948 · Bill Finger & Dick Sprang</p>
+                        <div class="card-meta">
+                            <span class="card-status status-essential">Essential</span>
+                            <span>★★★★★</span>
+                        </div>
+                        <div class="card-keywords"><span class="keyword-tag">Origin</span><span class="keyword-tag">Puzzle Obsession</span><span class="keyword-tag">Intellectual Combat</span></div>
+                        <p class="card-summary">谜语人首次登场。奠定核心元素：痴迷谜题、渴望证明自己比蝙蝠侠更聪明、将犯罪视为智力竞赛。</p>
+                        <div class="card-expanded">
+                            <div class="card-expand-inner">黄金时代开篇之作。Edward Nygma以精心设计的谜题作为犯罪预告，挑战蝙蝠侠的智力极限。这一期确立了谜语人的核心人格：他不是为了金钱或权力而犯罪，而是为了证明——证明自己是最聪明的人。Bill Finger的剧本与Dick Sprang的画风共同塑造了一个既滑稽又危险的经典反派形象。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 2: Silver Age -->
+                <div class="roadmap-node">
+                    <div class="roadmap-dot" aria-hidden="true"></div>
+                    <div class="glass-card" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="false" aria-label="展开Silver Age详情">
+                        <p class="card-case-number">Case File 02 · 银时代</p>
+                        <h3 class="card-title">Batman #171 & Early Silver Age</h3>
+                        <p class="card-subtitle">1965 onwards · 经典谜题犯罪模式成熟</p>
+                        <div class="card-meta">
+                            <span class="card-status status-important">Important</span>
+                            <span>★★★★☆</span>
+                        </div>
+                        <div class="card-keywords"><span class="keyword-tag">Puzzle Crimes</span><span class="keyword-tag">Gadget-Based</span><span class="keyword-tag">Classic Riddler</span></div>
+                        <p class="card-summary">谜语人中断17年后重新出现，"谜题犯罪"模式成熟，仍以机关和谜语为主的经典反派形象。</p>
+                        <div class="card-expanded">
+                            <div class="card-expand-inner">银时代是谜语人作为"机关型反派"的黄金时期。Batman #171标志着他的强势回归，此后在Batman #179（1966，"The Riddle-less Robberies of the Riddler"）和Batman #263（1974，"Riddler on the Move!"）等刊物中，谜语人不断升级他的智力游戏。Batman #362等故事则逐步向更现代的智斗风格过渡。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 3: The Brave and the Bold + Secret Origins -->
+                <div class="roadmap-node">
+                    <div class="roadmap-dot" aria-hidden="true"></div>
+                    <div class="glass-card" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="false" aria-label="展开合作与起源详情">
+                        <p class="card-case-number">Case File 03 · 合作与起源</p>
+                        <h3 class="card-title">Brave and the Bold #183 & Secret Origins Special #1</h3>
+                        <p class="card-subtitle">1982 / 1989 · 临时联盟与童年创伤</p>
+                        <div class="card-meta">
+                            <span class="card-status status-important">Important</span>
+                            <span>★★★★☆</span>
+                        </div>
+                        <div class="card-keywords"><span class="keyword-tag">Forced Alliance</span><span class="keyword-tag">Origin Story</span><span class="keyword-tag">Childhood Trauma</span></div>
+                        <p class="card-summary">蝙蝠侠与谜语人被迫合作破案，智力碰撞与临时联盟的趣味性十足。Secret Origins Special深入探索Edward Nygma的童年创伤与谜语执念。</p>
+                        <div class="card-expanded">
+                            <div class="card-expand-inner">Brave and the Bold #183展现了两人罕见的合作关系，在紧张中带着黑色幽默。而Secret Origins Special #1（"When Is a Door... The Secret Origin of The Riddler"）被许多粉丝视为最佳起源故事，深入探索了Edward Nygma童年时期对谜语的病态执念如何形成——这是理解他心理结构的关键文本。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 4: Long Halloween -->
+                <div class="roadmap-node">
+                    <div class="roadmap-dot" aria-hidden="true"></div>
+                    <div class="glass-card" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="false" aria-label="展开Long Halloween详情">
+                        <p class="card-case-number">Case File 04 · 过渡期</p>
+                        <h3 class="card-title">Batman: The Long Halloween</h3>
+                        <p class="card-subtitle">Jeph Loeb & Tim Sale · 黑帮时代</p>
+                        <div class="card-meta">
+                            <span class="card-status status-supplement">Supplement</span>
+                            <span>★★★☆☆</span>
+                        </div>
+                        <div class="card-keywords"><span class="keyword-tag">Information Broker</span><span class="keyword-tag">Gangland Context</span><span class="keyword-tag">Cameo</span></div>
+                        <p class="card-summary">虽非主角，但作为信息提供者/情报型罪犯出场，置于黑帮时代背景中，体现角色早期向情报贩子的转型。</p>
+                        <div class="card-expanded">
+                            <div class="card-expand-inner">在这部经典的黑帮史诗中，谜语人以情报贩子的身份短暂登场，预示了他日后作为"知道太多秘密的人"的定位。这个角色转型为他后来在Hush中的关键作用埋下了伏笔。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 5: HUSH - SPECIAL (double-width handled via grid) -->
+                <div class="roadmap-node" id="hush">
+                    <div class="roadmap-dot" aria-hidden="true"></div>
+                    <div class="glass-card card-hush" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="false" aria-label="展开Hush详情——重点推荐" style="grid-column:span 2;">
+                        <p class="card-case-number">Case File 05 · 成神之作 ★重点推荐★</p>
+                        <h3 class="card-title">Batman: Hush</h3>
+                        <p class="card-subtitle">Jeph Loeb & Jim Lee · 2002–2003</p>
+                        <div class="card-meta">
+                            <span class="card-status status-essential">Essential</span>
+                            <span>★★★★★</span>
+                        </div>
+                        <div class="card-keywords"><span class="keyword-tag">Identity</span><span class="keyword-tag">Manipulation</span><span class="keyword-tag">Secrets</span><span class="keyword-tag">Master Player</span></div>
+                        <p class="card-summary">谜语人与Hush（Tommy Elliot）合作，发现布鲁斯·韦恩即蝙蝠侠的身份，但选择暂时保留秘密。这是他成为"智力玩家型"反派的重要转折，展现高超操控能力。</p>
+                        <div class="known-secret">
+                            KNOWN SECRET<br>
+                            Bruce Wayne = Batman<br>
+                            <span class="cursor-blink"></span>
+                        </div>
+                        <div class="card-expanded">
+                            <div class="card-expand-inner">Hush是谜语人角色演变的分水岭。他不再是简单的谜题罪犯，而是成为了掌握哥谭最深层秘密的操控者。知道蝙蝠侠的真实身份后，他选择不公开——因为"秘密本身比揭露更有力量"。这一决策展现了他作为战略玩家的成熟，也使他从二线反派跃升为蝙蝠侠宇宙中最危险的大脑之一。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 6: Zero Year -->
+                <div class="roadmap-node" id="zeroyear">
+                    <div class="roadmap-dot" aria-hidden="true"></div>
+                    <div class="glass-card" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="false" aria-label="展开Zero Year详情">
+                        <p class="card-case-number">Case File 06 · 现代重构</p>
+                        <h3 class="card-title">Batman: Zero Year</h3>
+                        <p class="card-subtitle">Scott Snyder & Greg Capullo · 2013–2014</p>
+                        <div class="card-meta">
+                            <span class="card-status status-essential">Essential</span>
+                            <span>★★★★★</span>
+                        </div>
+                        <div class="card-keywords"><span class="keyword-tag">City-Level Threat</span><span class="keyword-tag">Strategic Disaster</span><span class="keyword-tag">Gotham Blackout</span></div>
+                        <p class="card-summary">谜语人成为城市级威胁，制造大规模灾难（如切断Gotham电力），与早期蝙蝠侠对抗。现代谜语人最标志性的重构之一。</p>
+                        <div class="card-expanded">
+                            <div class="card-expand-inner">Scott Snyder将谜语人重新定义为战略灾难制造者。他不仅仅是一个留下谜题的罪犯——他是一个能够瘫痪整座城市的高智商恐怖分子。切断哥谭电力的壮举展示了他从"谜题怪盗"到"文明崩溃设计师"的进化。这个故事发生在蝙蝠侠生涯的早期，使谜语人成为了年轻蝙蝠侠面对的第一个真正意义上的超级威胁。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 7: War of Jokes and Riddles -->
+                <div class="roadmap-node">
+                    <div class="roadmap-dot" aria-hidden="true"></div>
+                    <div class="glass-card" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="false" aria-label="展开War of Jokes and Riddles详情">
+                        <p class="card-case-number">Case File 07 · 战略战争</p>
+                        <h3 class="card-title">Batman: The War of Jokes and Riddles</h3>
+                        <p class="card-subtitle">Tom King · 2017</p>
+                        <div class="card-meta">
+                            <span class="card-status status-essential">Essential</span>
+                            <span>★★★★★</span>
+                        </div>
+                        <div class="card-keywords"><span class="keyword-tag">Strategic War</span><span class="keyword-tag">Cold Logic</span><span class="keyword-tag">Joker vs Riddler</span></div>
+                        <p class="card-summary">小丑与谜语人之间的全面战争。谜语人展现出战略级罪犯的冷酷与逻辑执念，而非单纯搞笑反派。</p>
+                        <div class="card-expanded">
+                            <div class="card-expand-inner">Tom King描绘了一场哥谭地下世界的全面战争，谜语人与小丑各率阵营对抗。在这场冲突中，谜语人展现出了令人胆寒的冷酷逻辑——他将人命视为棋局中的棋子，每一步都经过精密计算。这个故事彻底粉碎了谜语人只是"搞笑谜题男"的刻板印象，确立了他作为战略大师的地位。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 8: One Bad Day -->
+                <div class="roadmap-node" id="onebadday">
+                    <div class="roadmap-dot" aria-hidden="true"></div>
+                    <div class="glass-card" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="false" aria-label="展开One Bad Day详情">
+                        <p class="card-case-number">Case File 08 · 心理学巅峰</p>
+                        <h3 class="card-title">Batman: One Bad Day – The Riddler</h3>
+                        <p class="card-subtitle">Tom King & Mitch Gerads · 2023</p>
+                        <div class="card-meta">
+                            <span class="card-status status-essential">Essential</span>
+                            <span>★★★★★</span>
+                        </div>
+                        <div class="card-keywords"><span class="keyword-tag">Psychological Depth</span><span class="keyword-tag">Realist Narrative</span><span class="keyword-tag">Rational Killer</span></div>
+                        <p class="card-summary">现代心理学深度巅峰。现实主义叙事，探索谜语人从被忽视个体走向极端理性杀手的心理结构。</p>
+                        <div class="card-expanded">
+                            <div class="card-expand-inner">这部作品是谜语人心理探索的终极之作。Tom King和Mitch Gerads采用极其写实的叙事手法，展现了一个被社会忽视的孤独者如何将逻辑推演到极致，最终成为以理性之名行凶的杀手。它提出了一个令人不安的问题：当一个人完全抛弃情感、只依赖逻辑行事时，他距离怪物还有多远？</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 9: Anti-Hero -->
+                <div class="roadmap-node">
+                    <div class="roadmap-dot" aria-hidden="true"></div>
+                    <div class="glass-card" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="false" aria-label="展开反英雄支线详情">
+                        <p class="card-case-number">Case File 09 · 反英雄支线</p>
+                        <h3 class="card-title">Detective Comics #822–824</h3>
+                        <p class="card-subtitle">"E. Nygma, Consulting Detective"</p>
+                        <div class="card-meta">
+                            <span class="card-status status-important">Important</span>
+                            <span>★★★★☆</span>
+                        </div>
+                        <div class="card-keywords"><span class="keyword-tag">Anti-Hero</span><span class="keyword-tag">Consulting Detective</span><span class="keyword-tag">Humanized</span></div>
+                        <p class="card-summary">谜语人短暂转型为侦探，协助蝙蝠侠破案，甚至成为合法咨询侦探。这是他最"人类化"的阶段之一。</p>
+                        <div class="card-expanded">
+                            <div class="card-expand-inner">在头部遭受重击后，Edward Nygma经历了一段罕见的"清醒期"，转而利用自己的智力天赋从事合法的侦探咨询工作。这个支线展示了谜语人如果走上正途可能成为什么样的人——但他的犯罪倾向始终潜伏在表面之下，随时可能复发。这是角色最富悲剧色彩的篇章之一。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 10: Dark Knight Dark City -->
+                <div class="roadmap-node">
+                    <div class="roadmap-dot" aria-hidden="true"></div>
+                    <div class="glass-card" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="false" aria-label="展开Dark Knight Dark City详情">
+                        <p class="card-case-number">Case File 10 · 黑暗象征</p>
+                        <h3 class="card-title">Batman: Dark Knight, Dark City</h3>
+                        <p class="card-subtitle">Peter Milligan · 超自然/恐怖风格</p>
+                        <div class="card-meta">
+                            <span class="card-status status-supplement">Supplement</span>
+                            <span>★★★☆☆</span>
+                        </div>
+                        <div class="card-keywords"><span class="keyword-tag">Supernatural</span><span class="keyword-tag">Horror</span><span class="keyword-tag">Dark Symbolism</span></div>
+                        <p class="card-summary">超自然/恐怖风格的谜语人故事，极具黑暗象征意味，展现角色完全不同的一面。</p>
+                        <div class="card-expanded">
+                            <div class="card-expand-inner">这是一个风格独特的支线，将谜语人置于哥谭的黑暗历史与超自然仪式之中。故事氛围压抑诡谲，谜语人的谜题与古老邪恶力量交织，呈现出角色在恐怖类型叙事中的可能性。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 11: Gotham Adventures -->
+                <div class="roadmap-node">
+                    <div class="roadmap-dot" aria-hidden="true"></div>
+                    <div class="glass-card" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="false" aria-label="展开Gotham Adventures详情">
+                        <p class="card-case-number">Case File 11 · 动画宇宙</p>
+                        <h3 class="card-title">Batman: Gotham Adventures</h3>
+                        <p class="card-subtitle">动画宇宙相关 · 轻快风格</p>
+                        <div class="card-meta">
+                            <span class="card-status status-supplement">Supplement</span>
+                            <span>★★★☆☆</span>
+                        </div>
+                        <div class="card-keywords"><span class="keyword-tag">Animated Universe</span><span class="keyword-tag">Classic Tone</span><span class="keyword-tag">Lighthearted</span></div>
+                        <p class="card-summary">呈现更接近原始形态的聪明滑稽谜语人，适合补充经典轻快风格。</p>
+                        <div class="card-expanded">
+                            <div class="card-expand-inner">这部基于动画宇宙的系列保留了谜语人最原始的魅力——聪明、滑稽、略带神经质的谜题狂热者。相比现代黑暗版本，这里的谜语人更像一个享受智力游戏的怪盗，适合想要轻松阅读的读者。</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== ZERO YEAR IMMERSIVE ZONE ========== -->
+        <section class="section-block fade-in" aria-labelledby="zy-heading">
+            <div class="zero-year-zone" id="zeroYearZone">
+                <p class="section-number">沉浸体验区</p>
+                <h2 class="section-title" id="zy-heading"><span class="line"></span>Zero Year · 谜语人统治哥谭</h2>
+                <button class="zero-year-toggle" id="zyToggle" onclick="toggleZeroYear()" aria-label="切换Zero Year暗黑模式">◈ 激活暗黑哥谭模式</button>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:20px;">
+                    <div class="glass-card">
+                        <p class="card-case-number">关键事件</p>
+                        <h3 class="card-title" style="font-size:1rem;">哥谭大断电</h3>
+                        <p class="card-summary">谜语人切断整座城市的电力供应，将哥谭推入黑暗时代。这不仅是一次犯罪，更是一场精心策划的社会实验。</p>
+                    </div>
+                    <div class="glass-card">
+                        <p class="card-case-number">角色定位</p>
+                        <h3 class="card-title" style="font-size:1rem;">战略灾难制造者</h3>
+                        <p class="card-summary">Scott Snyder重塑的谜语人不再是留下谜题的怪盗，而是能够瘫痪文明基础设施的超级反派。</p>
+                    </div>
+                    <div class="glass-card">
+                        <p class="card-case-number">历史意义</p>
+                        <h3 class="card-title" style="font-size:1rem;">现代标志性重构</h3>
+                        <p class="card-summary">Zero Year是New 52时代最重要的蝙蝠侠起源故事之一，谜语人在其中扮演了与Joker同等分量的宿敌角色。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== ONE BAD DAY - INTERROGATION ROOM ========== -->
+        <section class="section-block fade-in" aria-labelledby="obd-heading">
+            <p class="section-number">Section 03</p>
+            <h2 class="section-title" id="obd-heading"><span class="line"></span>One Bad Day · 心理档案</h2>
+            <div class="interrogation-room" style="margin-top:20px;">
+                <div class="psych-left">
+                    <p class="psych-label">Psychological Analysis</p>
+                    <h3 style="font-weight:700;letter-spacing:0.05em;margin-bottom:4px;">Edward Nygma</h3>
+                    <p style="font-size:0.7rem;color:var(--text-dim);letter-spacing:0.06em;">心理结构剖面</p>
+                    <div class="psych-structure">
+                        <div class="psych-layer"><strong>表层：</strong>谜题狂热 · 表演型人格 · 渴望关注</div>
+                        <div class="psych-layer"><strong>中层：</strong>被忽视创伤 · 证明自我的执念 · 对认可的极端渴求</div>
+                        <div class="psych-layer"><strong>深层：</strong>极端理性主义 · 以逻辑替代情感 · 理性杀手的潜质</div>
+                        <div class="psych-layer"><strong>核心：</strong>存在性孤独 · "如果没人理解我的智慧，我是否存在？"</div>
+                    </div>
+                </div>
+                <div class="psych-right">
+                    <p class="psych-label">Publication</p>
+                    <h3 style="font-weight:700;letter-spacing:0.05em;">Batman: One Bad Day – The Riddler</h3>
+                    <p style="font-size:0.7rem;color:var(--text-dim);margin-bottom:12px;">Tom King & Mitch Gerads · 2023</p>
+                    <p class="card-summary">现代心理学深度巅峰之作。采用极其写实的叙事手法，展现了一个被社会忽视的孤独者如何将逻辑推演到极致。故事提出了一个令人不安的问题：当一个人完全抛弃情感、只依赖逻辑行事时，他距离怪物还有多远？</p>
+                    <div style="margin-top:16px;padding:14px 18px;background:rgba(91,61,122,0.12);border-radius:8px;border-left:2px solid var(--accent-purple);">
+                        <p style="font-size:0.7rem;letter-spacing:0.05em;color:rgba(243,240,232,0.7);"><strong style="color:#b89dd1;">阅读建议：</strong>适合希望深入理解谜语人内在驱动力的读者。建议在阅读Hush和Zero Year之后阅读，以获得最完整的角色弧线体验。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== ESSENTIAL READS (补充刊物) ========== -->
+        <section class="section-block fade-in" id="essential" aria-labelledby="essential-heading">
+            <p class="section-number">Section 04</p>
+            <h2 class="section-title" id="essential-heading"><span class="line"></span>Essential Reads · 补充刊物</h2>
+            <p style="color:var(--text-dim);font-size:0.8rem;letter-spacing:0.04em;margin-bottom:10px;">以下聚焦经典单篇、支线故事与较少被提及的佳作</p>
+            <div class="reads-grid">
+                <!-- 补充刊物卡片 -->
+                <div class="glass-card"><p class="card-case-number">银时代补充</p><h3 class="card-title" style="font-size:1rem;">Batman #179</h3><p class="card-subtitle">1966 · "The Riddle-less Robberies of the Riddler"</p><p class="card-summary">经典谜题犯罪故事，展现早期"无谜语抢劫"模式的创意反转。</p></div>
+                <div class="glass-card"><p class="card-case-number">银时代补充</p><h3 class="card-title" style="font-size:1rem;">Batman #263</h3><p class="card-subtitle">1974 · "Riddler on the Move!"</p><p class="card-summary">值得一看的单篇，强调谜语人的移动式智力游戏。</p></div>
+                <div class="glass-card"><p class="card-case-number">New 52</p><h3 class="card-title" style="font-size:1rem;">Batman Vol. 2 #23.2: The Riddler</h3><p class="card-subtitle">2013 · 恶人焦点单期</p><p class="card-summary">New 52时代单期故事，补充Zero Year前后谜语人的心态。</p></div>
+                <div class="glass-card"><p class="card-case-number">心理/黑色幽默</p><h3 class="card-title" style="font-size:1rem;">Joker's Asylum II: The Riddler #1</h3><p class="card-subtitle">2010 · 小丑叙述</p><p class="card-summary">聚焦谜语人试图解决"让人爱上自己"的个人谜题，心理刻画独特且带黑色幽默。</p></div>
+                <div class="glass-card"><p class="card-case-number">独立迷你系列</p><h3 class="card-title" style="font-size:1rem;">Batman: Run, Riddler, Run</h3><p class="card-subtitle">1992 · 三期迷你系列</p><p class="card-summary">谜语人卷入城市开发阴谋，展现他作为野牌操纵者的另一面，故事较独立。</p></div>
+                <div class="glass-card"><p class="card-case-number">被低估佳作</p><h3 class="card-title" style="font-size:1rem;">Batman Confidential #26-28</h3><p class="card-subtitle">"A New Dawn" · 博物馆谋杀谜题</p><p class="card-summary">艺术精美，强调侦探对决，许多粉丝视之为被低估的佳作。</p></div>
+                <div class="glass-card"><p class="card-case-number">动作与个性</p><h3 class="card-title" style="font-size:1rem;">Detective Comics #797-799</h3><p class="card-subtitle">"Low" · 与Poison Ivy相关</p><p class="card-summary">谜语人越狱并与女助手（Query & Echo）合作，动作与个性并重。</p></div>
+                <div class="glass-card"><p class="card-case-number">Hush后续</p><h3 class="card-title" style="font-size:1rem;">Catwoman: When in Rome</h3><p class="card-subtitle">Jeph Loeb & Tim Sale</p><p class="card-summary">谜语人有重要客串，涉及Hush事件后的延续，补充猫女视角。</p></div>
+                <div class="glass-card"><p class="card-case-number">创意短篇</p><h3 class="card-title" style="font-size:1rem;">Batman: Black & White #5</h3><p class="card-subtitle">2021 · "The Riddle"</p><p class="card-summary">选择你的冒险式结构短篇，创意新颖，形式独特。</p></div>
+                <div class="glass-card"><p class="card-case-number">年度刊</p><h3 class="card-title" style="font-size:1rem;">Detective Comics Annual #8</h3><p class="card-subtitle">及其他年度刊</p><p class="card-summary">零散但有深度的单篇补充，适合收藏爱好者深入探索。</p></div>
+                <div class="glass-card"><p class="card-case-number">银时代过渡</p><h3 class="card-title" style="font-size:1rem;">Batman #362</h3><p class="card-subtitle">智斗风格强化期</p><p class="card-summary">智斗风格逐步强化，向更现代的方向过渡的桥梁之作。</p></div>
+            </div>
+        </section>
+
+        <!-- ========== COLLECTIONS ========== -->
+        <section class="section-block fade-in" id="collections" aria-labelledby="collections-heading">
+            <p class="section-number">Section 05</p>
+            <h2 class="section-title" id="collections-heading"><span class="line"></span>Collected Editions · 图书馆索引</h2>
+            <div class="shelf-row">
+                <div class="shelf-item">
+                    <div class="shelf-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="4" y="4" width="32" height="32" rx="3" stroke="#B39A62" stroke-width="2" fill="none"/><line x1="12" y1="14" x2="28" y2="14" stroke="#F3F0E8" stroke-width="1.5" opacity="0.6"/><line x1="12" y1="20" x2="24" y2="20" stroke="#F3F0E8" stroke-width="1.5" opacity="0.6"/></svg>
+                    </div>
+                    <p class="shelf-name">Absolute</p>
+                    <p class="shelf-desc">绝对版 · 超大尺寸</p>
+                </div>
+                <div class="shelf-item">
+                    <div class="shelf-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="6" y="5" width="28" height="30" rx="2" stroke="#B39A62" stroke-width="2" fill="none"/><rect x="10" y="9" width="20" height="4" rx="1" fill="#F3F0E8" opacity="0.2"/></svg>
+                    </div>
+                    <p class="shelf-name">Deluxe</p>
+                    <p class="shelf-desc">豪华版 · 精装</p>
+                </div>
+                <div class="shelf-item">
+                    <div class="shelf-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="8" y="6" width="24" height="28" rx="2" stroke="#B39A62" stroke-width="2" fill="none"/><circle cx="20" cy="20" r="6" stroke="#F3F0E8" stroke-width="1.5" opacity="0.5"/></svg>
+                    </div>
+                    <p class="shelf-name">TPB</p>
+                    <p class="shelf-desc">平装合订本</p>
+                </div>
+                <div class="shelf-item">
+                    <div class="shelf-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="3" y="2" width="34" height="36" rx="3" stroke="#B39A62" stroke-width="2.5" fill="none"/><line x1="14" y1="10" x2="26" y2="10" stroke="#F3F0E8" stroke-width="1.5" opacity="0.5"/><line x1="14" y1="16" x2="26" y2="16" stroke="#F3F0E8" stroke-width="1.5" opacity="0.5"/></svg>
+                    </div>
+                    <p class="shelf-name">Omnibus</p>
+                    <p class="shelf-desc">大全集 · 收录最全</p>
+                </div>
+            </div>
+            <p style="color:var(--text-dim);font-size:0.7rem;letter-spacing:0.05em;margin-top:16px;text-align:center;">以上版本涵盖Zero Year、Hush、War of Jokes and Riddles、One Bad Day等核心故事的合集</p>
+        </section>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="archive-footer">
+            <p class="footer-question">? ? ?</p>
+            <p>THE RIDDLER ARCHIVE · Edward Nygma Reading Guide</p>
+            <p style="margin-top:6px;">Gotham City Bureau of Investigation · Classified Case Files</p>
+            <p style="margin-top:12px;font-size:0.6rem;color:rgba(243,240,232,0.25);">"The question is not whether you can solve it. The question is whether you deserve the answer."</p>
+        </footer>
+    </div>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script>
+        // ========== 背景问号矩阵 ==========
+        const questionMatrix = document.getElementById('questionMatrix');
+        const rows = 18;
+        const cols = 22;
+        let matrixText = '';
+        for (let r = 0; r < rows; r++) {
+            let line = '';
+            for (let c = 0; c < cols; c++) {
+                const spacing = (r % 2 === 0) ? '  ' : '    ';
+                const char = (c % 3 === 0 && r % 2 === c % 4) ? '?' : ' ';
+                line += char + spacing;
+            }
+            matrixText += line + '\n';
+        }
+        questionMatrix.textContent = matrixText;
+
+        // ========== 鼠标移动 -> 背景问号矩阵缓慢偏移 ==========
+        let targetX = 0,
+            targetY = 0;
+        let currentX = 0,
+            currentY = 0;
+        document.addEventListener('mousemove', function(e) {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            targetX = (e.clientX - centerX) / centerX * 8;
+            targetY = (e.clientY - centerY) / centerY * 8;
+        });
+
+        function animateMatrix() {
+            currentX += (targetX - currentX) * 0.03;
+            currentY += (targetY - currentY) * 0.03;
+            questionMatrix.style.transform = `translate(${currentX}px, ${currentY}px)`;
+            requestAnimationFrame(animateMatrix);
+        }
+        animateMatrix();
+
+        // ========== 导航滚动效果 ==========
+        const topNav = document.getElementById('topNav');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 60) {
+                topNav.classList.add('scrolled');
+            } else {
+                topNav.classList.remove('scrolled');
+            }
+        });
+
+        // ========== 卡片点击展开 (clip-path动画) ==========
+        function toggleCard(card) {
+            const expanded = card.querySelector('.card-expanded');
+            if (!expanded) return;
+            const isOpen = expanded.classList.contains('open');
+            if (isOpen) {
+                expanded.classList.remove('open');
+                card.setAttribute('aria-expanded', 'false');
+            } else {
+                // 关闭所有其他展开的卡片
+                document.querySelectorAll('.card-expanded.open').forEach(el => {
+                    el.classList.remove('open');
+                    el.closest('.glass-card')?.setAttribute('aria-expanded', 'false');
+                });
+                expanded.classList.add('open');
+                card.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        // ========== Zero Year 区域主题切换 ==========
+        function toggleZeroYear() {
+            const zone = document.getElementById('zeroYearZone');
+            const toggle = document.getElementById('zyToggle');
+            const isActive = zone.classList.contains('activated');
+            if (isActive) {
+                zone.classList.remove('activated');
+                toggle.classList.remove('active-toggle');
+                toggle.textContent = '◈ 激活暗黑哥谭模式';
+            } else {
+                zone.classList.add('activated');
+                toggle.classList.add('active-toggle');
+                toggle.textContent = '◈ 暗黑哥谭模式已激活';
+                // 3秒后提示淡化
+                setTimeout(() => {
+                    if (zone.classList.contains('activated')) {
+                        toggle.textContent = '◈ 暗黑哥谭模式 · 开启中';
+                    }
+                }, 3000);
+            }
+        }
+
+        // ========== 导航链接点击平滑滚动 ==========
+        document.querySelectorAll('.nav-glass a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const navHeight = topNav.offsetHeight + 30;
+                        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset -
+                            navHeight;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // ========== 滚动时高亮当前导航 ==========
+        const navLinks = document.querySelectorAll('.nav-glass a');
+        const sections = [];
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                const target = document.querySelector(href);
+                if (target) sections.push({ link, target });
+            }
+        });
+
+        function updateActiveNav() {
+            const scrollPos = window.scrollY + 150;
+            let activeLink = null;
+            sections.forEach(({ link, target }) => {
+                if (target.offsetTop <= scrollPos) {
+                    activeLink = link;
+                }
+            });
+            navLinks.forEach(l => l.classList.remove('active'));
+            if (activeLink) activeLink.classList.add('active');
+        }
+        window.addEventListener('scroll', updateActiveNav);
+        updateActiveNav();
+
+        // ========== 键盘可访问性：Enter键展开卡片 ==========
+        document.querySelectorAll('.glass-card[role="button"]').forEach(card => {
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleCard(this);
+                }
+            });
+        });
+
+        // ========== 初始化：为所有可展开卡片设置aria属性 ==========
+        document.querySelectorAll('.glass-card .card-expanded').forEach(exp => {
+            const card = exp.closest('.glass-card');
+            if (card && card.hasAttribute('role')) {
+                card.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        console.log('%cTHE RIDDLER ARCHIVE%c · Edward Nygma Reading Guide',
+            'color:#B39A62;font-size:1.2em;font-weight:bold;',
+            'color:#F3F0E8;');
+        console.log('%cAll 23 publications catalogued. The question is… are you ready?',
+            'color:#9a9790;font-style:italic;');
+    </script>
+</body>
+</html>

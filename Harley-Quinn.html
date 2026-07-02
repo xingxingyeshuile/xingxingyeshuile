@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harley Quinn / 哈莉·奎茵 — 最全刊物阅读路线 | 阿卡姆档案馆</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Source+Han+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0a080c;
+            --bg-arkham: #0d0b10;
+            --ink-black: #0c0a0f;
+            --blue-grey: #1a1c24;
+            --smoke-purple: #2a2435;
+            --dust-pink: #3d2d38;
+            --wine-red: #3d1a22;
+            --cyan-cool: #1a2e35;
+            --text-primary: #d4cfc8;
+            --text-secondary: #b0a8a0;
+            --text-muted: #7a7278;
+            --accent-rose: #c45a6b;
+            --accent-rose-subtle: #8b4a55;
+            --accent-cyan: #5a9aa8;
+            --accent-cyan-subtle: #3d6e7a;
+            --accent-wine: #6b2a35;
+            --accent-gold: #8a7a65;
+            --glass-bg: rgba(20, 16, 24, 0.55);
+            --glass-bg-light: rgba(28, 22, 32, 0.45);
+            --glass-bg-dark: rgba(10, 8, 14, 0.7);
+            --glass-bg-rose: rgba(40, 20, 28, 0.5);
+            --glass-bg-cyan: rgba(18, 28, 34, 0.5);
+            --glass-border: rgba(180, 160, 170, 0.15);
+            --glass-border-active: rgba(200, 170, 180, 0.3);
+            --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+            --glass-highlight: rgba(255, 240, 245, 0.03);
+            --font-display: 'Cormorant Garamond', 'Georgia', 'Times New Roman', serif;
+            --font-body: 'Noto Serif SC', 'Source Han Serif SC', 'SimSun', 'STSong', serif;
+            --font-ui: 'Cormorant Garamond', 'Georgia', serif;
+            --nav-height: 56px;
+            --max-width: 1300px;
+            --card-radius: 8px;
+            --section-gap: 60px;
+            --transition-smooth: 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.7;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            letter-spacing: 0.01em;
+        }
+
+        /* 背景层 */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at 22% 18%, rgba(160, 90, 110, 0.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 30%, rgba(70, 120, 140, 0.09) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 70%, rgba(100, 60, 80, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 55%, rgba(30, 50, 60, 0.15) 0%, transparent 40%),
+                var(--bg-arkham);
+            background-size: 100% 100%;
+            animation: bgDrift 40s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgDrift {
+            0% {
+                background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+            }
+            50% {
+                background-position: 2% -1%, -1% 2%, 3% 1%, -2% -1%;
+            }
+            100% {
+                background-position: -1% 2%, 2% -1%, -2% 1%, 1% -1%;
+            }
+        }
+
+        /* 噪点覆盖层 */
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 280px 280px;
+            background-repeat: repeat;
+        }
+
+        /* 扫描线 */
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.018;
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.5) 2px,
+                    rgba(0, 0, 0, 0.5) 4px);
+            animation: scanDrift 12s linear infinite;
+        }
+
+        @keyframes scanDrift {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(4px);
+            }
+        }
+
+        /* 主容器 */
+        .main-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== 导航栏 ========== */
+        .nav-bar {
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            margin: 12px auto 0;
+            max-width: var(--max-width);
+            padding: 0 8px;
+            border-radius: 14px;
+            background: rgba(18, 14, 22, 0.65);
+            backdrop-filter: blur(22px) saturate(120%);
+            -webkit-backdrop-filter: blur(22px) saturate(120%);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 6px 28px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(255, 255, 255, 0.03);
+            transition: var(--transition-smooth);
+        }
+        .nav-bar.scrolled {
+            background: rgba(14, 10, 18, 0.78);
+            border-color: rgba(180, 160, 175, 0.22);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(255, 255, 255, 0.04);
+        }
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: nowrap;
+            gap: 4px;
+            padding: 8px 10px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .nav-inner::-webkit-scrollbar {
+            display: none;
+        }
+        .nav-link {
+            display: inline-block;
+            padding: 8px 15px;
+            font-family: var(--font-ui);
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            white-space: nowrap;
+            border-radius: 20px;
+            letter-spacing: 0.03em;
+            transition: all var(--transition-smooth);
+            border: 1px solid transparent;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+        }
+        .nav-link:hover {
+            color: #e0d6d0;
+            background: rgba(255, 240, 245, 0.04);
+            border-color: rgba(200, 170, 185, 0.2);
+        }
+        .nav-link.active {
+            color: #e8dcd4;
+            background: rgba(180, 120, 140, 0.12);
+            border-color: rgba(190, 140, 155, 0.35);
+            box-shadow: 0 0 18px rgba(170, 100, 120, 0.12);
+        }
+
+        /* ========== Hero 区域 ========== */
+        .hero-section {
+            position: relative;
+            padding: 70px 0 50px;
+            text-align: center;
+            overflow: visible;
+            margin-bottom: 20px;
+        }
+        .hero-watermark {
+            position: absolute;
+            font-family: var(--font-display);
+            font-size: clamp(5rem, 14vw, 11rem);
+            font-weight: 700;
+            color: rgba(180, 150, 165, 0.04);
+            letter-spacing: 0.08em;
+            user-select: none;
+            pointer-events: none;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: #e8dcd4;
+            margin-bottom: 6px;
+            line-height: 1.1;
+            text-shadow: 0 0 60px rgba(180, 130, 150, 0.2);
+        }
+        .hero-title .chinese-name {
+            display: block;
+            font-family: var(--font-body);
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            color: #c4b0b8;
+            margin-top: 2px;
+            text-shadow: none;
+        }
+        .hero-subtitle {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-top: 8px;
+            text-transform: uppercase;
+        }
+        .hero-tagline {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: #a89898;
+            max-width: 600px;
+            margin: 18px auto 0;
+            line-height: 1.6;
+            letter-spacing: 0.04em;
+            font-style: italic;
+        }
+        .hero-file-marks {
+            position: absolute;
+            z-index: 1;
+            pointer-events: none;
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            color: rgba(160, 140, 150, 0.25);
+            text-transform: uppercase;
+        }
+        .hero-file-mark-1 {
+            top: 18%;
+            right: 5%;
+            transform: rotate(-4deg);
+            font-size: 0.7rem;
+        }
+        .hero-file-mark-2 {
+            bottom: 22%;
+            left: 3%;
+            transform: rotate(2deg);
+            font-size: 0.68rem;
+            color: rgba(180, 130, 145, 0.2);
+        }
+        .hero-file-mark-3 {
+            top: 25%;
+            left: 8%;
+            transform: rotate(-7deg);
+            font-size: 0.62rem;
+            color: rgba(140, 160, 170, 0.2);
+            text-decoration: line-through;
+        }
+
+        /* ========== 章节通用 ========== */
+        .chapter-section {
+            margin-bottom: var(--section-gap);
+            padding-top: 10px;
+            scroll-margin-top: 90px;
+            position: relative;
+        }
+        .chapter-header {
+            margin-bottom: 32px;
+            position: relative;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(160, 145, 155, 0.15);
+        }
+        .chapter-number {
+            font-family: var(--font-display);
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .chapter-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: #d8cec6;
+        }
+        .chapter-desc {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            letter-spacing: 0.03em;
+            max-width: 680px;
+        }
+        .chapter-accent-line {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            height: 1px;
+            width: 60px;
+        }
+        /* 各章节色调 */
+        .ch-origin .chapter-accent-line {
+            background: rgba(200, 150, 160, 0.5);
+        }
+        .ch-early .chapter-accent-line {
+            background: rgba(150, 130, 140, 0.45);
+        }
+        .ch-new52 .chapter-accent-line {
+            background: rgba(180, 80, 100, 0.5);
+        }
+        .ch-rebirth .chapter-accent-line {
+            background: rgba(100, 150, 170, 0.5);
+        }
+        .ch-blacklabel .chapter-accent-line {
+            background: rgba(140, 120, 130, 0.35);
+        }
+
+        /* ========== 卡片系统 ========== */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 20px;
+        }
+        .card-full {
+            grid-column: 1 / -1;
+        }
+        .archive-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px) saturate(110%);
+            -webkit-backdrop-filter: blur(18px) saturate(110%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            padding: 22px 24px;
+            box-shadow: var(--glass-shadow);
+            position: relative;
+            transition: all var(--transition-smooth);
+            overflow: hidden;
+            cursor: default;
+            z-index: 1;
+        }
+        .archive-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.025) 0%, transparent 50%, rgba(255, 255, 255, 0.01) 100%);
+            pointer-events: none;
+            z-index: 0;
+            border-radius: var(--card-radius);
+        }
+        .archive-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--glass-border-active);
+            box-shadow: 0 8px 36px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35), 0 0 20px rgba(170, 130, 150, 0.06);
+        }
+        .archive-card>* {
+            position: relative;
+            z-index: 2;
+        }
+        .card-top-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .card-title-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .card-title-en {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            color: #e0d6ce;
+            line-height: 1.3;
+        }
+        .card-title-zh {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            margin-top: 2px;
+        }
+        .card-meta-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 8px 0 6px;
+            align-items: center;
+        }
+        .card-meta-item {
+            font-family: var(--font-ui);
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .card-meta-divider {
+            width: 1px;
+            height: 10px;
+            background: rgba(160, 145, 155, 0.25);
+            flex-shrink: 0;
+        }
+        .card-desc {
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            color: #b0a8a2;
+            line-height: 1.65;
+            margin: 6px 0 10px;
+            letter-spacing: 0.02em;
+        }
+        .card-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 6px 0;
+        }
+        .card-kw {
+            font-family: var(--font-ui);
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            padding: 3px 9px;
+            border-radius: 12px;
+            background: rgba(160, 140, 155, 0.08);
+            color: #b0a0a0;
+            border: 1px solid rgba(160, 140, 155, 0.15);
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .card-related {
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            margin-top: 4px;
+        }
+        .card-related span {
+            color: #c0b0b5;
+        }
+
+        /* 推荐等级标签 */
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-family: var(--font-ui);
+            font-size: 0.65rem;
+            letter-spacing: 0.07em;
+            padding: 5px 11px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+        .level-critical {
+            background: rgba(160, 40, 60, 0.2);
+            color: #d48595;
+            border: 1px solid rgba(180, 60, 80, 0.35);
+            box-shadow: 0 0 10px rgba(160, 40, 60, 0.1);
+        }
+        .level-essential {
+            background: rgba(130, 50, 90, 0.18);
+            color: #c890a0;
+            border: 1px solid rgba(150, 70, 100, 0.3);
+        }
+        .level-recommended {
+            background: rgba(60, 80, 100, 0.15);
+            color: #9ab0bb;
+            border: 1px solid rgba(80, 110, 130, 0.25);
+        }
+        .level-supplementary {
+            background: rgba(80, 75, 85, 0.12);
+            color: #9a9298;
+            border: 1px solid rgba(120, 110, 120, 0.2);
+        }
+        .level-extended {
+            background: rgba(60, 55, 65, 0.1);
+            color: #888088;
+            border: 1px solid rgba(100, 90, 100, 0.15);
+        }
+        .level-optional {
+            background: rgba(50, 45, 55, 0.08);
+            color: #7a7278;
+            border: 1px solid rgba(90, 80, 90, 0.12);
+        }
+        .level-sub-label {
+            font-size: 0.55rem;
+            letter-spacing: 0.06em;
+            opacity: 0.7;
+            text-transform: none;
+        }
+
+        /* ========== Black Label 专区 ========== */
+        .black-label-zone {
+            background: rgba(8, 6, 12, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(140, 120, 135, 0.2);
+            border-radius: 12px;
+            padding: 36px 28px;
+            margin-bottom: var(--section-gap);
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.4), 0 4px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            scroll-margin-top: 90px;
+        }
+        .black-label-zone::before {
+            content: 'BLACK LABEL ARCHIVE';
+            position: absolute;
+            top: -13px;
+            left: 28px;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            color: rgba(180, 150, 165, 0.35);
+            background: var(--bg-arkham);
+            padding: 0 14px;
+            text-transform: uppercase;
+        }
+        .bl-card-large {
+            background: rgba(14, 10, 18, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(170, 145, 160, 0.18);
+            border-radius: var(--card-radius);
+            padding: 26px 28px;
+            margin-bottom: 16px;
+            transition: all var(--transition-smooth);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+        .bl-card-large:hover {
+            border-color: rgba(200, 160, 175, 0.3);
+            box-shadow: 0 6px 28px rgba(0, 0, 0, 0.55), 0 0 16px rgba(140, 100, 120, 0.06);
+            transform: translateY(-2px);
+        }
+        .bl-card-title {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: #e2d8d0;
+        }
+        .bl-card-theme {
+            font-family: var(--font-ui);
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            color: #b09098;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* ========== 关系图区域 ========== */
+        .relationship-zone {
+            margin-bottom: var(--section-gap);
+            scroll-margin-top: 90px;
+        }
+        .rel-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            position: relative;
+        }
+        .rel-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            padding: 18px 20px;
+            text-align: center;
+            box-shadow: var(--glass-shadow);
+            transition: all var(--transition-smooth);
+            position: relative;
+            z-index: 1;
+        }
+        .rel-card:hover {
+            border-color: var(--glass-border-active);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+        }
+        .rel-card.central {
+            border-color: rgba(190, 140, 155, 0.35);
+            background: rgba(30, 18, 26, 0.6);
+            box-shadow: 0 0 24px rgba(160, 90, 110, 0.1);
+            z-index: 2;
+        }
+        .rel-char-name {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: #dccfc7;
+        }
+        .rel-char-role {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            margin-top: 2px;
+        }
+        .rel-connector {
+            position: absolute;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.2;
+            border-left: 1px dashed rgba(180, 150, 165, 0.5);
+        }
+
+        /* ========== 阅读路线图 ========== */
+        .roadmap-section {
+            margin-bottom: var(--section-gap);
+            scroll-margin-top: 90px;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 36px;
+            border-left: 1px solid rgba(170, 145, 160, 0.25);
+            margin-left: 8px;
+        }
+        .timeline-node {
+            position: relative;
+            margin-bottom: 28px;
+            padding-left: 20px;
+            transition: all var(--transition-smooth);
+        }
+        .timeline-node::before {
+            content: '';
+            position: absolute;
+            left: -44px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(180, 140, 155, 0.5);
+            border: 2px solid rgba(200, 160, 175, 0.4);
+            box-shadow: 0 0 10px rgba(160, 110, 130, 0.2);
+            transition: all var(--transition-smooth);
+        }
+        .timeline-node:hover::before {
+            background: rgba(200, 140, 160, 0.7);
+            box-shadow: 0 0 18px rgba(180, 110, 140, 0.35);
+            border-color: rgba(220, 170, 185, 0.5);
+        }
+        .timeline-step {
+            font-family: var(--font-ui);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            color: var(--accent-rose-subtle);
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+        .timeline-title {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            color: #d8cec4;
+        }
+        .timeline-reason {
+            font-family: var(--font-body);
+            font-size: 0.78rem;
+            color: #a09892;
+            letter-spacing: 0.02em;
+            margin-top: 3px;
+        }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 900px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            .rel-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .rel-card.central {
+                grid-column: 1 / -1;
+            }
+            .hero-watermark {
+                font-size: 3.5rem;
+            }
+            .nav-link {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+            .timeline {
+                padding-left: 22px;
+                margin-left: 4px;
+            }
+            .timeline-node {
+                padding-left: 10px;
+            }
+            .timeline-node::before {
+                left: -28px;
+                width: 8px;
+                height: 8px;
+            }
+        }
+        @media (max-width: 550px) {
+            .main-container {
+                padding: 0 12px;
+            }
+            .archive-card {
+                padding: 16px 14px;
+            }
+            .card-title-en {
+                font-size: 1rem;
+            }
+            .chapter-title {
+                font-size: 1.3rem;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+            .hero-title .chinese-name {
+                font-size: 1rem;
+            }
+            .rel-grid {
+                grid-template-columns: 1fr;
+            }
+            .black-label-zone {
+                padding: 24px 14px;
+            }
+            .bl-card-large {
+                padding: 18px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 背景层 -->
+    <div class="bg-layer"></div>
+    <div class="noise-overlay"></div>
+    <div class="scanlines"></div>
+
+    <!-- 导航栏 -->
+    <nav class="nav-bar" id="navBar">
+        <div class="nav-inner">
+            <a href="#ch-origin" class="nav-link active" data-section="ch-origin">起源与核心根基</a>
+            <a href="#ch-early" class="nav-link" data-section="ch-early">早期DC连续性</a>
+            <a href="#ch-new52" class="nav-link" data-section="ch-new52">New 52时期</a>
+            <a href="#ch-rebirth" class="nav-link" data-section="ch-rebirth">Rebirth与现代</a>
+            <a href="#ch-blacklabel" class="nav-link" data-section="ch-blacklabel">Black Label专区</a>
+            <a href="#ch-teams" class="nav-link" data-section="ch-teams">重要团队线</a>
+            <a href="#ch-roadmap" class="nav-link" data-section="ch-roadmap">推荐阅读顺序</a>
+        </div>
+    </nav>
+
+    <!-- 主容器 -->
+    <div class="main-container">
+
+        <!-- Hero 区域 -->
+        <section class="hero-section" id="hero">
+            <div class="hero-watermark" aria-hidden="true">HQ-001</div>
+            <div class="hero-file-marks hero-file-mark-1">ARKHAM FILE 04 // CONFIDENTIAL</div>
+            <div class="hero-file-marks hero-file-mark-2">PSYCHIATRIC ARCHIVE — DR. QUINZEL</div>
+            <div class="hero-file-marks hero-file-mark-3">RESTRICTED ACCESS — LEVEL 7</div>
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Harley Quinn
+                    <span class="chinese-name">哈莉·奎茵</span>
+                </h1>
+                <p class="hero-subtitle">最全刊物阅读路线 · Archive Reading Guide · 藏档阅读地图</p>
+                <p class="hero-tagline">当疯狂、浪漫与自我重建交织，阅读顺序就不只是顺序，而是人物成长的轨迹。每一份档案，都是她失控与重建的切片。</p>
+            </div>
+        </section>
+
+        <!-- 第一章：起源与核心根基 -->
+        <section class="chapter-section ch-origin" id="ch-origin">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter I · ARCHIVE ACCESS LEVEL: CRITICAL</div>
+                <h2 class="chapter-title">起源与核心根基</h2>
+                <p class="chapter-desc">这是理解"哈莉·奎茵是谁"的起点。从动画宇宙的精神病医生到DC主宇宙的正式角色，她的诞生故事是一切阅读的基石。</p>
+                <div class="chapter-accent-line"></div>
+            </div>
+            <div class="cards-grid">
+                <!-- 卡片 1 -->
+                <div class="archive-card card-full">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Batman: The Animated Series — Harley Quinn Debut</div>
+                            <div class="card-title-zh">蝙蝠侠动画系列 · 哈莉·奎茵首次登场集</div>
+                        </div>
+                        <span class="level-badge level-critical">必读<span class="level-sub-label"> · ARCHIVE LEVEL: CRITICAL</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">1992</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">动画起源</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">Bruce Timm / Paul Dini</span>
+                    </div>
+                    <p class="card-desc">哈莉·奎茵首次在动画中登场，原为阿卡姆精神病院的精神科医生—— Harleen Quinzel。她对小丑的痴迷与堕落由此展开，奠定了角色最根本的心理轨迹。这是所有读者必须回溯的起点。</p>
+                    <div class="card-keywords"><span class="card-kw">动画起源</span><span class="card-kw">首次登场</span><span class="card-kw">心理堕落</span></div>
+                    <p class="card-related">关联人物：<span>Joker · Batman · Arkham Asylum</span></p>
+                </div>
+
+                <!-- 卡片 2 -->
+                <div class="archive-card card-full">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Mad Love</div>
+                            <div class="card-title-zh">疯狂的爱 · 1994漫画版 ⭐最重要起源</div>
+                        </div>
+                        <span class="level-badge level-critical">必读<span class="level-sub-label"> · ARCHIVE LEVEL: CRITICAL</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">1994</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">漫画起源经典</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">Paul Dini / Bruce Timm</span>
+                    </div>
+                    <p class="card-desc">公认的哈莉·奎茵最重要起源故事。完整呈现了Harleen Quinzel如何从一位专业精神科医生，在对小丑进行治疗的过程中逐渐被操纵、扭曲，最终蜕变为Harley Quinn的全过程。心理描写细腻，悲剧性与疯狂并存。这部作品是理解哈莉全部人格底色的核心密钥。</p>
+                    <div class="card-keywords"><span class="card-kw">最重要起源</span><span class="card-kw">心理操纵</span><span class="card-kw">医生→反派</span><span class="card-kw">经典必读</span></div>
+                    <p class="card-related">关联人物：<span>Joker · Batman · Arkham</span></p>
+                </div>
+
+                <!-- 卡片 3 -->
+                <div class="archive-card">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Batman: Harley Quinn</div>
+                            <div class="card-title-zh">蝙蝠侠：哈莉·奎茵</div>
+                        </div>
+                        <span class="level-badge level-essential">强烈推荐<span class="level-sub-label"> · ESSENTIAL</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">1999</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">DC主宇宙正式引入</span>
+                    </div>
+                    <p class="card-desc">哈莉由此正式从"动画角色"转变为"漫画正史角色"。这是她在DC主宇宙连续性中的首次亮相，标志着角色地位的跃升。</p>
+                    <div class="card-keywords"><span class="card-kw">正式引入</span><span class="card-kw">DC正史</span></div>
+                    <p class="card-related">关联人物：<span>Batman · Joker</span></p>
+                </div>
+
+                <!-- 卡片 4 -->
+                <div class="archive-card">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">No Man's Land — Harley Quinn Appearance</div>
+                            <div class="card-title-zh">无人之地 · 哈莉登场</div>
+                        </div>
+                        <span class="level-badge level-recommended">推荐<span class="level-sub-label"> · RECOMMENDED</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">1999</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">DC大事件</span>
+                    </div>
+                    <p class="card-desc">在"No Man's Land"大事件期间，哈莉·奎茵正式进入DC主宇宙叙事。这一阶段她以反派身份活跃于哥谭废墟之中，是角色融入漫画连续性的关键节点。</p>
+                    <div class="card-keywords"><span class="card-kw">大事件</span><span class="card-kw">哥谭</span></div>
+                    <p class="card-related">关联人物：<span>Batman · Gotham反派群</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第二章：早期DC连续性 -->
+        <section class="chapter-section ch-early" id="ch-early">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter II · ARCHIVE ACCESS LEVEL: ESSENTIAL</div>
+                <h2 class="chapter-title">早期DC连续性 <span style="font-size:0.7em;font-weight:400;color:var(--text-muted);">2000–2010</span></h2>
+                <p class="chapter-desc">这一阶段是"反派哈莉 → 半独立角色"的形成期。她从哥谭的附庸逐渐走向自我意识的萌芽，黑色喜剧与哥谭反派生态在此交织。</p>
+                <div class="chapter-accent-line"></div>
+            </div>
+            <div class="cards-grid">
+                <div class="archive-card card-full">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Harley Quinn (2000 series) #1–38</div>
+                            <div class="card-title-zh">哈莉·奎茵 2000年个人连载</div>
+                        </div>
+                        <span class="level-badge level-essential">强烈推荐<span class="level-sub-label"> · ESSENTIAL</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">2000–2004</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">早期长期连载</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">38期</span>
+                    </div>
+                    <p class="card-desc">哈莉的第一个长期个人连载系列。风格偏向黑色喜剧，深入展现了哥谭反派生态中哈莉的生存之道。这一阶段她的角色开始脱离单纯的"小丑女友"标签，展现出更多独立人格的萌芽。是理解早期哈莉角色演变的关键读物。</p>
+                    <div class="card-keywords"><span class="card-kw">首部个人连载</span><span class="card-kw">黑色喜剧</span><span class="card-kw">哥谭生态</span></div>
+                    <p class="card-related">关联人物：<span>Joker · Poison Ivy · 哥谭反派群</span></p>
+                </div>
+                <div class="archive-card card-full">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Gotham City Sirens</div>
+                            <div class="card-title-zh">哥谭魅影</div>
+                        </div>
+                        <span class="level-badge level-critical">必读<span class="level-sub-label"> · CRITICAL — 人格成型关键</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">2009–2011</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">团队核心作品</span>
+                    </div>
+                    <p class="card-desc">哈莉 + 毒藤女 + 猫女的三人组合。这是"哈莉第一次真正独立人格成型"的关键作品。在与Ivy和Selina的互动中，她开始建立属于自己的关系网络和自我认同，不再完全依附于小丑。这份友谊成为她人格重建的重要支撑。</p>
+                    <div class="card-keywords"><span class="card-kw">独立人格成型</span><span class="card-kw">三人关系</span><span class="card-kw">友情核心</span></div>
+                    <p class="card-related">关联人物：<span>Poison Ivy · Catwoman</span></p>
+                </div>
+                <div class="archive-card">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Joker's Asylum: Harley Quinn #1</div>
+                            <div class="card-title-zh">小丑庇护所：哈莉·奎茵</div>
+                        </div>
+                        <span class="level-badge level-supplementary">补充阅读<span class="level-sub-label"> · SUPPLEMENTARY</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">2008</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">短篇</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">Post-Crisis</span>
+                    </div>
+                    <p class="card-desc">聚焦哈莉与小丑扭曲关系的短篇，黑色幽默风格强烈。补充了早期哈莉心理状态的重要侧面。</p>
+                    <div class="card-keywords"><span class="card-kw">短篇</span><span class="card-kw">扭曲关系</span></div>
+                    <p class="card-related">关联人物：<span>Joker</span></p>
+                </div>
+                <div class="archive-card">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Batman: Harley and Ivy</div>
+                            <div class="card-title-zh">蝙蝠侠：哈莉与毒藤</div>
+                        </div>
+                        <span class="level-badge level-supplementary">补充阅读<span class="level-sub-label"> · SUPPLEMENTARY</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">多篇短篇合集</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">经典搭档</span>
+                    </div>
+                    <p class="card-desc">哈莉与Poison Ivy的经典搭档故事合集。友情线的重要补充，展现两人之间独特的化学反应与相互支持。</p>
+                    <div class="card-keywords"><span class="card-kw">友情线</span><span class="card-kw">经典搭档</span></div>
+                    <p class="card-related">关联人物：<span>Poison Ivy · Batman</span></p>
+                </div>
+                <div class="archive-card">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Detective Comics Vol. 2 #23.2: Harley Quinn</div>
+                            <div class="card-title-zh">侦探漫画 第二卷第23.2期：哈莉·奎茵</div>
+                        </div>
+                        <span class="level-badge level-supplementary">补充阅读<span class="level-sub-label"> · SUPPLEMENTARY</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">2013</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">New 52前夕</span>
+                    </div>
+                    <p class="card-desc">New 52前夕的单篇，补充哈莉在重大重启前的心理状态，为后续形象转变提供了过渡视角。</p>
+                    <div class="card-keywords"><span class="card-kw">过渡期</span><span class="card-kw">心理状态</span></div>
+                    <p class="card-related">关联人物：<span>Batman</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第三章：New 52时期 -->
+        <section class="chapter-section ch-new52" id="ch-new52">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter III · ARCHIVE ACCESS LEVEL: ESSENTIAL</div>
+                <h2 class="chapter-title">New 52时期 <span style="font-size:0.7em;font-weight:400;color:var(--text-muted);">2011–2016</span></h2>
+                <p class="chapter-desc">哈莉彻底重塑形象的阶段。更疯狂、更自由、更喜剧化——她成为官方自杀小队成员，"现代哈莉形象"在此基本定型。</p>
+                <div class="chapter-accent-line"></div>
+            </div>
+            <div class="cards-grid">
+                <div class="archive-card card-full">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Suicide Squad (New 52) #1–20+</div>
+                            <div class="card-title-zh">自杀小队 · New 52</div>
+                        </div>
+                        <span class="level-badge level-critical">必读<span class="level-sub-label"> · CRITICAL — 反英雄化核心</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">2011–2016</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">核心主线</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">政府工具人 + 反英雄化</span>
+                    </div>
+                    <p class="card-desc">哈莉成为自杀小队官方成员，与Deadshot、回旋镖队长等组成政府操控的黑色行动团队。这一阶段将她从"小丑的附庸"重新定义为"可控混乱的反英雄"，暴力与赎罪交织，是角色转型的分水岭。</p>
+                    <div class="card-keywords"><span class="card-kw">反英雄化</span><span class="card-kw">政府工具人</span><span class="card-kw">暴力赎罪</span></div>
+                    <p class="card-related">关联人物：<span>Deadshot · Captain Boomerang · Amanda Waller</span></p>
+                </div>
+                <div class="archive-card card-full">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Harley Quinn (2013 New 52 series) — Conner / Palmiotti时代</div>
+                            <div class="card-title-zh">哈莉·奎茵 2013年New 52个人系列</div>
+                        </div>
+                        <span class="level-badge level-critical">必读<span class="level-sub-label"> · CRITICAL — 现代形象定型</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">2013–2016</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">Amanda Conner / Jimmy Palmiotti</span>
+                    </div>
+                    <p class="card-desc">她的"现代哈莉形象"基本在此定型：反英雄姿态、布鲁克林式幽默、更独立且大幅减少对小丑的依附。Conner与Palmiotti的创作赋予了哈莉前所未有的自由度和喜剧张力，是无数当代读者的入门之作。</p>
+                    <div class="card-keywords"><span class="card-kw">现代形象定型</span><span class="card-kw">布鲁克林幽默</span><span class="card-kw">独立自由</span></div>
+                    <p class="card-related">关联人物：<span>Poison Ivy · Power Girl · 布鲁克林众生</span></p>
+                </div>
+                <div class="archive-card">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Batman #13–14 · Death of the Family</div>
+                            <div class="card-title-zh">蝙蝠侠 #13–14 · 家族之死</div>
+                        </div>
+                        <span class="level-badge level-recommended">推荐<span class="level-sub-label"> · RECOMMENDED</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">2012</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">重要支线</span>
+                    </div>
+                    <p class="card-desc">New 52时期的重要支线，哈莉在"家族之死"事件中与蝙蝠家族产生深度交集，展现了她与小丑关系的残酷一面。</p>
+                    <div class="card-keywords"><span class="card-kw">蝙蝠家族</span><span class="card-kw">小丑关系</span></div>
+                    <p class="card-related">关联人物：<span>Batman · Joker · Bat-Family</span></p>
+                </div>
+                <div class="archive-card">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Harley Quinn and Power Girl</div>
+                            <div class="card-title-zh">哈莉·奎茵与神力女孩</div>
+                        </div>
+                        <span class="level-badge level-supplementary">补充阅读<span class="level-sub-label"> · SUPPLEMENTARY</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">2016</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">轻松crossover</span>
+                    </div>
+                    <p class="card-desc">Conner/Palmiotti风格的轻松搞笑crossover，延续了New 52个人系列的幽默调性，是愉快的补充阅读。</p>
+                    <div class="card-keywords"><span class="card-kw">轻松</span><span class="card-kw">crossover</span></div>
+                    <p class="card-related">关联人物：<span>Power Girl</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第四章：Rebirth & 现代阶段 -->
+        <section class="chapter-section ch-rebirth" id="ch-rebirth">
+            <div class="chapter-header">
+                <div class="chapter-number">Chapter IV · ARCHIVE ACCESS LEVEL: ESSENTIAL</div>
+                <h2 class="chapter-title">Rebirth & 现代阶段 <span style="font-size:0.7em;font-weight:400;color:var(--text-muted);">2016–至今</span></h2>
+                <p class="chapter-desc">哈莉最稳定的人格阶段，也是目前主流形象的来源。她与小丑彻底分离，反英雄赎罪与个人成长成为核心叙事。</p>
+                <div class="chapter-accent-line"></div>
+            </div>
+            <div class="cards-grid">
+                <div class="archive-card card-full">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Harley Quinn (2016 Rebirth series)</div>
+                            <div class="card-title-zh">哈莉·奎茵 2016 Rebirth个人系列</div>
+                        </div>
+                        <span class="level-badge level-essential">强烈推荐<span class="level-sub-label"> · ESSENTIAL</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">2016–2020</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">Rebirth主线</span>
+                    </div>
+                    <p class="card-desc">延续Conner/Palmiotti风格，更强调"Harley vs Joker彻底分离"。这一系列巩固了哈莉作为独立反英雄的地位，是她人格最稳定的时期。</p>
+                    <div class="card-keywords"><span class="card-kw">彻底分离</span><span class="card-kw">反英雄巩固</span><span class="card-kw">稳定人格</span></div>
+                    <p class="card-related">关联人物：<span>Poison Ivy · 独立生活圈</span></p>
+                </div>
+                <div class="archive-card">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Suicide Squad (Rebirth)</div>
+                            <div class="card-title-zh">自杀小队 · Rebirth</div>
+                        </div>
+                        <span class="level-badge level-recommended">推荐<span class="level-sub-label"> · RECOMMENDED</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">2016–2019</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">可控混乱</span>
+                    </div>
+                    <p class="card-desc">哈莉继续作为自杀小队成员，角色更偏向"可控混乱"。在团队中她的定位更加成熟，赎罪与自我认同并行。</p>
+                    <div class="card-keywords"><span class="card-kw">可控混乱</span><span class="card-kw">赎罪</span></div>
+                    <p class="card-related">关联人物：<span>Deadshot · Boomerang · Amanda Waller</span></p>
+                </div>
+                <div class="archive-card card-full">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Harleen</div>
+                            <div class="card-title-zh">哈琳 · 黑标独立神作</div>
+                        </div>
+                        <span class="level-badge level-critical">必读<span class="level-sub-label"> · CRITICAL — 最强起源解释</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">2019–2020</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">Stjepan Šejić</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">Black Label</span>
+                    </div>
+                    <p class="card-desc">被广泛认为是"现代最强哈莉起源解释"。完整重写Harleen Quinzel心理堕落过程，以极其细腻的笔触描绘她从医生到哈莉的转变。心理深度、视觉美学与叙事力量均达到极高水准，是理解人物心理的升华之作。</p>
+                    <div class="card-keywords"><span class="card-kw">最强起源</span><span class="card-kw">心理堕落</span><span class="card-kw">Black Label</span><span class="card-kw">神作</span></div>
+                    <p class="card-related">关联人物：<span>Joker · Arkham · 心理剖析</span></p>
+                </div>
+                <div class="archive-card">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Harley Quinn: Black + White + Red</div>
+                            <div class="card-title-zh">哈莉·奎茵：黑+白+红</div>
+                        </div>
+                        <span class="level-badge level-recommended">推荐<span class="level-sub-label"> · RECOMMENDED</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">2020</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">短篇合集</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">风格实验</span>
+                    </div>
+                    <p class="card-desc">多位创作者的短篇合集，风格实验性极强。以黑白红三色为基调，从不同视角探索哈莉的多面性，是高级读者的品味之选。</p>
+                    <div class="card-keywords"><span class="card-kw">短篇合集</span><span class="card-kw">实验性</span><span class="card-kw">多视角</span></div>
+                    <p class="card-related">关联人物：<span>多位创作者</span></p>
+                </div>
+                <div class="archive-card">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Harley Quinn: Harley Loves Joker</div>
+                            <div class="card-title-zh">哈莉·奎茵：哈莉爱小丑</div>
+                        </div>
+                        <span class="level-badge level-supplementary">补充阅读<span class="level-sub-label"> · SUPPLEMENTARY</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">2018</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">特别篇</span>
+                    </div>
+                    <p class="card-desc">探索哈莉对小丑情感的特别篇，为理解她复杂的情感依赖提供了额外视角。</p>
+                    <div class="card-keywords"><span class="card-kw">情感探索</span></div>
+                    <p class="card-related">关联人物：<span>Joker</span></p>
+                </div>
+                <div class="archive-card">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="card-title-en">Injustice: Ground Zero</div>
+                            <div class="card-title-zh">不义联盟：归零地</div>
+                        </div>
+                        <span class="level-badge level-supplementary">补充阅读<span class="level-sub-label"> · SUPPLEMENTARY</span></span>
+                    </div>
+                    <div class="card-meta-strip">
+                        <span class="card-meta-item">2017</span><span class="card-meta-divider"></span>
+                        <span class="card-meta-item">非主线 · 人气高</span>
+                    </div>
+                    <p class="card-desc">Injustice宇宙中的哈莉故事，虽非主线但人气极高。展现了另一个平行世界中哈莉的独特轨迹。</p>
+                    <div class="card-keywords"><span class="card-kw">平行宇宙</span><span class="card-kw">Injustice</span></div>
+                    <p class="card-related">关联人物：<span>Injustice宇宙角色</span></p>
+                </div>
+            </div>
+            <!-- 现代延续子区块 -->
+            <div style="margin-top:28px;padding-top:20px;border-top:1px solid rgba(160,145,155,0.12);">
+                <h3 style="font-family:var(--font-display);font-size:1.05rem;letter-spacing:0.06em;color:#c8bbb4;margin-bottom:12px;">现代延续 · 2021至今 — Harley Quinn Vol. 4 及相关</h3>
+                <div class="cards-grid">
+                    <div class="archive-card">
+                        <div class="card-top-row">
+                            <div class="card-title-group">
+                                <div class="card-title-en">Stephanie Phillips时期 · Harley Quinn Vol. 4</div>
+                                <div class="card-title-zh">菲利普斯时期 2021–2023</div>
+                            </div>
+                            <span class="level-badge level-recommended">推荐<span class="level-sub-label"> · RECOMMENDED</span></span>
+                        </div>
+                        <div class="card-meta-strip"><span class="card-meta-item">2021–2023</span><span class="card-meta-divider"></span><span class="card-meta-item">No Good Deed / Keepsake / Verdict / Task Force XX</span></div>
+                        <p class="card-desc">强调哈莉的反英雄赎罪与团队故事，深受读者喜爱。这一时期的哈莉更加成熟，赎罪主题贯穿始终。</p>
+                        <div class="card-keywords"><span class="card-kw">反英雄赎罪</span><span class="card-kw">团队故事</span></div>
+                    </div>
+                    <div class="archive-card">
+                        <div class="card-top-row">
+                            <div class="card-title-group">
+                                <div class="card-title-en">Tini Howard时期</div>
+                                <div class="card-title-zh">霍华德时期 2023–2024</div>
+                            </div>
+                            <span class="level-badge level-supplementary">补充阅读<span class="level-sub-label"> · SUPPLEMENTARY</span></span>
+                        </div>
+                        <div class="card-meta-strip"><span class="card-meta-item">2023–2024</span><span class="card-meta-divider"></span><span class="card-meta-item">Girl in a Crisis / Eye Don't Like Me?</span></div>
+                        <p class="card-desc">更注重个人成长与新关系的建立，为哈莉的角色发展注入新鲜视角。</p>
+                        <div class="card-keywords"><span class="card-kw">个人成长</span><span class="card-kw">新关系</span></div>
+                    </div>
+                    <div class="archive-card">
+                        <div class="card-top-row">
+                            <div class="card-title-group">
+                                <div class="card-title-en">后续卷 · Clown About Town / Destructive Comics</div>
+                                <div class="card-title-zh">2024–2025 持续更新</div>
+                            </div>
+                            <span class="level-badge level-extended">扩展阅读<span class="level-sub-label"> · EXTENDED</span></span>
+                        </div>
+                        <div class="card-meta-strip"><span class="card-meta-item">2024–2025</span><span class="card-meta-divider"></span><span class="card-meta-item">持续更新中</span></div>
+                        <p class="card-desc">哈莉故事的最新进展，持续更新中。适合追更读者保持同步。</p>
+                        <div class="card-keywords"><span class="card-kw">最新</span><span class="card-kw">持续更新</span></div>
+                    </div>
+                    <div class="archive-card">
+                        <div class="card-top-row">
+                            <div class="card-title-group">
+                                <div class="card-title-en">Old Lady Harley</div>
+                                <div class="card-title-zh">老年哈莉</div>
+                            </div>
+                            <span class="level-badge level-optional">可选<span class="level-sub-label"> · OPTIONAL</span></span>
+                        </div>
+                        <div class="card-meta-strip"><span class="card-meta-item">2019</span><span class="card-meta-divider"></span><span class="card-meta-item">未来故事</span></div>
+                        <p class="card-desc">老年哈莉的未来故事，幽默荒诞。提供了一个别致的"如果"视角。</p>
+                        <div class="card-keywords"><span class="card-kw">未来</span><span class="card-kw">荒诞</span></div>
+                    </div>
+                    <div class="archive-card">
+                        <div class="card-top-row">
+                            <div class="card-title-group">
+                                <div class="card-title-en">Harley Quinn 30th Anniversary Special</div>
+                                <div class="card-title-zh">哈莉·奎茵30周年纪念特刊</div>
+                            </div>
+                            <span class="level-badge level-supplementary">补充阅读<span class="level-sub-label"> · SUPPLEMENTARY</span></span>
+                        </div>
+                        <div class="card-meta-strip"><span class="card-meta-item">2022</span><span class="card-meta-divider"></span><span class="card-meta-item">纪念合集</span></div>
+                        <p class="card-desc">多位创作者致敬哈莉的短篇合集，纪念性质，是粉丝的收藏佳品。</p>
+                        <div class="card-keywords"><span class="card-kw">纪念</span><span class="card-kw">合集</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Black Label 专区 -->
+        <section class="black-label-zone" id="ch-blacklabel">
+            <div class="chapter-header" style="border-bottom-color:rgba(140,120,130,0.2);margin-bottom:24px;">
+                <div class="chapter-number" style="color:rgba(170,140,150,0.5);">Black Label Archive · 心理深度与独立宇宙</div>
+                <h2 class="chapter-title" style="color:#d8cbc4;">Black Label 专区</h2>
+                <p class="chapter-desc" style="color:#a09095;">这一部分承载哈莉最深的心理深度与独立宇宙魅力。每一部都是研究性文本，适合追求角色本质理解的读者。</p>
+                <div class="chapter-accent-line" style="background:rgba(140,120,130,0.35);"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:18px;">
+                <div class="bl-card-large" style="grid-column:1/-1;">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="bl-card-title">Harleen</div>
+                            <div class="bl-card-theme">心理学文本 · 最强起源重述</div>
+                        </div>
+                        <span class="level-badge level-critical">必读 · CRITICAL</span>
+                    </div>
+                    <p class="card-desc" style="margin-top:8px;">Stjepan Šejić的黑标神作。完整重写Harleen Quinzel的心理堕落过程，以研究级精度呈现她从精神科医生到哈莉的每一次心理让步。视觉叙事与心理剖析均臻化境，是理解哈莉全部悲剧性与魅力的终极文本。适合所有追求深度的读者。</p>
+                    <div class="card-keywords"><span class="card-kw">心理堕落</span><span class="card-kw">起源重述</span><span class="card-kw">Black Label</span><span class="card-kw">神作级</span></div>
+                    <p class="card-related">适合人群：<span>所有读者 · 心理/起源深度爱好者首选</span></p>
+                </div>
+                <div class="bl-card-large">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="bl-card-title">Joker/Harley: Criminal Sanity</div>
+                            <div class="bl-card-theme">犯罪心理惊悚 · 写实黑暗</div>
+                        </div>
+                        <span class="level-badge level-essential">强烈推荐 · ESSENTIAL</span>
+                    </div>
+                    <p class="card-desc">2020年黑标作品。以犯罪心理惊悚风格重述起源，偏向写实黑暗。哈莉被描绘为一名专业的犯罪侧写师，与小丑展开心理博弈。适合喜欢现实主义犯罪题材的读者。</p>
+                    <div class="card-keywords"><span class="card-kw">犯罪心理</span><span class="card-kw">写实</span><span class="card-kw">惊悚</span></div>
+                    <p class="card-related">适合人群：<span>犯罪心理爱好者 · 写实黑暗风格读者</span></p>
+                </div>
+                <div class="bl-card-large">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="bl-card-title">Batman: White Knight Presents: Harley Quinn</div>
+                            <div class="bl-card-theme">White Knight宇宙 · 正常生活探讨</div>
+                        </div>
+                        <span class="level-badge level-essential">强烈推荐 · ESSENTIAL</span>
+                    </div>
+                    <p class="card-desc">2019-2020年White Knight宇宙的延续。探讨哈莉在"正常"生活中的后续，以及她如何面对过去的阴影。对角色重建与社会融入的探讨极具深度。</p>
+                    <div class="card-keywords"><span class="card-kw">White Knight</span><span class="card-kw">正常生活</span><span class="card-kw">角色重建</span></div>
+                    <p class="card-related">适合人群：<span>White Knight宇宙读者 · 角色重建主题爱好者</span></p>
+                </div>
+                <div class="bl-card-large">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="bl-card-title">Harley Quinn and the Birds of Prey</div>
+                            <div class="bl-card-theme">动作与情感并重 · 2020黑标</div>
+                        </div>
+                        <span class="level-badge level-recommended">推荐 · RECOMMENDED</span>
+                    </div>
+                    <p class="card-desc">哈莉与Birds of Prey的合作故事，动作场面与情感深度并重。展现了哈莉在女性团队中的独特位置和成长空间。</p>
+                    <div class="card-keywords"><span class="card-kw">Birds of Prey</span><span class="card-kw">团队合作</span></div>
+                    <p class="card-related">适合人群：<span>Birds of Prey粉丝 · 团队故事爱好者</span></p>
+                </div>
+                <div class="bl-card-large">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="bl-card-title">Harley Quinn: Breaking Glass</div>
+                            <div class="bl-card-theme">YA独立故事 · 现代社会议题</div>
+                        </div>
+                        <span class="level-badge level-recommended">推荐 · RECOMMENDED</span>
+                    </div>
+                    <p class="card-desc">2020年YA向独立故事，以现代社会议题为视角重新诠释哈莉的成长。风格清新但内涵深刻，是年轻读者进入哈莉世界的优秀入口。</p>
+                    <div class="card-keywords"><span class="card-kw">YA</span><span class="card-kw">社会议题</span><span class="card-kw">独立故事</span></div>
+                    <p class="card-related">适合人群：<span>年轻读者 · 社会议题关注者</span></p>
+                </div>
+                <div class="bl-card-large">
+                    <div class="card-top-row">
+                        <div class="card-title-group">
+                            <div class="bl-card-title">Suicide Squad: Get Joker!</div>
+                            <div class="bl-card-theme">黑标 · 自杀小队事件</div>
+                        </div>
+                        <span class="level-badge level-supplementary">补充阅读 · SUPPLEMENTARY</span>
+                    </div>
+                    <p class="card-desc">黑标下的自杀小队特别事件，哈莉在团队中面对与小丑相关的终极任务。黑暗且充满张力。</p>
+                    <div class="card-keywords"><span class="card-kw">自杀小队</span><span class="card-kw">黑标</span><span class="card-kw">Joker</span></div>
+                    <p class="card-related">适合人群：<span>自杀小队读者 · 黑标收藏者</span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 重要团队线 -->
+        <section class="relationship-zone" id="ch-teams">
+            <div class="chapter-header">
+                <div class="chapter-number">Team Lines · RELATIONSHIP MAP</div>
+                <h2 class="chapter-title">重要团队线 · 关系图谱</h2>
+                <p class="chapter-desc">哈莉与核心角色的关系网络。这些团队线是补全她人格维度的重要拼图——友情、暴力、赎罪、共谋，每一条线索都定义了她的一部分。</p>
+                <div class="chapter-accent-line" style="background:rgba(160,140,150,0.4);"></div>
+            </div>
+            <div class="rel-grid">
+                <div class="rel-card central">
+                    <div class="rel-char-name">Harley Quinn</div>
+                    <div class="rel-char-role">核心 · 失控与重建的中心</div>
+                    <div style="margin-top:6px;font-size:0.65rem;color:var(--accent-rose-subtle);letter-spacing:0.06em;">ARCHIVE NODE: HQ-CENTRAL</div>
+                </div>
+                <div class="rel-card">
+                    <div class="rel-char-name">Poison Ivy</div>
+                    <div class="rel-char-role">毒藤女 · 最深的友情与共谋</div>
+                    <p style="font-size:0.7rem;color:#a09090;margin-top:4px;">Gotham City Sirens · Harley & Ivy 经典搭档</p>
+                </div>
+                <div class="rel-card">
+                    <div class="rel-char-name">Catwoman</div>
+                    <div class="rel-char-role">猫女 · Gotham City Sirens三角</div>
+                    <p style="font-size:0.7rem;color:#a09090;margin-top:4px;">Selina Kyle · 独立女性的相互影响</p>
+                </div>
+                <div class="rel-card">
+                    <div class="rel-char-name">Deadshot</div>
+                    <div class="rel-char-role">死亡射手 · 自杀小队战友</div>
+                    <p style="font-size:0.7rem;color:#a09090;margin-top:4px;">Suicide Squad核心 · 暴力与赎罪并行</p>
+                </div>
+                <div class="rel-card">
+                    <div class="rel-char-name">Captain Boomerang</div>
+                    <div class="rel-char-role">回旋镖队长 · 小队混乱因子</div>
+                    <p style="font-size:0.7rem;color:#a09090;margin-top:4px;">Suicide Squad · 黑色幽默搭档</p>
+                </div>
+                <div class="rel-card">
+                    <div class="rel-char-name">Amanda Waller</div>
+                    <div class="rel-char-role">阿曼达·沃勒 · 操控者</div>
+                    <p style="font-size:0.7rem;color:#a09090;margin-top:4px;">政府工具人的幕后 · 权力关系</p>
+                </div>
+            </div>
+            <p style="text-align:center;margin-top:18px;font-family:var(--font-body);font-size:0.75rem;color:var(--text-muted);letter-spacing:0.04em;">
+                Gotham City Sirens（友情核心）· Suicide Squad（反英雄核心）—— 两条线交织成哈莉的关系网
+            </p>
+        </section>
+
+        <!-- 推荐阅读顺序路线图 -->
+        <section class="roadmap-section" id="ch-roadmap">
+            <div class="chapter-header">
+                <div class="chapter-number">Reading Roadmap · 藏档阅读路线</div>
+                <h2 class="chapter-title">推荐阅读顺序 · 最清晰路线图</h2>
+                <p class="chapter-desc">从入门到深入，这是一条经过整理的完整阅读路径。每个节点都标注了阅读理由与适合阶段，方便实际照着读。</p>
+                <div class="chapter-accent-line" style="background:rgba(170,150,160,0.45);"></div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-node">
+                    <div class="timeline-step">STEP 01 · 起点</div>
+                    <div class="timeline-title">Mad Love</div>
+                    <div class="timeline-reason">最重要起源。理解哈莉是谁的绝对起点，心理堕落的完整呈现。</div>
+                </div>
+                <div class="timeline-node">
+                    <div class="timeline-step">STEP 02 · 起点</div>
+                    <div class="timeline-title">Batman: Harley Quinn (1999)</div>
+                    <div class="timeline-reason">DC主宇宙正式引入，从动画角色到漫画正史的桥梁。</div>
+                </div>
+                <div class="timeline-node">
+                    <div class="timeline-step">STEP 03 · 早期成型</div>
+                    <div class="timeline-title">Harley Quinn (2000 series)</div>
+                    <div class="timeline-reason">首个长期连载，黑色喜剧风格，见证角色独立人格的萌芽。</div>
+                </div>
+                <div class="timeline-node">
+                    <div class="timeline-step">STEP 04 · 早期成型</div>
+                    <div class="timeline-title">Gotham City Sirens</div>
+                    <div class="timeline-reason">独立人格成型关键。三人关系奠定哈莉的友情网络与自我认同。</div>
+                </div>
+                <div class="timeline-node">
+                    <div class="timeline-step">STEP 05 · 现代主线</div>
+                    <div class="timeline-title">Suicide Squad (New 52)</div>
+                    <div class="timeline-reason">反英雄化核心。哈莉成为政府工具人，角色转型的分水岭。</div>
+                </div>
+                <div class="timeline-node">
+                    <div class="timeline-step">STEP 06 · 现代主线</div>
+                    <div class="timeline-title">Harley Quinn (New 52 · Conner/Palmiotti)</div>
+                    <div class="timeline-reason">现代形象定型。布鲁克林式幽默、独立自由，无数读者的入门之作。</div>
+                </div>
+                <div class="timeline-node">
+                    <div class="timeline-step">STEP 07 · 高级阅读 · 心理升华</div>
+                    <div class="timeline-title">Harleen</div>
+                    <div class="timeline-reason">最强起源解释。心理深度的升华之作，理解人物悲剧性的终极文本。</div>
+                </div>
+                <div class="timeline-node">
+                    <div class="timeline-step">STEP 08 · 高级阅读</div>
+                    <div class="timeline-title">Black + White + Red</div>
+                    <div class="timeline-reason">多视角短篇合集，实验性风格，高级读者的品味之选。</div>
+                </div>
+                <div class="timeline-node">
+                    <div class="timeline-step">STEP 09 · Rebirth延续</div>
+                    <div class="timeline-title">Harley Quinn (2016 Rebirth)</div>
+                    <div class="timeline-reason">最稳定人格阶段。与小丑彻底分离，反英雄赎罪主线收束。</div>
+                </div>
+                <div class="timeline-node">
+                    <div class="timeline-step">STEP 10 · 深度扩展</div>
+                    <div class="timeline-title">Criminal Sanity / White Knight Presents / Breaking Glass</div>
+                    <div class="timeline-reason">Black Label深度作品，从不同维度理解哈莉。按兴趣选择深入方向。</div>
+                </div>
+            </div>
+            <div style="margin-top:24px;padding:18px 20px;background:var(--glass-bg-dark);border-radius:var(--card-radius);border:1px solid var(--glass-border);text-align:center;">
+                <p style="font-family:var(--font-display);font-size:0.9rem;letter-spacing:0.06em;color:#c8b8b0;">最精简核心路线</p>
+                <p style="font-family:var(--font-body);font-size:0.8rem;color:#b0a098;margin-top:4px;letter-spacing:0.03em;">
+                    <strong>Mad Love</strong> → <strong>Gotham City Sirens</strong> → <strong>New 52 Suicide Squad</strong> → <strong>Conner/Palmiotti Harley Quinn</strong> → <strong>Harleen</strong>（升华理解）→ <strong>Rebirth</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer style="text-align:center;padding:40px 0 30px;border-top:1px solid rgba(160,145,155,0.12);margin-top:20px;">
+            <p style="font-family:var(--font-display);font-size:0.7rem;letter-spacing:0.1em;color:var(--text-muted);text-transform:uppercase;">Arkham Archive · Harley Quinn Reading Guide · HQ-001</p>
+            <p style="font-family:var(--font-body);font-size:0.7rem;color:rgba(160,140,150,0.4);margin-top:4px;">档案仅供研究参考 · 阅读顺序可根据个人偏好调整</p>
+        </footer>
+    </div>
+
+    <script>
+        (function() {
+            const navBar = document.getElementById('navBar');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = [];
+            navLinks.forEach(link => {
+                const id = link.getAttribute('data-section');
+                const el = document.getElementById(id);
+                if (el) sections.push({ id, el, link });
+            });
+
+            function updateActiveNav() {
+                const scrollY = window.scrollY + 120;
+                let activeId = null;
+                for (let i = sections.length - 1; i >= 0; i--) {
+                    if (sections[i].el.offsetTop <= scrollY) {
+                        activeId = sections[i].id;
+                        break;
+                    }
+                }
+                navLinks.forEach(l => {
+                    l.classList.toggle('active', l.getAttribute('data-section') === activeId);
+                });
+                if (window.scrollY > 40) {
+                    navBar.classList.add('scrolled');
+                } else {
+                    navBar.classList.remove('scrolled');
+                }
+            }
+
+            window.addEventListener('scroll', updateActiveNav, { passive: true });
+            updateActiveNav();
+
+            // 平滑滚动（针对不支持scroll-behavior的浏览器做补充）
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('data-section');
+                    const target = document.getElementById(targetId);
+                    if (target) {
+                        const offset = navBar.offsetHeight + 20;
+                        const top = target.getBoundingClientRect().top + window.pageYOffset -
+                            offset;
+                        window.scrollTo({ top, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // 卡片hover微交互增强
+            document.querySelectorAll('.archive-card, .bl-card-large, .rel-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.zIndex = '5';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.zIndex = '';
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

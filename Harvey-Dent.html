@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哈维·登特阅读指南 | 哥谭检察官办公室档案系统</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #16181D;
+            --silver: #D7D9DD;
+            --copper: #8C6A48;
+            --acid: #7B8F5A;
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.10);
+            --glass-bg-strong: rgba(255, 255, 255, 0.06);
+            --glass-border-strong: rgba(255, 255, 255, 0.12);
+            --card-silver-bg: rgba(215, 217, 221, 0.05);
+            --card-silver-border: rgba(215, 217, 221, 0.15);
+            --card-copper-bg: rgba(140, 106, 72, 0.06);
+            --card-copper-border: rgba(140, 106, 72, 0.16);
+            --font: 'Noto Serif SC', 'Source Han Serif SC', 'STSong', 'SimSun', 'Songti SC', serif;
+            --coin-size: 420px;
+            --crack-offset: 0px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background: var(--bg);
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: #c5c8ce;
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+        }
+
+        /* ============ HERO SECTION ============ */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: var(--bg);
+        }
+
+        /* 背景法院剪影 */
+        .hero-bg-silhouette {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.25;
+            filter: blur(18px);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 0;
+        }
+        .hero-bg-silhouette .building {
+            background: #2a2d35;
+            flex-shrink: 0;
+            border-radius: 2px 2px 0 0;
+            position: relative;
+            margin: 0 3px;
+        }
+        .hero-bg-silhouette .building.tall {
+            width: 55px;
+            height: 320px;
+        }
+        .hero-bg-silhouette .building.medium {
+            width: 40px;
+            height: 220px;
+        }
+        .hero-bg-silhouette .building.short {
+            width: 50px;
+            height: 150px;
+        }
+        .hero-bg-silhouette .building.spire {
+            width: 28px;
+            height: 380px;
+            border-radius: 50% 50% 2px 2px;
+        }
+        .hero-bg-silhouette .building.courthouse {
+            width: 90px;
+            height: 340px;
+            position: relative;
+        }
+        .hero-bg-silhouette .building.courthouse::after {
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 35px solid transparent;
+            border-right: 35px solid transparent;
+            border-bottom: 45px solid #2a2d35;
+        }
+
+        /* 雾气 */
+        .hero-fog {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            background:
+                radial-gradient(ellipse at 30% 80%, rgba(22, 24, 29, 0.7) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 70%, rgba(22, 24, 29, 0.6) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 100%, rgba(22, 24, 29, 0.8) 0%, transparent 50%);
+        }
+
+        /* 粒子微尘 */
+        .hero-particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.35;
+        }
+        .hero-particles .particle {
+            position: absolute;
+            width: 1.5px;
+            height: 1.5px;
+            background: rgba(215, 217, 221, 0.5);
+            border-radius: 50%;
+            animation: floatUp 8s infinite ease-in;
+        }
+        .hero-particles .particle:nth-child(1) {
+            left: 15%;
+            bottom: 10%;
+            animation-delay: 0s;
+            animation-duration: 9s;
+        }
+        .hero-particles .particle:nth-child(2) {
+            left: 35%;
+            bottom: 25%;
+            animation-delay: 2s;
+            animation-duration: 7.5s;
+        }
+        .hero-particles .particle:nth-child(3) {
+            left: 55%;
+            bottom: 15%;
+            animation-delay: 4s;
+            animation-duration: 8.2s;
+        }
+        .hero-particles .particle:nth-child(4) {
+            left: 72%;
+            bottom: 30%;
+            animation-delay: 1s;
+            animation-duration: 6.8s;
+        }
+        .hero-particles .particle:nth-child(5) {
+            left: 82%;
+            bottom: 12%;
+            animation-delay: 3s;
+            animation-duration: 9.5s;
+        }
+        .hero-particles .particle:nth-child(6) {
+            left: 25%;
+            bottom: 35%;
+            animation-delay: 5s;
+            animation-duration: 7s;
+        }
+        .hero-particles .particle:nth-child(7) {
+            left: 48%;
+            bottom: 8%;
+            animation-delay: 6s;
+            animation-duration: 10s;
+        }
+        .hero-particles .particle:nth-child(8) {
+            left: 65%;
+            bottom: 40%;
+            animation-delay: 0.5s;
+            animation-duration: 8.7s;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            15% {
+                opacity: 1;
+            }
+            70% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-70vh) translateX(30px);
+                opacity: 0;
+            }
+        }
+
+        /* 中央文字 */
+        .hero-text {
+            position: relative;
+            z-index: 5;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .hero-text .main-title {
+            font-size: clamp(2.8rem, 5.5vw, 4.8rem);
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            color: #e8eaef;
+            text-shadow: 0 0 80px rgba(215, 217, 221, 0.2);
+            line-height: 1.1;
+            margin-bottom: 10px;
+        }
+        .hero-text .subtitle {
+            font-size: clamp(1rem, 1.4vw, 1.25rem);
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            color: #9a9ea6;
+            line-height: 1.5;
+        }
+        .hero-text .subtitle .accent {
+            color: var(--copper);
+            font-weight: 600;
+        }
+
+        /* 硬币容器 */
+        .coin-stage {
+            position: relative;
+            z-index: 4;
+            width: var(--coin-size);
+            height: var(--coin-size);
+            flex-shrink: 0;
+            margin-top: 10px;
+        }
+        .coin-whole {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: rgba(200, 205, 215, 0.08);
+            border: 2px solid rgba(215, 217, 221, 0.2);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            box-shadow:
+                inset 0 0 120px rgba(215, 217, 221, 0.04),
+                0 0 80px rgba(215, 217, 221, 0.06),
+                0 0 200px rgba(140, 106, 72, 0.04);
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .coin-whole .coin-inner-ring {
+            width: 75%;
+            height: 75%;
+            border-radius: 50%;
+            border: 1px solid rgba(215, 217, 221, 0.12);
+            position: relative;
+        }
+        .coin-whole .coin-inner-ring::after {
+            content: '';
+            position: absolute;
+            inset: 18%;
+            border-radius: 50%;
+            border: 0.5px solid rgba(215, 217, 221, 0.07);
+        }
+        .coin-whole .coin-profile {
+            position: absolute;
+            width: 28%;
+            height: 28%;
+            border-radius: 50%;
+            background: rgba(215, 217, 221, 0.04);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .coin-whole .coin-profile svg {
+            width: 60%;
+            height: 60%;
+            opacity: 0.5;
+        }
+
+        /* 裂开后的两个半圆 */
+        .coin-half {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            transition: transform 0.15s ease-out;
+            will-change: transform;
+        }
+        .coin-half-left {
+            left: 0;
+        }
+        .coin-half-right {
+            right: 0;
+        }
+        .coin-half-inner {
+            position: absolute;
+            top: 0;
+            width: var(--coin-size);
+            height: var(--coin-size);
+            border-radius: 50%;
+            background: rgba(200, 205, 215, 0.07);
+            border: 2px solid rgba(215, 217, 221, 0.18);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            box-shadow:
+                inset 0 0 100px rgba(215, 217, 221, 0.03),
+                0 0 60px rgba(215, 217, 221, 0.04);
+        }
+        .coin-half-left .coin-half-inner {
+            left: 0;
+        }
+        .coin-half-right .coin-half-inner {
+            right: 0;
+        }
+
+        /* 裂痕SVG */
+        .crack-svg {
+            position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 90%;
+            z-index: 6;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .crack-svg.crack-visible {
+            opacity: 0.8;
+        }
+        .crack-svg line,
+        .crack-svg path {
+            stroke: rgba(215, 217, 221, 0.5);
+            stroke-width: 1.2;
+            fill: none;
+            stroke-linecap: round;
+        }
+
+        /* ============ 断裂延伸线 ============ */
+        .fracture-extension {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 0;
+            background: rgba(215, 217, 221, 0.25);
+            z-index: 3;
+            pointer-events: none;
+            transition: height 0.3s ease;
+        }
+        .fracture-extension.extended {
+            height: 80px;
+        }
+        .fracture-extension .break-marker {
+            position: absolute;
+            top: 35px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            color: var(--acid);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            letter-spacing: 0;
+            line-height: 1;
+        }
+        .fracture-extension.extended .break-marker {
+            opacity: 0.9;
+        }
+
+        /* ============ SCROLL INDICATOR ============ */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            opacity: 0.7;
+            cursor: pointer;
+        }
+        .scroll-indicator span {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: #8a8e96;
+            text-transform: uppercase;
+        }
+        .scroll-indicator .arrow-down {
+            width: 20px;
+            height: 20px;
+            border-right: 1.5px solid #8a8e96;
+            border-bottom: 1.5px solid #8a8e96;
+            transform: rotate(45deg);
+            animation: bounceDown 2s infinite;
+        }
+        @keyframes bounceDown {
+            0%,
+            100% {
+                transform: rotate(45deg) translateY(0);
+            }
+            50% {
+                transform: rotate(45deg) translateY(8px);
+            }
+        }
+
+        /* ============ MAIN CONTENT ============ */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px 40px;
+        }
+
+        /* 双栏布局 */
+        .dual-columns {
+            display: grid;
+            grid-template-columns: 1fr 60px 1fr;
+            gap: 0;
+            position: relative;
+        }
+
+        /* 中轴 */
+        .central-axis {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 5;
+        }
+        .axis-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                    rgba(215, 217, 221, 0.3) 0%,
+                    rgba(215, 217, 221, 0.3) 30%,
+                    transparent 30%,
+                    transparent 36%,
+                    rgba(140, 106, 72, 0.35) 36%,
+                    rgba(140, 106, 72, 0.35) 65%,
+                    transparent 65%,
+                    transparent 71%,
+                    rgba(215, 217, 221, 0.25) 71%,
+                    rgba(215, 217, 221, 0.15) 100%);
+            z-index: -1;
+        }
+        .axis-break-icon {
+            position: sticky;
+            top: 45%;
+            font-size: 2.5rem;
+            color: var(--acid);
+            z-index: 2;
+            opacity: 0.75;
+            pointer-events: none;
+            text-shadow: 0 0 30px rgba(123, 143, 90, 0.4);
+            margin-top: 30%;
+            letter-spacing: 0;
+            line-height: 1;
+        }
+        .axis-node {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--acid);
+            box-shadow: 0 0 12px rgba(123, 143, 90, 0.5);
+            z-index: 3;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+        .axis-node.silver-node {
+            background: var(--silver);
+            box-shadow: 0 0 10px rgba(215, 217, 221, 0.4);
+        }
+        .axis-node.copper-node {
+            background: var(--copper);
+            box-shadow: 0 0 10px rgba(140, 106, 72, 0.5);
+        }
+
+        /* 左栏 */
+        .col-left {
+            padding-right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+        .col-left .section-label {
+            color: var(--silver);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(215, 217, 221, 0.2);
+            margin-bottom: 4px;
+            text-align: right;
+        }
+
+        /* 右栏 */
+        .col-right {
+            padding-left: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+        .col-right .section-label {
+            color: var(--copper);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(140, 106, 72, 0.3);
+            margin-bottom: 4px;
+            text-align: left;
+        }
+
+        /* 玻璃卡片 */
+        .card {
+            background: var(--glass-bg-strong);
+            border: 1px solid var(--glass-border-strong);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 6px;
+            padding: 22px 20px;
+            position: relative;
+            transition: all 0.35s ease;
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.22);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+        .card.col-silver {
+            background: var(--card-silver-bg);
+            border-color: var(--card-silver-border);
+        }
+        .card.col-silver:hover {
+            border-color: rgba(215, 217, 221, 0.3);
+            box-shadow: 0 8px 40px rgba(215, 217, 221, 0.04);
+        }
+        .card.col-copper {
+            background: var(--card-copper-bg);
+            border-color: var(--card-copper-border);
+        }
+        .card.col-copper:hover {
+            border-color: rgba(140, 106, 72, 0.32);
+            box-shadow: 0 8px 40px rgba(140, 106, 72, 0.06);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+        .card-cover-placeholder {
+            flex-shrink: 0;
+            width: 56px;
+            height: 80px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-align: center;
+            line-height: 1.3;
+            color: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+        .card-cover-placeholder::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.03) 50%, transparent 60%);
+            pointer-events: none;
+        }
+        .card-cover-placeholder.silver-cover {
+            border-color: rgba(215, 217, 221, 0.2);
+            color: rgba(215, 217, 221, 0.5);
+        }
+        .card-cover-placeholder.copper-cover {
+            border-color: rgba(140, 106, 72, 0.25);
+            color: rgba(140, 106, 72, 0.5);
+        }
+
+        .card-title-group {
+            flex: 1;
+            min-width: 0;
+        }
+        .card-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 0.03em;
+            color: #e0e3e8;
+            line-height: 1.3;
+        }
+        .card-subtitle {
+            font-size: 0.78rem;
+            color: #888c94;
+            letter-spacing: 0.04em;
+            margin-top: 2px;
+        }
+        .card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.72rem;
+            color: #7a7e86;
+            letter-spacing: 0.03em;
+        }
+        .card-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .card-rating {
+            color: #c0a060;
+            letter-spacing: 0.06em;
+            font-weight: 600;
+        }
+        .card-rating.gold {
+            color: #d4af37;
+        }
+        .card-body {
+            font-size: 0.82rem;
+            color: #a8adb5;
+            line-height: 1.6;
+            letter-spacing: 0.02em;
+        }
+        .card-body .label-inline {
+            font-weight: 600;
+            font-size: 0.7rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #8a8e96;
+            margin-right: 4px;
+        }
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 2px;
+        }
+        .card-tag {
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            padding: 3px 8px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 0.5px solid rgba(255, 255, 255, 0.08);
+            color: #999da5;
+        }
+        .card-tag.silver-tag {
+            border-color: rgba(215, 217, 221, 0.18);
+            color: #b8bcc4;
+        }
+        .card-tag.copper-tag {
+            border-color: rgba(140, 106, 72, 0.22);
+            color: #b09a7e;
+        }
+
+        /* 已读勾选 */
+        .card-read-toggle {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            background: transparent;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+        .card-read-toggle:hover {
+            border-color: var(--acid);
+            box-shadow: 0 0 10px rgba(123, 143, 90, 0.3);
+        }
+        .card-read-toggle.read {
+            background: var(--acid);
+            border-color: var(--acid);
+            box-shadow: 0 0 14px rgba(123, 143, 90, 0.4);
+        }
+        .card-read-toggle.read::after {
+            content: '✓';
+            font-size: 0.6rem;
+            color: #16181D;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        /* ============ 补充刊物区 ============ */
+        .supplement-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 50px 40px 30px;
+            position: relative;
+            z-index: 10;
+        }
+        .supplement-section h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #d0d3d9;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .supplement-section h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 12px auto 0;
+        }
+        .supplement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 20px;
+        }
+        .supplement-card {
+            background: var(--glass-bg-strong);
+            border: 1px solid var(--glass-border-strong);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 6px;
+            padding: 18px 16px;
+            transition: all 0.3s ease;
+        }
+        .supplement-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.25);
+        }
+        .supplement-card h4 {
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.04em;
+            color: #d8dbe0;
+            margin-bottom: 4px;
+        }
+        .supplement-card .supp-meta {
+            font-size: 0.7rem;
+            color: #888c94;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+        }
+        .supplement-card .supp-desc {
+            font-size: 0.78rem;
+            color: #a0a5ad;
+            line-height: 1.5;
+        }
+
+        /* ============ 人格天平 ============ */
+        .scales-section {
+            max-width: 800px;
+            margin: 50px auto 60px;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+        .scales-section h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #d0d3d9;
+            margin-bottom: 20px;
+        }
+        .scales-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            height: 220px;
+        }
+        .scales-svg {
+            width: 100%;
+            height: 100%;
+        }
+        .scales-legend {
+            display: flex;
+            justify-content: space-between;
+            max-width: 500px;
+            margin: 10px auto 0;
+            font-size: 0.8rem;
+            letter-spacing: 0.06em;
+        }
+        .scales-legend .legend-left {
+            color: var(--silver);
+            font-weight: 600;
+        }
+        .scales-legend .legend-right {
+            color: var(--copper);
+            font-weight: 600;
+        }
+        .scales-legend .legend-center {
+            color: #888c94;
+            font-size: 0.7rem;
+        }
+        .scales-stats {
+            display: flex;
+            justify-content: space-between;
+            max-width: 480px;
+            margin: 8px auto 0;
+            font-size: 0.75rem;
+            color: #999da5;
+            letter-spacing: 0.04em;
+        }
+
+        /* ============ FOOTER ============ */
+        .page-footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            color: #666a72;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 900px) {
+            .dual-columns {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .central-axis {
+                display: none;
+            }
+            .col-left,
+            .col-right {
+                padding: 0;
+            }
+            .col-left .section-label {
+                text-align: left;
+            }
+            :root {
+                --coin-size: 280px;
+            }
+            .hero-text .main-title {
+                font-size: 2rem;
+            }
+            .supplement-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            :root {
+                --coin-size: 200px;
+            }
+            .hero-text .main-title {
+                font-size: 1.5rem;
+            }
+            .hero-text .subtitle {
+                font-size: 0.8rem;
+            }
+            .card {
+                padding: 14px 12px;
+            }
+            .card-header {
+                gap: 8px;
+            }
+            .card-cover-placeholder {
+                width: 40px;
+                height: 58px;
+                font-size: 0.5rem;
+            }
+            .card-title {
+                font-size: 0.9rem;
+            }
+            .card-body {
+                font-size: 0.72rem;
+            }
+            .main-content {
+                padding: 30px 12px 20px;
+            }
+            .supplement-section {
+                padding: 30px 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== HERO ==================== -->
+    <section class="hero" id="hero">
+        <!-- 背景剪影 -->
+        <div class="hero-bg-silhouette">
+            <div class="building short"></div>
+            <div class="building medium"></div>
+            <div class="building tall"></div>
+            <div class="building courthouse"></div>
+            <div class="building spire"></div>
+            <div class="building tall"></div>
+            <div class="building medium"></div>
+            <div class="building short"></div>
+            <div class="building tall"></div>
+            <div class="building medium"></div>
+            <div class="building short"></div>
+        </div>
+        <div class="hero-fog"></div>
+        <div class="hero-particles">
+            <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+            <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        </div>
+
+        <!-- 文字 -->
+        <div class="hero-text">
+            <h1 class="main-title">HARVEY DENT</h1>
+            <p class="subtitle">哥谭最伟大的检察官<br><span class="accent">也是哥谭最大的悲剧</span></p>
+        </div>
+
+        <!-- 玻璃硬币 -->
+        <div class="coin-stage" id="coinStage">
+            <!-- 完整硬币 -->
+            <div class="coin-whole" id="coinWhole">
+                <div class="coin-inner-ring">
+                    <div class="coin-profile">
+                        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="14" r="8" fill="none" stroke="rgba(215,217,221,0.4)" stroke-width="1"/>
+                            <path d="M12 30 Q20 22 28 30" fill="none" stroke="rgba(215,217,221,0.35)" stroke-width="0.8"/>
+                            <line x1="20" y1="6" x2="20" y2="3" stroke="rgba(215,217,221,0.3)" stroke-width="0.6"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <!-- 左半 -->
+            <div class="coin-half coin-half-left" id="coinHalfLeft">
+                <div class="coin-half-inner"></div>
+            </div>
+            <!-- 右半 -->
+            <div class="coin-half coin-half-right" id="coinHalfRight">
+                <div class="coin-half-inner"></div>
+            </div>
+            <!-- 裂痕SVG -->
+            <svg class="crack-svg" id="crackSvg" viewBox="0 0 20 380" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 0 L9 15 L11 28 L8 42 L12 55 L9 70 L11 85 L7 100 L10 115 L8 130 L12 145 L9 160 L11 175 L7 190 L10 205 L8 220 L12 235 L9 250 L11 265 L7 280 L10 295 L8 310 L12 325 L9 340 L10 355 L8 370 L10 380" stroke="rgba(215,217,221,0.5)" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <!-- 断裂延伸线 -->
+            <div class="fracture-extension" id="fractureExtension">
+                <span class="break-marker">╳</span>
+            </div>
+        </div>
+
+        <!-- 滚动指示 -->
+        <div class="scroll-indicator" onclick="document.getElementById('mainContent').scrollIntoView({behavior:'smooth'})">
+            <span>滚动阅读</span>
+            <div class="arrow-down"></div>
+        </div>
+    </section>
+
+    <!-- ==================== 主内容区 ==================== -->
+    <div class="main-content" id="mainContent">
+        <div class="dual-columns">
+
+            <!-- 左栏：Harvey Dent -->
+            <div class="col-left" id="colLeft">
+                <div class="section-label">◈ Harvey Dent · 白银档案</div>
+
+                <!-- Year One -->
+                <div class="card col-silver" data-side="harvey">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder silver-cover">YEAR<br>ONE</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Batman: Year One</div>
+                            <div class="card-subtitle">蝙蝠侠：元年</div>
+                            <div class="card-meta">
+                                <span>Frank Miller</span><span>David Mazzucchelli</span>
+                                <span class="card-rating gold">★★★★★</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>哈维尚未成为双面人，是哥谭最正直的检察官。与蝙蝠侠、戈登结盟，奠定现代哈维起点。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>布鲁斯·韦恩回归哥谭第一年，与戈登建立同盟。哈维·登特作为光明骑士出现，三人共同对抗哥谭腐败体系。
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag silver-tag">关联事件：哥谭腐败案</span>
+                        <span class="card-tag silver-tag">关联角色：蝙蝠侠 / 戈登</span>
+                        <span class="card-tag silver-tag">出版：1987</span>
+                    </div>
+                </div>
+
+                <!-- Eye of the Beholder -->
+                <div class="card col-silver" data-side="harvey">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder silver-cover">EYE</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Batman Annual #14</div>
+                            <div class="card-subtitle">Eye of the Beholder</div>
+                            <div class="card-meta">
+                                <span>Andrew Helfer</span><span>Chris Sprouse</span>
+                                <span class="card-rating gold">★★★★★+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>家暴父亲、硬币来源、人格分裂起源、酸液毁容。现代哈维起源的奠基之作，Long Halloween的灵感源泉。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>深入哈维童年创伤，揭示其父亲的家暴如何塑造了他的双重人格。硬币的来源首次被详细讲述，酸液袭击成为哈维蜕变为双面人的关键转折。
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag silver-tag">关联事件：哈维毁容案</span>
+                        <span class="card-tag silver-tag">关联角色：哈维之父</span>
+                        <span class="card-tag silver-tag">出版：1990</span>
+                    </div>
+                </div>
+
+                <!-- The Long Halloween -->
+                <div class="card col-silver" data-side="harvey">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder silver-cover">LONG<br>HALL.</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Batman: The Long Halloween</div>
+                            <div class="card-subtitle">漫长的万圣节</div>
+                            <div class="card-meta">
+                                <span>Jeph Loeb</span><span>Tim Sale</span>
+                                <span class="card-rating gold">★★★★★+</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>哥谭黑帮时代终结，哈维逐步崩溃，双面人诞生。大多数读者最先接触的经典哈维版本，公认核心三角之一。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>跨越一整年的谋杀谜案，节日杀手连环作案。哈维在追查过程中逐渐被黑暗吞噬，最终在法庭上被酸液毁容，完成从检察官到双面人的悲剧转变。
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag silver-tag">关联事件：节日谋杀案 / Falcone家族覆灭</span>
+                        <span class="card-tag silver-tag">关联角色：蝙蝠侠 / 猫女 / Falcone</span>
+                        <span class="card-tag silver-tag">出版：1996-1997</span>
+                    </div>
+                </div>
+
+                <!-- Face the Face -->
+                <div class="card col-silver" data-side="harvey">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder silver-cover">FACE</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Batman: Face the Face</div>
+                            <div class="card-subtitle">直面双面</div>
+                            <div class="card-meta">
+                                <span>James Robinson</span>
+                                <span class="card-rating gold">★★★★★</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>哈维被治愈、担任守护者、最终再次堕落。"哈维能否被拯救"的经典探讨，与Hush事件紧密关联。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>蝙蝠侠离开期间，哈维接受整形手术并试图以守护者身份保护哥谭。然而旧日阴影无法摆脱，他最终再次屈服于双面人的人格。
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag silver-tag">关联事件：哥谭守护者时期</span>
+                        <span class="card-tag silver-tag">关联角色：蝙蝠侠 / 罗宾</span>
+                        <span class="card-tag silver-tag">出版：2006 (Batman #651-654 + DC #817-820)</span>
+                    </div>
+                </div>
+
+                <!-- A Lonely Place of Dying -->
+                <div class="card col-silver" data-side="harvey">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder silver-cover">LONELY</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Batman: A Lonely Place of Dying</div>
+                            <div class="card-subtitle">孤独的死亡之地</div>
+                            <div class="card-meta">
+                                <span>Marv Wolfman</span>
+                                <span class="card-rating">★★★★☆</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>提姆·德雷克登场时期，双面人是关键反派。哈维与蝙蝠家族的早期重要互动。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>杰森·托德死后，提姆·德雷克试图说服蝙蝠侠需要新的罗宾。双面人在此期间制造混乱，成为提姆证明自己的契机。
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag silver-tag">关联事件：提姆·德雷克起源</span>
+                        <span class="card-tag silver-tag">关联角色：提姆 / 夜翼</span>
+                        <span class="card-tag silver-tag">出版：1989</span>
+                    </div>
+                </div>
+
+                <!-- Prodigal -->
+                <div class="card col-silver" data-side="harvey">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder silver-cover">PROD.</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Batman: Prodigal</div>
+                            <div class="card-subtitle">浪子</div>
+                            <div class="card-meta">
+                                <span>Chuck Dixon</span>
+                                <span class="card-rating">★★★★☆</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>夜翼（迪克）暂代蝙蝠侠时期，与双面人的重要故事。迪克作为蝙蝠侠与哈维的首次正面交锋。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>布鲁斯暂时离开后，迪克·格雷森接过蝙蝠侠披风。双面人趁机作乱，迪克必须以自己的方式应对这位老对手。
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag silver-tag">关联事件：骑士陨落后</span>
+                        <span class="card-tag silver-tag">关联角色：夜翼 / 罗宾</span>
+                        <span class="card-tag silver-tag">出版：1994 (跨刊弧光)</span>
+                    </div>
+                </div>
+
+                <!-- No Man's Land -->
+                <div class="card col-silver" data-side="harvey">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder silver-cover">NO<br>MAN'S</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Batman: No Man's Land</div>
+                            <div class="card-subtitle">无人之地</div>
+                            <div class="card-meta">
+                                <span>多人合著</span>
+                                <span class="card-rating gold">★★★★★</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>哈维在无法地带时期的代表故事。在哥谭沦为废墟后，双面人建立了自己的领地，展现了极端环境下的秩序观。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>大地震后哥谭被隔离，各反派瓜分地盘。双面人控制部分区域，以扭曲的"公正"统治。重点章节：Batman Chronicles #16, Shadow of the Bat #87, Batman #572, Detective Comics #739。
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag silver-tag">关联事件：哥谭大地震</span>
+                        <span class="card-tag silver-tag">关联角色：蝙蝠侠 / 戈登</span>
+                        <span class="card-tag silver-tag">出版：1999</span>
+                    </div>
+                </div>
+
+                <!-- All-Star Batman -->
+                <div class="card col-silver" data-side="harvey">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder silver-cover">ALL<br>STAR</div>
+                        <div class="card-title-group">
+                            <div class="card-title">All-Star Batman #1–5</div>
+                            <div class="card-subtitle">My Own Worst Enemy</div>
+                            <div class="card-meta">
+                                <span>Scott Snyder</span><span>John Romita Jr.</span>
+                                <span class="card-rating gold">★★★★★</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>蝙蝠侠护送哈维、双面人追杀令、布鲁斯与哈维关系深度剖析。现代最优秀双面人故事之一。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>蝙蝠侠带着哈维穿越数百英里，试图阻止双面人获取足以毁灭哥谭的秘密。一路上，布鲁斯与哈维的复杂友谊被层层剥开。
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag silver-tag">关联事件：双面人追杀令</span>
+                        <span class="card-tag silver-tag">关联角色：蝙蝠侠</span>
+                        <span class="card-tag silver-tag">出版：2016</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 中轴 -->
+            <div class="central-axis" id="centralAxis">
+                <div class="axis-line" id="axisLine"></div>
+                <div class="axis-break-icon">╳</div>
+            </div>
+
+            <!-- 右栏：Two-Face -->
+            <div class="col-right" id="colRight">
+                <div class="section-label">◈ Two-Face · 铜金档案</div>
+
+                <!-- Dark Victory -->
+                <div class="card col-copper" data-side="twoface">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder copper-cover">DARK<br>VICT.</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Batman: Dark Victory</div>
+                            <div class="card-subtitle">黑暗胜利</div>
+                            <div class="card-meta">
+                                <span>Jeph Loeb</span><span>Tim Sale</span>
+                                <span class="card-rating gold">★★★★★</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>双面人成为犯罪首领，与Falcone家族战争，迪克·格雷森登场。双面人成型后的关键延续，Long Halloween直接续作。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>万圣节事件后，哥谭黑帮权力真空，双面人崛起成为新的犯罪领袖。与此同时，一个孤儿男孩——迪克·格雷森——走进了布鲁斯·韦恩的生活。
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag copper-tag">关联事件：Falcone家族覆灭 / 罗宾起源</span>
+                        <span class="card-tag copper-tag">关联角色：蝙蝠侠 / 迪克·格雷森</span>
+                        <span class="card-tag copper-tag">出版：1999-2000</span>
+                    </div>
+                </div>
+
+                <!-- Crime and Punishment -->
+                <div class="card col-copper" data-side="twoface">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder copper-cover">CRIME</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Batman/Two-Face: Crime and Punishment</div>
+                            <div class="card-subtitle">罪与罚</div>
+                            <div class="card-meta">
+                                <span>J.M. DeMatteis</span>
+                                <span class="card-rating gold">★★★★★</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>童年创伤、人格冲突、哈维与双面人的"内战"。心理分析教科书级别作品，延续Eye of the Beholder设定。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>深入哈维内心世界，展现哈维·登特与双面人两个人格之间的激烈对抗。童年阴影、父亲的家暴、硬币的象征意义在此得到最深刻的心理剖析。
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag copper-tag">关联事件：人格内战</span>
+                        <span class="card-tag copper-tag">关联角色：蝙蝠侠</span>
+                        <span class="card-tag copper-tag">出版：1995 (一期特别篇)</span>
+                    </div>
+                </div>
+
+                <!-- Faces -->
+                <div class="card col-copper" data-side="twoface">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder copper-cover">FACES</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Batman: Faces</div>
+                            <div class="card-subtitle">面孔</div>
+                            <div class="card-meta">
+                                <span>Matt Wagner</span>
+                                <span class="card-rating gold">★★★★★</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>身份认同、自我认知、"哈维是否已死"。最优秀的双面人短篇之一，深入探讨面具之下的真实自我。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>双面人在哥谭策划一系列关于"面孔"的犯罪。故事探讨了身份、外表与内在自我的关系，质问哈维·登特是否还存在于双面人的躯壳之中。
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag copper-tag">关联事件：面孔系列犯罪</span>
+                        <span class="card-tag copper-tag">关联角色：蝙蝠侠</span>
+                        <span class="card-tag copper-tag">出版：1995 (LOTDK #28-30)</span>
+                    </div>
+                </div>
+
+                <!-- Jekyll & Hyde -->
+                <div class="card col-copper" data-side="twoface">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder copper-cover">JEKYLL</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Batman: Jekyll & Hyde</div>
+                            <div class="card-subtitle">化身博士</div>
+                            <div class="card-meta">
+                                <span>Paul Jenkins</span>
+                                <span class="card-rating">★★★★☆</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>受《化身博士》影响，探讨哈维与双面人谁是"真我"。以文学经典为框架解读哈维的人格分裂。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>以史蒂文森《化身博士》为蓝本，深入哈维·登特与双面人之间的哲学角力——究竟哪个才是真实的人格，哪个是面具？
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag copper-tag">关联事件：人格哲学探讨</span>
+                        <span class="card-tag copper-tag">关联角色：蝙蝠侠</span>
+                        <span class="card-tag copper-tag">出版：2005 (6期迷你系列)</span>
+                    </div>
+                </div>
+
+                <!-- Two-Face: Year One -->
+                <div class="card col-copper" data-side="twoface">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder copper-cover">2FACE<br>YR1</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Two-Face: Year One</div>
+                            <div class="card-subtitle">双面人：元年</div>
+                            <div class="card-meta">
+                                <span>Mark Sable</span>
+                                <span class="card-rating">★★★★☆</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>现代版起源重构，适合Long Halloween后阅读。提供了另一种视角的哈维堕落史。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>重新讲述哈维·登特成为双面人的第一年。在现代语境下重构起源故事，补充了更多关于哈维心理状态的细节。
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag copper-tag">关联事件：双面人元年</span>
+                        <span class="card-tag copper-tag">关联角色：蝙蝠侠 / 戈登</span>
+                        <span class="card-tag copper-tag">出版：2008 (#1-2)</span>
+                    </div>
+                </div>
+
+                <!-- Batman and Robin Vol.2 -->
+                <div class="card col-copper" data-side="twoface">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder copper-cover">B&R<br>V2</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Batman and Robin Vol.2</div>
+                            <div class="card-subtitle">The Big Burn</div>
+                            <div class="card-meta">
+                                <span>Peter J. Tomasi</span>
+                                <span class="card-rating">★★★★☆</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>新52重塑版哈维，重点在#23.1 Two-Face + #24-28 The Big Burn弧。现代视角下的双面人故事。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>新52宇宙中重新定义哈维·登特的角色。The Big Burn弧光展现了双面人在新时代的犯罪手法与心理状态。
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag copper-tag">关联事件：新52重塑</span>
+                        <span class="card-tag copper-tag">关联角色：蝙蝠侠 / 罗宾</span>
+                        <span class="card-tag copper-tag">出版：2013</span>
+                    </div>
+                </div>
+
+                <!-- One Bad Day -->
+                <div class="card col-copper" data-side="twoface">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder copper-cover">ONE<br>BAD</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Batman: One Bad Day – Two-Face</div>
+                            <div class="card-subtitle">糟糕的一天</div>
+                            <div class="card-meta">
+                                <span>Mariko Tamaki</span>
+                                <span class="card-rating gold">★★★★★</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>近年最佳单刊，探讨命运、自由意志、自我审判。以极简叙事呈现哈维悲剧的永恒核心。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>聚焦双面人的一天，深入探讨命运与选择的关系。哈维面对自己人生中最关键的决定——硬币的两面是否真的能定义一个人的善恶？
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag copper-tag">关联事件：自我审判</span>
+                        <span class="card-tag copper-tag">关联角色：蝙蝠侠</span>
+                        <span class="card-tag copper-tag">出版：2023 (一期特别篇)</span>
+                    </div>
+                </div>
+
+                <!-- The Ugly Heart -->
+                <div class="card col-copper" data-side="twoface">
+                    <div class="card-read-toggle" onclick="toggleRead(this)" title="标记已读"></div>
+                    <div class="card-header">
+                        <div class="card-cover-placeholder copper-cover">UGLY</div>
+                        <div class="card-title-group">
+                            <div class="card-title">Detective Comics #1020–1022</div>
+                            <div class="card-subtitle">The Ugly Heart</div>
+                            <div class="card-meta">
+                                <span>Peter J. Tomasi</span>
+                                <span class="card-rating">★★★★☆</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">阅读理由</span>现代优秀短篇，涉及Church of the Two等元素。展现双面人在当代哥谭的犯罪新形态。
+                    </div>
+                    <div class="card-body">
+                        <span class="label-inline">剧情简介</span>双面人建立"双面教会"，以扭曲的二元哲学吸引信徒。蝙蝠侠必须深入调查这个新威胁，同时面对哈维旧日阴影。
+                    </div>
+                    <div class="card-tags">
+                        <span class="card-tag copper-tag">关联事件：双面教会</span>
+                        <span class="card-tag copper-tag">关联角色：蝙蝠侠</span>
+                        <span class="card-tag copper-tag">出版：2020</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 补充刊物区 ==================== -->
+    <section class="supplement-section" id="supplements">
+        <h2>补充馆藏 · 扩展阅读</h2>
+        <div class="supplement-grid">
+
+            <div class="supplement-card" data-side="twoface">
+                <h4>Gotham Central #6-10: "Half a Life"</h4>
+                <div class="supp-meta">Ed Brubaker / Greg Rucka | ★★★★★ | 强烈推荐</div>
+                <div class="supp-desc">从GCPD视角（尤其是Renee Montoya）看双面人的痴迷与操纵。人性化且情感冲击强，探索哈维"爱与破坏"的双重性。</div>
+            </div>
+
+            <div class="supplement-card" data-side="twoface">
+                <h4>Joker's Asylum: Two-Face #1</h4>
+                <div class="supp-meta">一期特别篇 | ★★★★☆</div>
+                <div class="supp-desc">聚焦哈维的内在冲突与"笑话"式悲剧，短小精悍的独立故事。</div>
+            </div>
+
+            <div class="supplement-card" data-side="twoface">
+                <h4>Batman: Two-Face (1996)</h4>
+                <div class="supp-meta">一期特别篇 | ★★★★☆</div>
+                <div class="supp-desc">另一部心理侧重作品，常与Crime and Punishment并提，深入双面人的内心世界。</div>
+            </div>
+
+            <div class="supplement-card" data-side="harvey">
+                <h4>Robin: Year One</h4>
+                <div class="supp-meta">4期迷你系列 | ★★★★☆</div>
+                <div class="supp-desc">双面人对Dick Grayson（初代罗宾）的复仇故事，残酷且个人化，早期罗宾成长的重要篇章。</div>
+            </div>
+
+            <div class="supplement-card" data-side="twoface">
+                <h4>Batman #234 (1971)</h4>
+                <div class="supp-meta">Silver Age经典 | ★★★★☆</div>
+                <div class="supp-desc">早期重要双面人故事，常被列入必读补充，展现了白银时代对双面人的诠释。</div>
+            </div>
+
+            <div class="supplement-card" data-side="harvey">
+                <h4>Batman: Hush</h4>
+                <div class="supp-meta">Jeph Loeb / Jim Lee | ★★★★☆</div>
+                <div class="supp-desc">哈维在此有重要戏份（包括被治愈后的角色），与更大阴谋交织，虽非主角但影响后续Face the Face。</div>
+            </div>
+
+            <div class="supplement-card" data-side="twoface">
+                <h4>Batman Eternal</h4>
+                <div class="supp-meta">跨刊大事件 | ★★★☆☆</div>
+                <div class="supp-desc">双面人有显著出场，涉及哥谭权力斗争，可选重点章节阅读。</div>
+            </div>
+
+            <div class="supplement-card" data-side="twoface">
+                <h4>Streets of Gotham</h4>
+                <div class="supp-meta">后No Man's Land支线 | ★★★☆☆</div>
+                <div class="supp-desc">后No Man's Land时期支线故事，双面人在哥谭街头层面的活动。</div>
+            </div>
+
+            <div class="supplement-card" data-side="twoface">
+                <h4>Detective Comics #988-993</h4>
+                <div class="supp-meta">Rebirth时期 | ★★★☆☆</div>
+                <div class="supp-desc">现代双面人故事，延续Rebirth风格，展现当代双面人犯罪模式。</div>
+            </div>
+
+            <div class="supplement-card" data-side="twoface">
+                <h4>Detective Comics #1063+</h4>
+                <div class="supp-meta">近期连载 | 关注更新</div>
+                <div class="supp-desc">最新连续性中的双面人出场，Gotham Nocturne相关弧光，可关注Ongoing更新。</div>
+            </div>
+
+            <div class="supplement-card" data-side="harvey">
+                <h4>Two-Face: A Celebration of 75 Years</h4>
+                <div class="supp-meta">合集 | 历史价值</div>
+                <div class="supp-desc">收录多篇经典短篇，包括黄金/白银时代作品。适合不想单买老刊的读者，含Detective Comics #66-68首次登场。</div>
+            </div>
+
+            <div class="supplement-card" data-side="twoface">
+                <h4>Secret Origins Special #1</h4>
+                <div class="supp-meta">起源短篇合集 | ★★★☆☆</div>
+                <div class="supp-desc">补充不同版本的哈维起源视角，为理解角色提供更多维度。</div>
+            </div>
+
+            <div class="supplement-card" data-side="harvey">
+                <h4>Batman #408-411</h4>
+                <div class="supp-meta">杰森·托德时期 | ★★★★☆</div>
+                <div class="supp-desc">双面人与罗宾（杰森·托德）的经典互动，展现哈维与蝙蝠家族第二代罗宾的关系。</div>
+            </div>
+
+            <div class="supplement-card" data-side="twoface">
+                <h4>Batman: The Dark Knight (2011)</h4>
+                <div class="supp-meta">新52时期 | ★★★☆☆</div>
+                <div class="supp-desc">双面人早期重新登场，新52宇宙中的哈维定位与重塑。</div>
+            </div>
+
+            <div class="supplement-card" data-side="twoface">
+                <h4>Detective Comics #66–68</h4>
+                <div class="supp-meta">1942 | 历史价值</div>
+                <div class="supp-desc">双面人首次登场！黄金时代经典，奠定了这个角色的基础设定。</div>
+            </div>
+
+            <div class="supplement-card" data-side="twoface">
+                <h4>Detective Comics #80: The End of Two-Face!</h4>
+                <div class="supp-meta">黄金时代 | 历史价值</div>
+                <div class="supp-desc">早期双面人的"终结"故事，展现了黄金时代对这个角色的最初构想。</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 人格天平 ==================== -->
+    <section class="scales-section" id="scalesSection">
+        <h2>人格天平 · 阅读完成度</h2>
+        <div class="scales-container">
+            <svg class="scales-svg" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+                <!-- 底座 -->
+                <rect x="280" y="185" width="40" height="22" rx="3" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                <rect x="290" y="195" width="20" height="18" rx="2" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="0.8"/>
+                <!-- 支柱 -->
+                <line x1="300" y1="185" x2="300" y2="60" stroke="rgba(255,255,255,0.25)" stroke-width="2.5" stroke-linecap="round"/>
+                <!-- 横梁 -->
+                <line x1="100" y1="60" x2="500" y2="60" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-linecap="round" id="balanceBeam"/>
+                <!-- 左托盘绳索 -->
+                <line x1="100" y1="60" x2="70" y2="100" stroke="rgba(215,217,221,0.3)" stroke-width="1.2" id="leftRope1"/>
+                <line x1="100" y1="60" x2="130" y2="100" stroke="rgba(215,217,221,0.3)" stroke-width="1.2" id="leftRope2"/>
+                <!-- 右托盘绳索 -->
+                <line x1="500" y1="60" x2="470" y2="100" stroke="rgba(140,106,72,0.3)" stroke-width="1.2" id="rightRope1"/>
+                <line x1="500" y1="60" x2="530" y2="100" stroke="rgba(140,106,72,0.3)" stroke-width="1.2" id="rightRope2"/>
+                <!-- 左托盘 -->
+                <ellipse cx="100" cy="105" rx="45" ry="10" fill="rgba(215,217,221,0.06)" stroke="rgba(215,217,221,0.25)" stroke-width="1.5" id="leftPan"/>
+                <!-- 右托盘 -->
+                <ellipse cx="500" cy="105" rx="45" ry="10" fill="rgba(140,106,72,0.06)" stroke="rgba(140,106,72,0.25)" stroke-width="1.5" id="rightPan"/>
+                <!-- 标签 -->
+                <text x="100" y="140" text-anchor="middle" fill="rgba(215,217,221,0.7)" font-size="11" font-family="'Noto Serif SC',serif" letter-spacing="2">HARVEY</text>
+                <text x="500" y="140" text-anchor="middle" fill="rgba(140,106,72,0.7)" font-size="11" font-family="'Noto Serif SC',serif" letter-spacing="2">TWO-FACE</text>
+                <!-- 计数 -->
+                <text x="100" y="158" text-anchor="middle" fill="rgba(215,217,221,0.9)" font-size="16" font-weight="700" font-family="'Noto Serif SC',serif" id="harveyCount">0</text>
+                <text x="500" y="158" text-anchor="middle" fill="rgba(140,106,72,0.9)" font-size="16" font-weight="700" font-family="'Noto Serif SC',serif" id="twofaceCount">0</text>
+                <!-- 中心指示器 -->
+                <circle cx="300" cy="60" r="4" fill="rgba(123,143,90,0.6)" stroke="rgba(123,143,90,0.3)" stroke-width="2"/>
+            </svg>
+        </div>
+        <div class="scales-legend">
+            <span class="legend-left">◈ 哈维·登特</span>
+            <span class="legend-center">阅读进度</span>
+            <span class="legend-right">双面人 ◈</span>
+        </div>
+        <div class="scales-stats">
+            <span id="harveyStat">已读：0 / 10</span>
+            <span id="twofaceStat">已读：0 / 12</span>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="page-footer">
+        <p>哥谭市检察官办公室 · 档案系统 v2.4 · 哈维·登特阅读指南</p>
+        <p style="margin-top:4px;">档案可能已被污染 · 请谨慎甄别</p>
+    </footer>
+
+    <script>
+        // ============ 硬币裂开动画 ============
+        const coinWhole = document.getElementById('coinWhole');
+        const coinHalfLeft = document.getElementById('coinHalfLeft');
+        const coinHalfRight = document.getElementById('coinHalfRight');
+        const crackSvg = document.getElementById('crackSvg');
+        const fractureExtension = document.getElementById('fractureExtension');
+        const coinStage = document.getElementById('coinStage');
+
+        let maxCrackOffset = 55; // 最大裂开像素
+        let heroHeight;
+        let coinStageRect;
+
+        function updateCoinCrack() {
+            heroHeight = window.innerHeight;
+            const scrollY = window.scrollY;
+            // 硬币裂开在滚动0到heroHeight*0.7之间完成
+            const crackProgress = Math.min(Math.max(scrollY / (heroHeight * 0.65), 0), 1);
+
+            const offset = crackProgress * maxCrackOffset;
+
+            // 更新两个半圆的位置
+            coinHalfLeft.style.transform = `translateX(-${offset}px)`;
+            coinHalfRight.style.transform = `translateX(${offset}px)`;
+
+            // 裂痕SVG的显示
+            if (crackProgress > 0.08) {
+                crackSvg.classList.add('crack-visible');
+                crackSvg.style.opacity = Math.min(crackProgress * 2.5, 0.85);
+            } else {
+                crackSvg.classList.remove('crack-visible');
+                crackSvg.style.opacity = 0;
+            }
+
+            // 完整硬币的透明度
+            coinWhole.style.opacity = Math.max(1 - crackProgress * 3, 0);
+
+            // 断裂延伸线
+            if (crackProgress > 0.6) {
+                fractureExtension.classList.add('extended');
+                fractureExtension.style.height = Math.min((crackProgress - 0.6) * 250, 80) + 'px';
+            } else {
+                fractureExtension.classList.remove('extended');
+                fractureExtension.style.height = '0px';
+            }
+
+            requestAnimationFrame(() => {
+                // 继续下一帧
+            });
+        }
+
+        // 使用RAF节流
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    updateCoinCrack();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // 初始调用
+        updateCoinCrack();
+
+        // 窗口大小改变时更新
+        window.addEventListener('resize', () => {
+            updateCoinCrack();
+        });
+
+        // ============ 已读标记与天平系统 ============
+        let harveyReadCount = 0;
+        let twofaceReadCount = 0;
+        const totalHarveyCards = document.querySelectorAll('[data-side="harvey"]').length;
+        const totalTwofaceCards = document.querySelectorAll('[data-side="twoface"]').length;
+
+        function toggleRead(toggleEl) {
+            const card = toggleEl.closest('.card') || toggleEl.closest('.supplement-card');
+            const side = card.getAttribute('data-side');
+
+            if (toggleEl.classList.contains('read')) {
+                // 取消标记
+                toggleEl.classList.remove('read');
+                if (side === 'harvey') harveyReadCount = Math.max(0, harveyReadCount - 1);
+                if (side === 'twoface') twofaceReadCount = Math.max(0, twofaceReadCount - 1);
+            } else {
+                // 标记已读
+                toggleEl.classList.add('read');
+                if (side === 'harvey') harveyReadCount++;
+                if (side === 'twoface') twofaceReadCount++;
+            }
+
+            updateScales();
+        }
+
+        function updateScales() {
+            const harveyCountEl = document.getElementById('harveyCount');
+            const twofaceCountEl = document.getElementById('twofaceCount');
+            const harveyStatEl = document.getElementById('harveyStat');
+            const twofaceStatEl = document.getElementById('twofaceStat');
+            const leftPan = document.getElementById('leftPan');
+            const rightPan = document.getElementById('rightPan');
+            const balanceBeam = document.getElementById('balanceBeam');
+
+            harveyCountEl.textContent = harveyReadCount;
+            twofaceCountEl.textContent = twofaceReadCount;
+            harveyStatEl.textContent = `已读：${harveyReadCount} / ${totalHarveyCards}`;
+            twofaceStatEl.textContent = `已读：${twofaceReadCount} / ${totalTwofaceCards}`;
+
+            // 天平倾斜计算
+            const totalRead = harveyReadCount + twofaceReadCount;
+            let tiltAngle = 0;
+            if (totalRead > 0) {
+                const harveyWeight = harveyReadCount / Math.max(totalHarveyCards, 1);
+                const twofaceWeight = twofaceReadCount / Math.max(totalTwofaceCards, 1);
+                tiltAngle = (twofaceWeight - harveyWeight) * 6; // 最大倾斜6度
+                tiltAngle = Math.max(-6, Math.min(6, tiltAngle));
+            }
+
+            // 更新天平横梁旋转
+            balanceBeam.setAttribute('transform', `rotate(${tiltAngle}, 300, 60)`);
+
+            // 托盘垂直位移
+            const leftPanDy = tiltAngle * 2.5;
+            const rightPanDy = -tiltAngle * 2.5;
+            leftPan.setAttribute('cy', 105 + leftPanDy);
+            rightPan.setAttribute('cy', 105 + rightPanDy);
+
+            // 绳索也相应调整
+            const leftRope1 = document.getElementById('leftRope1');
+            const leftRope2 = document.getElementById('leftRope2');
+            const rightRope1 = document.getElementById('rightRope1');
+            const rightRope2 = document.getElementById('rightRope2');
+            if (leftRope1) leftRope1.setAttribute('y2', 100 + leftPanDy);
+            if (leftRope2) leftRope2.setAttribute('y2', 100 + leftPanDy);
+            if (rightRope1) rightRope1.setAttribute('y2', 100 + rightPanDy);
+            if (rightRope2) rightRope2.setAttribute('y2', 100 + rightPanDy);
+
+            // 更新计数文本位置
+            harveyCountEl.setAttribute('y', 158 + leftPanDy);
+            twofaceCountEl.setAttribute('y', 158 + rightPanDy);
+        }
+
+        // 初始天平状态
+        updateScales();
+
+        // ============ 平滑初始化 ============
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCoinCrack();
+            updateScales();
+        });
+
+        // ============ 键盘导航 ============
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                window.scrollBy({ top: 400, behavior: 'smooth' });
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                window.scrollBy({ top: -400, behavior: 'smooth' });
+            }
+        });
+
+        console.log('%c哥谭市检察官办公室 · 档案系统已就绪%c\n%c哈维·登特阅读指南 v2.4%c\n档案可能已被污染',
+            'color:#D7D9DD;font-size:14px;', '',
+            'color:#8C6A48;font-size:12px;', '');
+        console.log('%c点击卡片右上角圆圈标记已读，观察天平变化',
+            'color:#7B8F5A;font-size:11px;');
+    </script>
+</body>
+</html>
