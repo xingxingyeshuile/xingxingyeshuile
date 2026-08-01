@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>角色档案 | Kyle Rayner · 绿灯侠2814.4 | THE EMERALD ARCHIVE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Press+Start+2P&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0A0F1A;
+            --bg-panel: #121A2B;
+            --bg-card: #1A2538;
+            --border-metal: #2F3E55;
+            --border-light: #4A5E7A;
+            --text-primary: #D4E0F0;
+            --text-dim: #8A9BB5;
+            --neon-green: #39FF14;
+            --neon-green-dark: #00E676;
+            --gold-accent: #FFD966;
+            --gold-dim: #B8963E;
+            --scanline-color: rgba(57, 255, 20, 0.03);
+            --glow-green: 0 0 12px rgba(57, 255, 20, 0.5);
+            --glow-green-strong: 0 0 20px rgba(57, 255, 20, 0.8), 0 0 40px rgba(57, 255, 20, 0.3);
+            --font-comic: 'Bangers', cursive;
+            --font-pixel: 'Press Start 2P', monospace;
+            --font-body: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            --font-mono: 'Fira Code', 'Courier New', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            background: repeating-linear-gradient(0deg,
+                    transparent,
+                    transparent 2px,
+                    var(--scanline-color) 2px,
+                    var(--scanline-color) 4px);
+            opacity: 0.6;
+            animation: microFlicker 4s linear infinite;
+        }
+        @keyframes microFlicker {
+            0%,
+            99.7%,
+            100% {
+                opacity: 0.6;
+            }
+            99.8% {
+                opacity: 0.85;
+            }
+            99.9% {
+                opacity: 0.4;
+            }
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            background: radial-gradient(ellipse at center,
+                    transparent 55%,
+                    rgba(10, 15, 26, 0.65) 100%);
+            opacity: 0.8;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-deep);
+            border-left: 1px solid var(--border-metal);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-light);
+            border-radius: 0;
+            border: 1px solid var(--border-metal);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-green-dark);
+            box-shadow: var(--glow-green);
+        }
+
+        .main-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 16px 20px 100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .site-titlebar {
+            background: linear-gradient(180deg, #1A2538 0%, #121A2B 100%);
+            border: 2px solid var(--border-metal);
+            border-bottom: 1px solid var(--border-light);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 0;
+            position: relative;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+        .site-titlebar .titlebar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .site-titlebar .pixel-icon {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+        }
+        .site-titlebar .pixel-icon svg {
+            width: 32px;
+            height: 32px;
+            display: block;
+        }
+        .site-titlebar .title-text {
+            font-family: var(--font-pixel);
+            font-size: 0.6rem;
+            color: var(--neon-green);
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+            line-height: 1.3;
+        }
+        .site-titlebar .title-text .sub {
+            font-size: 0.45rem;
+            color: var(--text-dim);
+            text-shadow: none;
+            display: block;
+            letter-spacing: 2px;
+        }
+        .titlebar-buttons {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .titlebar-btn {
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(180deg, #3A4E6B 0%, #1A2538 100%);
+            border: 1px solid var(--border-metal);
+            color: var(--text-dim);
+            font-family: var(--font-pixel);
+            font-size: 0.45rem;
+            cursor: default;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            user-select: none;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.1s;
+        }
+        .titlebar-btn:hover {
+            background: linear-gradient(180deg, #4A5E7A 0%, #2F3E55 100%);
+            border-color: var(--border-light);
+            color: var(--text-primary);
+        }
+        .titlebar-btn.close-btn:hover {
+            background: #8B3A3A;
+            border-color: #C0392B;
+            color: #FFCCCC;
+            box-shadow: 0 0 8px rgba(200, 50, 50, 0.4);
+        }
+
+        .nav-bar {
+            background: var(--bg-panel);
+            border: 2px solid var(--border-metal);
+            border-top: 1px solid var(--border-light);
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-bar a {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 14px;
+            font-family: var(--font-comic);
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            color: var(--gold-dim);
+            text-decoration: none;
+            background: linear-gradient(180deg, #1A2538 0%, #121A2B 100%);
+            border-right: 1px solid var(--border-metal);
+            border-bottom: 3px solid transparent;
+            transition: all 0.15s ease;
+            position: relative;
+            white-space: nowrap;
+        }
+        .nav-bar a:last-child {
+            border-right: none;
+        }
+        .nav-bar a:hover {
+            color: var(--neon-green);
+            background: #1A2538;
+            border-bottom-color: var(--neon-green-dark);
+            text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+            box-shadow: inset 0 -4px 12px rgba(57, 255, 20, 0.08);
+        }
+        .nav-bar a.active {
+            color: var(--neon-green);
+            border-bottom-color: var(--neon-green);
+            background: #0F1A28;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.7);
+            box-shadow: inset 0 -2px 16px rgba(57, 255, 20, 0.12);
+            font-weight: 700;
+        }
+        .nav-bar a .nav-icon {
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+        }
+        .nav-bar a .nav-icon svg {
+            display: block;
+            width: 16px;
+            height: 16px;
+        }
+
+        .breadcrumb {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+            padding-left: 4px;
+        }
+        .breadcrumb span {
+            color: var(--neon-green-dark);
+        }
+
+        .window-panel {
+            background: var(--bg-panel);
+            border: 2px solid var(--border-metal);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02), 0 3px 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 16px;
+        }
+        .window-panel .window-titlebar {
+            background: linear-gradient(180deg, #1E2A40 0%, #121A2B 100%);
+            border-bottom: 2px solid var(--border-metal);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+        }
+        .window-panel .window-titlebar .win-icon {
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+        }
+        .window-panel .window-titlebar .win-icon svg {
+            display: block;
+            width: 16px;
+            height: 16px;
+        }
+        .window-panel .window-titlebar .win-title {
+            font-family: var(--font-pixel);
+            font-size: 0.48rem;
+            color: var(--text-primary);
+            letter-spacing: 1px;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .window-panel .window-titlebar .win-dots {
+            display: flex;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+        .window-panel .window-titlebar .win-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 0;
+            border: 1px solid var(--border-metal);
+            background: #2F3E55;
+            cursor: default;
+        }
+        .window-panel .window-body {
+            padding: 16px;
+        }
+
+        .profile-layout {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .profile-tabs {
+            width: 170px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: var(--bg-deep);
+            border: 1px solid var(--border-metal);
+            padding: 8px;
+            align-self: flex-start;
+        }
+        .profile-tab {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 12px;
+            font-family: var(--font-pixel);
+            font-size: 0.45rem;
+            letter-spacing: 0.8px;
+            color: var(--text-dim);
+            background: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+            text-transform: uppercase;
+            background: var(--bg-card);
+            border: 1px solid var(--border-metal);
+            margin-bottom: 2px;
+        }
+        .profile-tab:hover {
+            color: var(--neon-green);
+            border-color: var(--border-light);
+            background: #1D2B40;
+            text-shadow: 0 0 6px rgba(57, 255, 20, 0.4);
+        }
+        .profile-tab.active-tab {
+            color: var(--neon-green);
+            background: #0A1A20;
+            border-color: var(--neon-green-dark);
+            box-shadow: 0 0 8px rgba(57, 255, 20, 0.3);
+            font-weight: 700;
+            text-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+        }
+        .profile-content {
+            flex: 1;
+            min-width: 280px;
+        }
+        .profile-panel {
+            display: none;
+            animation: fadeSlide 0.2s ease;
+        }
+        .profile-panel.active-panel {
+            display: block;
+        }
+        @keyframes fadeSlide {
+            from {
+                opacity: 0.6;
+                transform: translateY(4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+        }
+        .data-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border-metal);
+            vertical-align: top;
+        }
+        .data-table .label {
+            color: var(--text-dim);
+            width: 120px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .data-table .value {
+            color: var(--text-primary);
+        }
+        .data-table .highlight {
+            color: var(--neon-green);
+            font-weight: 600;
+        }
+
+        .timeline-list {
+            list-style: none;
+            padding-left: 0;
+            border-left: 3px solid var(--neon-green-dark);
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        .timeline-list li {
+            position: relative;
+            margin-bottom: 16px;
+            padding-left: 18px;
+        }
+        .timeline-list li::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            background: var(--neon-green);
+            border-radius: 0;
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+            border: 1px solid #0A0F1A;
+        }
+        .timeline-year {
+            font-family: var(--font-pixel);
+            font-size: 0.5rem;
+            color: var(--gold-accent);
+            display: block;
+            margin-bottom: 2px;
+        }
+        .timeline-desc {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .ability-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-metal);
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .ability-name {
+            font-family: var(--font-comic);
+            font-size: 1rem;
+            color: var(--neon-green);
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+        .ability-bar {
+            width: 100%;
+            height: 6px;
+            background: #0F1A28;
+            border: 1px solid var(--border-metal);
+            margin: 8px 0;
+            position: relative;
+        }
+        .ability-fill {
+            height: 100%;
+            background: var(--neon-green);
+            box-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+            width: 0%;
+        }
+
+        .rel-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .rel-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-metal);
+            padding: 14px;
+            text-align: center;
+            transition: all 0.15s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .rel-card:hover {
+            border-color: var(--neon-green-dark);
+            box-shadow: 0 0 12px rgba(57, 255, 20, 0.2);
+            transform: translateY(-1px);
+        }
+        .rel-avatar {
+            font-size: 2.2rem;
+            margin-bottom: 6px;
+            display: block;
+            line-height: 1;
+        }
+        .rel-avatar svg {
+            display: block;
+            margin: 0 auto;
+            width: 36px;
+            height: 36px;
+        }
+        .rel-name {
+            font-family: var(--font-comic);
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            letter-spacing: 0.5px;
+        }
+        .rel-desc {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        .alias-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .alias-table th {
+            text-align: left;
+            padding: 8px;
+            background: var(--bg-card);
+            color: var(--neon-green);
+            font-family: var(--font-pixel);
+            font-size: 0.45rem;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--border-light);
+        }
+        .alias-table td {
+            padding: 8px;
+            border-bottom: 1px solid var(--border-metal);
+            color: var(--text-primary);
+        }
+
+        .inline-icon-sm {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 5px;
+            flex-shrink: 0;
+        }
+        .inline-icon-sm svg {
+            display: block;
+            width: 18px;
+            height: 18px;
+        }
+        .inline-icon-equip {
+            display: inline-block;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+        .inline-icon-equip svg {
+            display: block;
+            width: 32px;
+            height: 32px;
+        }
+
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(180deg, #1A2538 0%, #0F1622 100%);
+            border-top: 2px solid var(--border-metal);
+            padding: 6px 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 5000;
+            flex-wrap: wrap;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.6);
+            font-family: var(--font-pixel);
+            font-size: 0.42rem;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+        }
+        .taskbar .tb-start {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-metal);
+            cursor: default;
+            color: var(--neon-green);
+            text-shadow: 0 0 6px rgba(57, 255, 20, 0.5);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .taskbar .tb-start svg {
+            flex-shrink: 0;
+        }
+        .taskbar .tb-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--border-metal);
+            flex-shrink: 0;
+        }
+        .taskbar .tb-info {
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+        }
+        .taskbar .tb-clock {
+            padding: 4px 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-metal);
+            white-space: nowrap;
+            flex-shrink: 0;
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 700px) {
+            .profile-layout {
+                flex-direction: column;
+            }
+            .profile-tabs {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 4px;
+                padding: 4px;
+            }
+            .profile-tab {
+                font-size: 0.4rem;
+                padding: 8px;
+                flex: 1 0 auto;
+                text-align: center;
+            }
+            .data-table .label {
+                width: 80px;
+                font-size: 0.7rem;
+            }
+            .data-table .value {
+                font-size: 0.7rem;
+            }
+            .rel-card-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 500px) {
+            .nav-bar a {
+                padding: 6px 7px;
+                font-size: 0.65rem;
+            }
+            .nav-bar a .nav-icon {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- 标题栏 -->
+        <div class="site-titlebar">
+            <div class="titlebar-left">
+                <div class="pixel-icon" aria-hidden="true">
+                    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+                        <rect x="14" y="2" width="4" height="4" fill="#39FF14"/>
+                        <rect x="12" y="6" width="8" height="4" fill="#39FF14"/>
+                        <rect x="10" y="10" width="12" height="12" fill="none" stroke="#39FF14" stroke-width="2"/>
+                        <rect x="12" y="12" width="8" height="8" fill="#0A0F1A"/>
+                        <rect x="14" y="14" width="4" height="4" fill="#39FF14"/>
+                        <rect x="10" y="22" width="4" height="4" fill="#39FF14"/>
+                        <rect x="18" y="22" width="4" height="4" fill="#39FF14"/>
+                        <rect x="8" y="26" width="6" height="4" fill="#39FF14"/>
+                        <rect x="18" y="26" width="6" height="4" fill="#39FF14"/>
+                    </svg>
+                </div>
+                <span class="title-text">
+                    THE EMERALD ARCHIVE
+                    <span class="sub">KYLE RAYNER · GREEN LANTERN 2814.4</span>
+                </span>
+            </div>
+            <div class="titlebar-buttons" aria-hidden="true">
+                <span class="titlebar-btn">
+                    <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <line x1="2" y1="6" x2="10" y2="6"/>
+                    </svg>
+                </span>
+                <span class="titlebar-btn">
+                    <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="2" width="8" height="8"/>
+                    </svg>
+                </span>
+                <span class="titlebar-btn close-btn">
+                    <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <line x1="3" y1="3" x2="9" y2="9"/>
+                        <line x1="9" y1="3" x2="3" y2="9"/>
+                    </svg>
+                </span>
+            </div>
+        </div>
+
+        <!-- 导航栏 -->
+        <nav class="nav-bar" aria-label="主导航">
+            <a href="/">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <path d="M3 8L10 2L17 8V17H13V11H7V17H3V8Z"/>
+                    </svg>
+                </span> 首页
+            </a>
+            <a href="/profile" class="active" aria-current="page">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <circle cx="10" cy="6" r="3"/>
+                        <path d="M4 17C4 13 7 11 10 11C13 11 16 13 16 17"/>
+                    </svg>
+                </span> 档案
+            </a>
+            <a href="/appearances">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <rect x="4" y="3" width="12" height="14" rx="1"/>
+                        <line x1="7" y1="7" x2="13" y2="7"/>
+                        <line x1="7" y1="10" x2="13" y2="10"/>
+                        <line x1="10" y1="3" x2="10" y2="17"/>
+                    </svg>
+                </span> 刊物
+            </a>
+            <a href="/reading-guide">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <path d="M10 4C10 4 7 2 4 3V15C7 14 10 16 10 16C10 16 13 14 16 15V3C13 2 10 4 10 4Z"/>
+                    </svg>
+                </span> 阅读
+            </a>
+            <a href="/relationships">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <circle cx="7" cy="5" r="2.5"/>
+                        <path d="M2 14C2 11 4.5 9.5 7 9.5"/>
+                        <circle cx="13" cy="5" r="2.5"/>
+                        <path d="M18 14C18 11 15.5 9.5 13 9.5"/>
+                        <path d="M7 9.5C8.5 8.5 11.5 8.5 13 9.5"/>
+                    </svg>
+                </span> 关系
+            </a>
+            <a href="/timeline">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <circle cx="10" cy="10" r="7"/>
+                        <polyline points="10,6 10,10 13,13"/>
+                    </svg>
+                </span> 时间
+            </a>
+            <a href="/media">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <polygon points="6,3 17,10 6,17"/>
+                    </svg>
+                </span> 媒体
+            </a>
+            <a href="/gallery">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <rect x="3" y="4" width="14" height="12" rx="1"/>
+                        <circle cx="7" cy="8" r="1.5"/>
+                        <path d="M3 14L8 10L12 13L15 9L17 12V16H3V14Z"/>
+                    </svg>
+                </span> 画廊
+            </a>
+            <a href="/links">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <path d="M8 12L12 8"/>
+                        <path d="M9 5L11 3C12.5 1.5 14.5 1.5 16 3C17.5 4.5 17.5 6.5 16 8L14 10"/>
+                        <path d="M11 15L9 17C7.5 18.5 5.5 18.5 4 17C2.5 15.5 2.5 13.5 4 12L6 10"/>
+                    </svg>
+                </span> 资源
+            </a>
+            <a href="/about">
+                <span class="nav-icon">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <circle cx="10" cy="10" r="7"/>
+                        <path d="M8 8C8 6.5 9.5 5.5 10.5 6C11.5 6.5 11.5 8 10.5 9C9.5 10 9 10.5 9 11.5"/>
+                        <circle cx="9.5" cy="14" r="0.8" fill="currentColor" stroke="none"/>
+                    </svg>
+                </span> 关于
+            </a>
+        </nav>
+
+        <!-- 面包屑 -->
+        <div class="breadcrumb">C:\KYLE_RAYNER\PROFILE &gt; <span>基本资料</span></div>
+
+        <!-- 档案主窗口 -->
+        <div class="window-panel">
+            <div class="window-titlebar">
+                <span class="win-icon" aria-hidden="true">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="5" y="2" width="10" height="16" rx="1"/>
+                        <line x1="8" y1="6" x2="12" y2="6"/>
+                        <line x1="8" y1="9" x2="12" y2="9"/>
+                        <line x1="8" y1="12" x2="10" y2="12"/>
+                    </svg>
+                </span>
+                <span class="win-title">DOSSIER: KYLE RAYNER // GREEN LANTERN 2814.4</span>
+                <span class="win-dots" aria-hidden="true">
+                    <span class="win-dot dot-min"></span><span class="win-dot dot-max"></span><span class="win-dot dot-close"></span>
+                </span>
+            </div>
+            <div class="window-body">
+                <div class="profile-layout">
+                    <!-- 左侧标签 -->
+                    <div class="profile-tabs" role="tablist" aria-label="档案分类">
+                        <button class="profile-tab active-tab" data-panel="basic" role="tab" aria-selected="true">基本资料</button>
+                        <button class="profile-tab" data-panel="history" role="tab" aria-selected="false">人物经历</button>
+                        <button class="profile-tab" data-panel="abilities" role="tab" aria-selected="false">能力与装备</button>
+                        <button class="profile-tab" data-panel="relations" role="tab" aria-selected="false">重要关系</button>
+                        <button class="profile-tab" data-panel="aliases" role="tab" aria-selected="false">别名记录</button>
+                        <button class="profile-tab" data-panel="timeline-sum" role="tab" aria-selected="false">时间线摘要</button>
+                    </div>
+
+                    <!-- 右侧内容区 -->
+                    <div class="profile-content">
+                        <!-- 基本资料面板 -->
+                        <div id="panel-basic" class="profile-panel active-panel" role="tabpanel">
+                            <table class="data-table">
+                                <tr><td class="label">真名</td><td class="value">凯尔·雷纳 (Kyle Rayner)</td></tr>
+                                <tr><td class="label">英雄代号</td><td class="value highlight">绿灯侠 (Green Lantern)</td></tr>
+                                <tr><td class="label">曾用称号</td><td class="value">离子侠 · 白灯侠 · 火炬手</td></tr>
+                                <tr><td class="label">所属扇区</td><td class="value">2814</td></tr>
+                                <tr><td class="label">身高</td><td class="value">约5英尺11英寸至6英尺0英寸 (180-183cm)</td></tr>
+                                <tr><td class="label">体重</td><td class="value">运动型精瘦，约175磅 (79kg)</td></tr>
+                                <tr><td class="label">发色</td><td class="value">深棕色至黑色，凌乱微卷</td></tr>
+                                <tr><td class="label">瞳色</td><td class="value">深棕色，大而富有表现力</td></tr>
+                                <tr><td class="label">首次登场</td><td class="value">Green Lantern Vol.3 #48 (1994)</td></tr>
+                                <tr><td class="label">创作者</td><td class="value">Ron Marz / Darryl Banks</td></tr>
+                                <tr><td class="label">隶属组织</td><td class="value">绿灯军团 · 正义联盟 (曾短暂加入泰坦)</td></tr>
+                                <tr><td class="label">现状</td><td class="value highlight">活跃 · 现任绿灯侠</td></tr>
+                            </table>
+                        </div>
+
+                        <!-- 人物经历面板 -->
+                        <div id="panel-history" class="profile-panel" role="tabpanel">
+                            <ul class="timeline-list">
+                                <li><span class="timeline-year">早年</span><span class="timeline-desc">出生于洛杉矶，由单亲母亲莫拉·雷纳抚养长大。父亲加布里埃尔·瓦斯奎兹是CIA特工，早年离弃家庭。凯尔从小热爱绘画与漫画，梦想成为漫画家。</span></li>
+                                <li><span class="timeline-year">1994</span><span class="timeline-desc">在哈尔·乔丹摧毁军团后，最后的守护者甘瑟特将最后一枚绿灯戒指交给凯尔，没有任何考验，仅一句"只能是你了"。凯尔成为新任绿灯侠。</span></li>
+                                <li><span class="timeline-year">1994</span><span class="timeline-desc">女友亚历山德拉·德威特被反派"主力"杀害，此事彻底改变了凯尔，促使他认真对待英雄使命。</span></li>
+                                <li><span class="timeline-year">1994–2000</span><span class="timeline-desc">独自摸索成为英雄，加入泰坦与正义联盟，与沃利·韦斯特、蝙蝠侠等人建立深厚友谊。以艺术家独有的想象力创造出无数令人惊叹的构造物。</span></li>
+                                <li><span class="timeline-year">2000</span><span class="timeline-desc">吸收太阳能量成为"离子"，获得神级力量，但因无法承受全知全能的负担而主动放弃，释放能量为欧阿中央电池充能，被授予"火炬手"称号。</span></li>
+                                <li><span class="timeline-year">2005–至今</span><span class="timeline-desc">参与绿灯军团重建，掌握七色光谱，短暂成为白灯侠。继续作为2814扇区的绿灯侠守护宇宙，同时与个人生活中的挑战斗争。</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- 能力与装备面板 -->
+                        <div id="panel-abilities" class="profile-panel" role="tabpanel">
+                            <h3 style="font-family:var(--font-comic); color:var(--neon-green); margin-bottom:12px;">
+                                <span class="inline-icon-sm">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <polygon points="11,1 4,12 9,12 7,19 16,7 11,7 13,1"/>
+                                    </svg>
+                                </span> 标准绿灯戒指能力
+                            </h3>
+                            <div class="ability-card">
+                                <span class="ability-name">意志力构造</span>
+                                <div class="ability-bar"><div class="ability-fill" style="width:95%"></div></div>
+                                <p style="font-size:0.8rem; color:var(--text-dim);">凯尔以想象力闻名，可创造机甲、骑士、复杂机械等。</p>
+                            </div>
+                            <div class="ability-card">
+                                <span class="ability-name">能量投射与飞行</span>
+                                <div class="ability-bar"><div class="ability-fill" style="width:90%"></div></div>
+                            </div>
+                            <div class="ability-card">
+                                <span class="ability-name">环境防护与宇宙翻译</span>
+                                <div class="ability-bar"><div class="ability-fill" style="width:85%"></div></div>
+                            </div>
+                            <div class="ability-card">
+                                <span class="ability-name">扫描与分析</span>
+                                <div class="ability-bar"><div class="ability-fill" style="width:80%"></div></div>
+                            </div>
+
+                            <h3 style="font-family:var(--font-comic); color:var(--gold-accent); margin:16px 0 8px;">
+                                <span class="inline-icon-sm">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <polygon points="10,1 12,7 18,8 13,13 14,19 10,16 6,19 7,13 2,8 8,7"/>
+                                    </svg>
+                                </span> 离子能力 (曾拥有)
+                            </h3>
+                            <div class="ability-card">
+                                <span class="ability-name">近乎无限能量 · 现实操控</span>
+                                <div class="ability-bar"><div class="ability-fill" style="width:100%; background:#FFD966;"></div></div>
+                            </div>
+
+                            <h3 style="font-family:var(--font-comic); color:#FFFFFF; margin:16px 0 8px;">
+                                <span class="inline-icon-sm">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <polygon points="10,1 18,10 10,19 2,10"/>
+                                    </svg>
+                                </span> 白灯侠能力 (曾拥有)
+                            </h3>
+                            <div class="ability-card">
+                                <span class="ability-name">情感光谱全访问 · 生命操控</span>
+                                <div class="ability-bar"><div class="ability-fill" style="width:100%; background:#FFFFFF;"></div></div>
+                            </div>
+
+                            <h3 style="font-family:var(--font-comic); color:var(--text-primary); margin:16px 0 8px;">
+                                <span class="inline-icon-sm">
+                                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                        <path d="M10 2C10 2 4 5 4 10C4 13 6 16 10 18C14 16 16 13 16 10C16 5 10 2 10 2Z"/>
+                                    </svg>
+                                </span> 装备
+                            </h3>
+                            <ul style="list-style:none; padding:0; display:flex; gap:16px; flex-wrap:wrap;">
+                                <li style="background:var(--bg-card); border:1px solid var(--border-metal); padding:10px 16px; text-align:center;">
+                                    <span class="inline-icon-equip">
+                                        <svg viewBox="0 0 32 32" fill="none" stroke="#39FF14" stroke-width="2" aria-hidden="true">
+                                            <circle cx="16" cy="16" r="10"/>
+                                            <polygon points="16,2 19,12 16,15 13,12" fill="#39FF14" stroke="none"/>
+                                        </svg>
+                                    </span><br>
+                                    <span style="font-family:var(--font-comic);">绿灯戒指</span>
+                                </li>
+                                <li style="background:var(--bg-card); border:1px solid var(--border-metal); padding:10px 16px; text-align:center;">
+                                    <span class="inline-icon-equip">
+                                        <svg viewBox="0 0 32 32" fill="none" stroke="#FFD966" stroke-width="2" aria-hidden="true">
+                                            <path d="M10 6H22V24C22 26.5 20 28 16 28C12 28 10 26.5 10 24V6Z"/>
+                                            <path d="M10 6L5 2M22 6L27 2"/>
+                                            <line x1="13" y1="14" x2="19" y2="14"/>
+                                        </svg>
+                                    </span><br>
+                                    <span style="font-family:var(--font-comic);">离子手套</span>
+                                </li>
+                                <li style="background:var(--bg-card); border:1px solid var(--border-metal); padding:10px 16px; text-align:center;">
+                                    <span class="inline-icon-equip">
+                                        <svg viewBox="0 0 32 32" fill="none" stroke="#FFFFFF" stroke-width="2" aria-hidden="true">
+                                            <polygon points="16,1 29,16 16,31 3,16" fill="#FFFFFF" stroke="none" opacity="0.3"/>
+                                            <polygon points="16,1 29,16 16,31 3,16" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+                                            <circle cx="16" cy="16" r="6" fill="#FFFFFF" opacity="0.5"/>
+                                        </svg>
+                                    </span><br>
+                                    <span style="font-family:var(--font-comic);">白灯戒指</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 重要关系面板 -->
+                        <div id="panel-relations" class="profile-panel" role="tabpanel">
+                            <div class="rel-card-grid">
+                                <a href="/relationships?char=alex" class="rel-card">
+                                    <span class="rel-avatar">
+                                        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                            <path d="M18 28C18 28 6 20 6 13C6 8 9 5 12 5C15 5 18 8 18 8C18 8 21 5 24 5C27 5 30 8 30 13C30 20 18 28 18 28Z"/>
+                                            <line x1="11" y1="11" x2="25" y2="20"/>
+                                        </svg>
+                                    </span>
+                                    <span class="rel-name">亚历山德拉·德威特</span>
+                                    <span class="rel-desc">前女友 · 被主力杀害，深刻影响凯尔</span>
+                                </a>
+                                <a href="/relationships?char=donna" class="rel-card">
+                                    <span class="rel-avatar">
+                                        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                            <polygon points="18,3 22,13 33,14 25,22 27,33 18,27 9,33 11,22 3,14 14,13"/>
+                                        </svg>
+                                    </span>
+                                    <span class="rel-name">唐娜·特洛伊</span>
+                                    <span class="rel-desc">前女友 · 泰坦成员，曾与凯尔交往</span>
+                                </a>
+                                <a href="/relationships?char=jade" class="rel-card">
+                                    <span class="rel-avatar">
+                                        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                            <path d="M18 30C18 30 6 22 6 12C6 6 12 4 18 8C24 4 30 6 30 12C30 22 18 30 18 30Z"/>
+                                            <line x1="18" y1="8" x2="18" y2="28"/>
+                                        </svg>
+                                    </span>
+                                    <span class="rel-name">杰德</span>
+                                    <span class="rel-desc">前女友 · 艾伦·斯科特之女</span>
+                                </a>
+                                <a href="/relationships?char=hal" class="rel-card">
+                                    <span class="rel-avatar">
+                                        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                            <circle cx="18" cy="18" r="13"/>
+                                            <circle cx="18" cy="18" r="5" fill="currentColor"/>
+                                        </svg>
+                                    </span>
+                                    <span class="rel-name">哈尔·乔丹</span>
+                                    <span class="rel-desc">前辈绿灯侠 · 亦师亦友</span>
+                                </a>
+                                <a href="/relationships?char=john" class="rel-card">
+                                    <span class="rel-avatar">
+                                        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                            <rect x="5" y="10" width="26" height="22"/>
+                                            <rect x="9" y="5" width="18" height="5"/>
+                                            <rect x="9" y="15" width="7" height="6"/>
+                                            <rect x="20" y="15" width="7" height="6"/>
+                                            <rect x="9" y="24" width="7" height="5"/>
+                                            <rect x="20" y="24" width="7" height="5"/>
+                                        </svg>
+                                    </span>
+                                    <span class="rel-name">约翰·斯图尔特</span>
+                                    <span class="rel-desc">战友 · 曾接替凯尔在联盟位置</span>
+                                </a>
+                                <a href="/relationships?char=guy" class="rel-card">
+                                    <span class="rel-avatar">
+                                        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                            <circle cx="18" cy="16" r="11"/>
+                                            <rect x="13" y="23" width="10" height="7" rx="3"/>
+                                        </svg>
+                                    </span>
+                                    <span class="rel-name">盖·加德纳</span>
+                                    <span class="rel-desc">战友 · 性格迥异但相互尊重</span>
+                                </a>
+                            </div>
+                            <p style="margin-top:12px; font-size:0.75rem; color:var(--text-dim);">点击卡片查看详细关系档案 (跳转至关系页面)</p>
+                        </div>
+
+                        <!-- 别名记录面板 -->
+                        <div id="panel-aliases" class="profile-panel" role="tabpanel">
+                            <table class="alias-table">
+                                <thead><tr><th>别名</th><th>时期</th><th>备注</th></tr></thead>
+                                <tbody>
+                                    <tr><td>绿灯侠</td><td>1994–至今</td><td>主要称号</td></tr>
+                                    <tr><td>离子侠</td><td>2000–2001</td><td>吸收太阳能量后成为离子实体</td></tr>
+                                    <tr><td>白灯侠</td><td>2013</td><td>短暂掌握完整情感光谱</td></tr>
+                                    <tr><td>火炬手</td><td>2001–至今</td><td>守护者授予的荣誉头衔</td></tr>
+                                    <tr><td>最后的绿灯侠</td><td>1994</td><td>军团毁灭后独自背负使命</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- 时间线摘要面板 -->
+                        <div id="panel-timeline-sum" class="profile-panel" role="tabpanel">
+                            <ul class="timeline-list">
+                                <li><span class="timeline-year">1994</span><span class="timeline-desc">获得戒指 · GL Vol.3 #48</span></li>
+                                <li><span class="timeline-year">1994</span><span class="timeline-desc">亚历山德拉之死</span></li>
+                                <li><span class="timeline-year">2000</span><span class="timeline-desc">成为离子 · 释放能量重建军团</span></li>
+                                <li><span class="timeline-year">2005</span><span class="timeline-desc">绿灯军团重生 · 协助哈尔回归</span></li>
+                                <li><span class="timeline-year">2011</span><span class="timeline-desc">新52 · 掌握七色光谱</span></li>
+                                <li><span class="timeline-year">2013</span><span class="timeline-desc">成为白灯侠</span></li>
+                            </ul>
+                            <p style="font-size:0.75rem; color:var(--text-dim); margin-top:8px;">完整时间线请查看 <a href="/timeline" style="color:var(--neon-green);">时间线页面</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 任务栏 -->
+    <footer class="taskbar" aria-label="状态栏">
+        <span class="tb-start">
+            <svg viewBox="0 0 16 16" width="12" height="12" fill="#39FF14" aria-hidden="true">
+                <circle cx="8" cy="8" r="6"/>
+            </svg>
+            启动
+        </span>
+        <span class="tb-divider"></span>
+        <span class="tb-info">在线访客: <span style="color:#39FF14;">1</span> 名灯侠在此 · DC宇宙时间: <span style="color:#FFD966;">现在</span></span>
+        <span class="tb-divider"></span>
+        <span class="tb-clock" id="taskbar-clock">--:--:--</span>
+    </footer>
+
+    <script>
+        // 时钟更新
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            const el = document.getElementById('taskbar-clock');
+            if (el) el.textContent = h + ':' + m + ':' + s;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // 标签切换逻辑
+        (function() {
+            const tabs = document.querySelectorAll('.profile-tab');
+            const panels = document.querySelectorAll('.profile-panel');
+            const breadcrumbSpan = document.querySelector('.breadcrumb span');
+
+            const panelNames = {
+                'basic': '基本资料',
+                'history': '人物经历',
+                'abilities': '能力与装备',
+                'relations': '重要关系',
+                'aliases': '别名记录',
+                'timeline-sum': '时间线摘要'
+            };
+
+            function switchPanel(panelId) {
+                panels.forEach(p => p.classList.remove('active-panel'));
+                tabs.forEach(t => {
+                    t.classList.remove('active-tab');
+                    t.setAttribute('aria-selected', 'false');
+                });
+
+                const targetPanel = document.getElementById('panel-' + panelId);
+                const targetTab = document.querySelector(`.profile-tab[data-panel="${panelId}"]`);
+
+                if (targetPanel) {
+                    targetPanel.classList.add('active-panel');
+                }
+                if (targetTab) {
+                    targetTab.classList.add('active-tab');
+                    targetTab.setAttribute('aria-selected', 'true');
+                }
+                if (breadcrumbSpan && panelNames[panelId]) {
+                    breadcrumbSpan.textContent = panelNames[panelId];
+                }
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    const panelId = this.getAttribute('data-panel');
+                    if (panelId) {
+                        switchPanel(panelId);
+                    }
+                });
+                tab.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+
+            // 默认激活基本资料
+            switchPanel('basic');
+        })();
+    </script>
+</body>
+</html>
