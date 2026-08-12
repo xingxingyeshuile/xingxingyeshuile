@@ -1,0 +1,3872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>美漫汉化整理追踪器</title>
+    <style>
+        :root {
+            --bg: #1c1c26;
+            --surface: #252535;
+            --surface-2: #2d2d40;
+            --border: #3a3a52;
+            --text: #d0d0dc;
+            --text-secondary: #9898ae;
+            --text-bright: #f0f0f8;
+            --accent: #4da674;
+            --accent-bright: #5fc286;
+            --accent-bg: #1e3328;
+            --accent-border: #3a6b4a;
+            --danger: #c05555;
+            --danger-bg: #331e1e;
+            --danger-border: #6b3a3a;
+            --unmarked-bg: #2a2a3c;
+            --unmarked-hover: #333350;
+            --unmarked-text: #b0b0c0;
+            --marked-bg: #1a3322;
+            --marked-hover: #1f3d2a;
+            --marked-border: #3a6b4a;
+            --marked-text: #c8f0d8;
+            --group-tag-bg: rgba(77, 166, 116, 0.2);
+            --group-tag-text: #8ed8a8;
+            --select-glow: #5b9cf5;
+
+            /* 年刊 (Annual) 色调 - 琥珀/金色 */
+            --annual-unmarked-bg: #2d2a20;
+            --annual-unmarked-hover: #3d3828;
+            --annual-unmarked-text: #d4c090;
+            --annual-unmarked-border: #6b5a2e;
+            --annual-marked-bg: #2a2818;
+            --annual-marked-hover: #3a3620;
+            --annual-marked-border: #8a7a30;
+            --annual-marked-text: #e8d898;
+            --annual-tag-bg: rgba(200, 160, 50, 0.2);
+            --annual-tag-text: #d4b850;
+            --annual-accent: #c8a030;
+            --annual-accent-bright: #dab840;
+
+            /* 特刊 (Special) 色调 - 蓝紫 */
+            --special-unmarked-bg: #22223a;
+            --special-unmarked-hover: #2c2c4a;
+            --special-unmarked-text: #a0a8d0;
+            --special-unmarked-border: #3a3e6b;
+            --special-marked-bg: #1e2235;
+            --special-marked-hover: #252a40;
+            --special-marked-border: #4a5090;
+            --special-marked-text: #b8c0f0;
+            --special-tag-bg: rgba(100, 120, 200, 0.2);
+            --special-tag-text: #8898d8;
+            --special-accent: #6878c8;
+            --special-accent-bright: #7a8ad8;
+
+            --radius: 8px;
+            --radius-sm: 5px;
+            --transition: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Monaco', 'Menlo', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+            padding-bottom: env(safe-area-inset-bottom, 16px);
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-font-smoothing: antialiased;
+            -webkit-touch-callout: none;
+        }
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        .app-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px 24px 40px;
+            padding-bottom: 100px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        .header-title .logo-svg {
+            flex-shrink: 0;
+        }
+
+        /* 作品选择器区域 */
+        .workspace-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1 1 auto;
+            min-width: 200px;
+            margin-left: auto;
+            justify-content: flex-end;
+        }
+        .workspace-selector select {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 9px 36px 9px 12px;
+            color: var(--text-bright);
+            font-size: 0.9rem;
+            font-family: inherit;
+            font-weight: 500;
+            cursor: pointer;
+            outline: none;
+            transition: var(--transition);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%239898ae' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 12px 8px;
+            max-width: 360px;
+            min-width: 160px;
+            flex: 1 1 auto;
+            text-overflow: ellipsis;
+        }
+        .workspace-selector select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(77, 166, 116, 0.12);
+        }
+        .workspace-selector select option {
+            background: var(--surface-2);
+            color: var(--text-bright);
+        }
+        .btn-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            flex-shrink: 0;
+            outline: none;
+            padding: 0;
+        }
+        .btn-icon svg {
+            pointer-events: none;
+            flex-shrink: 0;
+        }
+        .btn-icon:hover {
+            background: var(--surface-2);
+            color: var(--text-bright);
+            border-color: #555;
+        }
+        .btn-icon:focus-visible {
+            box-shadow: 0 0 0 3px rgba(160, 180, 220, 0.35);
+            outline: 2px solid rgba(160, 180, 220, 0.6);
+            outline-offset: 2px;
+        }
+        .btn-icon.btn-add:hover {
+            border-color: var(--accent);
+            color: var(--accent-bright);
+            background: var(--accent-bg);
+        }
+        .btn-icon.btn-delete:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: var(--danger-bg);
+        }
+        .btn-icon:active {
+            transform: scale(0.94);
+            transition: 0.08s ease;
+        }
+        .btn-icon:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* Panel */
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            margin-bottom: 16px;
+        }
+        .panel-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 16px;
+            align-items: flex-end;
+        }
+        .panel-row+.panel-row {
+            margin-top: 10px;
+        }
+        .panel-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .input-group input {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 9px 12px;
+            color: var(--text-bright);
+            font-size: 0.95rem;
+            font-family: var(--font-mono);
+            width: 120px;
+            transition: var(--transition);
+            outline: none;
+        }
+        .input-group input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(77, 166, 116, 0.12);
+        }
+        .input-group input.wide {
+            width: 180px;
+        }
+        .input-group input.xwide {
+            width: 220px;
+        }
+        .input-group input.slim {
+            width: 88px;
+        }
+        .input-group input.medium {
+            width: 130px;
+        }
+        .input-group input.list-input {
+            width: 150px;
+        }
+        .input-group .panel-label-sub {
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            letter-spacing: 0.02em;
+            text-transform: none;
+        }
+
+        /* 年刊/特刊生成控件行 */
+        .gen-row {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-top: 2px;
+        }
+        .gen-row input {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 5px 7px;
+            color: var(--text-bright);
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            width: 52px;
+            transition: var(--transition);
+            outline: none;
+        }
+        .gen-row input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(77, 166, 116, 0.1);
+        }
+        .gen-row .gen-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            letter-spacing: 0.02em;
+        }
+        .gen-row .btn-gen {
+            padding: 4px 9px;
+            font-size: 0.7rem;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            font-family: inherit;
+            white-space: nowrap;
+            outline: none;
+            letter-spacing: 0.02em;
+        }
+        .gen-row .btn-gen:hover {
+            background: var(--surface-2);
+            color: var(--text-bright);
+            border-color: #555;
+        }
+        .gen-row .btn-gen:active {
+            transform: scale(0.94);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: var(--transition);
+            white-space: nowrap;
+            font-family: inherit;
+            letter-spacing: 0.01em;
+            outline: none;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn:focus-visible {
+            box-shadow: 0 0 0 3px rgba(160, 180, 220, 0.35);
+            outline: 2px solid rgba(160, 180, 220, 0.6);
+            outline-offset: 2px;
+        }
+        .btn svg {
+            flex-shrink: 0;
+            pointer-events: none;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .btn-primary:hover {
+            background: var(--accent-bright);
+            border-color: var(--accent-bright);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(77, 166, 116, 0.3);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border-color: var(--border);
+        }
+        .btn-outline:hover {
+            background: var(--surface-2);
+            border-color: #555;
+        }
+        .btn-danger {
+            background: transparent;
+            color: var(--danger);
+            border-color: var(--danger-border);
+        }
+        .btn-danger:hover {
+            background: var(--danger-bg);
+            border-color: var(--danger);
+        }
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.82rem;
+            gap: 5px;
+        }
+        .btn-xs {
+            padding: 5px 10px;
+            font-size: 0.76rem;
+            gap: 4px;
+            border-radius: 4px;
+        }
+        .btn:active {
+            transform: scale(0.96);
+            transition: 0.08s ease;
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px 24px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-bright);
+            font-family: var(--font-mono);
+        }
+        .stat-value.green {
+            color: var(--accent-bright);
+        }
+        .stat-value.amber {
+            color: #e0b860;
+        }
+        .stat-value.annual-color {
+            color: var(--annual-accent-bright);
+        }
+        .stat-value.special-color {
+            color: var(--special-accent-bright);
+        }
+        .progress-bar-wrap {
+            flex: 1 1 150px;
+            min-width: 100px;
+            max-width: 260px;
+            height: 7px;
+            background: var(--surface-2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 10px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 10px;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .toolbar-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--border);
+            margin: 0 4px;
+            flex-shrink: 0;
+        }
+        .filter-btn {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            font-family: inherit;
+            letter-spacing: 0.02em;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .filter-btn:focus-visible {
+            box-shadow: 0 0 0 3px rgba(160, 180, 220, 0.3);
+        }
+        .filter-btn:hover {
+            background: var(--surface-2);
+            color: var(--text);
+        }
+        .filter-btn.active {
+            background: var(--accent-bg);
+            border-color: var(--accent);
+            color: var(--accent-bright);
+            font-weight: 600;
+        }
+
+        /* 多选模式切换按钮 */
+        .multi-select-toggle {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            font-family: inherit;
+            letter-spacing: 0.02em;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .multi-select-toggle:hover {
+            background: var(--surface-2);
+            color: var(--text);
+        }
+        .multi-select-toggle.active {
+            background: #1a2d3d;
+            border-color: var(--select-glow);
+            color: #7ab8f5;
+            font-weight: 600;
+            box-shadow: 0 0 10px rgba(91, 156, 245, 0.2);
+        }
+
+        /* 汉化组筛选下拉框 */
+        .group-filter-select {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 6px 28px 6px 12px;
+            color: var(--text);
+            font-size: 0.82rem;
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+            transition: var(--transition);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%239898ae' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 10px 7px;
+            min-width: 100px;
+            max-width: 180px;
+            letter-spacing: 0.02em;
+        }
+        .group-filter-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(77, 166, 116, 0.12);
+        }
+        .group-filter-select option {
+            background: var(--surface-2);
+            color: var(--text-bright);
+        }
+        .group-filter-select.has-selection {
+            border-color: var(--accent-border);
+            background: var(--accent-bg);
+            color: var(--accent-bright);
+            font-weight: 600;
+        }
+
+        /* Jump input */
+        .jump-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-left: auto;
+        }
+        .jump-wrap select.jump-type-select {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-right: none;
+            border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+            padding: 7px 24px 7px 8px;
+            color: var(--text-bright);
+            font-size: 0.78rem;
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+            transition: var(--transition);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' viewBox='0 0 8 6'%3E%3Cpath d='M1 1l3 3 3-3' fill='none' stroke='%239898ae' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 7px center;
+            background-size: 8px 6px;
+            min-width: 56px;
+            letter-spacing: 0.02em;
+        }
+        .jump-wrap select.jump-type-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(77, 166, 116, 0.08);
+        }
+        .jump-wrap select.jump-type-select option {
+            background: var(--surface-2);
+            color: var(--text-bright);
+        }
+        .jump-wrap input {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-left: none;
+            border-radius: 0;
+            padding: 7px 10px;
+            color: var(--text-bright);
+            font-size: 0.85rem;
+            font-family: var(--font-mono);
+            width: 64px;
+            outline: none;
+            transition: var(--transition);
+        }
+        .jump-wrap input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(77, 166, 116, 0.1);
+        }
+        .jump-wrap button {
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            padding: 7px 11px;
+            font-size: 0.82rem;
+            border-left: none;
+        }
+
+        /* Grid */
+        .grid-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            min-height: 100px;
+            max-height: 68vh;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: #444 #252535;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .grid-container::-webkit-scrollbar {
+            width: 7px;
+        }
+        .grid-container::-webkit-scrollbar-track {
+            background: #252535;
+            border-radius: 10px;
+        }
+        .grid-container::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 10px;
+        }
+        .grid-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .issues-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+            gap: 7px;
+        }
+        @media (max-width: 600px) {
+            .issues-grid {
+                grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+                gap: 5px;
+            }
+        }
+        @media (min-width: 1000px) {
+            .issues-grid {
+                grid-template-columns: repeat(auto-fill, minmax(62px, 1fr));
+                gap: 8px;
+            }
+        }
+
+        /* 分隔标签 - 年刊/特刊区域标题 */
+        .section-label {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 4px 2px 4px;
+            margin-top: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+            opacity: 0.6;
+        }
+        .section-label.annual-label {
+            color: var(--annual-accent-bright);
+        }
+        .section-label.annual-label::after {
+            background: var(--annual-unmarked-border);
+            opacity: 0.5;
+        }
+        .section-label.special-label {
+            color: var(--special-accent-bright);
+        }
+        .section-label.special-label::after {
+            background: var(--special-unmarked-border);
+            opacity: 0.5;
+        }
+        .section-label .label-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .section-label.annual-label .label-dot {
+            background: var(--annual-accent);
+        }
+        .section-label.special-label .label-dot {
+            background: var(--special-accent);
+        }
+
+        /* 快速跳转小按钮（section-label旁） */
+        .section-jump-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            font-family: inherit;
+            letter-spacing: 0.02em;
+            outline: none;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+        .section-jump-btn:hover {
+            background: var(--surface-2);
+            color: var(--text-bright);
+            border-color: #555;
+        }
+        .section-jump-btn:active {
+            transform: scale(0.94);
+        }
+
+        .issue-cell {
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            position: relative;
+            border: 2px solid transparent;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            min-width: 0;
+            letter-spacing: -0.01em;
+            overflow: hidden;
+        }
+        .issue-cell:focus-visible {
+            box-shadow: 0 0 0 3px rgba(160, 200, 240, 0.5);
+            border-color: rgba(160, 200, 240, 0.7);
+            z-index: 2;
+        }
+        @media (max-width: 600px) {
+            .issue-cell {
+                font-size: 0.78rem;
+            }
+        }
+
+        /* Unmarked state - 主刊 */
+        .issue-cell.unmarked {
+            background: var(--unmarked-bg);
+            border-color: transparent;
+            color: var(--unmarked-text);
+        }
+        .issue-cell.unmarked:hover {
+            background: var(--unmarked-hover);
+            border-color: #505070;
+            color: #d0d0e0;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+        .issue-cell.unmarked .cell-icon {
+            opacity: 0.35;
+            transition: var(--transition);
+        }
+        .issue-cell.unmarked:hover .cell-icon {
+            opacity: 0.6;
+        }
+
+        /* Marked state - 主刊 */
+        .issue-cell.marked {
+            background: var(--marked-bg);
+            border-color: var(--marked-border);
+            color: var(--marked-text);
+        }
+        .issue-cell.marked:hover {
+            background: var(--marked-hover);
+            border-color: #4a8a5e;
+            color: #e0ffe8;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 14px rgba(60, 140, 80, 0.25);
+        }
+        .issue-cell.marked .cell-icon-check {
+            opacity: 1;
+        }
+
+        /* 年刊 (Annual) - 未标记 */
+        .issue-cell.annual.unmarked {
+            background: var(--annual-unmarked-bg);
+            border-color: var(--annual-unmarked-border);
+            color: var(--annual-unmarked-text);
+        }
+        .issue-cell.annual.unmarked:hover {
+            background: var(--annual-unmarked-hover);
+            border-color: #8a7a3a;
+            color: #e8d898;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(180, 140, 40, 0.2);
+        }
+        .issue-cell.annual.unmarked .cell-icon {
+            opacity: 0.4;
+        }
+        .issue-cell.annual.unmarked:hover .cell-icon {
+            opacity: 0.65;
+        }
+
+        /* 年刊 (Annual) - 已标记 */
+        .issue-cell.annual.marked {
+            background: var(--annual-marked-bg);
+            border-color: var(--annual-marked-border);
+            color: var(--annual-marked-text);
+        }
+        .issue-cell.annual.marked:hover {
+            background: var(--annual-marked-hover);
+            border-color: #a89040;
+            color: #f0e8b0;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 14px rgba(180, 140, 40, 0.3);
+        }
+        .issue-cell.annual .cell-group-name {
+            background: var(--annual-tag-bg);
+            color: var(--annual-tag-text);
+        }
+        .issue-cell.annual .cell-group-name.no-name {
+            background: rgba(180, 150, 80, 0.15);
+            color: #b0a070;
+        }
+
+        /* 特刊 (Special) - 未标记 */
+        .issue-cell.special.unmarked {
+            background: var(--special-unmarked-bg);
+            border-color: var(--special-unmarked-border);
+            color: var(--special-unmarked-text);
+        }
+        .issue-cell.special.unmarked:hover {
+            background: var(--special-unmarked-hover);
+            border-color: #5a5e90;
+            color: #c8d0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(80, 90, 160, 0.2);
+        }
+        .issue-cell.special.unmarked .cell-icon {
+            opacity: 0.4;
+        }
+        .issue-cell.special.unmarked:hover .cell-icon {
+            opacity: 0.65;
+        }
+
+        /* 特刊 (Special) - 已标记 */
+        .issue-cell.special.marked {
+            background: var(--special-marked-bg);
+            border-color: var(--special-marked-border);
+            color: var(--special-marked-text);
+        }
+        .issue-cell.special.marked:hover {
+            background: var(--special-marked-hover);
+            border-color: #6a70b0;
+            color: #d8dfff;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 14px rgba(80, 90, 160, 0.3);
+        }
+        .issue-cell.special .cell-group-name {
+            background: var(--special-tag-bg);
+            color: var(--special-tag-text);
+        }
+        .issue-cell.special .cell-group-name.no-name {
+            background: rgba(100, 120, 180, 0.15);
+            color: #8890b8;
+        }
+
+        /* 多选模式 - 选中状态 */
+        .issue-cell.multi-selected {
+            border-color: var(--select-glow) !important;
+            box-shadow: 0 0 0 3px rgba(91, 156, 245, 0.35), 0 3px 14px rgba(91, 156, 245, 0.2) !important;
+            z-index: 1;
+            transform: translateY(-2px);
+        }
+        .issue-cell.multi-selected::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--select-glow);
+            pointer-events: none;
+        }
+
+        /* Cell icons */
+        .cell-icon {
+            width: 14px;
+            height: 14px;
+            transition: var(--transition);
+            pointer-events: none;
+            flex-shrink: 0;
+        }
+        .cell-icon-check {
+            width: 13px;
+            height: 13px;
+            transition: var(--transition);
+            pointer-events: none;
+            flex-shrink: 0;
+        }
+        @media (max-width: 600px) {
+            .cell-icon {
+                width: 12px;
+                height: 12px;
+            }
+            .cell-icon-check {
+                width: 11px;
+                height: 11px;
+            }
+        }
+        .cell-number {
+            pointer-events: none;
+            line-height: 1;
+            margin-top: 1px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .cell-type-badge {
+            pointer-events: none;
+            line-height: 1;
+            font-size: 0.48rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            margin-top: 1px;
+            opacity: 0.8;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .cell-group-name {
+            pointer-events: none;
+            line-height: 1.1;
+            font-size: 0.54rem;
+            font-weight: 500;
+            color: var(--group-tag-text);
+            background: var(--group-tag-bg);
+            border-radius: 3px;
+            padding: 1px 4px;
+            margin-top: 2px;
+            max-width: calc(100% - 6px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            letter-spacing: 0.03em;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .cell-group-name.no-name {
+            background: rgba(160, 160, 180, 0.15);
+            color: #a0a0b8;
+            font-style: italic;
+            font-size: 0.48rem;
+        }
+        @media (max-width: 600px) {
+            .cell-group-name {
+                font-size: 0.48rem;
+                padding: 1px 3px;
+            }
+            .cell-group-name.no-name {
+                font-size: 0.43rem;
+            }
+            .cell-number {
+                font-size: 0.78rem;
+            }
+            .cell-type-badge {
+                font-size: 0.43rem;
+            }
+        }
+
+        /* Highlight animation */
+        .issue-cell.flash-highlight {
+            animation: flashPulse 0.7s ease-out;
+        }
+        @keyframes flashPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 210, 80, 0.8);
+                border-color: #ffc840;
+                z-index: 3;
+            }
+            60% {
+                box-shadow: 0 0 0 16px rgba(255, 210, 80, 0);
+                border-color: #ffc840;
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 210, 80, 0);
+                border-color: transparent;
+                z-index: 1;
+            }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #333348;
+            color: #e0e0f0;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid #555;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            letter-spacing: 0.02em;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* 多选操作栏 */
+        .multi-select-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1e1e30;
+            border-top: 1px solid var(--border);
+            padding: 10px 16px;
+            padding-bottom: calc(10px + env(safe-area-inset-bottom, 8px));
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 900;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+            flex-wrap: wrap;
+            justify-content: center;
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(100%);
+        }
+        .multi-select-bar.visible {
+            transform: translateY(0);
+        }
+        .multi-select-bar .selected-count {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            white-space: nowrap;
+            min-width: 60px;
+            text-align: center;
+        }
+        .multi-select-bar .btn {
+            flex-shrink: 0;
+        }
+        @media (max-width: 500px) {
+            .multi-select-bar {
+                padding: 8px 10px;
+                padding-bottom: calc(8px + env(safe-area-inset-bottom, 6px));
+                gap: 5px;
+            }
+            .multi-select-bar .btn {
+                padding: 5px 9px;
+                font-size: 0.74rem;
+                gap: 3px;
+            }
+            .multi-select-bar .selected-count {
+                font-size: 0.76rem;
+                min-width: 50px;
+            }
+        }
+
+        /* Hidden file input */
+        .file-input-hidden {
+            display: none;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+        .empty-state svg {
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+        .empty-state p {
+            font-size: 0.9rem;
+        }
+
+        /* ────────────────────────────────────── */
+        /* Modal 弹窗（汉化组编辑） */
+        /* ────────────────────────────────────── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.22s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 22px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+            transform: translateY(12px);
+            transition: transform 0.22s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        .modal-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            letter-spacing: 0.01em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-title .modal-issue-badge {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: var(--surface-2);
+            color: var(--text-secondary);
+            letter-spacing: 0.03em;
+        }
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .modal-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .modal-input-row input {
+            flex: 1;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            color: var(--text-bright);
+            font-size: 0.95rem;
+            font-family: var(--font-mono);
+            transition: var(--transition);
+            outline: none;
+        }
+        .modal-input-row input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(77, 166, 116, 0.12);
+        }
+        .modal-existing-groups {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        .modal-group-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 11px;
+            border-radius: 14px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: var(--surface-2);
+            color: var(--text);
+            transition: var(--transition);
+            font-family: inherit;
+            letter-spacing: 0.02em;
+            outline: none;
+            white-space: nowrap;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .modal-group-tag:hover {
+            background: var(--accent-bg);
+            border-color: var(--accent-border);
+            color: var(--accent-bright);
+        }
+        .modal-group-tag:active {
+            transform: scale(0.94);
+        }
+        .modal-no-groups {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        .modal-footer {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+        .modal-footer .btn {
+            font-size: 0.85rem;
+            padding: 8px 16px;
+        }
+        .modal-footer .btn-clear {
+            margin-right: auto;
+        }
+        @media (max-width: 480px) {
+            .modal-content {
+                padding: 16px 14px;
+                gap: 10px;
+                max-width: 95vw;
+            }
+            .modal-footer .btn {
+                font-size: 0.78rem;
+                padding: 7px 12px;
+            }
+            .modal-group-tag {
+                font-size: 0.72rem;
+                padding: 4px 9px;
+            }
+        }
+
+        /* Responsive panel adjustments */
+        @media (max-width: 700px) {
+            .app-container {
+                padding: 12px 10px 30px;
+                padding-bottom: 110px;
+            }
+            .panel {
+                padding: 14px 12px;
+            }
+            .panel-row {
+                gap: 8px 10px;
+            }
+            .input-group input {
+                width: 90px;
+                font-size: 0.85rem;
+                padding: 7px 9px;
+            }
+            .input-group input.wide {
+                width: 130px;
+            }
+            .input-group input.xwide {
+                width: 150px;
+            }
+            .input-group input.slim {
+                width: 72px;
+            }
+            .input-group input.medium {
+                width: 105px;
+            }
+            .input-group input.list-input {
+                width: 120px;
+            }
+            .gen-row input {
+                width: 42px;
+                padding: 4px 5px;
+                font-size: 0.7rem;
+            }
+            .gen-row .btn-gen {
+                padding: 3px 7px;
+                font-size: 0.65rem;
+            }
+            .btn {
+                padding: 7px 12px;
+                font-size: 0.82rem;
+                gap: 4px;
+            }
+            .toolbar {
+                gap: 5px 7px;
+            }
+            .toolbar-divider {
+                margin: 0 2px;
+                height: 16px;
+            }
+            .filter-btn {
+                padding: 5px 10px;
+                font-size: 0.76rem;
+            }
+            .multi-select-toggle {
+                padding: 5px 10px;
+                font-size: 0.76rem;
+            }
+            .group-filter-select {
+                padding: 5px 24px 5px 10px;
+                font-size: 0.76rem;
+                min-width: 80px;
+                max-width: 140px;
+            }
+            .jump-wrap select.jump-type-select {
+                font-size: 0.7rem;
+                padding: 6px 20px 6px 6px;
+                min-width: 46px;
+            }
+            .jump-wrap input {
+                width: 48px;
+                font-size: 0.78rem;
+            }
+            .header-title {
+                font-size: 1.25rem;
+            }
+            .workspace-selector select {
+                max-width: 220px;
+                min-width: 120px;
+                font-size: 0.82rem;
+                padding: 7px 30px 7px 10px;
+                background-position: right 8px center;
+                background-size: 10px 7px;
+            }
+            .btn-icon {
+                width: 32px;
+                height: 32px;
+            }
+            .section-jump-btn {
+                font-size: 0.6rem;
+                padding: 2px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">
+                <svg class="logo-svg" width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                    <rect x="2" y="4" width="24" height="18" rx="3" stroke="currentColor" stroke-width="1.8" fill="none" />
+                    <line x1="8" y1="8" x2="20" y2="8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                    <line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                    <line x1="8" y1="16" x2="18" y2="16" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                    <circle cx="22" cy="20" r="5" fill="#4da674" stroke="#1c1c26" stroke-width="2" />
+                    <polyline points="19.5,20 21.5,22 24.5,18.5" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                美漫汉化追踪
+            </div>
+            <div class="workspace-selector">
+                <select id="comicSelector" aria-label="选择作品">
+                    <option value="" disabled>— 请创建作品 —</option>
+                </select>
+                <button class="btn-icon btn-add" id="btnAddComic" title="新增作品" aria-label="新增作品">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                        <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                    </svg>
+                </button>
+                <button class="btn-icon btn-delete" id="btnDeleteComic" title="删除当前作品" aria-label="删除当前作品" disabled>
+                    <svg width="16" height="18" viewBox="0 0 24 26" fill="none" aria-hidden="true">
+                        <rect x="5" y="5" width="14" height="1.8" rx="0.9" fill="currentColor" />
+                        <path d="M7 6.5V21a1.5 1.5 0 001.5 1.5h7a1.5 1.5 0 001.5-1.5V6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                        <line x1="9" y1="11" x2="9" y2="17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                        <line x1="12" y1="11" x2="12" y2="17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                        <line x1="15" y1="11" x2="15" y2="17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                        <line x1="3" y1="5" x2="21" y2="5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Settings Panel -->
+        <div class="panel">
+            <div class="panel-row">
+                <div class="input-group">
+                    <span class="panel-label">刊物名</span>
+                    <input type="text" id="comicName" class="xwide" placeholder="例如：Amazing Spider-Man" value="">
+                </div>
+                <div class="input-group">
+                    <span class="panel-label">卷数</span>
+                    <input type="text" id="volume" class="slim" placeholder="如 Vol.1" value="">
+                </div>
+                <div class="input-group">
+                    <span class="panel-label">年份</span>
+                    <input type="text" id="year" class="medium" placeholder="如 1963-1998" value="">
+                </div>
+                <div class="input-group">
+                    <span class="panel-label">起始期号</span>
+                    <input type="number" id="startIssue" value="1" min="-999" max="9999" step="1">
+                </div>
+                <div class="input-group">
+                    <span class="panel-label">总期数（主刊）</span>
+                    <input type="number" id="totalIssues" value="50" min="1" max="3000" step="1">
+                </div>
+                <button class="btn btn-primary" id="btnApply" title="应用设置并生成/刷新网格">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <polyline points="4,13 9,18 20,6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    应用
+                </button>
+            </div>
+            <div class="panel-row">
+                <div class="input-group">
+                    <span class="panel-label">年刊期号</span>
+                    <input type="text" id="annualsInput" class="list-input" placeholder="如 1,2,3" value="">
+                    <div class="gen-row">
+                        <span class="gen-label">起始</span>
+                        <input type="number" id="annualGenStart" value="1" min="1" max="9999" step="1" title="年刊起始期号">
+                        <span class="gen-label">数量</span>
+                        <input type="number" id="annualGenCount" value="1" min="1" max="500" step="1" title="年刊总期数">
+                        <button class="btn-gen" id="btnGenAnnuals" title="一键生成年刊期号列表">生成→</button>
+                    </div>
+                    <span class="panel-label-sub">逗号分隔，留空则无年刊</span>
+                </div>
+                <div class="input-group">
+                    <span class="panel-label">特刊期号</span>
+                    <input type="text" id="specialsInput" class="list-input" placeholder="如 1,2" value="">
+                    <div class="gen-row">
+                        <span class="gen-label">起始</span>
+                        <input type="number" id="specialGenStart" value="1" min="1" max="9999" step="1" title="特刊起始期号">
+                        <span class="gen-label">数量</span>
+                        <input type="number" id="specialGenCount" value="1" min="1" max="500" step="1" title="特刊总期数">
+                        <button class="btn-gen" id="btnGenSpecials" title="一键生成特刊期号列表">生成→</button>
+                    </div>
+                    <span class="panel-label-sub">逗号分隔，留空则无特刊</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-item">
+                总期数：<span class="stat-value" id="statTotal">0</span>
+            </div>
+            <div class="stat-item">
+                已汉化：<span class="stat-value green" id="statMarked">0</span>
+            </div>
+            <div class="stat-item">
+                未汉化：<span class="stat-value amber" id="statUnmarked">0</span>
+            </div>
+            <div class="stat-item">
+                覆盖率：
+            </div>
+            <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" id="progressFill" style="width: 0%;"></div>
+            </div>
+            <span class="stat-value" id="statPercent" style="font-size:0.9rem;">0%</span>
+            <span class="toolbar-divider" style="margin:0 2px;"></span>
+            <div class="stat-item" id="statAnnuals" style="display:none;">
+                年刊：<span class="stat-value annual-color" id="statAnnualCount">0</span>
+                <span style="font-size:0.75rem;color:var(--text-secondary);">(<span id="statAnnualMarked">0</span>已汉化)</span>
+            </div>
+            <div class="stat-item" id="statSpecials" style="display:none;">
+                特刊：<span class="stat-value special-color" id="statSpecialCount">0</span>
+                <span style="font-size:0.75rem;color:var(--text-secondary);">(<span id="statSpecialMarked">0</span>已汉化)</span>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar" id="toolbar">
+            <span style="font-size:0.78rem;color:var(--text-secondary);font-weight:600;letter-spacing:0.04em;margin-right:2px;">筛选</span>
+            <button class="filter-btn active" data-filter="all">全部</button>
+            <button class="filter-btn" data-filter="marked">已汉化</button>
+            <button class="filter-btn" data-filter="unmarked">未汉化</button>
+            <select class="group-filter-select" id="groupFilterSelect" aria-label="按汉化组筛选" title="按汉化组筛选期数">
+                <option value="__all__">全部汉化组</option>
+            </select>
+            <span class="toolbar-divider"></span>
+            <button class="multi-select-toggle" id="btnMultiSelectToggle" title="进入多选模式，可批量标记期数">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="currentColor" stroke-width="2" />
+                    <polyline points="7,12 10.5,15.5 17,9" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                多选
+            </button>
+            <span class="toolbar-divider"></span>
+            <button class="btn btn-outline btn-sm" id="btnMarkAll" title="将所有期数（含年刊特刊）标记为同一汉化组">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <polyline points="4,13 9,18 20,6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                全部标记
+            </button>
+            <button class="btn btn-outline btn-sm" id="btnUnmarkAll" title="清除所有期数的汉化记录（含年刊特刊）">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                    <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                </svg>
+                全部取消
+            </button>
+            <button class="btn btn-outline btn-sm" id="btnInvert" title="反转汉化状态（含年刊特刊）">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <polyline points="8,4 16,12 8,20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <polyline points="16,4 8,12 16,20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                反选
+            </button>
+            <span class="toolbar-divider"></span>
+            <button class="btn btn-outline btn-sm" id="btnImport" title="从JSON文件导入汉化记录">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <polyline points="16,14 12,10 8,14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                    <line x1="12" y1="10" x2="12" y2="21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                    <path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                </svg>
+                导入JSON
+            </button>
+            <button class="btn btn-outline btn-sm" id="btnExport" title="导出全部作品汉化记录为JSON文件">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <polyline points="8,10 12,14 16,10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                    <line x1="12" y1="14" x2="12" y2="3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                    <path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                </svg>
+                导出JSON
+            </button>
+            <button class="btn btn-outline btn-sm" id="btnExportExample" title="下载示例JSON文件以参考格式">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8" />
+                    <line x1="8" y1="9" x2="16" y2="9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                    <line x1="8" y1="13" x2="14" y2="13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                    <line x1="8" y1="17" x2="11" y2="17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                </svg>
+                导出示例文件
+            </button>
+            <span class="toolbar-divider"></span>
+            <div class="jump-wrap">
+                <select class="jump-type-select" id="jumpTypeSelect" aria-label="跳转类型" title="选择跳转目标类型">
+                    <option value="main">主刊</option>
+                    <option value="annual">年刊</option>
+                    <option value="special">特刊</option>
+                </select>
+                <input type="number" id="jumpInput" placeholder="期号" min="1" aria-label="跳转到指定期号">
+                <button class="btn btn-outline btn-sm" id="btnJump" title="滚动到指定期号">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2" />
+                        <line x1="16" y1="16" x2="21" y2="21" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                    </svg>
+                    跳转
+                </button>
+            </div>
+        </div>
+        <input type="file" id="fileInput" class="file-input-hidden" accept=".json">
+
+        <!-- Grid -->
+        <div class="grid-container" id="gridContainer">
+            <div class="empty-state" id="emptyState">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.6" fill="none" />
+                    <line x1="8" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                    <line x1="8" y1="12" x2="13" y2="12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                </svg>
+                <p>创建或选择一个作品，设置信息后点击"应用"生成期数网格</p>
+            </div>
+            <div class="issues-grid" id="issuesGrid" style="display:none;"></div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- 多选操作栏 -->
+    <div class="multi-select-bar" id="multiSelectBar">
+        <span class="selected-count" id="selectedCount">已选 0 期</span>
+        <button class="btn btn-xs btn-outline" id="btnSelectAllInMulti" title="全选当前可见期数">全选</button>
+        <button class="btn btn-xs btn-primary" id="btnMarkSelected" title="为选中的期数标记汉化组">标记汉化</button>
+        <button class="btn btn-xs btn-danger" id="btnUnmarkSelected" title="清除选中期数的汉化记录">取消标记</button>
+        <button class="btn btn-xs btn-outline" id="btnExitMultiSelect" title="退出多选模式">退出</button>
+    </div>
+
+    <!-- Modal：汉化组编辑弹窗 -->
+    <div class="modal-overlay" id="groupModalOverlay">
+        <div class="modal-content" id="groupModalContent">
+            <div class="modal-title" id="modalTitle">
+                <span id="modalTitleText">编辑标记</span>
+                <span class="modal-issue-badge" id="modalIssueBadge" style="display:none;"></span>
+            </div>
+            <div class="modal-body">
+                <div class="modal-input-row">
+                    <input type="text" id="modalGroupInput" placeholder="输入汉化组名称（可选）..." autocomplete="off">
+                    <datalist id="modalGroupDatalist"></datalist>
+                </div>
+                <div class="modal-existing-groups" id="modalExistingGroups">
+                    <span class="modal-no-groups">暂无已有汉化组</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger btn-sm btn-clear" id="btnModalClear" title="清除该期数的汉化记录">清除标记</button>
+                <button class="btn btn-outline btn-sm" id="btnModalCancel">取消</button>
+                <button class="btn btn-primary btn-sm" id="btnModalConfirm">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ──────────────────────────────────────
+            // DOM引用
+            // ──────────────────────────────────────
+            const comicSelector = document.getElementById('comicSelector');
+            const btnAddComic = document.getElementById('btnAddComic');
+            const btnDeleteComic = document.getElementById('btnDeleteComic');
+            const comicNameInput = document.getElementById('comicName');
+            const volumeInput = document.getElementById('volume');
+            const yearInput = document.getElementById('year');
+            const startIssueInput = document.getElementById('startIssue');
+            const totalIssuesInput = document.getElementById('totalIssues');
+            const annualsInput = document.getElementById('annualsInput');
+            const specialsInput = document.getElementById('specialsInput');
+            const annualGenStart = document.getElementById('annualGenStart');
+            const annualGenCount = document.getElementById('annualGenCount');
+            const btnGenAnnuals = document.getElementById('btnGenAnnuals');
+            const specialGenStart = document.getElementById('specialGenStart');
+            const specialGenCount = document.getElementById('specialGenCount');
+            const btnGenSpecials = document.getElementById('btnGenSpecials');
+            const btnApply = document.getElementById('btnApply');
+            const issuesGrid = document.getElementById('issuesGrid');
+            const emptyState = document.getElementById('emptyState');
+            const gridContainer = document.getElementById('gridContainer');
+            const statsBar = document.getElementById('statsBar');
+            const statTotal = document.getElementById('statTotal');
+            const statMarked = document.getElementById('statMarked');
+            const statUnmarked = document.getElementById('statUnmarked');
+            const statPercent = document.getElementById('statPercent');
+            const progressFill = document.getElementById('progressFill');
+            const statAnnuals = document.getElementById('statAnnuals');
+            const statAnnualCount = document.getElementById('statAnnualCount');
+            const statAnnualMarked = document.getElementById('statAnnualMarked');
+            const statSpecials = document.getElementById('statSpecials');
+            const statSpecialCount = document.getElementById('statSpecialCount');
+            const statSpecialMarked = document.getElementById('statSpecialMarked');
+            const toast = document.getElementById('toast');
+            const fileInput = document.getElementById('fileInput');
+            const jumpInput = document.getElementById('jumpInput');
+            const jumpTypeSelect = document.getElementById('jumpTypeSelect');
+            const btnJump = document.getElementById('btnJump');
+            const btnMarkAll = document.getElementById('btnMarkAll');
+            const btnUnmarkAll = document.getElementById('btnUnmarkAll');
+            const btnInvert = document.getElementById('btnInvert');
+            const btnImport = document.getElementById('btnImport');
+            const btnExport = document.getElementById('btnExport');
+            const btnExportExample = document.getElementById('btnExportExample');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const groupFilterSelect = document.getElementById('groupFilterSelect');
+            const btnMultiSelectToggle = document.getElementById('btnMultiSelectToggle');
+            const multiSelectBar = document.getElementById('multiSelectBar');
+            const selectedCount = document.getElementById('selectedCount');
+            const btnSelectAllInMulti = document.getElementById('btnSelectAllInMulti');
+            const btnMarkSelected = document.getElementById('btnMarkSelected');
+            const btnUnmarkSelected = document.getElementById('btnUnmarkSelected');
+            const btnExitMultiSelect = document.getElementById('btnExitMultiSelect');
+
+            // Modal DOM
+            const groupModalOverlay = document.getElementById('groupModalOverlay');
+            const modalTitleText = document.getElementById('modalTitleText');
+            const modalIssueBadge = document.getElementById('modalIssueBadge');
+            const modalGroupInput = document.getElementById('modalGroupInput');
+            const modalGroupDatalist = document.getElementById('modalGroupDatalist');
+            const modalExistingGroups = document.getElementById('modalExistingGroups');
+            const btnModalClear = document.getElementById('btnModalClear');
+            const btnModalCancel = document.getElementById('btnModalCancel');
+            const btnModalConfirm = document.getElementById('btnModalConfirm');
+
+            // ──────────────────────────────────────
+            // 状态
+            // ──────────────────────────────────────
+            const STORAGE_KEY = 'comic-tracker-multi-v5';
+            const OLD_STORAGE_KEY_V4 = 'comic-tracker-multi-v4';
+            const OLD_STORAGE_KEY_V3 = 'comic-tracker-multi-v3';
+            const OLD_STORAGE_KEY_V2 = 'comic-tracker-multi-v2';
+            const OLD_STORAGE_KEY_V1 = 'comic-tracker-state-v2';
+
+            // 生成唯一ID
+            function generateId() {
+                return 'c' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 8);
+            }
+
+            // 创建默认作品数据
+            function createDefaultComic(name) {
+                return {
+                    id: generateId(),
+                    comicName: name || '',
+                    volume: '',
+                    year: '',
+                    team: '',
+                    startIssue: 1,
+                    totalIssues: 50,
+                    annuals: [],
+                    specials: [],
+                    issueGroups: {}
+                };
+            }
+
+            // 全局状态
+            let state = {
+                comics: {},
+                order: [],
+                activeComicId: null
+            };
+            let currentFilter = 'all';
+            let gridGenerated = false;
+            let toastTimer = null;
+
+            // 多选模式状态
+            let multiSelectMode = false;
+            let selectedIssueSet = new Set();
+
+            // Modal上下文
+            let modalContext = null; // { mode: 'single'|'multi', issueKey?: string, cellElement?: Element }
+
+            // ──────────────────────────────────────
+            // 辅助：issueKey相关
+            // ──────────────────────────────────────
+            function mainIssueKey(num) { return String(num); }
+
+            function annualIssueKey(num) { return 'annual_' + num; }
+
+            function specialIssueKey(num) { return 'special_' + num; }
+
+            function getIssueType(issueKey) {
+                if (typeof issueKey === 'string' && issueKey.startsWith('annual_')) return 'annual';
+                if (typeof issueKey === 'string' && issueKey.startsWith('special_')) return 'special';
+                return 'main';
+            }
+
+            function getIssueNumberFromKey(issueKey) {
+                const type = getIssueType(issueKey);
+                if (type === 'annual') return parseInt(issueKey.replace('annual_', ''), 10);
+                if (type === 'special') return parseInt(issueKey.replace('special_', ''), 10);
+                return parseInt(issueKey, 10);
+            }
+
+            function getIssueDisplayName(issueKey) {
+                const type = getIssueType(issueKey);
+                const num = getIssueNumberFromKey(issueKey);
+                if (type === 'annual') return '年刊 #' + num;
+                if (type === 'special') return '特刊 #' + num;
+                return '第 ' + num + ' 期';
+            }
+
+            function getIssueTypeBadge(issueKey) {
+                const type = getIssueType(issueKey);
+                if (type === 'annual') return '年刊';
+                if (type === 'special') return '特刊';
+                return '';
+            }
+
+            // ──────────────────────────────────────
+            // 辅助：解析逗号分隔的期号列表
+            // ──────────────────────────────────────
+            function parseIssueList(input) {
+                if (!input || !input.trim()) return [];
+                const result = [];
+                const parts = input.split(',');
+                for (const part of parts) {
+                    const trimmed = part.trim();
+                    if (trimmed === '') continue;
+                    const num = parseInt(trimmed, 10);
+                    if (Number.isFinite(num) && num > 0 && !result.includes(num)) {
+                        result.push(num);
+                    }
+                }
+                result.sort((a, b) => a - b);
+                return result;
+            }
+
+            function formatIssueList(arr) {
+                if (!arr || arr.length === 0) return '';
+                return arr.join(', ');
+            }
+
+            // ──────────────────────────────────────
+            // 辅助：年刊/特刊一键生成
+            // ──────────────────────────────────────
+            function generateIssueListFromRange(startNum, count) {
+                const result = [];
+                for (let i = 0; i < count; i++) {
+                    result.push(startNum + i);
+                }
+                return result;
+            }
+
+            function handleGenAnnuals() {
+                const start = parseInt(annualGenStart.value, 10);
+                const count = parseInt(annualGenCount.value, 10);
+                if (!Number.isFinite(start) || start < 1) {
+                    showToast('年刊起始期号需为正整数');
+                    return;
+                }
+                if (!Number.isFinite(count) || count < 1 || count > 500) {
+                    showToast('年刊数量需在1~500之间');
+                    return;
+                }
+                const list = generateIssueListFromRange(start, count);
+                annualsInput.value = list.join(', ');
+                annualsInput.dispatchEvent(new Event('input', { bubbles: true }));
+                showToast(`已生成 ${count} 期年刊（#${start} - #${start + count - 1}）`);
+            }
+
+            function handleGenSpecials() {
+                const start = parseInt(specialGenStart.value, 10);
+                const count = parseInt(specialGenCount.value, 10);
+                if (!Number.isFinite(start) || start < 1) {
+                    showToast('特刊起始期号需为正整数');
+                    return;
+                }
+                if (!Number.isFinite(count) || count < 1 || count > 500) {
+                    showToast('特刊数量需在1~500之间');
+                    return;
+                }
+                const list = generateIssueListFromRange(start, count);
+                specialsInput.value = list.join(', ');
+                specialsInput.dispatchEvent(new Event('input', { bubbles: true }));
+                showToast(`已生成 ${count} 期特刊（#${start} - #${start + count - 1}）`);
+            }
+
+            // ──────────────────────────────────────
+            // 辅助：获取当前活跃作品
+            // ──────────────────────────────────────
+            function getActiveComic() {
+                if (state.activeComicId && state.comics[state.activeComicId]) {
+                    return state.comics[state.activeComicId];
+                }
+                return null;
+            }
+
+            function getActiveIssueGroups() {
+                const comic = getActiveComic();
+                if (!comic) return {};
+                if (!comic.issueGroups || typeof comic.issueGroups !== 'object') {
+                    comic.issueGroups = {};
+                }
+                return comic.issueGroups;
+            }
+
+            function isIssueMarkedByKey(issueKey) {
+                const groups = getActiveIssueGroups();
+                return groups.hasOwnProperty(String(issueKey));
+            }
+
+            function getIssueGroupNameByKey(issueKey) {
+                const groups = getActiveIssueGroups();
+                const key = String(issueKey);
+                if (groups.hasOwnProperty(key)) {
+                    return String(groups[key] || '');
+                }
+                return null;
+            }
+
+            function setIssueGroupByKey(issueKey, groupName) {
+                const comic = getActiveComic();
+                if (!comic) return;
+                if (!comic.issueGroups || typeof comic.issueGroups !== 'object') {
+                    comic.issueGroups = {};
+                }
+                const key = String(issueKey);
+                if (groupName === null || groupName === undefined) {
+                    delete comic.issueGroups[key];
+                } else {
+                    comic.issueGroups[key] = String(groupName);
+                }
+            }
+
+            function removeIssueGroupByKey(issueKey) {
+                const comic = getActiveComic();
+                if (!comic) return;
+                if (!comic.issueGroups || typeof comic.issueGroups !== 'object') {
+                    comic.issueGroups = {};
+                }
+                delete comic.issueGroups[String(issueKey)];
+            }
+
+            function getAllIssueKeys() {
+                const comic = getActiveComic();
+                if (!comic) return [];
+                const keys = [];
+                for (let i = 0; i < comic.totalIssues; i++) {
+                    keys.push(mainIssueKey(comic.startIssue + i));
+                }
+                const annuals = comic.annuals || [];
+                for (const num of annuals) {
+                    keys.push(annualIssueKey(num));
+                }
+                const specials = comic.specials || [];
+                for (const num of specials) {
+                    keys.push(specialIssueKey(num));
+                }
+                return keys;
+            }
+
+            function isValidIssueKey(issueKey) {
+                const comic = getActiveComic();
+                if (!comic) return false;
+                const type = getIssueType(issueKey);
+                const num = getIssueNumberFromKey(issueKey);
+                if (!Number.isFinite(num)) return false;
+                if (type === 'main') {
+                    const minIssue = comic.startIssue;
+                    const maxIssue = comic.startIssue + comic.totalIssues - 1;
+                    return num >= minIssue && num <= maxIssue;
+                }
+                if (type === 'annual') {
+                    return (comic.annuals || []).includes(num);
+                }
+                if (type === 'special') {
+                    return (comic.specials || []).includes(num);
+                }
+                return false;
+            }
+
+            // ──────────────────────────────────────
+            // Toast
+            // ──────────────────────────────────────
+            function showToast(message) {
+                if (toastTimer) clearTimeout(toastTimer);
+                toast.textContent = message;
+                toast.classList.add('show');
+                toastTimer = setTimeout(() => {
+                    toast.classList.remove('show');
+                    toastTimer = null;
+                }, 2000);
+            }
+
+            // ──────────────────────────────────────
+            // 持久化
+            // ──────────────────────────────────────
+            function saveState() {
+                try {
+                    const comicsArray = state.order.map(id => {
+                        const c = state.comics[id];
+                        if (!c) return null;
+                        const cleanIssueGroups = {};
+                        if (c.issueGroups && typeof c.issueGroups === 'object') {
+                            for (const [key, value] of Object.entries(c.issueGroups)) {
+                                cleanIssueGroups[key] = String(value);
+                            }
+                        }
+                        return {
+                            id: c.id,
+                            comicName: c.comicName,
+                            volume: c.volume,
+                            year: c.year,
+                            team: c.team || '',
+                            startIssue: c.startIssue,
+                            totalIssues: c.totalIssues,
+                            annuals: (c.annuals && Array.isArray(c.annuals)) ? [...c.annuals].sort((a, b) => a - b) : [],
+                            specials: (c.specials && Array.isArray(c.specials)) ? [...c.specials].sort((a, b) => a -
+                                b) : [],
+                            issueGroups: cleanIssueGroups
+                        };
+                    }).filter(Boolean);
+                    const data = {
+                        comics: comicsArray,
+                        activeComicId: state.activeComicId
+                    };
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                } catch (e) {}
+            }
+
+            function loadState() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (raw) {
+                        const data = JSON.parse(raw);
+                        state.comics = {};
+                        state.order = [];
+                        if (Array.isArray(data.comics)) {
+                            data.comics.forEach(c => {
+                                if (c && typeof c.id === 'string' && typeof c.comicName === 'string') {
+                                    let issueGroups = {};
+                                    if (c.issueGroups && typeof c.issueGroups === 'object') {
+                                        for (const [key, value] of Object.entries(c.issueGroups)) {
+                                            issueGroups[key] = String(value);
+                                        }
+                                    }
+                                    state.comics[c.id] = {
+                                        id: c.id,
+                                        comicName: c.comicName || '',
+                                        volume: typeof c.volume === 'string' ? c.volume : '',
+                                        year: typeof c.year === 'string' ? c.year : '',
+                                        team: typeof c.team === 'string' ? c.team : '',
+                                        startIssue: (typeof c.startIssue === 'number' && Number.isFinite(c
+                                            .startIssue)) ? c.startIssue : 1,
+                                        totalIssues: (typeof c.totalIssues === 'number' && Number.isFinite(c
+                                                .totalIssues) && c.totalIssues >= 1) ? Math.min(c.totalIssues,
+                                            3000) : 50,
+                                        annuals: (Array.isArray(c.annuals)) ? [...c.annuals].filter(n =>
+                                            Number.isFinite(n) && n > 0).sort((a, b) => a - b) : [],
+                                        specials: (Array.isArray(c.specials)) ? [...c.specials].filter(n =>
+                                            Number.isFinite(n) && n > 0).sort((a, b) => a - b) : [],
+                                        issueGroups: issueGroups
+                                    };
+                                    state.order.push(c.id);
+                                }
+                            });
+                        }
+                        if (data.activeComicId && state.comics[data.activeComicId]) {
+                            state.activeComicId = data.activeComicId;
+                        } else if (state.order.length > 0) {
+                            state.activeComicId = state.order[0];
+                        } else {
+                            state.activeComicId = null;
+                        }
+                        return;
+                    }
+                    const rawV4 = localStorage.getItem(OLD_STORAGE_KEY_V4);
+                    if (rawV4) {
+                        const data = JSON.parse(rawV4);
+                        state.comics = {};
+                        state.order = [];
+                        if (Array.isArray(data.comics)) {
+                            data.comics.forEach(c => {
+                                if (c && typeof c.id === 'string' && typeof c.comicName === 'string') {
+                                    let issueGroups = {};
+                                    if (c.issueGroups && typeof c.issueGroups === 'object') {
+                                        for (const [key, value] of Object.entries(c.issueGroups)) {
+                                            issueGroups[key] = String(value);
+                                        }
+                                    }
+                                    state.comics[c.id] = {
+                                        id: c.id,
+                                        comicName: c.comicName || '',
+                                        volume: typeof c.volume === 'string' ? c.volume : '',
+                                        year: typeof c.year === 'string' ? c.year : '',
+                                        team: typeof c.team === 'string' ? c.team : '',
+                                        startIssue: (typeof c.startIssue === 'number' && Number.isFinite(c
+                                            .startIssue)) ? c.startIssue : 1,
+                                        totalIssues: (typeof c.totalIssues === 'number' && Number.isFinite(c
+                                                .totalIssues) && c.totalIssues >= 1) ? Math.min(c.totalIssues,
+                                            3000) : 50,
+                                        annuals: [],
+                                        specials: [],
+                                        issueGroups: issueGroups
+                                    };
+                                    state.order.push(c.id);
+                                }
+                            });
+                        }
+                        if (data.activeComicId && state.comics[data.activeComicId]) {
+                            state.activeComicId = data.activeComicId;
+                        } else if (state.order.length > 0) {
+                            state.activeComicId = state.order[0];
+                        } else {
+                            state.activeComicId = null;
+                        }
+                        localStorage.removeItem(OLD_STORAGE_KEY_V4);
+                        saveState();
+                        showToast('已自动迁移 v4 版本数据（年刊/特刊功能已就绪）');
+                        return;
+                    }
+                    const rawV3 = localStorage.getItem(OLD_STORAGE_KEY_V3);
+                    if (rawV3) {
+                        const data = JSON.parse(rawV3);
+                        state.comics = {};
+                        state.order = [];
+                        if (Array.isArray(data.comics)) {
+                            data.comics.forEach(c => {
+                                if (c && typeof c.id === 'string' && typeof c.comicName === 'string') {
+                                    let issueGroups = {};
+                                    if (c.issueGroups && typeof c.issueGroups === 'object') {
+                                        for (const [key, value] of Object.entries(c.issueGroups)) {
+                                            const trimmed = String(value).trim();
+                                            if (trimmed !== '') issueGroups[key] = trimmed;
+                                        }
+                                    } else if (Array.isArray(c.chineseAvailable)) {
+                                        c.chineseAvailable.forEach(n => {
+                                            if (typeof n === 'number' && Number.isFinite(n) && Number.isInteger(
+                                                    n)) {
+                                                issueGroups[String(n)] = '旧数据';
+                                            }
+                                        });
+                                    }
+                                    state.comics[c.id] = {
+                                        id: c.id,
+                                        comicName: c.comicName || '',
+                                        volume: typeof c.volume === 'string' ? c.volume : '',
+                                        year: typeof c.year === 'string' ? c.year : '',
+                                        team: typeof c.team === 'string' ? c.team : '',
+                                        startIssue: (typeof c.startIssue === 'number' && Number.isFinite(c
+                                            .startIssue)) ? c.startIssue : 1,
+                                        totalIssues: (typeof c.totalIssues === 'number' && Number.isFinite(c
+                                                .totalIssues) && c.totalIssues >= 1) ? Math.min(c.totalIssues,
+                                            3000) : 50,
+                                        annuals: [],
+                                        specials: [],
+                                        issueGroups: issueGroups
+                                    };
+                                    state.order.push(c.id);
+                                }
+                            });
+                        }
+                        if (data.activeComicId && state.comics[data.activeComicId]) {
+                            state.activeComicId = data.activeComicId;
+                        } else if (state.order.length > 0) {
+                            state.activeComicId = state.order[0];
+                        } else {
+                            state.activeComicId = null;
+                        }
+                        localStorage.removeItem(OLD_STORAGE_KEY_V3);
+                        saveState();
+                        showToast('已自动迁移 v3 版本数据');
+                        return;
+                    }
+                    const rawV2 = localStorage.getItem(OLD_STORAGE_KEY_V2);
+                    const rawV1 = localStorage.getItem(OLD_STORAGE_KEY_V1);
+                    const olderRaw = rawV2 || rawV1;
+                    if (olderRaw) {
+                        const data = JSON.parse(olderRaw);
+                        let comicsToMigrate = [];
+                        if (Array.isArray(data.comics)) {
+                            comicsToMigrate = data.comics;
+                        } else if (typeof data.comicName === 'string' || typeof data.totalIssues === 'number') {
+                            comicsToMigrate = [data];
+                        }
+                        state.comics = {};
+                        state.order = [];
+                        comicsToMigrate.forEach(c => {
+                            if (c && typeof c.comicName === 'string') {
+                                let issueGroups = {};
+                                if (c.issueGroups && typeof c.issueGroups === 'object') {
+                                    for (const [key, value] of Object.entries(c.issueGroups)) {
+                                        const trimmed = String(value).trim();
+                                        if (trimmed !== '') issueGroups[key] = trimmed;
+                                    }
+                                } else if (Array.isArray(c.chineseAvailable)) {
+                                    c.chineseAvailable.forEach(n => {
+                                        if (typeof n === 'number' && Number.isFinite(n) && Number.isInteger(
+                                                n)) {
+                                            issueGroups[String(n)] = '旧数据';
+                                        }
+                                    });
+                                }
+                                state.comics[c.id || generateId()] = {
+                                    id: c.id || generateId(),
+                                    comicName: c.comicName || '',
+                                    volume: typeof c.volume === 'string' ? c.volume : '',
+                                    year: typeof c.year === 'string' ? c.year : '',
+                                    team: typeof c.team === 'string' ? c.team : '',
+                                    startIssue: (typeof c.startIssue === 'number' && Number.isFinite(c
+                                        .startIssue)) ? c.startIssue : 1,
+                                    totalIssues: (typeof c.totalIssues === 'number' && Number.isFinite(c
+                                            .totalIssues) && c.totalIssues >= 1) ? Math.min(c.totalIssues,
+                                        3000) : 50,
+                                    annuals: [],
+                                    specials: [],
+                                    issueGroups: issueGroups
+                                };
+                                state.order.push(c.id || generateId());
+                            }
+                        });
+                        if (state.order.length > 0) state.activeComicId = state.order[0];
+                        localStorage.removeItem(OLD_STORAGE_KEY_V2);
+                        localStorage.removeItem(OLD_STORAGE_KEY_V1);
+                        saveState();
+                        showToast('已自动迁移旧版本数据');
+                        return;
+                    }
+                } catch (e) {}
+                state.comics = {};
+                state.order = [];
+                state.activeComicId = null;
+            }
+
+            // ──────────────────────────────────────
+            // 作品选择器
+            // ──────────────────────────────────────
+            function rebuildSelector() {
+                comicSelector.innerHTML = '';
+                if (state.order.length === 0) {
+                    const opt = document.createElement('option');
+                    opt.value = '';
+                    opt.disabled = true;
+                    opt.textContent = '— 请创建作品 —';
+                    comicSelector.appendChild(opt);
+                    comicSelector.value = '';
+                    btnDeleteComic.disabled = true;
+                } else {
+                    state.order.forEach(id => {
+                        const c = state.comics[id];
+                        if (!c) return;
+                        const opt = document.createElement('option');
+                        opt.value = id;
+                        let displayName = c.comicName || '未命名作品';
+                        if (c.volume && c.volume.trim()) {
+                            displayName += ' (' + c.volume.trim() + ')';
+                        }
+                        opt.textContent = displayName;
+                        comicSelector.appendChild(opt);
+                    });
+                    if (state.activeComicId && state.comics[state.activeComicId]) {
+                        comicSelector.value = state.activeComicId;
+                    } else {
+                        state.activeComicId = state.order[0];
+                        comicSelector.value = state.activeComicId;
+                    }
+                    btnDeleteComic.disabled = false;
+                }
+            }
+
+            function syncSettingsToPanel() {
+                const comic = getActiveComic();
+                if (comic) {
+                    comicNameInput.value = comic.comicName || '';
+                    volumeInput.value = comic.volume || '';
+                    yearInput.value = comic.year || '';
+                    startIssueInput.value = comic.startIssue;
+                    totalIssuesInput.value = comic.totalIssues;
+                    annualsInput.value = formatIssueList(comic.annuals || []);
+                    specialsInput.value = formatIssueList(comic.specials || []);
+                } else {
+                    comicNameInput.value = '';
+                    volumeInput.value = '';
+                    yearInput.value = '';
+                    startIssueInput.value = '1';
+                    totalIssuesInput.value = '50';
+                    annualsInput.value = '';
+                    specialsInput.value = '';
+                }
+                annualGenStart.value = '1';
+                annualGenCount.value = '1';
+                specialGenStart.value = '1';
+                specialGenCount.value = '1';
+            }
+
+            function switchToComic(comicId) {
+                if (!comicId || !state.comics[comicId]) return;
+                state.activeComicId = comicId;
+                syncSettingsToPanel();
+                currentFilter = 'all';
+                filterBtns.forEach(b => b.classList.remove('active'));
+                const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                if (allBtn) allBtn.classList.add('active');
+                groupFilterSelect.value = '__all__';
+                groupFilterSelect.classList.remove('has-selection');
+                exitMultiSelectMode(false);
+                renderGrid();
+                updateStats();
+                saveState();
+                gridContainer.scrollTop = 0;
+                rebuildSelector();
+            }
+
+            // ──────────────────────────────────────
+            // 计算期号范围
+            // ──────────────────────────────────────
+            function getMainIssueNumbers() {
+                const comic = getActiveComic();
+                if (!comic) return [];
+                const issues = [];
+                for (let i = 0; i < comic.totalIssues; i++) {
+                    issues.push(comic.startIssue + i);
+                }
+                return issues;
+            }
+
+            // ──────────────────────────────────────
+            // 收集所有汉化组名称
+            // ──────────────────────────────────────
+            function collectGroupNames() {
+                const comic = getActiveComic();
+                if (!comic) return [];
+                const groups = getActiveIssueGroups();
+                const names = new Set();
+                const allKeys = getAllIssueKeys();
+                for (const key of allKeys) {
+                    if (groups.hasOwnProperty(key)) {
+                        const trimmed = String(groups[key]).trim();
+                        if (trimmed !== '') {
+                            names.add(trimmed);
+                        }
+                    }
+                }
+                return Array.from(names).sort();
+            }
+
+            function updateGroupFilterSelect() {
+                const groupNames = collectGroupNames();
+                const currentValue = groupFilterSelect.value;
+                groupFilterSelect.innerHTML = '<option value="__all__">全部汉化组</option>';
+                groupNames.forEach(name => {
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    opt.textContent = name;
+                    groupFilterSelect.appendChild(opt);
+                });
+                if (currentValue && (currentValue === '__all__' || groupNames.includes(currentValue))) {
+                    groupFilterSelect.value = currentValue;
+                } else {
+                    groupFilterSelect.value = '__all__';
+                }
+                if (groupFilterSelect.value !== '__all__') {
+                    groupFilterSelect.classList.add('has-selection');
+                } else {
+                    groupFilterSelect.classList.remove('has-selection');
+                }
+            }
+
+            // ──────────────────────────────────────
+            // Modal 弹窗逻辑
+            // ──────────────────────────────────────
+            function openModal(context) {
+                modalContext = context;
+                const groupNames = collectGroupNames();
+
+                // 更新datalist
+                modalGroupDatalist.innerHTML = '';
+                groupNames.forEach(name => {
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    modalGroupDatalist.appendChild(opt);
+                });
+                modalGroupInput.setAttribute('list', 'modalGroupDatalist');
+
+                // 更新已有汉化组标签
+                modalExistingGroups.innerHTML = '';
+                if (groupNames.length > 0) {
+                    groupNames.forEach(name => {
+                        const tag = document.createElement('span');
+                        tag.className = 'modal-group-tag';
+                        tag.textContent = name;
+                        tag.setAttribute('tabindex', '0');
+                        tag.setAttribute('role', 'button');
+                        tag.title = '点击选择：' + name;
+                        tag.addEventListener('click', () => {
+                            modalGroupInput.value = name;
+                            modalGroupInput.focus();
+                            modalGroupInput.select();
+                        });
+                        tag.addEventListener('keydown', (e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                modalGroupInput.value = name;
+                                modalGroupInput.focus();
+                                modalGroupInput.select();
+                            }
+                        });
+                        modalExistingGroups.appendChild(tag);
+                    });
+                } else {
+                    const span = document.createElement('span');
+                    span.className = 'modal-no-groups';
+                    span.textContent = '暂无已有汉化组';
+                    modalExistingGroups.appendChild(span);
+                }
+
+                // 设置标题和预填值
+                if (context.mode === 'single') {
+                    const issueKey = context.issueKey;
+                    const displayName = getIssueDisplayName(issueKey);
+                    const currentGroup = getIssueGroupNameByKey(issueKey);
+                    modalTitleText.textContent = '编辑标记';
+                    modalIssueBadge.style.display = '';
+                    modalIssueBadge.textContent = displayName;
+                    modalGroupInput.value = currentGroup !== null ? currentGroup : '';
+                    btnModalClear.style.display = '';
+                    if (currentGroup === null) {
+                        btnModalClear.disabled = true;
+                        btnModalClear.title = '当前未标记，无需清除';
+                    } else {
+                        btnModalClear.disabled = false;
+                        btnModalClear.title = '清除该期数的汉化记录';
+                    }
+                } else if (context.mode === 'multi') {
+                    modalTitleText.textContent = '批量标记汉化组';
+                    modalIssueBadge.style.display = '';
+                    modalIssueBadge.textContent = '已选 ' + selectedIssueSet.size + ' 期';
+                    modalGroupInput.value = '';
+                    btnModalClear.style.display = 'none';
+                }
+
+                // 显示modal
+                groupModalOverlay.classList.add('active');
+                document.body.classList.add('modal-open');
+                // 聚焦输入框
+                setTimeout(() => {
+                    modalGroupInput.focus();
+                    modalGroupInput.select();
+                }, 150);
+            }
+
+            function closeModal() {
+                groupModalOverlay.classList.remove('active');
+                document.body.classList.remove('modal-open');
+                modalContext = null;
+                modalGroupInput.value = '';
+                modalGroupInput.removeAttribute('list');
+                modalGroupDatalist.innerHTML = '';
+                modalExistingGroups.innerHTML = '';
+            }
+
+            function confirmModal() {
+                if (!modalContext) return;
+                const trimmed = modalGroupInput.value.trim();
+
+                if (modalContext.mode === 'single') {
+                    const issueKey = modalContext.issueKey;
+                    const cellElement = modalContext.cellElement;
+                    if (!isValidIssueKey(issueKey)) {
+                        closeModal();
+                        return;
+                    }
+                    const currentGroup = getIssueGroupNameByKey(issueKey);
+                    setIssueGroupByKey(issueKey, trimmed);
+                    const newGroupName = getIssueGroupNameByKey(issueKey);
+                    if (cellElement) {
+                        updateSingleCell(cellElement, issueKey, newGroupName);
+                    }
+                    updateStats();
+                    updateGroupFilterSelect();
+                    applyFilterToCells();
+                    saveState();
+                    const displayName = getIssueDisplayName(issueKey);
+                    if (currentGroup === null && trimmed === '') {
+                        showToast(`${displayName} → 已汉化（未指定组名）`);
+                    } else if (currentGroup === null) {
+                        showToast(`${displayName} → 已汉化（${trimmed}）`);
+                    } else if (currentGroup !== trimmed) {
+                        const label = trimmed !== '' ? '（' + trimmed + '）' : '（未指定组名）';
+                        showToast(`${displayName} → 已更新 ${label}`);
+                    }
+                    closeModal();
+                } else if (modalContext.mode === 'multi') {
+                    if (selectedIssueSet.size === 0) {
+                        showToast('请先选择期数');
+                        closeModal();
+                        return;
+                    }
+                    let count = 0;
+                    selectedIssueSet.forEach(issueKey => {
+                        if (isValidIssueKey(issueKey)) {
+                            setIssueGroupByKey(issueKey, trimmed);
+                            count++;
+                        }
+                    });
+                    refreshSelectedCells();
+                    updateStats();
+                    updateGroupFilterSelect();
+                    applyFilterToCells();
+                    saveState();
+                    const label = trimmed !== '' ? '（' + trimmed + '）' : '（未指定组名）';
+                    showToast(`已标记 ${count} 期 ${label}`);
+                    updateSelectedCount();
+                    closeModal();
+                }
+            }
+
+            function clearModalIssue() {
+                if (!modalContext || modalContext.mode !== 'single') return;
+                const issueKey = modalContext.issueKey;
+                const cellElement = modalContext.cellElement;
+                if (!isValidIssueKey(issueKey)) {
+                    closeModal();
+                    return;
+                }
+                const currentGroup = getIssueGroupNameByKey(issueKey);
+                if (currentGroup === null) {
+                    closeModal();
+                    return;
+                }
+                removeIssueGroupByKey(issueKey);
+                if (cellElement) {
+                    updateSingleCell(cellElement, issueKey, null);
+                }
+                updateStats();
+                updateGroupFilterSelect();
+                applyFilterToCells();
+                saveState();
+                const displayName = getIssueDisplayName(issueKey);
+                showToast(`已清除 ${displayName} 的汉化记录`);
+                closeModal();
+            }
+
+            // ──────────────────────────────────────
+            // 多选模式
+            // ──────────────────────────────────────
+            function enterMultiSelectMode() {
+                if (multiSelectMode) return;
+                multiSelectMode = true;
+                selectedIssueSet.clear();
+                btnMultiSelectToggle.classList.add('active');
+                multiSelectBar.classList.add('visible');
+                updateSelectedCount();
+                applyMultiSelectVisuals();
+            }
+
+            function exitMultiSelectMode(updateUI = true) {
+                if (!multiSelectMode) return;
+                multiSelectMode = false;
+                selectedIssueSet.clear();
+                btnMultiSelectToggle.classList.remove('active');
+                multiSelectBar.classList.remove('visible');
+                if (updateUI) {
+                    clearAllMultiSelectVisuals();
+                }
+            }
+
+            function toggleMultiSelectMode() {
+                if (multiSelectMode) {
+                    exitMultiSelectMode();
+                    showToast('已退出多选模式');
+                } else {
+                    enterMultiSelectMode();
+                    showToast('已进入多选模式，点击期数进行多选（长按也可进入）');
+                }
+            }
+
+            function toggleIssueSelectionByKey(issueKey, cellElement) {
+                if (!multiSelectMode) return;
+                if (selectedIssueSet.has(issueKey)) {
+                    selectedIssueSet.delete(issueKey);
+                    if (cellElement) cellElement.classList.remove('multi-selected');
+                } else {
+                    selectedIssueSet.add(issueKey);
+                    if (cellElement) cellElement.classList.add('multi-selected');
+                }
+                updateSelectedCount();
+            }
+
+            function updateSelectedCount() {
+                selectedCount.textContent = '已选 ' + selectedIssueSet.size + ' 期';
+            }
+
+            function selectAllVisibleIssues() {
+                if (!multiSelectMode) return;
+                const cells = issuesGrid.querySelectorAll('.issue-cell');
+                selectedIssueSet.clear();
+                cells.forEach(cell => {
+                    if (cell.style.display !== 'none') {
+                        const issueKey = cell.dataset.issueKey;
+                        if (issueKey) {
+                            selectedIssueSet.add(issueKey);
+                            cell.classList.add('multi-selected');
+                        }
+                    }
+                });
+                updateSelectedCount();
+                if (selectedIssueSet.size === 0) {
+                    showToast('当前没有可见期数可选');
+                }
+            }
+
+            function applyMultiSelectVisuals() {
+                const cells = issuesGrid.querySelectorAll('.issue-cell');
+                cells.forEach(cell => {
+                    const issueKey = cell.dataset.issueKey;
+                    if (issueKey && selectedIssueSet.has(issueKey)) {
+                        cell.classList.add('multi-selected');
+                    } else {
+                        cell.classList.remove('multi-selected');
+                    }
+                });
+            }
+
+            function clearAllMultiSelectVisuals() {
+                const cells = issuesGrid.querySelectorAll('.issue-cell');
+                cells.forEach(cell => cell.classList.remove('multi-selected'));
+            }
+
+            function markSelectedIssues() {
+                if (!multiSelectMode || selectedIssueSet.size === 0) {
+                    showToast('请先选择期数');
+                    return;
+                }
+                openModal({ mode: 'multi' });
+            }
+
+            function unmarkSelectedIssues() {
+                if (!multiSelectMode || selectedIssueSet.size === 0) {
+                    showToast('请先选择期数');
+                    return;
+                }
+                if (!confirm(`确定要清除选中 ${selectedIssueSet.size} 期的汉化记录吗？`)) return;
+                selectedIssueSet.forEach(issueKey => {
+                    if (isValidIssueKey(issueKey)) {
+                        removeIssueGroupByKey(issueKey);
+                    }
+                });
+                refreshSelectedCells();
+                updateStats();
+                updateGroupFilterSelect();
+                applyFilterToCells();
+                saveState();
+                showToast(`已清除 ${selectedIssueSet.size} 期的汉化记录`);
+                updateSelectedCount();
+            }
+
+            function refreshSelectedCells() {
+                selectedIssueSet.forEach(issueKey => {
+                    const cell = issuesGrid.querySelector(`.issue-cell[data-issue-key="${CSS.escape(issueKey)}"]`);
+                    if (cell) {
+                        const groupName = getIssueGroupNameByKey(issueKey);
+                        updateSingleCell(cell, issueKey, groupName);
+                        if (multiSelectMode) cell.classList.add('multi-selected');
+                    }
+                });
+            }
+
+            if (!CSS.escape) {
+                CSS.escape = function(value) {
+                    return String(value).replace(/([^\w-])/g, '\\$1');
+                };
+            }
+
+            // ──────────────────────────────────────
+            // 渲染网格
+            // ──────────────────────────────────────
+            function renderGrid() {
+                issuesGrid.innerHTML = '';
+                const comic = getActiveComic();
+                if (!comic) {
+                    issuesGrid.style.display = 'none';
+                    emptyState.style.display = '';
+                    gridGenerated = false;
+                    updateStats();
+                    updateGroupFilterSelect();
+                    return;
+                }
+                const mainIssues = getMainIssueNumbers();
+                const annuals = comic.annuals || [];
+                const specials = comic.specials || [];
+                const totalCells = mainIssues.length + annuals.length + specials.length;
+
+                if (totalCells === 0) {
+                    issuesGrid.style.display = 'none';
+                    emptyState.style.display = '';
+                    gridGenerated = false;
+                    updateStats();
+                    updateGroupFilterSelect();
+                    return;
+                }
+
+                emptyState.style.display = 'none';
+                issuesGrid.style.display = '';
+                gridGenerated = true;
+
+                const fragment = document.createDocumentFragment();
+
+                mainIssues.forEach(issueNum => {
+                    const issueKey = mainIssueKey(issueNum);
+                    const cell = createIssueCell(issueKey, issueNum, 'main');
+                    fragment.appendChild(cell);
+                });
+
+                if (annuals.length > 0) {
+                    const annualLabel = document.createElement('div');
+                    annualLabel.className = 'section-label annual-label';
+                    annualLabel.innerHTML = '<span class="label-dot"></span>年刊 Annuals';
+                    // 快速跳转按钮
+                    const jumpBtn = document.createElement('button');
+                    jumpBtn.className = 'section-jump-btn';
+                    jumpBtn.textContent = '跳转↗';
+                    jumpBtn.title = '快速跳转到年刊期号';
+                    jumpBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        jumpTypeSelect.value = 'annual';
+                        jumpInput.focus();
+                        jumpInput.select();
+                    });
+                    annualLabel.appendChild(jumpBtn);
+                    fragment.appendChild(annualLabel);
+
+                    annuals.forEach(issueNum => {
+                        const issueKey = annualIssueKey(issueNum);
+                        const cell = createIssueCell(issueKey, issueNum, 'annual');
+                        fragment.appendChild(cell);
+                    });
+                }
+
+                if (specials.length > 0) {
+                    const specialLabel = document.createElement('div');
+                    specialLabel.className = 'section-label special-label';
+                    specialLabel.innerHTML = '<span class="label-dot"></span>特刊 Specials';
+                    const jumpBtn = document.createElement('button');
+                    jumpBtn.className = 'section-jump-btn';
+                    jumpBtn.textContent = '跳转↗';
+                    jumpBtn.title = '快速跳转到特刊期号';
+                    jumpBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        jumpTypeSelect.value = 'special';
+                        jumpInput.focus();
+                        jumpInput.select();
+                    });
+                    specialLabel.appendChild(jumpBtn);
+                    fragment.appendChild(specialLabel);
+
+                    specials.forEach(issueNum => {
+                        const issueKey = specialIssueKey(issueNum);
+                        const cell = createIssueCell(issueKey, issueNum, 'special');
+                        fragment.appendChild(cell);
+                    });
+                }
+
+                issuesGrid.appendChild(fragment);
+                updateStats();
+                updateGroupFilterSelect();
+            }
+
+            function createIssueCell(issueKey, issueNum, issueType) {
+                const cell = document.createElement('div');
+                cell.className = 'issue-cell';
+                cell.dataset.issueKey = issueKey;
+                cell.dataset.issueNum = issueNum;
+                cell.dataset.issueType = issueType;
+                cell.setAttribute('tabindex', '0');
+                cell.setAttribute('role', 'button');
+
+                const groupName = getIssueGroupNameByKey(issueKey);
+                const displayName = getIssueDisplayName(issueKey);
+
+                if (issueType === 'annual') {
+                    cell.classList.add('annual');
+                } else if (issueType === 'special') {
+                    cell.classList.add('special');
+                }
+
+                if (groupName !== null) {
+                    cell.classList.add('marked');
+                    if (groupName !== '') {
+                        cell.title = `${displayName} — 汉化组：${groupName}`;
+                        cell.setAttribute('aria-label', `${displayName}，汉化组：${groupName}`);
+                        cell.innerHTML = buildMarkedCellInnerHTML(issueNum, groupName, issueType);
+                    } else {
+                        cell.title = `${displayName} — 已汉化（未指定汉化组）`;
+                        cell.setAttribute('aria-label', `${displayName}，已汉化未指定汉化组`);
+                        cell.innerHTML = buildMarkedCellInnerHTML(issueNum, '', issueType);
+                    }
+                } else {
+                    cell.classList.add('unmarked');
+                    cell.title = `${displayName} — 未汉化`;
+                    cell.setAttribute('aria-label', `${displayName}，未汉化`);
+                    cell.innerHTML = buildUnmarkedCellInnerHTML(issueNum, issueType);
+                }
+
+                applyCellFilter(cell, issueKey, groupName);
+
+                if (multiSelectMode && selectedIssueSet.has(issueKey)) {
+                    cell.classList.add('multi-selected');
+                }
+
+                cell.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (multiSelectMode) {
+                        toggleIssueSelectionByKey(issueKey, cell);
+                    } else {
+                        openModal({ mode: 'single', issueKey: issueKey, cellElement: cell });
+                    }
+                });
+
+                cell.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        if (multiSelectMode) {
+                            toggleIssueSelectionByKey(issueKey, cell);
+                        } else {
+                            openModal({ mode: 'single', issueKey: issueKey, cellElement: cell });
+                        }
+                    }
+                });
+
+                let longPressTimer = null;
+                let longPressed = false;
+                cell.addEventListener('touchstart', (e) => {
+                    longPressed = false;
+                    longPressTimer = setTimeout(() => {
+                        longPressed = true;
+                        if (!multiSelectMode) {
+                            enterMultiSelectMode();
+                            showToast('已进入多选模式');
+                        }
+                        toggleIssueSelectionByKey(issueKey, cell);
+                    }, 500);
+                }, { passive: true });
+                cell.addEventListener('touchend', () => {
+                    clearTimeout(longPressTimer);
+                    if (longPressed) longPressed = false;
+                });
+                cell.addEventListener('touchmove', () => {
+                    clearTimeout(longPressTimer);
+                });
+                cell.addEventListener('click', function(e) {
+                    if (longPressed) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                        longPressed = false;
+                    }
+                }, true);
+
+                return cell;
+            }
+
+            function buildMarkedCellInnerHTML(issueNum, groupName, issueType) {
+                const typeBadge = getIssueTypeBadgeByType(issueType);
+                let html = `
+                    <svg class="cell-icon-check" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <polyline points="4,12.5 9.5,18 20,6" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="cell-number">${issueNum}</span>`;
+                if (typeBadge) html +=
+                    `<span class="cell-type-badge">${escapeHtml(typeBadge)}</span>`;
+                if (groupName !== '') {
+                    html +=
+                        `<span class="cell-group-name" title="${escapeHtml(groupName)}">${escapeHtml(truncateGroupName(groupName))}</span>`;
+                } else {
+                    html += `<span class="cell-group-name no-name">已汉化</span>`;
+                }
+                return html;
+            }
+
+            function buildUnmarkedCellInnerHTML(issueNum, issueType) {
+                const typeBadge = getIssueTypeBadgeByType(issueType);
+                let html = `
+                    <svg class="cell-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                    </svg>
+                    <span class="cell-number">${issueNum}</span>`;
+                if (typeBadge) html +=
+                    `<span class="cell-type-badge">${escapeHtml(typeBadge)}</span>`;
+                return html;
+            }
+
+            function getIssueTypeBadgeByType(issueType) {
+                if (issueType === 'annual') return '年刊';
+                if (issueType === 'special') return '特刊';
+                return '';
+            }
+
+            function applyCellFilter(cell, issueKey, groupName) {
+                const selectedGroup = groupFilterSelect.value;
+                if (selectedGroup && selectedGroup !== '__all__') {
+                    if (groupName !== null && groupName !== '' && groupName === selectedGroup) {
+                        cell.style.display = '';
+                    } else {
+                        cell.style.display = 'none';
+                    }
+                    return;
+                }
+                if (currentFilter === 'all') {
+                    cell.style.display = '';
+                } else if (currentFilter === 'marked') {
+                    cell.style.display = (groupName !== null) ? '' : 'none';
+                } else if (currentFilter === 'unmarked') {
+                    cell.style.display = (groupName === null) ? '' : 'none';
+                }
+            }
+
+            function applyFilterToCells() {
+                const cells = issuesGrid.querySelectorAll('.issue-cell');
+                cells.forEach(cell => {
+                    const issueKey = cell.dataset.issueKey;
+                    const groupName = getIssueGroupNameByKey(issueKey);
+                    applyCellFilter(cell, issueKey, groupName);
+                });
+                if (multiSelectMode) applyMultiSelectVisuals();
+            }
+
+            function escapeHtml(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            function truncateGroupName(name) {
+                if (!name) return '';
+                if (name.length <= 6) return name;
+                return name.substring(0, 5) + '…';
+            }
+
+            function updateSingleCell(cell, issueKey, groupName) {
+                const issueNum = parseInt(cell.dataset.issueNum, 10);
+                const issueType = cell.dataset.issueType || 'main';
+                const displayName = getIssueDisplayName(issueKey);
+
+                cell.classList.remove('unmarked', 'marked');
+
+                if (groupName !== null) {
+                    cell.classList.add('marked');
+                    if (groupName !== '') {
+                        cell.title = `${displayName} — 汉化组：${groupName}`;
+                        cell.setAttribute('aria-label', `${displayName}，汉化组：${groupName}`);
+                        cell.innerHTML = buildMarkedCellInnerHTML(issueNum, groupName, issueType);
+                    } else {
+                        cell.title = `${displayName} — 已汉化（未指定汉化组）`;
+                        cell.setAttribute('aria-label', `${displayName}，已汉化未指定汉化组`);
+                        cell.innerHTML = buildMarkedCellInnerHTML(issueNum, '', issueType);
+                    }
+                } else {
+                    cell.classList.add('unmarked');
+                    cell.title = `${displayName} — 未汉化`;
+                    cell.setAttribute('aria-label', `${displayName}，未汉化`);
+                    cell.innerHTML = buildUnmarkedCellInnerHTML(issueNum, issueType);
+                }
+
+                if (issueType === 'annual') cell.classList.add('annual');
+                if (issueType === 'special') cell.classList.add('special');
+
+                if (multiSelectMode && selectedIssueSet.has(issueKey)) {
+                    cell.classList.add('multi-selected');
+                } else {
+                    cell.classList.remove('multi-selected');
+                }
+            }
+
+            // ──────────────────────────────────────
+            // 更新统计
+            // ──────────────────────────────────────
+            function updateStats() {
+                const comic = getActiveComic();
+                const total = comic ? comic.totalIssues : 0;
+                const marked = countMainMarked();
+                const unmarked = total - marked;
+                const percent = total > 0 ? Math.round((marked / total) * 100) : 0;
+
+                statTotal.textContent = total;
+                statMarked.textContent = marked;
+                statUnmarked.textContent = unmarked;
+                statPercent.textContent = percent + '%';
+                progressFill.style.width = percent + '%';
+
+                const annuals = comic ? (comic.annuals || []) : [];
+                const annualMarkedCount = countSpecialTypeMarked('annual');
+                if (annuals.length > 0) {
+                    statAnnuals.style.display = '';
+                    statAnnualCount.textContent = annuals.length;
+                    statAnnualMarked.textContent = annualMarkedCount;
+                } else {
+                    statAnnuals.style.display = 'none';
+                }
+
+                const specials = comic ? (comic.specials || []) : [];
+                const specialMarkedCount = countSpecialTypeMarked('special');
+                if (specials.length > 0) {
+                    statSpecials.style.display = '';
+                    statSpecialCount.textContent = specials.length;
+                    statSpecialMarked.textContent = specialMarkedCount;
+                } else {
+                    statSpecials.style.display = 'none';
+                }
+
+                if (total === 0 && annuals.length === 0 && specials.length === 0) {
+                    statsBar.style.opacity = '0.4';
+                } else {
+                    statsBar.style.opacity = '1';
+                }
+
+                // 动态调整跳转类型下拉框选项
+                updateJumpTypeOptions(annuals.length, specials.length);
+            }
+
+            function updateJumpTypeOptions(hasAnnuals, hasSpecials) {
+                const currentVal = jumpTypeSelect.value;
+                jumpTypeSelect.innerHTML = '<option value="main">主刊</option>';
+                if (hasAnnuals) {
+                    const opt = document.createElement('option');
+                    opt.value = 'annual';
+                    opt.textContent = '年刊';
+                    jumpTypeSelect.appendChild(opt);
+                }
+                if (hasSpecials) {
+                    const opt = document.createElement('option');
+                    opt.value = 'special';
+                    opt.textContent = '特刊';
+                    jumpTypeSelect.appendChild(opt);
+                }
+                // 恢复选择（如果之前的选择仍然存在）
+                const availableValues = Array.from(jumpTypeSelect.options).map(o => o.value);
+                if (availableValues.includes(currentVal)) {
+                    jumpTypeSelect.value = currentVal;
+                } else {
+                    jumpTypeSelect.value = 'main';
+                }
+            }
+
+            function countMainMarked() {
+                const comic = getActiveComic();
+                if (!comic) return 0;
+                const groups = getActiveIssueGroups();
+                const minIssue = comic.startIssue;
+                const maxIssue = comic.startIssue + comic.totalIssues - 1;
+                let count = 0;
+                for (const key of Object.keys(groups)) {
+                    const num = parseInt(key, 10);
+                    if (Number.isFinite(num) && num >= minIssue && num <= maxIssue) count++;
+                }
+                return count;
+            }
+
+            function countSpecialTypeMarked(type) {
+                const comic = getActiveComic();
+                if (!comic) return 0;
+                const groups = getActiveIssueGroups();
+                const prefix = type === 'annual' ? 'annual_' : 'special_';
+                let count = 0;
+                for (const key of Object.keys(groups)) {
+                    if (typeof key === 'string' && key.startsWith(prefix)) count++;
+                }
+                return count;
+            }
+
+            // ──────────────────────────────────────
+            // 清理无效标记
+            // ──────────────────────────────────────
+            function cleanInvalidMarks() {
+                const comic = getActiveComic();
+                if (!comic) return 0;
+                const groups = getActiveIssueGroups();
+                const validKeys = new Set(getAllIssueKeys());
+                let removed = 0;
+                for (const key of Object.keys(groups)) {
+                    if (!validKeys.has(key)) {
+                        delete groups[key];
+                        removed++;
+                    }
+                }
+                return removed;
+            }
+
+            // ──────────────────────────────────────
+            // 生成/刷新网格
+            // ──────────────────────────────────────
+            function generateGrid() {
+                const comicName = comicNameInput.value.trim();
+                const volume = volumeInput.value.trim();
+                const year = yearInput.value.trim();
+                const startIssue = parseInt(startIssueInput.value, 10);
+                const totalIssues = parseInt(totalIssuesInput.value, 10);
+                const annuals = parseIssueList(annualsInput.value);
+                const specials = parseIssueList(specialsInput.value);
+
+                if (!Number.isFinite(startIssue)) { showToast('请输入有效的起始期号'); return; }
+                if (!Number.isFinite(totalIssues) || totalIssues < 1) { showToast('总期数必须大于0'); return; }
+                if (totalIssues > 3000) { showToast('总期数不能超过3000'); return; }
+
+                let comic = getActiveComic();
+
+                if (!comic) {
+                    if (!comicName) { showToast('请至少输入刊物名以创建作品'); return; }
+                    const newComic = createDefaultComic(comicName);
+                    newComic.volume = volume;
+                    newComic.year = year;
+                    newComic.startIssue = startIssue;
+                    newComic.totalIssues = totalIssues;
+                    newComic.annuals = annuals;
+                    newComic.specials = specials;
+                    state.comics[newComic.id] = newComic;
+                    state.order.push(newComic.id);
+                    state.activeComicId = newComic.id;
+                    comic = newComic;
+                    rebuildSelector();
+                    showToast(`已创建作品"${comicName || '未命名作品'}"`);
+                } else {
+                    comic.comicName = comicName;
+                    comic.volume = volume;
+                    comic.year = year;
+                    comic.startIssue = startIssue;
+                    comic.totalIssues = totalIssues;
+                    comic.annuals = annuals;
+                    comic.specials = specials;
+                }
+
+                const removed = cleanInvalidMarks();
+                if (removed > 0) showToast(`已自动清理 ${removed} 个超出范围的标记`);
+
+                currentFilter = 'all';
+                filterBtns.forEach(b => b.classList.remove('active'));
+                const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                if (allBtn) allBtn.classList.add('active');
+                groupFilterSelect.value = '__all__';
+                groupFilterSelect.classList.remove('has-selection');
+
+                exitMultiSelectMode(false);
+                renderGrid();
+                saveState();
+                updateStats();
+                rebuildSelector();
+
+                const totalCells = totalIssues + annuals.length + specials.length;
+                let msg = `已生成 ${totalIssues} 期主刊网格（#${startIssue} - #${startIssue + totalIssues - 1}）`;
+                if (annuals.length > 0) msg += ` + ${annuals.length} 期年刊`;
+                if (specials.length > 0) msg += ` + ${specials.length} 期特刊`;
+                showToast(msg);
+
+                gridContainer.scrollTop = 0;
+            }
+
+            // ──────────────────────────────────────
+            // 作品CRUD操作
+            // ──────────────────────────────────────
+            function addNewComic() {
+                const name = prompt('请输入新作品的刊物名：', '');
+                if (name === null) return;
+                const trimmedName = name.trim();
+                const newComic = createDefaultComic(trimmedName || '未命名作品');
+                state.comics[newComic.id] = newComic;
+                state.order.push(newComic.id);
+                state.activeComicId = newComic.id;
+                syncSettingsToPanel();
+                currentFilter = 'all';
+                filterBtns.forEach(b => b.classList.remove('active'));
+                const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                if (allBtn) allBtn.classList.add('active');
+                groupFilterSelect.value = '__all__';
+                groupFilterSelect.classList.remove('has-selection');
+                exitMultiSelectMode(false);
+                renderGrid();
+                updateStats();
+                saveState();
+                rebuildSelector();
+                gridContainer.scrollTop = 0;
+                showToast(`已创建作品"${newComic.comicName || '未命名作品'}"`);
+            }
+
+            function deleteCurrentComic() {
+                const comic = getActiveComic();
+                if (!comic) { showToast('没有可删除的作品'); return; }
+                const displayName = comic.comicName || '未命名作品';
+                const confirmMsg =
+                    `确定要删除作品"${displayName}"吗？\n\n该操作将删除此作品的所有汉化记录（含年刊特刊），且不可撤销。`;
+                if (!confirm(confirmMsg)) return;
+
+                const deletingId = state.activeComicId;
+                delete state.comics[deletingId];
+                state.order = state.order.filter(id => id !== deletingId);
+
+                if (state.order.length > 0) {
+                    state.activeComicId = state.order[0];
+                } else {
+                    state.activeComicId = null;
+                }
+
+                syncSettingsToPanel();
+                currentFilter = 'all';
+                filterBtns.forEach(b => b.classList.remove('active'));
+                const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                if (allBtn) allBtn.classList.add('active');
+                groupFilterSelect.value = '__all__';
+                groupFilterSelect.classList.remove('has-selection');
+                exitMultiSelectMode(false);
+                renderGrid();
+                updateStats();
+                saveState();
+                rebuildSelector();
+                gridContainer.scrollTop = 0;
+                showToast(`已删除作品"${displayName}"`);
+            }
+
+            // ──────────────────────────────────────
+            // 批量操作（含年刊特刊）
+            // ──────────────────────────────────────
+            function markAll() {
+                if (!gridGenerated) return;
+                const comic = getActiveComic();
+                if (!comic) return;
+                const allGroups = collectGroupNames();
+                let hintText = '';
+                if (allGroups.length > 0) hintText = '\n\n已有汉化组：' + allGroups.join('、');
+                const groupName = prompt('请输入用于全部期数（含年刊特刊）的汉化组名称（可选，留空则仅标记为已汉化）：' + hintText,
+                    '');
+                if (groupName === null) return;
+                const trimmed = groupName.trim();
+                const allKeys = getAllIssueKeys();
+                if (!comic.issueGroups || typeof comic.issueGroups !== 'object') comic.issueGroups = {};
+                allKeys.forEach(key => { comic.issueGroups[key] = trimmed; });
+                exitMultiSelectMode(false);
+                renderGrid();
+                saveState();
+                updateStats();
+                updateGroupFilterSelect();
+                const label = trimmed !== '' ? '（' + trimmed + '）' : '（未指定组名）';
+                showToast(`已标记全部 ${allKeys.length} 期为已汉化 ${label}`);
+            }
+
+            function unmarkAll() {
+                if (!gridGenerated) return;
+                const comic = getActiveComic();
+                if (!comic) return;
+                const allKeys = getAllIssueKeys();
+                const groups = getActiveIssueGroups();
+                let count = 0;
+                allKeys.forEach(key => { if (groups.hasOwnProperty(key)) count++; });
+                if (count === 0) { showToast('当前没有已汉化的期数'); return; }
+                if (!confirm(`确定要清除全部 ${count} 期的汉化记录吗？（含年刊特刊）`)) return;
+                comic.issueGroups = {};
+                exitMultiSelectMode(false);
+                renderGrid();
+                saveState();
+                updateStats();
+                updateGroupFilterSelect();
+                showToast('已取消全部汉化记录');
+            }
+
+            function invertMarks() {
+                if (!gridGenerated) return;
+                const comic = getActiveComic();
+                if (!comic) return;
+                const allGroups = collectGroupNames();
+                let hintText = '';
+                if (allGroups.length > 0) hintText = '\n\n已有汉化组：' + allGroups.join('、');
+                const groupName = prompt('请输入用于新标记期数的汉化组名称（可选，留空则仅标记为已汉化）：' + hintText, '');
+                if (groupName === null) return;
+                const trimmed = groupName.trim();
+                const allKeys = getAllIssueKeys();
+                if (!comic.issueGroups || typeof comic.issueGroups !== 'object') comic.issueGroups = {};
+                allKeys.forEach(key => {
+                    if (comic.issueGroups.hasOwnProperty(key)) {
+                        delete comic.issueGroups[key];
+                    } else {
+                        comic.issueGroups[key] = trimmed;
+                    }
+                });
+                exitMultiSelectMode(false);
+                renderGrid();
+                saveState();
+                updateStats();
+                updateGroupFilterSelect();
+                const marked = countMainMarked() + countSpecialTypeMarked('annual') + countSpecialTypeMarked('special');
+                showToast(`已反选，当前已汉化：${marked} 期`);
+            }
+
+            // ──────────────────────────────────────
+            // JSON导出（全部作品）
+            // ──────────────────────────────────────
+            function exportJSON(filename) {
+                const comicsArray = state.order.map(id => {
+                    const c = state.comics[id];
+                    if (!c) return null;
+                    const cleanIssueGroups = {};
+                    if (c.issueGroups && typeof c.issueGroups === 'object') {
+                        const sortedKeys = Object.keys(c.issueGroups).sort((a, b) => {
+                            const na = parseInt(a, 10);
+                            const nb = parseInt(b, 10);
+                            if (Number.isFinite(na) && Number.isFinite(nb)) return na - nb;
+                            return a.localeCompare(b);
+                        });
+                        sortedKeys.forEach(key => { cleanIssueGroups[key] = String(c.issueGroups[key]); });
+                    }
+                    return {
+                        id: c.id,
+                        comicName: c.comicName || '未命名作品',
+                        volume: c.volume || '',
+                        year: c.year || '',
+                        team: c.team || '',
+                        startIssue: c.startIssue,
+                        totalIssues: c.totalIssues,
+                        annuals: (c.annuals && Array.isArray(c.annuals)) ? [...c.annuals].sort((a, b) => a - b) : [],
+                        specials: (c.specials && Array.isArray(c.specials)) ? [...c.specials].sort((a, b) => a - b) :
+                            [],
+                        issueGroups: cleanIssueGroups
+                    };
+                }).filter(Boolean);
+                const data = { version: 'multi-v5', exportDate: new Date().toISOString(), comics: comicsArray };
+                const jsonStr = JSON.stringify(data, null, 2);
+                const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            function exportCurrentData() {
+                if (state.order.length === 0) { showToast('暂无数据可导出，请先创建作品'); return; }
+                const totalComics = state.order.length;
+                exportJSON(`美漫汉化记录_${totalComics}部作品.json`);
+                showToast(`导出成功！共 ${totalComics} 部作品`);
+            }
+
+            function exportExample() {
+                const exampleData = {
+                    version: 'multi-v5',
+                    exportDate: new Date().toISOString(),
+                    comics: [{
+                        id: 'example_001',
+                        comicName: '示例漫画名称',
+                        volume: 'Vol.1',
+                        year: '1963-1998',
+                        team: '',
+                        startIssue: 1,
+                        totalIssues: 24,
+                        annuals: [1, 2],
+                        specials: [1],
+                        issueGroups: {
+                            "1": "汉化组A",
+                            "2": "汉化组A",
+                            "3": "汉化组B",
+                            "5": "",
+                            "7": "汉化组C",
+                            "11": "汉化组B",
+                            "13": "",
+                            "17": "汉化组A",
+                            "19": "汉化组B",
+                            "23": "汉化组C",
+                            "annual_1": "汉化组A",
+                            "annual_2": "",
+                            "special_1": "汉化组C"
+                        },
+                        _说明: 'issueGroups中，纯数字key=主刊期号，annual_X=年刊第X期，special_X=特刊第X期。空字符串=已汉化未指定组名。annuals/specials数组列出所有年刊/特刊期号。'
+                    }, {
+                        id: 'example_002',
+                        comicName: '另一部漫画',
+                        volume: 'Vol.2',
+                        year: '1999-2003',
+                        team: '',
+                        startIssue: 1,
+                        totalIssues: 58,
+                        annuals: [],
+                        specials: [1, 2, 3],
+                        issueGroups: {
+                            "1": "另一个汉化组",
+                            "2": "另一个汉化组",
+                            "4": "联合汉化组",
+                            "8": "",
+                            "16": "联合汉化组",
+                            "32": "另一个汉化组",
+                            "special_1": "联合汉化组",
+                            "special_2": ""
+                        },
+                        _说明: '支持年刊和特刊。总期数仅统计主刊。年刊/特刊在网格中显示在主刊下方，带颜色区分。'
+                    }]
+                };
+                const jsonStr = JSON.stringify(exampleData, null, 2);
+                const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = '示例_多作品汉化记录格式_v5_年刊特刊.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showToast('示例文件已下载，展示了年刊/特刊格式');
+            }
+
+            // ──────────────────────────────────────
+            // JSON导入
+            // ──────────────────────────────────────
+            function importJSON(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        let importedCount = 0;
+                        let migratedCount = 0;
+                        let comicsToImport = [];
+                        if (Array.isArray(data.comics)) {
+                            comicsToImport = data.comics;
+                        } else if (typeof data.comicName === 'string' || typeof data.totalIssues === 'number') {
+                            comicsToImport = [data];
+                        } else {
+                            showToast('JSON格式无法识别，请检查文件格式');
+                            return;
+                        }
+                        comicsToImport.forEach(c => {
+                            if (!c || typeof c.comicName !== 'string') return;
+                            let issueGroups = {};
+                            let wasMigrated = false;
+                            if (c.issueGroups && typeof c.issueGroups === 'object') {
+                                for (const [key, value] of Object.entries(c.issueGroups)) {
+                                    issueGroups[key] = String(value);
+                                }
+                            } else if (Array.isArray(c.chineseAvailable)) {
+                                c.chineseAvailable.forEach(n => {
+                                    if (typeof n === 'number' && Number.isFinite(n) && Number.isInteger(n)) {
+                                        issueGroups[String(n)] = '旧数据';
+                                    }
+                                });
+                                wasMigrated = true;
+                                migratedCount++;
+                            }
+                            const comicData = {
+                                id: (typeof c.id === 'string' && c.id) ? c.id : generateId(),
+                                comicName: c.comicName || '未命名作品',
+                                volume: typeof c.volume === 'string' ? c.volume : '',
+                                year: typeof c.year === 'string' ? c.year : '',
+                                team: typeof c.team === 'string' ? c.team : '',
+                                startIssue: (typeof c.startIssue === 'number' && Number.isFinite(c.startIssue)) ?
+                                    c.startIssue : 1,
+                                totalIssues: (typeof c.totalIssues === 'number' && Number.isFinite(c.totalIssues) &&
+                                    c.totalIssues >= 1) ? Math.min(c.totalIssues, 3000) : 50,
+                                annuals: (Array.isArray(c.annuals)) ? [...c.annuals].filter(n => Number.isFinite(n) &&
+                                    n > 0).sort((a, b) => a - b) : [],
+                                specials: (Array.isArray(c.specials)) ? [...c.specials].filter(n => Number.isFinite(
+                                    n) && n > 0).sort((a, b) => a - b) : [],
+                                issueGroups: issueGroups
+                            };
+                            const allValidKeys = new Set();
+                            for (let i = 0; i < comicData.totalIssues; i++) {
+                                allValidKeys.add(mainIssueKey(comicData.startIssue + i));
+                            }
+                            comicData.annuals.forEach(n => allValidKeys.add(annualIssueKey(n)));
+                            comicData.specials.forEach(n => allValidKeys.add(specialIssueKey(n)));
+                            for (const key of Object.keys(comicData.issueGroups)) {
+                                if (!allValidKeys.has(key)) delete comicData.issueGroups[key];
+                            }
+                            const existingIndex = state.order.indexOf(comicData.id);
+                            if (existingIndex >= 0 && state.comics[comicData.id]) {
+                                state.comics[comicData.id] = comicData;
+                            } else {
+                                state.comics[comicData.id] = comicData;
+                                if (!state.order.includes(comicData.id)) state.order.push(comicData.id);
+                            }
+                            importedCount++;
+                        });
+                        if (importedCount === 0) { showToast('未找到可导入的作品数据'); return; }
+                        const firstImportedId = comicsToImport[0]?.id;
+                        if (firstImportedId && state.comics[firstImportedId]) {
+                            state.activeComicId = firstImportedId;
+                        } else if (state.order.length > 0) {
+                            state.activeComicId = state.order[0];
+                        }
+                        syncSettingsToPanel();
+                        currentFilter = 'all';
+                        filterBtns.forEach(b => b.classList.remove('active'));
+                        const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                        if (allBtn) allBtn.classList.add('active');
+                        groupFilterSelect.value = '__all__';
+                        groupFilterSelect.classList.remove('has-selection');
+                        exitMultiSelectMode(false);
+                        renderGrid();
+                        updateStats();
+                        saveState();
+                        rebuildSelector();
+                        gridContainer.scrollTop = 0;
+                        let msg = `导入成功！共导入 ${importedCount} 部作品`;
+                        if (migratedCount > 0) msg += `（其中 ${migratedCount} 部从旧格式自动迁移）`;
+                        showToast(msg);
+                    } catch (err) {
+                        showToast('JSON解析失败，请检查文件格式');
+                        console.error('导入JSON错误:', err);
+                    }
+                };
+                reader.onerror = function() { showToast('文件读取失败，请重试'); };
+                reader.readAsText(file);
+            }
+
+            // ──────────────────────────────────────
+            // 跳转功能（支持主刊/年刊/特刊）
+            // ──────────────────────────────────────
+            function jumpToIssue() {
+                if (!gridGenerated) { showToast('请先生成网格'); return; }
+                const targetIssue = parseInt(jumpInput.value, 10);
+                if (!Number.isFinite(targetIssue)) { showToast('请输入有效的期号'); return; }
+                const comic = getActiveComic();
+                if (!comic) return;
+                const jumpType = jumpTypeSelect.value;
+                let issueKey;
+                let rangeLabel = '';
+
+                if (jumpType === 'main') {
+                    const minIssue = comic.startIssue;
+                    const maxIssue = comic.startIssue + comic.totalIssues - 1;
+                    if (targetIssue < minIssue || targetIssue > maxIssue) {
+                        showToast(`期号 ${targetIssue} 不在主刊范围内（#${minIssue} - #${maxIssue}）`);
+                        return;
+                    }
+                    issueKey = mainIssueKey(targetIssue);
+                    rangeLabel = `主刊 #${targetIssue}`;
+                } else if (jumpType === 'annual') {
+                    const annuals = comic.annuals || [];
+                    if (annuals.length === 0) { showToast('当前作品没有年刊'); return; }
+                    if (!annuals.includes(targetIssue)) {
+                        showToast(
+                            `年刊 #${targetIssue} 不存在，可用的年刊期号：${annuals.join(', ')}`);
+                        return;
+                    }
+                    issueKey = annualIssueKey(targetIssue);
+                    rangeLabel = `年刊 #${targetIssue}`;
+                } else if (jumpType === 'special') {
+                    const specials = comic.specials || [];
+                    if (specials.length === 0) { showToast('当前作品没有特刊'); return; }
+                    if (!specials.includes(targetIssue)) {
+                        showToast(
+                            `特刊 #${targetIssue} 不存在，可用的特刊期号：${specials.join(', ')}`);
+                        return;
+                    }
+                    issueKey = specialIssueKey(targetIssue);
+                    rangeLabel = `特刊 #${targetIssue}`;
+                } else {
+                    showToast('请选择跳转类型');
+                    return;
+                }
+
+                const cell = issuesGrid.querySelector(`.issue-cell[data-issue-key="${CSS.escape(issueKey)}"]`);
+                if (cell) {
+                    if (cell.style.display === 'none') {
+                        currentFilter = 'all';
+                        filterBtns.forEach(b => b.classList.remove('active'));
+                        const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                        if (allBtn) allBtn.classList.add('active');
+                        groupFilterSelect.value = '__all__';
+                        groupFilterSelect.classList.remove('has-selection');
+                        applyFilterToCells();
+                    }
+                    cell.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    cell.classList.remove('flash-highlight');
+                    void cell.offsetWidth;
+                    cell.classList.add('flash-highlight');
+                    cell.addEventListener('animationend', function handler() {
+                        cell.classList.remove('flash-highlight');
+                        cell.removeEventListener('animationend', handler);
+                    }, { once: true });
+                    cell.focus({ preventScroll: true });
+                    showToast(`已定位到 ${rangeLabel}`);
+                }
+            }
+
+            // ──────────────────────────────────────
+            // 事件绑定
+            // ──────────────────────────────────────
+            btnApply.addEventListener('click', generateGrid);
+
+            [comicNameInput, volumeInput, yearInput, startIssueInput, totalIssuesInput, annualsInput, specialsInput]
+            .forEach(input => {
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') { e.preventDefault();
+                        generateGrid(); }
+                });
+            });
+
+            // 年刊/特刊一键生成按钮
+            btnGenAnnuals.addEventListener('click', handleGenAnnuals);
+            btnGenSpecials.addEventListener('click', handleGenSpecials);
+
+            // 生成器输入框也支持回车
+            [annualGenStart, annualGenCount].forEach(input => {
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') { e.preventDefault();
+                        handleGenAnnuals(); }
+                });
+            });
+            [specialGenStart, specialGenCount].forEach(input => {
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') { e.preventDefault();
+                        handleGenSpecials(); }
+                });
+            });
+
+            comicSelector.addEventListener('change', () => {
+                const selectedId = comicSelector.value;
+                if (selectedId && state.comics[selectedId]) switchToComic(selectedId);
+            });
+
+            btnAddComic.addEventListener('click', addNewComic);
+            btnDeleteComic.addEventListener('click', deleteCurrentComic);
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    groupFilterSelect.value = '__all__';
+                    groupFilterSelect.classList.remove('has-selection');
+                    if (gridGenerated) applyFilterToCells();
+                });
+            });
+
+            groupFilterSelect.addEventListener('change', () => {
+                if (groupFilterSelect.value !== '__all__') {
+                    groupFilterSelect.classList.add('has-selection');
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    currentFilter = 'all';
+                } else {
+                    groupFilterSelect.classList.remove('has-selection');
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                    if (allBtn) allBtn.classList.add('active');
+                    currentFilter = 'all';
+                }
+                if (gridGenerated) applyFilterToCells();
+            });
+
+            btnMultiSelectToggle.addEventListener('click', toggleMultiSelectMode);
+            btnSelectAllInMulti.addEventListener('click', selectAllVisibleIssues);
+            btnMarkSelected.addEventListener('click', markSelectedIssues);
+            btnUnmarkSelected.addEventListener('click', unmarkSelectedIssues);
+            btnExitMultiSelect.addEventListener('click', () => {
+                exitMultiSelectMode();
+                showToast('已退出多选模式');
+            });
+
+            btnMarkAll.addEventListener('click', markAll);
+            btnUnmarkAll.addEventListener('click', unmarkAll);
+            btnInvert.addEventListener('click', invertMarks);
+
+            btnImport.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                    importJSON(e.target.files[0]);
+                    fileInput.value = '';
+                }
+            });
+            btnExport.addEventListener('click', exportCurrentData);
+            btnExportExample.addEventListener('click', exportExample);
+
+            btnJump.addEventListener('click', jumpToIssue);
+            jumpInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') { e.preventDefault();
+                    jumpToIssue(); }
+            });
+            jumpTypeSelect.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') { e.preventDefault();
+                    jumpInput.focus();
+                    jumpInput.select(); }
+            });
+
+            // Modal事件
+            btnModalConfirm.addEventListener('click', confirmModal);
+            btnModalCancel.addEventListener('click', closeModal);
+            btnModalClear.addEventListener('click', clearModalIssue);
+
+            // 点击遮罩关闭modal
+            groupModalOverlay.addEventListener('click', (e) => {
+                if (e.target === groupModalOverlay) closeModal();
+            });
+
+            // Modal键盘操作
+            modalGroupInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    confirmModal();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    closeModal();
+                }
+            });
+
+            // 全局键盘快捷键
+            document.addEventListener('keydown', (e) => {
+                // 如果modal打开，优先让modal处理
+                if (groupModalOverlay.classList.contains('active')) return;
+
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    if (state.order.length > 0) exportCurrentData();
+                    else showToast('暂无数据可导出');
+                }
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'S') {
+                    e.preventDefault();
+                    exportExample();
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'a' && document.activeElement && document.activeElement
+                    .closest('#gridContainer')) {
+                    e.preventDefault();
+                    markAll();
+                }
+                if (e.key === 'Escape' && multiSelectMode) {
+                    e.preventDefault();
+                    exitMultiSelectMode();
+                    showToast('已退出多选模式');
+                }
+            });
+
+            // ──────────────────────────────────────
+            // 输入框变更时自动保存设置
+            // ──────────────────────────────────────
+            let autoSaveTimeout;
+            [comicNameInput, volumeInput, yearInput, startIssueInput, totalIssuesInput, annualsInput, specialsInput]
+            .forEach(input => {
+                input.addEventListener('input', () => {
+                    clearTimeout(autoSaveTimeout);
+                    autoSaveTimeout = setTimeout(() => {
+                        const comic = getActiveComic();
+                        if (!comic) return;
+                        const comicName = comicNameInput.value.trim();
+                        const volume = volumeInput.value.trim();
+                        const year = yearInput.value.trim();
+                        const startIssue = parseInt(startIssueInput.value, 10);
+                        const totalIssues = parseInt(totalIssuesInput.value, 10);
+                        const annuals = parseIssueList(annualsInput.value);
+                        const specials = parseIssueList(specialsInput.value);
+                        if (comicName !== undefined) comic.comicName = comicName;
+                        if (volume !== undefined) comic.volume = volume;
+                        if (year !== undefined) comic.year = year;
+                        if (Number.isFinite(startIssue)) comic.startIssue = startIssue;
+                        if (Number.isFinite(totalIssues) && totalIssues >= 1) comic.totalIssues = Math.min(
+                            totalIssues, 3000);
+                        comic.annuals = annuals;
+                        comic.specials = specials;
+                        saveState();
+                        rebuildSelector();
+                    }, 600);
+                });
+            });
+
+            // ──────────────────────────────────────
+            // 拖拽导入JSON
+            // ──────────────────────────────────────
+            document.addEventListener('dragover', (e) => { e.preventDefault(); });
+            document.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const file = e.dataTransfer.files[0];
+                if (file && file.name.toLowerCase().endsWith('.json')) importJSON(file);
+                else if (file) showToast('请拖入 .json 文件');
+            });
+
+            gridContainer.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                gridContainer.style.borderColor = '#4da674';
+                gridContainer.style.boxShadow = '0 0 0 4px rgba(77,166,116,0.15)';
+            });
+            gridContainer.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                gridContainer.style.borderColor = '';
+                gridContainer.style.boxShadow = '';
+            });
+            gridContainer.addEventListener('drop', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                gridContainer.style.borderColor = '';
+                gridContainer.style.boxShadow = '';
+                const file = e.dataTransfer.files[0];
+                if (file && file.name.toLowerCase().endsWith('.json')) importJSON(file);
+                else if (file) showToast('请拖入 .json 文件');
+            });
+
+            // ──────────────────────────────────────
+            // 初始化
+            // ──────────────────────────────────────
+            function init() {
+                loadState();
+                rebuildSelector();
+                syncSettingsToPanel();
+
+                if (state.activeComicId && state.comics[state.activeComicId]) {
+                    const comic = getActiveComic();
+                    if (comic && (comic.totalIssues > 0 || (comic.annuals || []).length > 0 || (comic.specials || [])
+                            .length > 0)) {
+                        const removed = cleanInvalidMarks();
+                        renderGrid();
+                        updateStats();
+                        updateGroupFilterSelect();
+                        if (removed > 0) showToast(`已自动恢复数据，清理了 ${removed} 个无效标记`);
+                        saveState();
+                    } else if (comic) {
+                        renderGrid();
+                        updateStats();
+                        updateGroupFilterSelect();
+                    }
+                } else {
+                    issuesGrid.style.display = 'none';
+                    emptyState.style.display = '';
+                    statsBar.style.opacity = '0.4';
+                    updateStats();
+                    updateGroupFilterSelect();
+                }
+            }
+
+            init();
+
+            // ──────────────────────────────────────
+            // 暴露API到全局（调试用）
+            // ──────────────────────────────────────
+            window.__comicTracker = {
+                state,
+                generateGrid,
+                renderGrid,
+                exportCurrentData,
+                exportExample,
+                importJSON,
+                markAll,
+                unmarkAll,
+                invertMarks,
+                addNewComic,
+                deleteCurrentComic,
+                switchToComic,
+                enterMultiSelectMode,
+                exitMultiSelectMode,
+                toggleMultiSelectMode,
+                openModal,
+                closeModal,
+                getState: () => state,
+                resetAll: () => {
+                    state.comics = {};
+                    state.order = [];
+                    state.activeComicId = null;
+                    currentFilter = 'all';
+                    gridGenerated = false;
+                    multiSelectMode = false;
+                    selectedIssueSet.clear();
+                    modalContext = null;
+                    comicNameInput.value = '';
+                    volumeInput.value = '';
+                    yearInput.value = '';
+                    startIssueInput.value = '1';
+                    totalIssuesInput.value = '50';
+                    annualsInput.value = '';
+                    specialsInput.value = '';
+                    annualGenStart.value = '1';
+                    annualGenCount.value = '1';
+                    specialGenStart.value = '1';
+                    specialGenCount.value = '1';
+                    issuesGrid.innerHTML = '';
+                    issuesGrid.style.display = 'none';
+                    emptyState.style.display = '';
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                    if (allBtn) allBtn.classList.add('active');
+                    groupFilterSelect.value = '__all__';
+                    groupFilterSelect.classList.remove('has-selection');
+                    groupFilterSelect.innerHTML = '<option value="__all__">全部汉化组</option>';
+                    btnMultiSelectToggle.classList.remove('active');
+                    multiSelectBar.classList.remove('visible');
+                    selectedCount.textContent = '已选 0 期';
+                    statAnnuals.style.display = 'none';
+                    statSpecials.style.display = 'none';
+                    groupModalOverlay.classList.remove('active');
+                    document.body.classList.remove('modal-open');
+                    modalGroupInput.value = '';
+                    modalGroupDatalist.innerHTML = '';
+                    modalExistingGroups.innerHTML = '';
+                    jumpTypeSelect.innerHTML =
+                        '<option value="main">主刊</option><option value="annual">年刊</option><option value="special">特刊</option>';
+                    jumpTypeSelect.value = 'main';
+                    jumpInput.value = '';
+                    rebuildSelector();
+                    updateStats();
+                    statsBar.style.opacity = '0.4';
+                    saveState();
+                    localStorage.removeItem(OLD_STORAGE_KEY_V4);
+                    localStorage.removeItem(OLD_STORAGE_KEY_V3);
+                    localStorage.removeItem(OLD_STORAGE_KEY_V2);
+                    localStorage.removeItem(OLD_STORAGE_KEY_V1);
+                    showToast('已重置全部数据');
+                }
+            };
+
+            console.log(
+                '%c📚 美漫汉化追踪器 v5（年刊·特刊·多选·汉化组可选弹窗·一键生成·智能跳转）已就绪 %c| %c点击网格编辑 %c| %c长按或点击"多选"批量操作',
+                'color:#5fc286;font-weight:bold;', '', 'color:#d0d0dc;', '', 'color:#9898ae;');
+            console.log('%c💡 提示：Ctrl+S 导出 | Esc 退出多选/关闭弹窗 | 拖拽JSON导入 | 年刊/特刊支持一键生成',
+                'color:#9898ae;font-size:0.85em;');
+        })();
+    </script>
+</body>
+</html>
